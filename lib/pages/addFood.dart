@@ -247,7 +247,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       }),
 
               Divider(
-                thickness: 1,
+                thickness: 2,
               ),
 
               ////////////////////ส่วนผสม//////////////////////
