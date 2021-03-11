@@ -133,71 +133,48 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
     i = 0;
 
-    return controllers2.map<Widget>((TextEditingController controller) {
+    return controllers2.map<Widget>((TextEditingController controller2) {
       int displayNumber = i + 1;
       i++;
-      return Card(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Text(
-                "${displayNumber}.",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Text(
+              "${displayNumber}.",
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Expanded(
-              child: TextField(
-                keyboardType: TextInputType.multiline,
-                minLines: 1,
-                maxLines: 5,
-                controller: controller,
-                onChanged: (text) {
-                  print(text + "${displayNumber}.");
-                },
-                decoration: InputDecoration(
-                  // border: OutlineInputBorder(),
-                  hintText: "วิธีทำ $displayNumber",
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        fieldCount2--;
-                        controllers2.remove(controller);
-                      });
-                    },
-                  ),
-                  // labelText: 'ส่วนผสม',
+          ),
+          Expanded(
+            child: TextField(
+              keyboardType: TextInputType.multiline,
+              minLines: 1,
+              maxLines: 5,
+              controller: controller2,
+              onChanged: (text) {
+                print(text + "${displayNumber}.");
+              },
+              decoration: InputDecoration(
+                // border: OutlineInputBorder(),
+                hintText: "วิธีทำ $displayNumber",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      fieldCount2--;
+                      controllers2.remove(controller2);
+                    });
+                  },
                 ),
+                // labelText: 'ส่วนผสม',
               ),
             ),
-            // Expanded(
-            //   child: TextField(
-            //     controller: controller2,
-            //     onChanged: (text) {
-            //       print(text + "${displayNumber}.");
-            //     },
-            //     decoration: InputDecoration(
-            //       // border: OutlineInputBorder(),
-            //       hintText: "ขนาด $displayNumber",
-            //       suffixIcon: IconButton(
-            //         icon: Icon(Icons.clear),
-            //         onPressed: () {
-            //           setState(() {
-            //             fieldCount2--;
-            //             controllers2.remove(controller2);
-            //           });
-            //         },
-            //       ),
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
+          ),
+        ],
       );
     }).toList(); // แปลงเป็นlist
   }
@@ -206,6 +183,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
   Widget build(BuildContext context) {
     final List<Widget> children = _buildList();
     final List<Widget> children2 = _buildList2(); //ทดสอบ
+
     return Scaffold(
         appBar: AppBar(
           title: Text('เพิ่มสูตรอาหาร'),
@@ -323,7 +301,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     fieldCount2++;
 
                     for (int i = 0; i < controllers2.length; i++) {
-                      print("THIS IS  = ${controllers2[i].text} + [${i}]");
+                      //   print("THIS IS  = ${controllers[i].text} + [${i}]");
                     }
                   });
                 },
@@ -332,7 +310,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      'เพิ่ม วิธีทำ',
+                      'เพิ่ม ส่วนผสม',
                       style: TextStyle(
                         color: Colors.white,
                       ),
