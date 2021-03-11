@@ -1,18 +1,16 @@
-import 'package:easy_cook/pages/profile.dart';
-import 'package:easy_cook/pages/register.dart';
 import 'package:easy_cook/slidepage.dart';
-import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
+import '../style/utiltties.dart';
 import 'package:flutter/services.dart';
 
-import '../style/utiltties.dart';
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key}) : super(key: key);
 
-class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   bool _rememberMe = false;
 
   Widget _buildEmailTF() {
@@ -85,48 +83,76 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: FlatButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'ลืมรหัสผ่าน?',
+  Widget _buildPasswordTFconfirm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'ยืนยันรหัสผ่าน',
           style: kLabelStyle,
         ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      height: 20.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            obscureText: true,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.verified_user,
+                color: Colors.white,
+              ),
+              hintText: 'ยืนยันรหัสผ่านของคุณ',
+              hintStyle: kHintTextStyle,
             ),
           ),
-          Text(
-            'จดจำฉัน',
-            style: kLabelStyle,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildNameTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'ป้อนชื่อผู้ใช้',
+          style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              hintText: 'ชื่อผู้ใช้',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRegisterBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -154,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         color: Color(0xFF73AEF5),
         child: Text(
-          'เข้าสู่ระบบ',
+          'สมัครสมาชิก',
           style: TextStyle(
             color: Colors.red[50],
             letterSpacing: 1.5,
@@ -162,113 +188,6 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSignInWithText() {
-    return Column(
-      children: <Widget>[
-        Text(
-          '- หรือ -',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 20.0),
-        Text(
-          'ลงชื่อเข้าใช้ด้วย',
-          style: kLabelStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            () => print('Login with Facebook'),
-            AssetImage(
-              'assets/logos/facebook.jpg',
-            ),
-          ),
-          // _buildSocialBtn(
-          //   () => print('Login with Google'),
-          //   AssetImage(
-          //     'assets/logos/google.jpg',
-          //   ),
-          // ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () => print(Navigator.pushReplacement(
-        context,
-        new MaterialPageRoute(
-            /*check()*/
-            builder: (context) =>
-                new RegisterPage()), /////////////////////////////////////////////////////////////////////////////////
-      ).then((value) {
-        /* if (value == null) {
-                  } else {
-
-                    proList.add(value);
-                  }*/
-        setState(() {});
-      })),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'ไม่มีบัญชี? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'ลงชื่อ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -312,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'เข้าสู่ระบบ',
+                        'สมัครสมาชิก',
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'OpenSans',
@@ -323,15 +242,21 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 30.0),
                       _buildEmailTF(),
                       SizedBox(
-                        height: 30.0,
+                        height: 20.0,
                       ),
                       _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildSignInWithText(),
-                      _buildSocialBtnRow(),
-                      _buildSignupBtn(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildPasswordTFconfirm(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildNameTF(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildRegisterBtn(),
                     ],
                   ),
                 ),

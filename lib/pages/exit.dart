@@ -1,3 +1,4 @@
+import 'package:easy_cook/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class ExitPage extends StatefulWidget {
@@ -6,7 +7,7 @@ class ExitPage extends StatefulWidget {
 }
 
 class _ExitPageState extends State<ExitPage> {
- final Shader linearGradient = LinearGradient(
+  final Shader linearGradient = LinearGradient(
     colors: <Color>[Color(0xffe433e68), Color(0xfffaa449)],
   ).createShader(Rect.fromLTRB(0.0, 0.0, 200.0, 70.0));
   @override
@@ -14,7 +15,31 @@ class _ExitPageState extends State<ExitPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-         title: Text('โปรไฟล์'),
+        title: Text('โปรไฟล์'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                new MaterialPageRoute(
+                    /*check()*/
+                    builder: (context) =>
+                        new LoginPage()), /////////////////////////////////////////////////////////////////////////////////
+              ).then((value) {
+                /* if (value == null) {
+                  } else {
+
+                    proList.add(value);
+                  }*/
+                setState(() {});
+              });
+            },
+          )
+        ],
         /*backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
@@ -340,7 +365,7 @@ class _ExitPageState extends State<ExitPage> {
                       fit: FlexFit.loose,
                       child: new Image.network(
                         //รูปอาหาร
-                        "http://www.wdabrandsolutions.com/2016/wp-content/uploads/2017/05/eyes-animated-gif-11.gif",
+                        "https://www.japancheckin.com/wp-content/uploads/2018/12/6336ebda10e4418f6b9b316134fb9ed7_s.jpg",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -405,9 +430,11 @@ class _ExitPageState extends State<ExitPage> {
                           ),
                           Expanded(
                             child: new TextField(
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Add a comment ...",
+                                hintText: "เพิ่ม คอมเมนต์...",
                               ),
                             ),
                           ),
@@ -432,7 +459,4 @@ class _ExitPageState extends State<ExitPage> {
       ),
     );
   }
-  
-
-
 }

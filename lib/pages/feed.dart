@@ -6,7 +6,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-   @override
+  @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -63,8 +63,9 @@ class _FeedPageState extends State<FeedPage> {
                     //2nd row
                     Flexible(
                       fit: FlexFit.loose,
-                      child: new Image.network(//รูปอาหาร
-                        "http://www.wdabrandsolutions.com/2016/wp-content/uploads/2017/05/eyes-animated-gif-11.gif",
+                      child: new Image.network(
+                        //รูปอาหาร
+                        "https://www.beartai.com/wp-content/uploads/2014/06/poptart1red1.gif",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -109,7 +110,8 @@ class _FeedPageState extends State<FeedPage> {
 
                     //5th row
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                      padding:
+                          const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -117,18 +119,22 @@ class _FeedPageState extends State<FeedPage> {
                             height: 40.0,
                             width: 40.0,
                             decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image:new DecorationImage(fit: BoxFit.fill, image: new NetworkImage("https://variety.teenee.com/foodforbrain/img8/241131.jpg"))
-                            ),
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: new NetworkImage(
+                                        "https://variety.teenee.com/foodforbrain/img8/241131.jpg"))),
                           ),
                           new SizedBox(
                             width: 10.0,
                           ),
                           Expanded(
                             child: new TextField(
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Add a comment ...",
+                                hintText: "เพิ่ม คอมเมนต์...",
                               ),
                             ),
                           ),
@@ -136,14 +142,16 @@ class _FeedPageState extends State<FeedPage> {
                       ),
                     ),
 
-                   //6th row 
-                   Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                     child: Text("1 วันที่แล้ว",style: TextStyle(color: Colors.grey),),
-                     )
+                    //6th row
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        "1 วันที่แล้ว",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    )
                   ],
                 ),
-        )
-        );
+        ));
   }
 }

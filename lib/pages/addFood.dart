@@ -38,89 +38,92 @@ class _AddFoodPageState extends State<AddFoodPage> {
   int fieldCount = 0;
   int nextIndex = 0;
 
-  List<TextEditingController> controllers = <TextEditingController>[];
+  List<List<TextEditingController>> controllers =
+      <List<TextEditingController>>[];
 
   List<Widget> _buildList() {
     int i;
     if (controllers.length < fieldCount) {
       for (i = controllers.length; i < fieldCount; i++) {
-        controllers.add(TextEditingController());
+        var ctl = <TextEditingController>[];
+        ctl.add(TextEditingController());
+        ctl.add(TextEditingController());
+        controllers.add(ctl);
       }
     }
 
     i = 0;
 
-    return controllers.map<Widget>((TextEditingController controller) {
-      
-
+    return controllers.map<Widget>((List<TextEditingController> controller) {
       int displayNumber = i + 1;
       i++;
-     
 
       return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Text(
-                  "${displayNumber}.",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Text(
+              "${displayNumber}.",
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  onChanged: (text) {
-                    // controllers1[displayNumber] = text;
-                    print(text+""+displayNumber.toString());
-                   
-                    // print(text + "${displayNumber}.");
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              controller: controllers[displayNumber - 1][0],
+              onChanged: (text) {
+                // controllers1[displayNumber] = text;
+                // print(text + "" + displayNumber.toString());
+                print('Left:' + controllers[displayNumber - 1][0].text);
+                // print(text + "${displayNumber}.");
+              },
+              decoration: InputDecoration(
+                // border: OutlineInputBorder(),
+                hintText: "ส่วนผสม $displayNumber",
+                // labelText: 'ส่วนผสม',
+              ),
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              controller: controllers[displayNumber - 1][1],
+              onChanged: (text) {
+                // controllers2[displayNumber] = text;
+                // print(text + "" + displayNumber.toString());
+                print('Right:' + controllers[displayNumber - 1][1].text);
+                // print(text + "${displayNumber}.");
+                // print(controllers2[displayNumber]);
+              },
+              decoration: InputDecoration(
+                // border: OutlineInputBorder(),
+                hintText: "ขนาด $displayNumber",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      fieldCount--;
+                      controllers.remove(controller);
+                    });
                   },
-                  decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
-                    hintText: "ส่วนผสม $displayNumber",
-                    // labelText: 'ส่วนผสม',
-                  ),
                 ),
               ),
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  onChanged: (text) {
-                    // controllers2[displayNumber] = text;
-                    print(text+""+displayNumber.toString());
-                    
-                    // print(controllers2[displayNumber]);
-                  },
-                  decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
-                    hintText: "ขนาด $displayNumber",
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        setState(() {
-                          fieldCount--;
-                          controllers.remove(controller);
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
+            ),
+          ),
+        ],
+      );
     }).toList(); // แปลงเป็นlist
   }
 
-  int fieldCount2 = 0;//ทดสอบ
-  int nextIndex2 = 0;//ทดสอบ
+  int fieldCount2 = 0; //ทดสอบ
+  int nextIndex2 = 0; //ทดสอบ
 
-  List<TextEditingController> controllers2 = <TextEditingController>[];//ทดสอบ
+  List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
 
-  List<Widget> _buildList2() {//ทดเสอบ
+  List<Widget> _buildList2() {
+    //ทดเสอบ
     int i;
     if (controllers2.length < fieldCount2) {
       for (i = controllers2.length; i < fieldCount2; i++) {
@@ -130,65 +133,70 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
     i = 0;
 
-    return controllers2.map<Widget>((TextEditingController controller2) {
+    return controllers2.map<Widget>((TextEditingController controller) {
       int displayNumber = i + 1;
       i++;
       return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Text(
-                  "${displayNumber}.",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Text(
+                "${displayNumber}.",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Expanded(
-                child: TextField(
-                  keyboardType: TextInputType.multiline,
-                  minLines: 1,
-                  maxLines: 5,
-                  controller: controller2,
-                  onChanged: (text) {
-                    print(text + "${displayNumber}.");
-                  },
-                  decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
-                    hintText: "วิธีทำ $displayNumber",
-                    // labelText: 'ส่วนผสม',
+            ),
+            Expanded(
+              child: TextField(
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
+                maxLines: 5,
+                controller: controller,
+                onChanged: (text) {
+                  print(text + "${displayNumber}.");
+                },
+                decoration: InputDecoration(
+                  // border: OutlineInputBorder(),
+                  hintText: "วิธีทำ $displayNumber",
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      setState(() {
+                        fieldCount2--;
+                        controllers2.remove(controller);
+                      });
+                    },
                   ),
+                  // labelText: 'ส่วนผสม',
                 ),
               ),
-              // Expanded(
-              //   child: TextField(
-              //     controller: controller2,
-              //     onChanged: (text) {
-              //       print(text + "${displayNumber}.");
-              //     },
-              //     decoration: InputDecoration(
-              //       // border: OutlineInputBorder(),
-              //       hintText: "ขนาด $displayNumber",
-              //       suffixIcon: IconButton(
-              //         icon: Icon(Icons.clear),
-              //         onPressed: () {
-              //           setState(() {
-              //             fieldCount2--;
-              //             controllers2.remove(controller2);
-              //           });
-              //         },
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              
-            ],
-          ),
+            ),
+            // Expanded(
+            //   child: TextField(
+            //     controller: controller2,
+            //     onChanged: (text) {
+            //       print(text + "${displayNumber}.");
+            //     },
+            //     decoration: InputDecoration(
+            //       // border: OutlineInputBorder(),
+            //       hintText: "ขนาด $displayNumber",
+            //       suffixIcon: IconButton(
+            //         icon: Icon(Icons.clear),
+            //         onPressed: () {
+            //           setState(() {
+            //             fieldCount2--;
+            //             controllers2.remove(controller2);
+            //           });
+            //         },
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
         ),
       );
     }).toList(); // แปลงเป็นlist
@@ -197,7 +205,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = _buildList();
-    final List<Widget> children2 = _buildList2();//ทดสอบ
+    final List<Widget> children2 = _buildList2(); //ทดสอบ
     return Scaffold(
         appBar: AppBar(
           title: Text('เพิ่มสูตรอาหาร'),
@@ -214,6 +222,15 @@ class _AddFoodPageState extends State<AddFoodPage> {
               Center(
                 child: new Text('ตั้งรูปปกอาหาร'),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    int i = 0;
+                    for (var ct in controllers) {
+                      print(ct[0].text + '[${i}]' + ct[1].text);
+                      i++;
+                    }
+                  },
+                  child: Text('show')),
               (img == null)
                   ? IconButton(
                       iconSize: 200,
@@ -269,7 +286,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     fieldCount++;
 
                     for (int i = 0; i < controllers.length; i++) {
-                      print("THIS IS  = ${controllers[i].text} + [${i}]");
+                      //   print("THIS IS  = ${controllers[i].text} + [${i}]");
                     }
                   });
                 },
@@ -292,38 +309,37 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 child: new Text('วิธีทำ'),
               ),
 
-              // ListView(
-              //   padding: EdgeInsets.all(0),
-              //   shrinkWrap: true,
-              //   physics: NeverScrollableScrollPhysics(),
-              //   children: children2,
-              // ),
-              // GestureDetector(
-              //   onTap: () {
-              //     // เมื่อเพิ่มlist(ส่วนผสม)เราจำเป็นต้องใส่ fieldCount เท่านั้น, because the _buildList()
-              //     // จะจัดการสร้าง TextEditingController ใหม่
-              //     setState(() {
-              //       fieldCount2++;
+              ListView(
+                padding: EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: children2,
+              ),
+              GestureDetector(
+                onTap: () {
+                  // เมื่อเพิ่มlist(ส่วนผสม)เราจำเป็นต้องใส่ fieldCount เท่านั้น, because the _buildList()
+                  // จะจัดการสร้าง TextEditingController ใหม่
+                  setState(() {
+                    fieldCount2++;
 
-              //       for (int i = 0; i < controllers2.length; i++) {
-              //         print("THIS IS  = ${controllers2[i].text} + [${i}]");
-              //       }
-              //     });
-              //   },
-              //   child: Container(
-              //     color: Colors.blue,
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(16),
-              //       child: Text(
-              //         'เพิ่ม วิธีทำ',
-              //         style: TextStyle(
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
+                    for (int i = 0; i < controllers2.length; i++) {
+                      print("THIS IS  = ${controllers2[i].text} + [${i}]");
+                    }
+                  });
+                },
+                child: Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      'เพิ่ม วิธีทำ',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           )),
         ));
