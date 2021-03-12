@@ -1,167 +1,111 @@
+// import 'dart:html';
+
+// import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 
 class test extends StatefulWidget {
-  const test({
-    this.initialCount = 3,
-  });
-
-  // ยังอนุญาตให้มีจำนวนผู้เล่นเริ่มต้นแบบไดนามิก
-  final int initialCount;
-
   @override
   _testState createState() => _testState();
 }
 
-// List<Widget> list = new List();
+
 
 class _testState extends State<test> {
+//   String _fileName;
+//   String _path;
+//   Map<String,String> _paths;
+//   String _extension;
+//   bool _loadingPath = false;
+//   bool _multiPick = false;
+//   bool _hasValidMime = false;
+//   FileType _pickingType;
+//   TextEditingController _controller = new TextEditingController();
 
- int fieldCount = 0;
-  int nextIndex = 0;
-  // คุณต้องติดตาม TextEditingControllers หากคุณต้องการให้ค่ายังคงอยู่อย่างถูกต้อง
-  List<TextEditingController> controllers = <TextEditingController>[];
+//   void initState(){
+//     super.initState();
+//     _controller.addListener(() => _extension = _controller.text);
+//   }
 
-  // สร้างรายการ TextFields จากรายการ TextControllers
-  // List<Widget> _buildList() {
-  //   int i;
-  //   // กรอกคีย์หากรายการไม่ยาวพอ (ในกรณีที่เราเพิ่มเข้าไป)
-  //   if (controllers.length < fieldCount) {
-  //     for (i = controllers.length; i < fieldCount; i++) {
-  //       controllers.add(TextEditingController());
-  //     }
-  //   }
-
-  //   i = 0;
-  //   // วนรอบตัวควบคุมและสร้างใหม่แต่ละตัวต่อคอนโทรลเลอร์ที่มีอยู่
-  //   return controllers.map<Widget>((TextEditingController controller) {
-  //     int displayNumber = i + 1;
-  //     i++;
-  //     return TextField(
-  //       // style: TextStyle(color: Colors.red, fontWeight: FontWeight.w100),
-  //       controller: controller,
-  //       maxLength: 20,
-  //       decoration: InputDecoration(
-  //         hintText: "ค้นหาสูตรอาหาร $displayNumber",
-  //         // labelText: "ส่วนผสม $displayNumber",
-  //         counterText: "",
-  //         prefixIcon: const Icon(Icons.fastfood),
-  //         suffixIcon: IconButton(
-  //           icon: Icon(Icons.clear),
-  //           onPressed: () {
-  //             // เมื่อลบ TextField คุณต้องทำสองสิ่ง:
-  //             // 1. ลดจำนวนคอนโทรลเลอร์ที่คุณควรมี (fieldCount)
-  //             // 2. ลบคอนโทรลเลอร์ของฟิลด์นี้ออกจากรายการคอนโทรลเลอร์
-  //             setState(() {
-  //               fieldCount--;
-  //               controllers.remove(controller);
-  //             });
-  //           },
-  //         ),
-  //       ),
-  //     );
-  //   }).toList(); // แปลงเป็นlist
-  // }
-  List<Widget> _buildList() {
-    int i;
-    // กรอกคีย์หากรายการไม่ยาวพอ (ในกรณีที่เราเพิ่มเข้าไป)
-    if (controllers.length < fieldCount) {
-      for (i = controllers.length; i < fieldCount; i++) {
-        controllers.add(TextEditingController());
-      }
-    }
-
-    i = 0;
-    // วนรอบตัวควบคุมและสร้างใหม่แต่ละตัวต่อคอนโทรลเลอร์ที่มีอยู่
-    return controllers.map<Widget>((TextEditingController controller) {
-      int displayNumber = i + 1;
-      i++;
-      return TextField(
-        // style: TextStyle(color: Colors.red, fontWeight: FontWeight.w100),
-        controller: controller,
-        maxLength: 20,
-        decoration: InputDecoration(
-          hintText: "ค้นหาสูตรอาหาร $displayNumber",
-          // labelText: "ส่วนผสม $displayNumber",
-          counterText: "",
-          prefixIcon: const Icon(Icons.fastfood),
-          suffixIcon: IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              // เมื่อลบ TextField คุณต้องทำสองสิ่ง:
-              // 1. ลดจำนวนคอนโทรลเลอร์ที่คุณควรมี (fieldCount)
-              // 2. ลบคอนโทรลเลอร์ของฟิลด์นี้ออกจากรายการคอนโทรลเลอร์
-              setState(() {
-                fieldCount--;
-                controllers.remove(controller);
-              });
-            },
-          ),
-        ),
-      );
-    }).toList(); // แปลงเป็นlist
-  }
-  
-
+//   void _openFileExplorer() async {
+//   if(_pickingType != FileType.custom || _hasValidMime){
+//     setState(() => _loadingPath = true);
+//     try{
+//       if(_multiPick){
+//         _path = null;
+//         // _paths = await FilePicker.getMultiFilePath(//getMultiFilePath
+//         //   type: _pickingType, fileExtension: _extension);
+//       } else{
+//         _paths = null;
+//         // _path = await FilePicker.getFilePath(
+//         //   type: _pickingType,fileExtension:_extension);
+//       }
+//     }on PlatformException catch (e){//PlatformException
+//       print("Unsupported operation" + e.toString());
+//     }
+//     if(!mounted)return;
+//     setState(() {
+//       _loadingPath = false;
+//       _fileName = _path != null
+//         ? _path.split('/').last
+//         : _path != null ? _paths.keys.toString() : '...'; 
+//     });
+//   }
+// }
 
   @override
   Widget build(BuildContext context) {
-    // สร้างรายการ TextFields
-    final List<Widget> children = _buildList();
-
-    // กดปุ่มเพื่อเพิ่ม list
-    children.add(
-      GestureDetector(
-        onTap: () {
-          // เมื่อเพิ่มlist(ส่วนผสม)เราจำเป็นต้องใส่ fieldCount เท่านั้น, because the _buildList()
-          // จะจัดการสร้าง TextEditingController ใหม่
-          setState(() {
-            fieldCount++;
-          });
-        },
-        child: Container(
-          color: Colors.blue,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'เพิ่ม ส่วนผสม',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Easy Cook'),
       ),
+      // body: Container(
+      //   child: Center(
+      //     child: Column(
+      //       children: [
+      //         new Padding(padding: const EdgeInsets.only(top:50.0,bottom: 20.0),
+      //         child: new RaisedButton(onPressed: ()=> _openFileExplorer(),
+      //         child: new Text("Open file picker"),
+      //         ),
+      //         ),
+      //         new Builder(builder: (BuildContext context) => _loadingPath
+      //               ? Padding(padding: const EdgeInsets.only(bottom: 10.0),
+      //               child: const CircularProgressIndicator())
+      //               : _path != null || _paths != null
+      //                 ? new Container(
+      //                   padding: const EdgeInsets.only(bottom: 30.0),
+      //                   height: MediaQuery.of(context).size.height * 0.50,
+      //                   child: new Scrollbar(child: new ListView.separated(itemCount: _paths != null && _paths.isNotEmpty
+      //                     ? _paths.length
+      //                     : 1,
+      //                     itemBuilder: (BuildContext context,int index){
+      //                       final bool isMultiPath = _paths != null && _paths.isNotEmpty;
+      //                       final String name = 'File $index: '+
+      //                             (isMultiPath
+      //                                 ? _paths.keys.toList()[index]
+      //                                 : _fileName ?? '...');
+      //                       final path = isMultiPath
+      //                           ? _paths.values.toList()[index].toString()
+      //                           : _paths;
+                            
+      //                       return new ListTile(
+      //                         title: new Text(
+      //                           name,
+      //                         ),
+      //                         subtitle: new Text(path),
+      //                       );
+      //                       },
+      //                       separatorBuilder: (BuildContext context,int index) => 
+      //                                           new Divider(),
+      //                       )),
+      //                 )
+      //                 : new Container(),
+      //                 ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
-
-    // สร้าง ListView
-    return ListView(
-      padding: EdgeInsets.all(0),
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      children: children,
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // เมื่อสร้างขึ้นให้คัดลอกจำนวนเริ่มต้นไปยังจำนวนปัจจุบัน
-    fieldCount = widget.initialCount;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(test oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 }

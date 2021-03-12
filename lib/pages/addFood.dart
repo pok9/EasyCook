@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:easy_cook/model/addFood_addImage_model.dart';
+import 'package:easy_cook/pages/addFood_addImage.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,10 +23,6 @@ class AddFoodPage extends StatefulWidget {
   _AddFoodPageState createState() => _AddFoodPageState();
 }
 
-String _name;
-
-var image = TextEditingController();
-var img;
 Widget _buildNameField() {
   return TextFormField(
     decoration: InputDecoration(labelText: 'ชื่ออาหาร'),
@@ -34,7 +33,15 @@ Widget _buildNameField() {
   );
 }
 
+String _name;
+
 class _AddFoodPageState extends State<AddFoodPage> {
+  final _picker = ImagePicker();
+  List<AddImage> addImage = List<AddImage>();
+
+  // var image = TextEditingController();
+  var img;
+
   int fieldCount = 0;
   int nextIndex = 0;
 
@@ -184,6 +191,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
     final List<Widget> children = _buildList();
     final List<Widget> children2 = _buildList2(); //ทดสอบ
 
+    
+
     return Scaffold(
         appBar: AppBar(
           title: Text('เพิ่มสูตรอาหาร'),
@@ -213,32 +222,54 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   ? IconButton(
                       iconSize: 200,
                       icon: Image.asset('assets/images/camera.png'),
-                      onPressed: () async {
-                        img = await ImagePicker.pickImage(
-                            source: ImageSource.gallery);
-                        String bit = base64Encode(img.readAsBytesSync());
-                        image.text = bit;
+                      // onPressed: () async {
 
-                        print(img);
+                      //   final pickedFile =
+                      //       await _picker.getImage(source: ImageSource.gallery);
+                      //   // img = await ImagePicker().getImage(
+                      //   //     source: ImageSource.gallery);
+                      //   img = File(pickedFile.path);
+                      //   // String bit = base64Encode(img.readAsBytesSync());
+                      //   // image.text = bit;
 
-                        setState(() {});
+                      //   print(img);
+                      //   setState(() {});
+                      // }
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new AddFood_AddImagePage()),
+                        ).then((value) {
+                          if (value != null) {
+                            print(value);
+                            addImage.add(value);
+                            img = addImage[0].image;
+                            setState(() {});
+                          }
+                        });
                       })
                   : InkWell(
                       child: Image.file(
-                        img,
+                        addImage[0].image,
                         width: 0,
                         height: 300,
                         fit: BoxFit.cover,
                       ),
                       onTap: () async {
-                        img = await ImagePicker.pickImage(
-                            source: ImageSource.gallery);
-                        String bit = base64Encode(img.readAsBytesSync());
-                        image.text = bit;
-
-                        print(img);
-
-                        setState(() {});
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new AddFood_AddImagePage()),
+                        ).then((value) {
+                          if (value != null) {
+                            // print(value);
+                            // addImage.add(value);
+                            addImage[0].image = value.image;
+                            img = addImage[0].image;
+                            setState(() {});
+                          }
+                        });
                       }),
 
               Divider(

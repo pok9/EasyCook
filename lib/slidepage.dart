@@ -56,7 +56,7 @@ class _SlidePageState extends State<SlidePage> {
     }else if(_currentIndex == 2){
       return AddFoodPage();
     }else if(_currentIndex == 3){
-      return test2(); 
+      return test(); 
     }else if(_currentIndex == 4){
       return ExitPage();
     }
