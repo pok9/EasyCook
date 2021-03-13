@@ -118,39 +118,39 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildNameTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'ป้อนชื่อผู้ใช้',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
-              hintText: 'ชื่อผู้ใช้',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildNameTF() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text(
+  //         'ป้อนชื่อผู้ใช้',
+  //         style: kLabelStyle,
+  //       ),
+  //       SizedBox(height: 10.0),
+  //       Container(
+  //         alignment: Alignment.centerLeft,
+  //         decoration: kBoxDecorationStyle,
+  //         height: 60.0,
+  //         child: TextField(
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //             fontFamily: 'OpenSans',
+  //           ),
+  //           decoration: InputDecoration(
+  //             border: InputBorder.none,
+  //             contentPadding: EdgeInsets.only(top: 14.0),
+  //             prefixIcon: Icon(
+  //               Icons.person,
+  //               color: Colors.white,
+  //             ),
+  //             hintText: 'ชื่อผู้ใช้',
+  //             hintStyle: kHintTextStyle,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildRegisterBtn() {
     return Container(
@@ -159,20 +159,21 @@ class _RegisterPageState extends State<RegisterPage> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            new MaterialPageRoute(
-                /*check()*/
-                builder: (context) =>
-                    new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-          ).then((value) {
-            /* if (value == null) {
-                  } else {
+          // Navigator.pushReplacement(
+          //   context,
+          //   new MaterialPageRoute(
+          //       /*check()*/
+          //       builder: (context) =>
+          //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
+          // ).then((value) {
+          //   /* if (value == null) {
+          //         } else {
 
-                    proList.add(value);
-                  }*/
-            setState(() {});
-          });
+          //           proList.add(value);
+          //         }*/
+          //   setState(() {});
+          // });
+          Navigator.pushNamed(context, '/register2-page');
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -181,6 +182,34 @@ class _RegisterPageState extends State<RegisterPage> {
         color: Color(0xFF73AEF5),
         child: Text(
           'สมัครสมาชิก',
+          style: TextStyle(
+            color: Colors.red[50],
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
+
+   Widget _buildCancelBtn() {
+    return Container(
+      // padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () {
+         print("ยกเลิก");
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.blueGrey[300],
+        child: Text(
+          'ยกเลิก',
           style: TextStyle(
             color: Colors.red[50],
             letterSpacing: 1.5,
@@ -240,6 +269,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       SizedBox(height: 30.0),
+                      SizedBox(height: 30.0),
                       _buildEmailTF(),
                       SizedBox(
                         height: 20.0,
@@ -250,13 +280,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       _buildPasswordTFconfirm(),
                       SizedBox(
-                        height: 20.0,
+                        height: 30.0,
                       ),
-                      _buildNameTF(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
+                      
+                      // _buildNameTF(),
+                      // SizedBox(
+                      //   height: 20.0,
+                      // ),
                       _buildRegisterBtn(),
+                      _buildCancelBtn()
                     ],
                   ),
                 ),

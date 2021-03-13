@@ -25,7 +25,7 @@ class AddFoodPage extends StatefulWidget {
 
 Widget _buildNameField() {
   return TextFormField(
-    decoration: InputDecoration(labelText: 'ชื่ออาหาร'),
+    decoration: InputDecoration(labelText: 'ชื่อเมนู'),
     // maxLength: 30,
     onChanged: (String text) {
       _name = text;
@@ -38,9 +38,10 @@ String _name;
 class _AddFoodPageState extends State<AddFoodPage> {
   final _picker = ImagePicker();
   List<AddImage> addImage = List<AddImage>();
+  // List<AddImage> addImage2 = List<AddImage>();
 
   // var image = TextEditingController();
-  var img;
+  // var img;
 
   int fieldCount = 0;
   int nextIndex = 0;
@@ -89,7 +90,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
               },
               decoration: InputDecoration(
                 // border: OutlineInputBorder(),
-                hintText: "ส่วนผสม $displayNumber",
+                hintText: "ส่วนผสมที่ $displayNumber",
                 // labelText: 'ส่วนผสม',
               ),
             ),
@@ -106,7 +107,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
               },
               decoration: InputDecoration(
                 // border: OutlineInputBorder(),
-                hintText: "ขนาด $displayNumber",
+                hintText: "ขนาดที่ $displayNumber",
                 suffixIcon: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
@@ -128,13 +129,16 @@ class _AddFoodPageState extends State<AddFoodPage> {
   int nextIndex2 = 0; //ทดสอบ
 
   List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
+  List<File> image2 = <File>[];
 
   List<Widget> _buildList2() {
     //ทดเสอบ
+
     int i;
     if (controllers2.length < fieldCount2) {
       for (i = controllers2.length; i < fieldCount2; i++) {
         controllers2.add(TextEditingController());
+        image2.add(File(''));
       }
     }
 
@@ -144,7 +148,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
       int displayNumber = i + 1;
       i++;
       return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
@@ -157,6 +161,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
             ),
           ),
           Expanded(
+            flex: 5,
             child: TextField(
               keyboardType: TextInputType.multiline,
               minLines: 1,
@@ -167,20 +172,134 @@ class _AddFoodPageState extends State<AddFoodPage> {
               },
               decoration: InputDecoration(
                 // border: OutlineInputBorder(),
-                hintText: "วิธีทำ $displayNumber",
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      fieldCount2--;
-                      controllers2.remove(controller2);
-                    });
-                  },
-                ),
+                hintText: "วิธีทำที่ $displayNumber",
+                // suffixIcon: IconButton(
+                //   icon: Icon(Icons.clear),
+                //   onPressed: () {
+                //     setState(() {
+                //       // fieldCount2--;
+                //       // controllers2.remove(controller2);
+                //     });
+                //   },
+                // ),
                 // labelText: 'ส่วนผสม',
               ),
             ),
           ),
+          Expanded(
+            flex: 3,
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       print("5555 " + displayNumber.toString());
+            //     },
+            //     style: ButtonStyle(backgroundColor:
+            //         MaterialStateProperty.resolveWith(
+            //             (Set<MaterialState> states) {
+            //       return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+            //       ;
+            //     })),
+            //     // color: Colors.orangeAccent,
+            //     // padding: EdgeInsets.all(10.0),
+            //     child: Column(
+            //       children: [
+            //         Icon(Icons.add),
+            //       ],
+            //     ),
+            //   ),
+            child: (image2[displayNumber - 1].toString() == File('').toString())
+                ? IconButton(
+                    iconSize: 100,
+                    icon: Image.asset('assets/images/add.png'),
+                    // onPressed: () async {
+
+                    //   final pickedFile =
+                    //       await _picker.getImage(source: ImageSource.gallery);
+                    //   // img = await ImagePicker().getImage(
+                    //   //     source: ImageSource.gallery);
+                    //   img = File(pickedFile.path);
+                    //   // String bit = base64Encode(img.readAsBytesSync());
+                    //   // image.text = bit;
+
+                    //   print(img);
+                    //   setState(() {});
+                    // }
+                    onPressed: () {
+                      // print("test = " + displayNumber.toString());
+                      // print(image2.length);
+                      // print(image2[displayNumber - 1]);
+                      // print(File(''));
+                      // image2[displayNumber - 1].toString() == File('').toString() ///////
+
+                      // if (image2[displayNumber - 1].toString() == File('').toString()) {
+                      //   print("true" + displayNumber.toString());
+                      // }
+
+                      // Navigator.push(
+                      //   context,
+                      //   new MaterialPageRoute(
+                      //       builder: (context) => new AddFood_AddImagePage()),
+                      // ).then((value) {
+                      //   if (value != null) {
+                      //     // image2[displayNumber - 1] = value;
+                      //     // print("value = "+image2[displayNumber - 1].toString());
+
+                      //     // print(value);
+                      //     // addImage.add(value);
+                      //     // img = addImage[0].image;
+                      //     // setState(() {});
+                      //   }
+                      // });
+
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new AddFood_AddImagePage()),
+                      ).then((value) {
+                        if (value != null) {
+                          image2[displayNumber - 1] = value.image;
+                          // addImage2.add(value);
+                          // image2[displayNumber - 1] =
+                          //     addImage2[displayNumber - 1].image;
+                          setState(() {});
+                        }
+                      });
+                    })
+                : InkWell(
+
+                    child: Image.file(
+                      image2[displayNumber - 1],
+                      width: 0,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                    onTap: () async {
+                      print("77777777777777");
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new AddFood_AddImagePage()),
+                      ).then((value) {
+                        if (value != null) {
+                          image2[displayNumber - 1] = value.image;
+                          // image2[displayNumber - 1] =
+                          //     addImage2[displayNumber - 1].image;
+
+                          // image2[displayNumber - 1] = value;
+                          setState(() {});
+                        }
+                      });
+                    }),
+          ),
+          IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                print("${displayNumber}");
+                fieldCount2--;
+                controllers2.remove(controller2);
+                image2.remove(image2[displayNumber - 1]);
+                setState(() {});
+              },
+            ),
         ],
       );
     }).toList(); // แปลงเป็นlist
@@ -190,8 +309,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
   Widget build(BuildContext context) {
     final List<Widget> children = _buildList();
     final List<Widget> children2 = _buildList2(); //ทดสอบ
-
-    
 
     return Scaffold(
         appBar: AppBar(
@@ -206,19 +323,20 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: _buildNameField(),
               ),
+              
               Center(
-                child: new Text('ตั้งรูปปกอาหาร'),
-              ),
+                  child: Text(
+                "ตั้งรูปปกอาหาร",
+                style: DefaultTextStyle.of(context)
+                    .style
+                    .apply(fontSizeFactor: 2.0),
+              )),
               ElevatedButton(
                   onPressed: () {
-                    int i = 0;
-                    for (var ct in controllers) {
-                      print(ct[0].text + '[${i}]' + ct[1].text);
-                      i++;
-                    }
+                    
                   },
                   child: Text('show')),
-              (img == null)
+              (addImage.length == 0)
                   ? IconButton(
                       iconSize: 200,
                       icon: Image.asset('assets/images/camera.png'),
@@ -236,6 +354,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       //   setState(() {});
                       // }
                       onPressed: () {
+                        print("5555555555555555555");
                         Navigator.push(
                           context,
                           new MaterialPageRoute(
@@ -244,7 +363,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           if (value != null) {
                             print(value);
                             addImage.add(value);
-                            img = addImage[0].image;
                             setState(() {});
                           }
                         });
@@ -257,6 +375,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         fit: BoxFit.cover,
                       ),
                       onTap: () async {
+                        print("77777777777777");
                         Navigator.push(
                           context,
                           new MaterialPageRoute(
@@ -266,7 +385,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             // print(value);
                             // addImage.add(value);
                             addImage[0].image = value.image;
-                            img = addImage[0].image;
+                            // img = addImage[0].image;
                             setState(() {});
                           }
                         });
@@ -278,8 +397,12 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
               ////////////////////ส่วนผสม//////////////////////
               Center(
-                child: new Text('ส่วนผสม'),
-              ),
+                  child: Text(
+                "ส่วนผสม",
+                style: DefaultTextStyle.of(context)
+                    .style
+                    .apply(fontSizeFactor: 2.0),
+              )),
 
               ListView(
                 padding: EdgeInsets.all(0),
@@ -315,8 +438,12 @@ class _AddFoodPageState extends State<AddFoodPage> {
               ////////////////////ส่วนผสม//////////////////////
 
               Center(
-                child: new Text('วิธีทำ'),
-              ),
+                  child: Text(
+                "วิธีทำ",
+                style: DefaultTextStyle.of(context)
+                    .style
+                    .apply(fontSizeFactor: 2.0),
+              )),
 
               ListView(
                 padding: EdgeInsets.all(0),
@@ -341,7 +468,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      'เพิ่ม ส่วนผสม',
+                      'เพิ่ม วิธีทำ',
                       style: TextStyle(
                         color: Colors.white,
                       ),
