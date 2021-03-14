@@ -1,10 +1,13 @@
+import 'dart:convert';
+
+import 'package:easy_cook/models/login_model.dart';
 import 'package:easy_cook/pages/profile.dart';
 import 'package:easy_cook/pages/register.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:http/http.dart' as http;
 import '../style/utiltties.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,8 +15,29 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+Future<LoginModel> logins(String email, String password) async {
+  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+  final response = await http
+      .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return loginModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
 class _LoginPageState extends State<LoginPage> {
+  LoginModel _login;
+
   bool _rememberMe = false;
+
+  TextEditingController _ctrlEmail = TextEditingController();
+  TextEditingController _ctrlPassword = TextEditingController();
 
   Widget _buildEmailTF() {
     return Column(
@@ -29,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: kBoxDecorationStyle, //กรอบ
           height: 60.0,
           child: TextField(
+            controller: _ctrlEmail,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -64,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _ctrlPassword,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -132,21 +158,35 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            new MaterialPageRoute(
-                /*check()*/
-                builder: (context) =>
-                    new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-          ).then((value) {
-            /* if (value == null) {
+        onPressed: () async {
+          print("email = " + _ctrlEmail.text);
+          print("password = " + _ctrlPassword.text);
+          final String email = _ctrlEmail.text;
+          final String password = _ctrlPassword.text;
+
+          final LoginModel login = await logins(email, password);
+
+          setState(() {
+            _login = login;
+            print(_login.success);
+          });
+
+          if (_login.success == 1) {
+            Navigator.pushReplacement(
+              context,
+              new MaterialPageRoute(
+                  /*check()*/
+                  builder: (context) =>
+                      new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
+            ).then((value) {
+              /* if (value == null) {
                   } else {
 
                     proList.add(value);
                   }*/
-            setState(() {});
-          });
+              setState(() {});
+            });
+          }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
