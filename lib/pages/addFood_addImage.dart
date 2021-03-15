@@ -67,6 +67,42 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
               ),
             ),
 
+            
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () async {
+
+                
+                final pickedFile =
+                    await _picker.getImage(source: ImageSource.camera);
+               
+                img = File(pickedFile.path);
+               
+
+                print(img);
+                // print("pickedFile = "+pickedFile.);
+                AddImage addImage = new AddImage(
+                  img,
+                );
+                Navigator.pop(context, addImage);
+                setState(() {});
+              },
+              child: Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'ถ่ายรูปภาพ ',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
             SizedBox(
               height: 20,
             ),
@@ -93,6 +129,41 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
                   padding: const EdgeInsets.all(16),
                   child: Text(
                     'เพิ่ม วิดีโอ จากคลัง',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () async {
+
+                
+                final pickedFile =
+                    await _picker.getVideo(source: ImageSource.camera);
+               
+                img = File(pickedFile.path);
+               
+
+                print(img);
+                // print("pickedFile = "+pickedFile.);
+                AddImage addImage = new AddImage(
+                  img,
+                );
+                Navigator.pop(context, addImage);
+                setState(() {});
+              },
+              child: Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'ถ่ายวิดีโอ ',
                     style: TextStyle(
                       color: Colors.white,
                     ),

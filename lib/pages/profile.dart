@@ -1,3 +1,4 @@
+import 'package:easy_cook/database/db_service.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_cook/pages/login.dart';
 
@@ -7,7 +8,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-   final Shader linearGradient = LinearGradient(
+  final Shader linearGradient = LinearGradient(
     colors: <Color>[Color(0xffe433e68), Color(0xfffaa449)],
   ).createShader(Rect.fromLTRB(0.0, 0.0, 200.0, 70.0));
   @override
@@ -22,21 +23,25 @@ class _ProfilePageState extends State<ProfilePage> {
               Icons.settings,
               color: Colors.white,
             ),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                new MaterialPageRoute(
-                    /*check()*/
-                    builder: (context) =>
-                        new LoginPage()), /////////////////////////////////////////////////////////////////////////////////
-              ).then((value) {
-                /* if (value == null) {
-                  } else {
+            onPressed: () async {
+              var service = DBService();
+              await service.deleteAllData();
+              // print("delete = "+delete);
+              // Navigator.pushReplacement(
+              //   context,
+              //   new MaterialPageRoute(
+              //       /*check()*/
+              //       builder: (context) =>
+              //           new LoginPage()), /////////////////////////////////////////////////////////////////////////////////
+              // ).then((value) {
+              //   /* if (value == null) {
+              //     } else {
 
-                    proList.add(value);
-                  }*/
-                setState(() {});
-              });
+              //       proList.add(value);
+              //     }*/
+              //   setState(() {});
+              // });
+              Navigator.pushNamed(context, '/login-page');
             },
           )
         ],
@@ -459,6 +464,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-  
 }

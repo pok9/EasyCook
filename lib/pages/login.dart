@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:easy_cook/class/token_class.dart';
+import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/models/login_model.dart';
 import 'package:easy_cook/pages/profile.dart';
 import 'package:easy_cook/pages/register.dart';
@@ -34,7 +36,7 @@ Future<LoginModel> logins(String email, String password) async {
 
 class _LoginPageState extends State<LoginPage> {
   // final storage = new FlutterSecureStorage();
-  
+
   LoginModel _login;
 
   bool _rememberMe = false;
@@ -168,11 +170,16 @@ class _LoginPageState extends State<LoginPage> {
           final LoginModel login = await logins(email, password);
 
           // setState(() {
-            _login = login;
-            print(_login.success);
+          _login = login;
+          print(_login.success);
           // });
-
+          // var data;
           if (_login.success == 1) {
+            DBService service = new DBService();
+            Token_jwt token_jwt = new Token_jwt();
+            token_jwt.token = _login.token;
+            var data = token_jwt.Token_jwtMap();
+            service.insertData(data);
             // await storage.write(key: 'jwt', value: _login.token);
             Navigator.pushReplacement(
               context,

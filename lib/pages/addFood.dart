@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
+import 'package:easy_cook/class/token_class.dart';
+import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/pages/addFood_addImage.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,34 @@ Widget _buildNameField() {
 
 String _name;
 
+Future<String> getToken() async {
+  var service = DBService();
+  var token = await service.readData();
+  token.forEach((token) {
+    // setState(() {
+      var tokenModel = Token_jwt();
+      print(token['id']);
+      print(token['token']);
+    // });
+  });
+  return '';
+}
+
 class _AddFoodPageState extends State<AddFoodPage> {
+  _AddFoodPageState() {
+    print("55555");
+    getToken();
+    // var service = DBService();
+    //                   var token = await service.readData();
+    //                   token.forEach((token){
+    //                     setState(() {
+    //                       var tokenModel = Token_jwt();
+    //                       print(token['id']);
+    //                       print(token['token']);
+    //                     });
+    //                   });
+  }
+
   // final storage = new FlutterSecureStorage();
   final _picker = ImagePicker();
   List<AddImage> addImage = List<AddImage>();
@@ -265,7 +294,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           setState(() {});
                         }
                       });
-                    })
+                    }
+                    
+                    )
                 : InkWell(
                     child: Image.file(
                       image2[displayNumber - 1],
@@ -292,15 +323,15 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     }),
           ),
           IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                print("${displayNumber}");
-                fieldCount2--;
-                controllers2.remove(controller2);
-                image2.remove(image2[displayNumber - 1]);
-                setState(() {});
-              },
-            ),
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              print("${displayNumber}");
+              fieldCount2--;
+              controllers2.remove(controller2);
+              image2.remove(image2[displayNumber - 1]);
+              setState(() {});
+            },
+          ),
         ],
       );
     }).toList(); // แปลงเป็นlist
@@ -324,7 +355,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: _buildNameField(),
               ),
-              
+
               Center(
                   child: Text(
                 "ตั้งรูปปกอาหาร",
@@ -334,12 +365,18 @@ class _AddFoodPageState extends State<AddFoodPage> {
               )),
               ElevatedButton(
                   onPressed: () async {
-                      for(var list in image2){
-                        print(list);
-                      }
-                      // String value = await storage.read(key: 'key');
-                      // print(value);
-                      // print(storage.(key: 'jwt', value: _login.token););
+                    for (var list in image2) {
+                      print(list);
+                    }
+                    // var service = DBService();
+                    // var token = await service.readData();
+                    // token.forEach((token){
+                    //   setState(() {
+                    //     var tokenModel = Token_jwt();
+                    //     print(token['id']);
+                    //     print(token['token']);
+                    //   });
+                    // });
                   },
                   child: Text('show')),
               (addImage.length == 0)
