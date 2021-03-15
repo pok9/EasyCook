@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:easy_cook/model/addFood_addImage_model.dart';
+import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/pages/addFood_addImage.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddFoodPage extends StatefulWidget {
@@ -36,6 +37,7 @@ Widget _buildNameField() {
 String _name;
 
 class _AddFoodPageState extends State<AddFoodPage> {
+  // final storage = new FlutterSecureStorage();
   final _picker = ImagePicker();
   List<AddImage> addImage = List<AddImage>();
   // List<AddImage> addImage2 = List<AddImage>();
@@ -265,7 +267,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       });
                     })
                 : InkWell(
-
                     child: Image.file(
                       image2[displayNumber - 1],
                       width: 0,
@@ -332,8 +333,13 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     .apply(fontSizeFactor: 2.0),
               )),
               ElevatedButton(
-                  onPressed: () {
-                    
+                  onPressed: () async {
+                      for(var list in image2){
+                        print(list);
+                      }
+                      // String value = await storage.read(key: 'key');
+                      // print(value);
+                      // print(storage.(key: 'jwt', value: _login.token););
                   },
                   child: Text('show')),
               (addImage.length == 0)

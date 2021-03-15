@@ -1,7 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_cook/pages/addFood.dart';
 
-import 'package:easy_cook/pages/exit.dart';
 import 'package:easy_cook/pages/feed.dart';
 import 'package:easy_cook/pages/profile.dart';
 import 'package:easy_cook/pages/search.dart';
@@ -58,7 +57,7 @@ class _SlidePageState extends State<SlidePage> {
     }else if(_currentIndex == 3){
       return test(); 
     }else if(_currentIndex == 4){
-      return ExitPage();
+      return ProfilePage();
     }
   }
 }

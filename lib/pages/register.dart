@@ -202,6 +202,7 @@ class _RegisterPageState extends State<RegisterPage> {
         elevation: 5.0,
         onPressed: () {
          print("ยกเลิก");
+         Navigator.pop(context);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

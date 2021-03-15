@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_cook/pages/login.dart';
 import 'package:easy_cook/pages/profile.dart';
+import 'package:easy_cook/pages/register.dart';
 import 'package:easy_cook/pages/register2.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +15,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: LoginPage(),
-      routes: {'/register2-page':(context) => RegisterPage2()},
+      routes: {
+        '/register-page': (context) => RegisterPage(),
+        '/register2-page': (context) => RegisterPage2(),
+        '/login-page': (context) => LoginPage()
+      },
     );
   }
 }
-
- 

@@ -153,13 +153,13 @@ class _FeedPageState extends State<FeedPage> {
                   ],
                 ),
         ),
-        floatingActionButton: FloatingActionButton(
-        onPressed: ()  {
+      //   floatingActionButton: FloatingActionButton(
+      //   onPressed: ()  {
          
-        },
-        child: Icon(Icons.add),
-        // backgroundColor: Colors.green,
-      ),
+      //   },
+      //   child: Icon(Icons.add),
+      //   // backgroundColor: Colors.green,
+      // ),
         );
   }
 }

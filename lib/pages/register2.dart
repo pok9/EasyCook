@@ -1,4 +1,4 @@
-import 'package:easy_cook/model/addFood_addImage_model.dart';
+import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

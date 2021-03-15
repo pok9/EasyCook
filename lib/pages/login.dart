@@ -7,6 +7,7 @@ import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import '../style/utiltties.dart';
 
@@ -32,6 +33,8 @@ Future<LoginModel> logins(String email, String password) async {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // final storage = new FlutterSecureStorage();
+  
   LoginModel _login;
 
   bool _rememberMe = false;
@@ -159,19 +162,18 @@ class _LoginPageState extends State<LoginPage> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          print("email = " + _ctrlEmail.text);
-          print("password = " + _ctrlPassword.text);
           final String email = _ctrlEmail.text;
           final String password = _ctrlPassword.text;
 
           final LoginModel login = await logins(email, password);
 
-          setState(() {
+          // setState(() {
             _login = login;
             print(_login.success);
-          });
+          // });
 
           if (_login.success == 1) {
+            // await storage.write(key: 'jwt', value: _login.token);
             Navigator.pushReplacement(
               context,
               new MaterialPageRoute(
@@ -275,20 +277,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildSignupBtn() {
     return GestureDetector(
-      onTap: () => print(Navigator.pushReplacement(
-        context,
-        new MaterialPageRoute(
-            /*check()*/
-            builder: (context) =>
-                new RegisterPage()), /////////////////////////////////////////////////////////////////////////////////
-      ).then((value) {
-        /* if (value == null) {
-                  } else {
-
-                    proList.add(value);
-                  }*/
-        setState(() {});
-      })),
+      onTap: () {
+        Navigator.pushNamed(context, '/register-page');
+      },
       child: RichText(
         text: TextSpan(
           children: [

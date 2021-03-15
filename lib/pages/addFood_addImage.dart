@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:easy_cook/model/addFood_addImage_model.dart';
+import 'package:easy_cook/class/addFood_addImage_class.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddFood_AddImagePage extends StatefulWidget {
-  
   AddFood_AddImagePage({Key key}) : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('เพิ่มรูปปกอาหาร'),
+        title: Text('เพิ่มรูป'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -28,10 +28,84 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
           ),
         ],
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () async {
+
+                
+                final pickedFile =
+                    await _picker.getImage(source: ImageSource.gallery);
+               
+                img = File(pickedFile.path);
+               
+
+                print(img);
+                // print("pickedFile = "+pickedFile.);
+                AddImage addImage = new AddImage(
+                  img,
+                );
+                Navigator.pop(context, addImage);
+                setState(() {});
+              },
+              child: Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'เพิ่ม รูปภาพ จากคลัง',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () async {
+                final pickedFile =
+                    await _picker.getVideo(source: ImageSource.gallery);
+                // img = await ImagePicker().getImage(
+                //     source: ImageSource.gallery);
+                img = File(pickedFile.path);
+                // String bit = base64Encode(img.readAsBytesSync());
+                // image.text = bit;
+
+                print(img);
+                AddImage addImage = new AddImage(
+                  img,
+                );
+                Navigator.pop(context, addImage);
+                setState(() {});
+              },
+              child: Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'เพิ่ม วิดีโอ จากคลัง',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final pickedFile =
-              await _picker.getImage(source: ImageSource.camera);
+          final pickedFile = await _picker.getImage(source: ImageSource.camera);
           // img = await ImagePicker().getImage(
           //     source: ImageSource.gallery);
           img = File(pickedFile.path);
@@ -42,7 +116,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
           AddImage addImage = new AddImage(
             img,
           );
-          Navigator.pop(context,addImage);
+          Navigator.pop(context, addImage);
           setState(() {});
         },
         child: Icon(Icons.camera_alt),
