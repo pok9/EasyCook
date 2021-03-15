@@ -194,7 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                     proList.add(value);
                   }*/
               setState(() {});
-            });
+            }
+            );
           }
         },
         padding: EdgeInsets.all(15.0),

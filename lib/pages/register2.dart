@@ -21,6 +21,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
+          print("length = " + addImage.length.toString());
           Navigator.push(
             context,
             new MaterialPageRoute(
@@ -59,6 +60,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
+          print("length = " + addImage.length.toString());
           Navigator.push(
             context,
             new MaterialPageRoute(
@@ -96,7 +98,10 @@ class _RegisterPage2State extends State<RegisterPage2> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/register3-page');
+          print("ข้าม");
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -123,6 +128,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
+          print("ถัดไป");
           print(addImage[0].image);
         },
         padding: EdgeInsets.all(15.0),
@@ -198,12 +204,13 @@ class _RegisterPage2State extends State<RegisterPage2> {
                               backgroundImage: NetworkImage(
                                   "https://image.flaticon.com/icons/png/128/817/817382.png"),
                             )
-                          : CircleAvatar(
-                              radius: 70,
-                              backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(
-                                  "https://image.flaticon.com/icons/png/128/817/817382.png"),
-                            ),
+                          : ClipOval(
+                              child: Image.file(
+                              addImage[0].image,
+                              fit: BoxFit.cover,
+                              width: 140.0,
+                              height: 140.0,
+                            )),
                       SizedBox(height: 60.0),
                       (addImage.length == 0)
                           ? (_buildAddPicturetBtn())
