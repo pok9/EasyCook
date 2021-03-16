@@ -112,11 +112,15 @@ Future<Register2Model> registers(String tokens, File profile_image) async {
   // }
 }
 
+Future<String> tokens() async{
+  token =  await Token_jwt().getTokens();
+}
+
 class _RegisterPage2State extends State<RegisterPage2> {
   List<AddImage> addImage = List<AddImage>();
 
   _RegisterPage2State(){
-    // getToken();
+    tokens();
     print("token = " + token);
   }
 

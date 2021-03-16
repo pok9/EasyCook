@@ -6,6 +6,7 @@ import 'package:easy_cook/models/login_model.dart';
 import 'package:easy_cook/pages/addFood.dart';
 import 'package:easy_cook/pages/profile.dart';
 import 'package:easy_cook/pages/register.dart';
+import 'package:easy_cook/pages/register2.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../style/utiltties.dart';
+import '../class/token_class.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -179,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
           if (_login.success == 1) {
 
             //Token
-            _storeToken(_login.token);
+           Token_jwt().storeToken(_login.token);
             
             // DBService service = new DBService();
             // Token_jwt token_jwt = new Token_jwt();
@@ -389,12 +391,4 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-void _storeToken(String token) async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("token", token);
-}
 
-Future<String> _getTokens() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  return preferences.getString("token") ?? null;
-}

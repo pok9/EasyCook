@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../class/token_class.dart';
 
 class AddFoodPage extends StatefulWidget {
   /////////////////////ส่วนผสม///////////////////
@@ -54,12 +55,21 @@ String token = "";
 //   // return token[0]['token'];
 //   token = body[0]['token'];
 // }
+Future<String> tokens() async{
+  token =  await Token_jwt().getTokens();
+}
 
 class _AddFoodPageState extends State<AddFoodPage> {
 
   _AddFoodPageState() {
+    tokens();
+    print("Token = "+token);
 
-    print("pok 555"+token);
+
+    // String str = );
+    // print(str.toString());
+
+    // print("pok 555"+token);
     // String token = await _getTokens();
     // Future<String> token = getToken();
     // print(token);
@@ -564,7 +574,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
   }
 }
 
-Future<String> _getTokens() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  token =  preferences.getString("token") ?? null;
-}
+// Future<String> _getTokens() async {
+//   SharedPreferences preferences = await SharedPreferences.getInstance();
+//   token =  preferences.getString("token") ?? null;
+// }

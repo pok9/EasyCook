@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../style/utiltties.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import '../class/token_class.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -201,7 +202,11 @@ class _RegisterPageState extends State<RegisterPage> {
             // var data = token_jwt.Token_jwtMap();
             // print(data);
             // service.insertData(data);
-            Navigator.pushNamed(context, '/register2-page');
+            if(response.success == 1){
+              Token_jwt().storeToken(response.token);
+              Navigator.pushNamed(context, '/register2-page');
+            }
+            
           }else{
             print("false");
           }
