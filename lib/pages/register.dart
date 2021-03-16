@@ -1,7 +1,11 @@
+import 'package:easy_cook/class/token_class.dart';
+import 'package:easy_cook/database/db_service.dart';
+import 'package:easy_cook/models/register_model.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
 import '../style/utiltties.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -10,7 +14,27 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
+Future<RegisterModel> registers(String email, String password) async {
+  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signupNewStep1";
+
+  final response = await http
+      .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return registerModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
 class _RegisterPageState extends State<RegisterPage> {
+
+  TextEditingController _ctrlEmail = TextEditingController();
+  TextEditingController _ctrlPassword = TextEditingController();
+  TextEditingController _ctrlCheckPassword = TextEditingController();
 
   Widget _buildEmailTF() {
     return Column(
@@ -26,6 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: kBoxDecorationStyle, //กรอบ
           height: 60.0,
           child: TextField(
+            controller: _ctrlEmail,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -61,6 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _ctrlPassword ,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -96,6 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _ctrlCheckPassword,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -157,22 +184,29 @@ class _RegisterPageState extends State<RegisterPage> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
-          // Navigator.pushReplacement(
-          //   context,
-          //   new MaterialPageRoute(
-          //       /*check()*/
-          //       builder: (context) =>
-          //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-          // ).then((value) {
-          //   /* if (value == null) {
-          //         } else {
+        onPressed: () async {
+          // print(_ctrlEmail.text);
+          print(_ctrlPassword.text);
+          print(_ctrlCheckPassword.text);
 
-          //           proList.add(value);
-          //         }*/
-          //   setState(() {});
-          // });
-          Navigator.pushNamed(context, '/register2-page');
+          
+
+          if(_ctrlEmail.text != '' && _ctrlPassword.text == _ctrlCheckPassword.text && _ctrlPassword.text != ''){
+            final RegisterModel response =  await registers(_ctrlPassword.text, _ctrlCheckPassword.text);
+            print(response.success);
+            print(response.token);
+            DBService service = new DBService();
+            Token_jwt token_jwt = new Token_jwt();
+            token_jwt.token = response.token;
+            var data = token_jwt.Token_jwtMap();
+            print(data);
+            service.insertData(data);
+            Navigator.pushNamed(context, '/register2-page');
+          }else{
+            print("false");
+          }
+          print("goto register2");
+          // Navigator.pushNamed(context, '/register2-page');
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

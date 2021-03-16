@@ -175,12 +175,14 @@ class _LoginPageState extends State<LoginPage> {
           // });
           // var data;
           if (_login.success == 1) {
+
+            //Token
             DBService service = new DBService();
             Token_jwt token_jwt = new Token_jwt();
             token_jwt.token = _login.token;
             var data = token_jwt.Token_jwtMap();
             service.insertData(data);
-            // await storage.write(key: 'jwt', value: _login.token);
+            ///////////////////////////////
             Navigator.pushReplacement(
               context,
               new MaterialPageRoute(

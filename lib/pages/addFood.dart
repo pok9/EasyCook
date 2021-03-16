@@ -37,24 +37,36 @@ Widget _buildNameField() {
 }
 
 String _name;
+String token = "";
 
 Future<String> getToken() async {
   var service = DBService();
-  var token = await service.readData();
-  token.forEach((token) {
+  var body = await service.readData();
+  body.forEach((token) {
     // setState(() {
       var tokenModel = Token_jwt();
       print(token['id']);
       print(token['token']);
     // });
   });
-  return '';
+  // return token['token'];
+  // return token[0]['token'];
+  token = body[0]['token'];
 }
 
 class _AddFoodPageState extends State<AddFoodPage> {
+
   _AddFoodPageState() {
-    print("55555");
+    // Future<String> token = getToken();
+    // print(token);
     getToken();
+    print("token = " + token);
+
+
+    // print("55555");
+    // String token = getToken() as String;
+    // print("token = "+token);
+
     // var service = DBService();
     //                   var token = await service.readData();
     //                   token.forEach((token){

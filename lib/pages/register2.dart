@@ -1,6 +1,16 @@
+// import 'dart:html';
+// import 'dart:html';
+import 'dart:io';
+
+// import 'package:dio/dio.dart';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
+import 'package:easy_cook/class/token_class.dart';
+import 'package:easy_cook/database/db_service.dart';
+import 'package:easy_cook/models/register2_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+
 
 import 'addFood_addImage.dart';
 
@@ -11,8 +21,104 @@ class RegisterPage2 extends StatefulWidget {
   _RegisterPage2State createState() => _RegisterPage2State();
 }
 
+String token = "";
+
+Future<String> getToken() async {
+  var service = DBService();
+  var body = await service.readData();
+  body.forEach((token) {
+    // setState(() {
+      var tokenModel = Token_jwt();
+      print(token['id']);
+      print(token['token']);
+    // });
+  });
+  // return token['token'];
+  // return token[0]['token'];
+  token = body[0]['token'];
+}
+
+
+Future<Register2Model> registers(String tokens, File profile_image) async {
+  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signupNewStep1";
+
+  
+
+  // final response = await http
+  //     .post(Uri.parse(apiUrl), body: map);
+    
+  // print(response.statusCode);
+
+  // var request = http.MultipartRequest('POST',Uri.parse(apiUrl));
+
+  Map<String, dynamic> requestBody = <String,dynamic>{
+     'token':tokens,
+    'profile_image' : profile_image
+  };
+
+  // Map<String, File> requestBody2 = <String,File>{
+     
+  // };
+
+ 
+
+  
+  
+
+
+  // FormData formData = new FormData.from({
+  //   "token": tokens,
+  //  "profile_image": profile_image
+  // });
+
+
+  
+  // final response = await http.post(Url.p, data: formData);
+  // final response = await http
+  //     .post(Uri.parse(apiUrl), body: );
+
+  // print(response.statusCode);
+  // if (response.statusCode == 200) {
+  //   final String responseString = response.body;
+
+  //   return register2ModelFromJson(responseString);
+  // } else {
+  //   return null;
+  // }
+
+  // dio.post(apiUrl,data: )
+  // FormData formData = new FormData.from(
+  //   "token": tokens,
+  //   "profile_image": profile_image,
+  // );
+  
+
+// FormData formData = new FormData.from({
+//    "token": tokens,
+//    "profile_image": profile_image
+// });
+
+//   response = await dio.post()
+  
+  
+
+  // if (response.statusCode == 200) {
+  //   final String responseString = response.body;
+
+  //   return register2ModelFromJson(responseString);
+  // } else {
+  //   return null;
+  // }
+}
+
 class _RegisterPage2State extends State<RegisterPage2> {
   List<AddImage> addImage = List<AddImage>();
+
+  _RegisterPage2State(){
+    getToken();
+    print("token = " + token);
+  }
 
   Widget _buildAddPicturetBtn() {
     return Container(
@@ -127,7 +233,11 @@ class _RegisterPage2State extends State<RegisterPage2> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
+        onPressed: () async {
+        final Register2Model response =  await registers(token,addImage[0].image);
+        // print(response.success);
+
+          print(token);
           print("ถัดไป");
           print(addImage[0].image);
         },
