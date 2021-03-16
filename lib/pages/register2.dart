@@ -3,6 +3,7 @@
 import 'dart:io';
 
 // import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/database/db_service.dart';
@@ -10,7 +11,8 @@ import 'package:easy_cook/models/register2_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'addFood_addImage.dart';
 
@@ -38,88 +40,42 @@ String token = "";
 //   token = body[0]['token'];
 // }
 
-
-Future<Register2Model> registers(String tokens, File profile_image) async {
+Future<Register2Model> registers2(String tokens, File profile_image) async {
   // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
-  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signupNewStep1";
+  final String apiUrl =
+      "http://apifood.comsciproject.com/pjUsers/signupNewStep2";
 
-  
+  final mimeTypeData =
+      lookupMimeType(profile_image.path, headerBytes: [0xFF, 0xD8]).split('/');
 
-  // final response = await http
-  //     .post(Uri.parse(apiUrl), body: map);
-    
-  // print(response.statusCode);
+  final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
 
-  // var request = http.MultipartRequest('POST',Uri.parse(apiUrl));
+  final file = await http.MultipartFile.fromPath(
+      'profile_image', profile_image.path,
+      contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+  imageUploadRequest.files.add(file);
+  imageUploadRequest.fields['token'] = tokens;
 
-  Map<String, dynamic> requestBody = <String,dynamic>{
-     'token':tokens,
-    'profile_image' : profile_image
-  };
+  var streamedResponse = await imageUploadRequest.send();
+  var response = await http.Response.fromStream(streamedResponse);
 
-  // Map<String, File> requestBody2 = <String,File>{
-     
-  // };
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
 
- 
-
-  
-  
-
-
-  // FormData formData = new FormData.from({
-  //   "token": tokens,
-  //  "profile_image": profile_image
-  // });
-
-
-  
-  // final response = await http.post(Url.p, data: formData);
-  // final response = await http
-  //     .post(Uri.parse(apiUrl), body: );
-
-  // print(response.statusCode);
-  // if (response.statusCode == 200) {
-  //   final String responseString = response.body;
-
-  //   return register2ModelFromJson(responseString);
-  // } else {
-  //   return null;
-  // }
-
-  // dio.post(apiUrl,data: )
-  // FormData formData = new FormData.from(
-  //   "token": tokens,
-  //   "profile_image": profile_image,
-  // );
-  
-
-// FormData formData = new FormData.from({
-//    "token": tokens,
-//    "profile_image": profile_image
-// });
-
-//   response = await dio.post()
-  
-  
-
-  // if (response.statusCode == 200) {
-  //   final String responseString = response.body;
-
-  //   return register2ModelFromJson(responseString);
-  // } else {
-  //   return null;
-  // }
+    return register2ModelFromJson(responseString);
+  } else {
+    return null;
+  }
 }
 
-Future<String> tokens() async{
-  token =  await Token_jwt().getTokens();
+Future<String> tokens() async {
+  token = await Token_jwt().getTokens();
 }
 
 class _RegisterPage2State extends State<RegisterPage2> {
   List<AddImage> addImage = List<AddImage>();
 
-  _RegisterPage2State(){
+  _RegisterPage2State() {
     tokens();
     print("token = " + token);
   }
@@ -238,12 +194,18 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-        final Register2Model response =  await registers(token,addImage[0].image);
-        // print(response.success);
+          // final Register2Model response =  await registers(token,addImage[0].image);
+          final Register2Model response =
+              await registers2(token, addImage[0].image);
 
-          print(token);
-          print("ถัดไป");
-          print(addImage[0].image);
+          if (response.success == 1) {
+            print(token);
+            print("ถัดไป");
+            print(addImage[0].image);
+            Navigator.pushNamed(context, '/register3-page');
+          } else {
+            print("error");
+          }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

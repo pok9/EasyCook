@@ -175,7 +175,9 @@ class _LoginPageState extends State<LoginPage> {
 
           // setState(() {
           _login = login;
-          print(_login.success);
+
+          print(login);
+          print("ssssssssss"+_login.success.toString());
           // });
           // var data;
           if (_login.success == 1) {
