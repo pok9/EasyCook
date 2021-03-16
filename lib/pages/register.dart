@@ -195,12 +195,12 @@ class _RegisterPageState extends State<RegisterPage> {
             final RegisterModel response =  await registers(_ctrlPassword.text, _ctrlCheckPassword.text);
             print(response.success);
             print(response.token);
-            DBService service = new DBService();
-            Token_jwt token_jwt = new Token_jwt();
-            token_jwt.token = response.token;
-            var data = token_jwt.Token_jwtMap();
-            print(data);
-            service.insertData(data);
+            // DBService service = new DBService();
+            // Token_jwt token_jwt = new Token_jwt();
+            // token_jwt.token = response.token;
+            // var data = token_jwt.Token_jwtMap();
+            // print(data);
+            // service.insertData(data);
             Navigator.pushNamed(context, '/register2-page');
           }else{
             print("false");

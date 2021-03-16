@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/models/login_model.dart';
+import 'package:easy_cook/pages/addFood.dart';
 import 'package:easy_cook/pages/profile.dart';
 import 'package:easy_cook/pages/register.dart';
 import 'package:easy_cook/slidepage.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../style/utiltties.dart';
 
 class LoginPage extends StatefulWidget {
@@ -177,11 +179,13 @@ class _LoginPageState extends State<LoginPage> {
           if (_login.success == 1) {
 
             //Token
-            DBService service = new DBService();
-            Token_jwt token_jwt = new Token_jwt();
-            token_jwt.token = _login.token;
-            var data = token_jwt.Token_jwtMap();
-            service.insertData(data);
+            _storeToken(_login.token);
+            
+            // DBService service = new DBService();
+            // Token_jwt token_jwt = new Token_jwt();
+            // token_jwt.token = _login.token;
+            // var data = token_jwt.Token_jwtMap();
+            // service.insertData(data);
             ///////////////////////////////
             Navigator.pushReplacement(
               context,
@@ -383,4 +387,14 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+void _storeToken(String token) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("token", token);
+}
+
+Future<String> _getTokens() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  return preferences.getString("token") ?? null;
 }

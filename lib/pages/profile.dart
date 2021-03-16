@@ -24,8 +24,8 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
             ),
             onPressed: () async {
-              var service = DBService();
-              await service.deleteAllData();
+              // var service = DBService();
+              // await service.deleteAllData();
               // print("delete = "+delete);
               // Navigator.pushReplacement(
               //   context,

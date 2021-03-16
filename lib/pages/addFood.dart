@@ -9,6 +9,7 @@ import 'package:easy_cook/pages/test.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddFoodPage extends StatefulWidget {
   /////////////////////ส่วนผสม///////////////////
@@ -39,28 +40,32 @@ Widget _buildNameField() {
 String _name;
 String token = "";
 
-Future<String> getToken() async {
-  var service = DBService();
-  var body = await service.readData();
-  body.forEach((token) {
-    // setState(() {
-      var tokenModel = Token_jwt();
-      print(token['id']);
-      print(token['token']);
-    // });
-  });
-  // return token['token'];
-  // return token[0]['token'];
-  token = body[0]['token'];
-}
+// Future<String> getToken() async {
+//   var service = DBService();
+//   var body = await service.readData();
+//   body.forEach((token) {
+//     // setState(() {
+//       var tokenModel = Token_jwt();
+//       print(token['id']);
+//       print(token['token']);
+//     // });
+//   });
+//   // return token['token'];
+//   // return token[0]['token'];
+//   token = body[0]['token'];
+// }
 
 class _AddFoodPageState extends State<AddFoodPage> {
 
   _AddFoodPageState() {
+
+    print("pok 555"+token);
+    // String token = await _getTokens();
     // Future<String> token = getToken();
     // print(token);
-    getToken();
-    print("token = " + token);
+    // getToken();
+    // print("token = " + token);
+    
 
 
     // print("55555");
@@ -557,4 +562,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
+}
+
+Future<String> _getTokens() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  token =  preferences.getString("token") ?? null;
 }

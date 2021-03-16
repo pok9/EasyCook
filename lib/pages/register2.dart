@@ -23,20 +23,20 @@ class RegisterPage2 extends StatefulWidget {
 
 String token = "";
 
-Future<String> getToken() async {
-  var service = DBService();
-  var body = await service.readData();
-  body.forEach((token) {
-    // setState(() {
-      var tokenModel = Token_jwt();
-      print(token['id']);
-      print(token['token']);
-    // });
-  });
-  // return token['token'];
-  // return token[0]['token'];
-  token = body[0]['token'];
-}
+// Future<String> getToken() async {
+//   var service = DBService();
+//   var body = await service.readData();
+//   body.forEach((token) {
+//     // setState(() {
+//       var tokenModel = Token_jwt();
+//       print(token['id']);
+//       print(token['token']);
+//     // });
+//   });
+//   // return token['token'];
+//   // return token[0]['token'];
+//   token = body[0]['token'];
+// }
 
 
 Future<Register2Model> registers(String tokens, File profile_image) async {
@@ -116,7 +116,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
   List<AddImage> addImage = List<AddImage>();
 
   _RegisterPage2State(){
-    getToken();
+    // getToken();
     print("token = " + token);
   }
 
