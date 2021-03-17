@@ -5,7 +5,9 @@ import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
+import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
+import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
 import 'package:easy_cook/pages/addFood_addImage.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +112,68 @@ Future<AddIngredientsArrayModel> addIngredients(String recipe_ID,
     final String responseString = response.body;
 
     return addIngredientsArrayModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
+Future<AddHowtoArrayModels> addHowtos(
+    String recipe_ID,
+    List<String> description,
+    List<String> step,
+    List<String> path_file,
+    List<String> type_file) async {
+  final String apiUrl = "http://apifood.comsciproject.com/pjPost/addHowtoArray";
+
+  // print(ingredientName);
+  // print(amount);
+  // print(step);
+  var data = {
+    "recipe_ID": recipe_ID,
+    "description": description,
+    "step": step,
+    "path_file": path_file,
+    "type_file": type_file
+  };
+
+  print(jsonEncode(data));
+  final response = await http.post(Uri.parse(apiUrl),
+      body: jsonEncode(data),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json"
+      });
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return addHowtoArrayModelsFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
+Future<UploadHowtoFileModels> addloadHowtoFiles(File image) async {
+  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+  final String apiUrl =
+      "http://apifood.comsciproject.com/pjPost/uploadHowtoFile";
+
+  final mimeTypeData =
+      lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+
+  final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+  final images = await http.MultipartFile.fromPath('file', image.path,
+      contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+  imageUploadRequest.files.add(images);
+
+  var streamedResponse = await imageUploadRequest.send();
+  var response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return uploadHowtoFileModelsFromJson(responseString);
   } else {
     return null;
   }
@@ -463,18 +527,17 @@ class _AddFoodPageState extends State<AddFoodPage> {
             ElevatedButton(
                 onPressed: () async {
                   if (_ctrlNameFood.text != '') {
-                    final CreatePostModel res = await createPosts(
+                    final CreatePostModel postsData = await createPosts(
                         token, addImage[0].image, _ctrlNameFood.text, price);
 
-                    recipe_id_come = res.recipeId;
+                    recipe_id_come = postsData.recipeId;
 
                     List<String> ingredientName = [];
                     List<String> amount = [];
                     List<String> step = [];
 
                     for (var i = 0; i < controllers.length; i++) {
-                      if (controllers[i][0].text == "" ||
-                          controllers[i][1].text == "") {
+                      if (controllers[i][0].text == "" ) {
                         continue;
                       }
                       ingredientName.add(controllers[i][0].text);
@@ -484,20 +547,55 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       step.add((i + 1).toString());
                     }
 
-                    print(ingredientName);
-                    print(amount);
-                    print(step);
+                    // print(ingredientName);
+                    // print(amount);
+                    // print(step);
 
-                    AddIngredientsArrayModel res2 = await addIngredients(
+                    AddIngredientsArrayModel ingredientsData = await addIngredients(
                         recipe_id_come.toString(),
                         ingredientName,
                         amount,
                         step);
 
-                    print(res2.success);
+                    List<String> description = [];
+                    List<String> path_file = [];
+                    List<String> step2 = [];
+                    List<String> type_file = [];
 
-                    
+                    AddHowtoArrayModels howtoData;
+                    UploadHowtoFileModels imageData;
+                    var mimeTypeData;
+                    for (var i = 0; i < controllers2.length; i++) {
+                      // print(controllers2[i].text);
+                      // print(image2[i]);
+                      description.add(controllers2[i].text);
+                      // path_file.add("http://apifood.comsciproject.com/uploadPost"+image2[i].path);
+                      // print(image2[i].path);
+                      step2.add((i + 1).toString());
+
+                      imageData = await addloadHowtoFiles(image2[i]);
+                      path_file.add(imageData.path);
+                      type_file.add(imageData.type);
+                      // print(dataImage.type);
+                      // mimeTypeData = lookupMimeType(image2[i].path,
+                      //     headerBytes: [0xFF, 0xD8]).split('/');
+                      // type_file.add(mimeTypeData[0]);
+                    }
+                    // print(path_file);
+
+                    // addHowto
+                    howtoData = await addHowtos(recipe_id_come.toString(),
+                        description, step2, path_file, type_file);
+
+                    print("postsData");
+                    print(postsData.success);
+                    print("ingredientsData");
+                    print(ingredientsData.success);
+                    print("howtoData");
+                    print(howtoData.success);
                   }
+
+                  // var file;
                 },
                 child: Text('เพิ่ม')),
           ],
