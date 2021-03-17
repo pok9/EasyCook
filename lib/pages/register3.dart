@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:easy_cook/class/token_class.dart';
+import 'package:easy_cook/models/register/register2_model.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage3 extends StatefulWidget {
   RegisterPage3({Key key}) : super(key: key);
@@ -10,8 +15,40 @@ class RegisterPage3 extends StatefulWidget {
   _RegisterPage3State createState() => _RegisterPage3State();
 }
 
-class _RegisterPage3State extends State<RegisterPage3> {
+String token = "";
 
+Future<String> tokens() async {
+  token = await Token_jwt().getTokens();
+}
+
+Future<Register2Model> registers2(
+    String name_surname, String alias_name) async {
+  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+  final String apiUrl =
+      "http://apifood.comsciproject.com/pjUsers/signupNewStep3";
+
+  print("token" + token);
+
+  final response = await http.post(Uri.parse(apiUrl),
+      body: {"name_surname": name_surname, "alias_name": alias_name},
+      headers: {"Authorization": "Bearer $token"});
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return register2ModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
+class _RegisterPage3State extends State<RegisterPage3> {
+  TextEditingController _ctrlFullName = TextEditingController();
+  TextEditingController _ctrlNickName = TextEditingController();
+
+  _RegisterPage3State() {
+    tokens();
+  }
   Widget _buildFullNameTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,6 +63,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
           decoration: kBoxDecorationStyle, //กรอบ
           height: 60.0,
           child: TextField(
+            controller: _ctrlFullName,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -61,6 +99,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _ctrlNickName,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -88,39 +127,31 @@ class _RegisterPage3State extends State<RegisterPage3> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
+        onPressed: () async {
           print("ยืนยัน");
+          print(_ctrlFullName.text);
+          print(_ctrlNickName.text);
+          // registers2
 
-          Navigator.pushReplacement(
-              context,
-              new MaterialPageRoute(
-                  /*check()*/
-                  builder: (context) =>
-                      new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-            ).then((value) {
-              /* if (value == null) {
+          if (_ctrlFullName.text != '' && _ctrlNickName.text != '') {
+            var str = await registers2(_ctrlFullName.text, _ctrlNickName.text);
+            if (str.success == 1) {
+              Navigator.pushReplacement(
+                context,
+                new MaterialPageRoute(
+                    /*check()*/
+                    builder: (context) =>
+                        new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
+              ).then((value) {
+                /* if (value == null) {
                   } else {
 
                     proList.add(value);
                   }*/
-              setState(() {});
+                setState(() {});
+              });
             }
-            );
-          // Navigator.pushReplacement(
-          //   context,
-          //   new MaterialPageRoute(
-          //       /*check()*/
-          //       builder: (context) =>
-          //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-          // ).then((value) {
-          //   /* if (value == null) {
-          //         } else {
-
-          //           proList.add(value);
-          //         }*/
-          //   setState(() {});
-          // });
-          // Navigator.pushNamed(context, '/register2-page');
+          }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -140,7 +171,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
       ),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,13 +228,12 @@ class _RegisterPage3State extends State<RegisterPage3> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      
-                      
+
                       // _buildNameTF(),
                       // SizedBox(
                       //   height: 20.0,
                       // ),
-                      
+
                       _buildConfirmBtn(),
                     ],
                   ),

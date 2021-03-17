@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/database/db_service.dart';
-import 'package:easy_cook/models/register2_model.dart';
+import 'package:easy_cook/models/register/register2_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -55,6 +55,7 @@ Future<Register2Model> registers2(String tokens, File profile_image) async {
       contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
   imageUploadRequest.files.add(file);
   imageUploadRequest.fields['token'] = tokens;
+  
 
   var streamedResponse = await imageUploadRequest.send();
   var response = await http.Response.fromStream(streamedResponse);

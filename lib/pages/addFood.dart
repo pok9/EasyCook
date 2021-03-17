@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/database/db_service.dart';
+import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
+import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/pages/addFood_addImage.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../class/token_class.dart';
+import 'package:mime/mime.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart'; //->
 
 class AddFoodPage extends StatefulWidget {
   /////////////////////ส่วนผสม///////////////////
@@ -28,18 +33,101 @@ class AddFoodPage extends StatefulWidget {
   _AddFoodPageState createState() => _AddFoodPageState();
 }
 
+// CreatePostModel
+Future<CreatePostModel> createPosts(
+    String tokens, File image, String recipe_name, double price) async {
+  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+  final String apiUrl = "http://apifood.comsciproject.com/pjPost/createPost";
+
+  final mimeTypeData =
+      lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+
+  final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+  final file = await http.MultipartFile.fromPath('image', image.path,
+      contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+  imageUploadRequest.files.add(file);
+  imageUploadRequest.fields['token'] = tokens;
+  imageUploadRequest.fields['recipe_name'] = recipe_name;
+  imageUploadRequest.fields['price'] = price.toString();
+  var streamedResponse = await imageUploadRequest.send();
+  var response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return createPostModelFromJson(responseString);
+  } else {
+    return null;
+  }
+
+  // imageUploadRequest.files.add(file);
+  // imageUploadRequest.fields['token'] = tokens;
+
+  // var streamedResponse = await imageUploadRequest.send();
+  // var response = await http.Response.fromStream(streamedResponse);
+
+  // if (response.statusCode == 200) {
+  //   final String responseString = response.body;
+
+  //   return register2ModelFromJson(responseString);
+  // } else {
+  //   return null;
+  // }
+}
+
+Future<AddIngredientsArrayModel> addIngredients(
+    String recipe_ID, List<String> ingredientName, List<String> amount, List<String> step) async {
+  final String apiUrl =
+      "http://apifood.comsciproject.com/pjPost/addIngredientsArray";
+
+  print(ingredientName);
+  print(amount);
+  print(step);
+
+  // List<st>
+  var data = {
+    "recipe_ID": recipe_ID,
+    "ingredientName": ingredientName,
+    "amount": amount,
+    "step": step
+  };
+  print("jsonEncode(data) = "+jsonEncode(data));
+  final response = await http.post(Uri.parse(apiUrl), body:jsonEncode(data),headers: {"Authorization": "Bearer $token","Content-Type" : "application/json"});
+
+  // print( );
+  // addIngredientsArrayModelFromJson
+  // print("addIngredients======");
+  print("addIngredients======"+(response.statusCode.toString()));
+  // print("addIngredients======"+(response));
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return addIngredientsArrayModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
+var _ctrlNameFood = new TextEditingController(); //ชื่อเมนู
+String token = ""; //โทเคน
+double price = 0.0;
+
+int recipe_id_come = 0;
+
 Widget _buildNameField() {
   return TextFormField(
+    controller: _ctrlNameFood,
     decoration: InputDecoration(labelText: 'ชื่อเมนู'),
     // maxLength: 30,
-    onChanged: (String text) {
-      _name = text;
-    },
+    // onChanged: (String text) {
+    //   _name = text;
+    // },
   );
 }
 
-String _name;
-String token = "";
+// String _name;
 
 // Future<String> getToken() async {
 //   var service = DBService();
@@ -55,16 +143,14 @@ String token = "";
 //   // return token[0]['token'];
 //   token = body[0]['token'];
 // }
-Future<String> tokens() async{
-  token =  await Token_jwt().getTokens();
+Future<String> tokens() async {
+  token = await Token_jwt().getTokens();
 }
 
 class _AddFoodPageState extends State<AddFoodPage> {
-
   _AddFoodPageState() {
     tokens();
-    print("Token = "+token);
-
+    print("Token = " + token);
 
     // String str = );
     // print(str.toString());
@@ -75,8 +161,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
     // print(token);
     // getToken();
     // print("token = " + token);
-    
-
 
     // print("55555");
     // String token = getToken() as String;
@@ -321,9 +405,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           setState(() {});
                         }
                       });
-                    }
-                    
-                    )
+                    })
                 : InkWell(
                     child: Image.file(
                       image2[displayNumber - 1],
@@ -372,6 +454,70 @@ class _AddFoodPageState extends State<AddFoodPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('เพิ่มสูตรอาหาร'),
+          actions: <Widget>[
+            ElevatedButton(
+                onPressed: () async {
+                  // print(_ctrlNameFood.text);
+                  // print(addImage[0].image);
+                  // print(token);
+                  // print(price);
+                  // createPosts
+                  if (_ctrlNameFood.text != '') {
+                    final CreatePostModel res = await createPosts(
+                        token, addImage[0].image, _ctrlNameFood.text, price);
+
+                    // print(res.success);
+                    // print(res.recipeId);
+                    recipe_id_come = res.recipeId;
+
+                    // for(var data in controllers){
+                    //   print(data[1].text)
+                    //   print(data[1].text);
+                    // }
+                    // print(controllers[0][1].text);
+                    // for(var i = 0; i<controllers[0].length;i++){
+                    //     print(controllers[i][0].text+" "+controllers[i][1].text);
+                    // }
+
+                    List<String> ingredientName = [];
+                    List<String> amount = [];
+                    List<String> step = [];
+
+                    for (var i = 0; i < controllers.length; i++) {
+                      ingredientName.add(controllers[i][0].text);
+                      amount.add(controllers[i][1].text);
+                      step.add((i + 1).toString());
+                      print("iiiiiiiiiiii = "+i.toString());
+                    }
+
+                    // jsonEncode(ingredientName);
+                    // jsonEncode(amount);
+                    // jsonEncode(step);
+                    // addIngredients
+                    // print("99999999");
+                   
+                    print(ingredientName);
+                    print(amount);
+                    print(step);
+                   
+                    // print("recipe_id_come = "+recipe_id_come.toString());
+
+                    AddIngredientsArrayModel res2 = await addIngredients(recipe_id_come.toString(), ingredientName,amount, step);
+                    
+                    print(jsonEncode(ingredientName));
+                    // print("res2.success = "+res2.success.toString());
+                    
+                    
+                    
+                    // print("55555555");
+                    // print(recipe_id_come);
+                    // print(jsonEncode(ingredientName));
+                    // print(jsonEncode(amount));
+                    // print(jsonEncode(step));
+                  }
+                },
+                child: Text('เพิ่ม')),
+          ],
         ),
         body: Container(
           margin: EdgeInsets.all(5),
@@ -391,19 +537,20 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     .apply(fontSizeFactor: 2.0),
               )),
               ElevatedButton(
-                  onPressed: () async {
-                    for (var list in image2) {
-                      print(list);
-                    }
-                    // var service = DBService();
-                    // var token = await service.readData();
-                    // token.forEach((token){
-                    //   setState(() {
-                    //     var tokenModel = Token_jwt();
-                    //     print(token['id']);
-                    //     print(token['token']);
-                    //   });
-                    // });
+                  onPressed: () {
+                    // for (var list in image2) {
+                    //   print(list);
+                    // }
+                    // // var service = DBService();
+                    // // var token = await service.readData();
+                    // // token.forEach((token){
+                    // //   setState(() {
+                    // //     var tokenModel = Token_jwt();
+                    // //     print(token['id']);
+                    // //     print(token['token']);
+                    // //   });
+                    // // });
+                    print(addImage[0].image);
                   },
                   child: Text('show')),
               (addImage.length == 0)
