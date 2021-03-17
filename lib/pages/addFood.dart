@@ -77,8 +77,8 @@ Future<CreatePostModel> createPosts(
   // }
 }
 
-Future<AddIngredientsArrayModel> addIngredients(
-    String recipe_ID, List<String> ingredientName, List<String> amount, List<String> step) async {
+Future<AddIngredientsArrayModel> addIngredients(String recipe_ID,
+    List<String> ingredientName, List<String> amount, List<String> step) async {
   final String apiUrl =
       "http://apifood.comsciproject.com/pjPost/addIngredientsArray";
 
@@ -93,13 +93,18 @@ Future<AddIngredientsArrayModel> addIngredients(
     "amount": amount,
     "step": step
   };
-  print("jsonEncode(data) = "+jsonEncode(data));
-  final response = await http.post(Uri.parse(apiUrl), body:jsonEncode(data),headers: {"Authorization": "Bearer $token","Content-Type" : "application/json"});
+  print("jsonEncode(data) = " + jsonEncode(data));
+  final response = await http.post(Uri.parse(apiUrl),
+      body: jsonEncode(data),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json"
+      });
 
   // print( );
   // addIngredientsArrayModelFromJson
   // print("addIngredients======");
-  print("addIngredients======"+(response.statusCode.toString()));
+  print("addIngredients======" + (response.statusCode.toString()));
   // print("addIngredients======"+(response));
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -457,63 +462,41 @@ class _AddFoodPageState extends State<AddFoodPage> {
           actions: <Widget>[
             ElevatedButton(
                 onPressed: () async {
-                  // print(_ctrlNameFood.text);
-                  // print(addImage[0].image);
-                  // print(token);
-                  // print(price);
-                  // createPosts
                   if (_ctrlNameFood.text != '') {
                     final CreatePostModel res = await createPosts(
                         token, addImage[0].image, _ctrlNameFood.text, price);
 
-                    // print(res.success);
-                    // print(res.recipeId);
                     recipe_id_come = res.recipeId;
-
-                    // for(var data in controllers){
-                    //   print(data[1].text)
-                    //   print(data[1].text);
-                    // }
-                    // print(controllers[0][1].text);
-                    // for(var i = 0; i<controllers[0].length;i++){
-                    //     print(controllers[i][0].text+" "+controllers[i][1].text);
-                    // }
 
                     List<String> ingredientName = [];
                     List<String> amount = [];
                     List<String> step = [];
 
                     for (var i = 0; i < controllers.length; i++) {
+                      if (controllers[i][0].text == "" ||
+                          controllers[i][1].text == "") {
+                        continue;
+                      }
                       ingredientName.add(controllers[i][0].text);
                       amount.add(controllers[i][1].text);
+                    }
+                    for (var i = 0; i < amount.length; i++) {
                       step.add((i + 1).toString());
-                      print("iiiiiiiiiiii = "+i.toString());
                     }
 
-                    // jsonEncode(ingredientName);
-                    // jsonEncode(amount);
-                    // jsonEncode(step);
-                    // addIngredients
-                    // print("99999999");
-                   
                     print(ingredientName);
                     print(amount);
                     print(step);
-                   
-                    // print("recipe_id_come = "+recipe_id_come.toString());
 
-                    AddIngredientsArrayModel res2 = await addIngredients(recipe_id_come.toString(), ingredientName,amount, step);
+                    AddIngredientsArrayModel res2 = await addIngredients(
+                        recipe_id_come.toString(),
+                        ingredientName,
+                        amount,
+                        step);
+
+                    print(res2.success);
+
                     
-                    print(jsonEncode(ingredientName));
-                    // print("res2.success = "+res2.success.toString());
-                    
-                    
-                    
-                    // print("55555555");
-                    // print(recipe_id_come);
-                    // print(jsonEncode(ingredientName));
-                    // print(jsonEncode(amount));
-                    // print(jsonEncode(step));
                   }
                 },
                 child: Text('เพิ่ม')),
