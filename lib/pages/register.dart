@@ -193,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
           
 
           if(_ctrlEmail.text != '' && _ctrlPassword.text == _ctrlCheckPassword.text && _ctrlPassword.text != ''){
-            final RegisterModel response =  await registers(_ctrlPassword.text, _ctrlCheckPassword.text);
+            final RegisterModel response =  await registers(_ctrlEmail.text, _ctrlPassword.text);
             print(response.success);
             print(response.token);
             // DBService service = new DBService();
