@@ -35,7 +35,8 @@ class _testState extends State<test> {
                 autoplay: false,
               ),
             ),
-          )),
+          )
+          ),
           AspectRatio(
             aspectRatio: 3 / 2,
             child: VideoItems(

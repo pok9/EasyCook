@@ -15,6 +15,7 @@ class AddFood_AddImagePage extends StatefulWidget {
 class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
   final _picker = ImagePicker();
   var img;
+  var pickedFile;
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +40,17 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
               onTap: () async {
 
                 
-                final pickedFile =
+                pickedFile =
                     await _picker.getImage(source: ImageSource.gallery);
                
                 img = File(pickedFile.path);
                
-
-                print(img);
+                // print()
+                // print();
                 // print("pickedFile = "+pickedFile.);
                 AddImage addImage = new AddImage(
                   img,
+                  "image"
                 );
                 Navigator.pop(context, addImage);
                 setState(() {});
@@ -75,7 +77,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
               onTap: () async {
 
                 
-                final pickedFile =
+                pickedFile =
                     await _picker.getImage(source: ImageSource.camera);
                
                 img = File(pickedFile.path);
@@ -85,6 +87,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
                 // print("pickedFile = "+pickedFile.);
                 AddImage addImage = new AddImage(
                   img,
+                  "image"
                 );
                 Navigator.pop(context, addImage);
                 setState(() {});
@@ -108,7 +111,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
             ),
             GestureDetector(
               onTap: () async {
-                final pickedFile =
+                pickedFile =
                     await _picker.getVideo(source: ImageSource.gallery);
                 // img = await ImagePicker().getImage(
                 //     source: ImageSource.gallery);
@@ -119,6 +122,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
                 print(img);
                 AddImage addImage = new AddImage(
                   img,
+                  "video"
                 );
                 Navigator.pop(context, addImage);
                 setState(() {});
@@ -144,7 +148,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
               onTap: () async {
 
                 
-                final pickedFile =
+                pickedFile =
                     await _picker.getVideo(source: ImageSource.camera);
                
                 img = File(pickedFile.path);
@@ -154,6 +158,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
                 // print("pickedFile = "+pickedFile.);
                 AddImage addImage = new AddImage(
                   img,
+                  "video"
                 );
                 Navigator.pop(context, addImage);
                 setState(() {});
@@ -176,7 +181,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final pickedFile = await _picker.getImage(source: ImageSource.camera);
+          pickedFile = await _picker.getImage(source: ImageSource.camera);
           // img = await ImagePicker().getImage(
           //     source: ImageSource.gallery);
           img = File(pickedFile.path);
@@ -186,6 +191,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
           print(img);
           AddImage addImage = new AddImage(
             img,
+            "image"
           );
           Navigator.pop(context, addImage);
           setState(() {});

@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:easy_cook/pages/addFood.dart';
+import 'package:easy_cook/pages/addFood_page/addFood.dart';
 
-import 'package:easy_cook/pages/feed.dart';
-import 'package:easy_cook/pages/profile.dart';
-import 'package:easy_cook/pages/search.dart';
+import 'package:easy_cook/pages/feed_page/feed.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:easy_cook/pages/test2.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class SlidePage extends StatefulWidget {
 }
 
 class _SlidePageState extends State<SlidePage> {
-   var _currentIndex = 2;
+   var _currentIndex = 4;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +33,7 @@ class _SlidePageState extends State<SlidePage> {
         animationDuration: Duration(
           milliseconds: 200
         ),
-        index: 2,
+        index: 4,
         animationCurve: Curves.bounceInOut,
         onTap: (index){
             setState(() {

@@ -1,13 +1,70 @@
+import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/database/db_service.dart';
+import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_cook/pages/login.dart';
+import 'package:easy_cook/pages/login_page/login.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+String token = ""; //โทเคน
+// Future<String> tokens() async {
+//   token = await Token_jwt().getTokens();
+// }
+MyAccount datas;
+Datum dataUser;
+
 class _ProfilePageState extends State<ProfilePage> {
+  // _ProfilePageState() {
+  //   tokens();
+  //   getMyAccounts();
+
+  //   print("Token = " + token);
+
+  //   // print();
+  // }
+  @override
+  void initState() {
+    super.initState();
+    findUser();
+    //getMyAccounts();
+  }
+
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      print("11111111 = " + token);
+      token = preferences.getString("tokens");
+      print("22222222 = " + token);
+      getMyAccounts();
+    });
+    // token = await Token_jwt().getTokens();
+    // setState(() {});
+  }
+
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        datas = myAccountFromJson(responseString);
+        dataUser = datas.data[0];
+      });
+    } else {
+      return null;
+    }
+  }
+
   final Shader linearGradient = LinearGradient(
     colors: <Color>[Color(0xffe433e68), Color(0xfffaa449)],
   ).createShader(Rect.fromLTRB(0.0, 0.0, 200.0, 70.0));
@@ -41,6 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
               //     }*/
               //   setState(() {});
               // });
+              Token_jwt().storeToken('');
               Navigator.pushNamed(context, '/login-page');
             },
           )
@@ -93,8 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage(
-                        "https://variety.teenee.com/foodforbrain/img8/241131.jpg"),
+                    backgroundImage: NetworkImage(dataUser.profileImage),
                   ),
                 ),
               ),
@@ -105,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'วันรุ่นซิมบัพเว',
+                    dataUser.aliasName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       foreground: Paint()..shader = linearGradient,
@@ -115,28 +172,33 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        height: 50,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0xffe43e68),
-                              const Color(0xfffaa449),
-                            ],
+                      InkWell(
+                        child: Container(
+                          height: 50,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xffe43e68),
+                                const Color(0xfffaa449),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'แก้ไขโปรไฟล์',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 13,
+                          child: Center(
+                            child: Text(
+                              'แก้ไขโปรไฟล์',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                           ),
                         ),
+                        onTap: (){
+                          print("5555");
+                        },
                       ),
                     ],
                   ),
@@ -242,7 +304,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 370, //ฟิกค่าไว้ก่อน
                       child: Center(
                         child: Text(
-                          'ยอดเงิน 1,999 บาท',
+                          'ยอดเงิน ' + dataUser.balance.toString() + ' บาท',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

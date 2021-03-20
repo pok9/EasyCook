@@ -65,7 +65,7 @@ class _FeedPageState extends State<FeedPage> {
                       fit: FlexFit.loose,
                       child: new Image.network(
                         //รูปอาหาร
-                        "https://www.beartai.com/wp-content/uploads/2014/06/poptart1red1.gif",
+                        "https://i.ytimg.com/vi/LQUhdrHYWSg/maxresdefault.jpg",
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:easy_cook/pages/login.dart';
-import 'package:easy_cook/pages/profile.dart';
-import 'package:easy_cook/pages/register.dart';
-import 'package:easy_cook/pages/register2.dart';
-import 'package:easy_cook/pages/register3.dart';
+import 'package:easy_cook/pages/login_page/login.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/register_page/register.dart';
+import 'package:easy_cook/pages/register_page/register2.dart';
+import 'package:easy_cook/pages/register_page/register3.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,30 +1,23 @@
-import 'dart:convert';
-
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/database/db_service.dart';
-import 'package:easy_cook/models/login/login_model.dart';
-import 'package:easy_cook/pages/addFood.dart';
-import 'package:easy_cook/pages/profile.dart';
-import 'package:easy_cook/pages/register.dart';
-import 'package:easy_cook/pages/register2.dart';
+import 'package:easy_cook/models/register/register_model.dart';
 import 'package:easy_cook/slidepage.dart';
-import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
+import '../../style/utiltties.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import '../style/utiltties.dart';
-import '../class/token_class.dart';
+import '../../class/token_class.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-Future<LoginModel> logins(String email, String password) async {
+Future<RegisterModel> registers(String email, String password) async {
   // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
-  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signupNewStep1";
 
   final response = await http
       .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
@@ -32,21 +25,17 @@ Future<LoginModel> logins(String email, String password) async {
   if (response.statusCode == 200) {
     final String responseString = response.body;
 
-    return loginModelFromJson(responseString);
+    return registerModelFromJson(responseString);
   } else {
     return null;
   }
 }
 
-class _LoginPageState extends State<LoginPage> {
-  // final storage = new FlutterSecureStorage();
-
-  LoginModel _login;
-
-  bool _rememberMe = false;
+class _RegisterPageState extends State<RegisterPage> {
 
   TextEditingController _ctrlEmail = TextEditingController();
   TextEditingController _ctrlPassword = TextEditingController();
+  TextEditingController _ctrlCheckPassword = TextEditingController();
 
   Widget _buildEmailTF() {
     return Column(
@@ -98,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-            controller: _ctrlPassword,
+            controller: _ctrlPassword ,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -120,93 +109,109 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: FlatButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'ลืมรหัสผ่าน?',
+  Widget _buildPasswordTFconfirm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'ยืนยันรหัสผ่าน',
           style: kLabelStyle,
         ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      height: 20.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            controller: _ctrlCheckPassword,
+            obscureText: true,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.verified_user,
+                color: Colors.white,
+              ),
+              hintText: 'ยืนยันรหัสผ่านของคุณ',
+              hintStyle: kHintTextStyle,
             ),
           ),
-          Text(
-            'จดจำฉัน',
-            style: kLabelStyle,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _buildLoginBtn() {
+  // Widget _buildNameTF() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text(
+  //         'ป้อนชื่อผู้ใช้',
+  //         style: kLabelStyle,
+  //       ),
+  //       SizedBox(height: 10.0),
+  //       Container(
+  //         alignment: Alignment.centerLeft,
+  //         decoration: kBoxDecorationStyle,
+  //         height: 60.0,
+  //         child: TextField(
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //             fontFamily: 'OpenSans',
+  //           ),
+  //           decoration: InputDecoration(
+  //             border: InputBorder.none,
+  //             contentPadding: EdgeInsets.only(top: 14.0),
+  //             prefixIcon: Icon(
+  //               Icons.person,
+  //               color: Colors.white,
+  //             ),
+  //             hintText: 'ชื่อผู้ใช้',
+  //             hintStyle: kHintTextStyle,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  Widget _buildRegisterBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          final String email = _ctrlEmail.text;
-          final String password = _ctrlPassword.text;
+          // print(_ctrlEmail.text);
+          print(_ctrlPassword.text);
+          print(_ctrlCheckPassword.text);
 
-          final LoginModel login = await logins(email, password);
+          
 
-          // setState(() {
-          _login = login;
-
-          print(login);
-          print("ssssssssss"+_login.success.toString());
-          // });
-          // var data;
-          if (_login.success == 1) {
-
-            //Token
-           Token_jwt().storeToken(_login.token);
-            
+          if(_ctrlEmail.text != '' && _ctrlPassword.text == _ctrlCheckPassword.text && _ctrlPassword.text != ''){
+            final RegisterModel response =  await registers(_ctrlEmail.text, _ctrlPassword.text);
+            print(response.success);
+            print(response.token);
             // DBService service = new DBService();
             // Token_jwt token_jwt = new Token_jwt();
-            // token_jwt.token = _login.token;
+            // token_jwt.token = response.token;
             // var data = token_jwt.Token_jwtMap();
+            // print(data);
             // service.insertData(data);
-            ///////////////////////////////
-            Navigator.pushReplacement(
-              context,
-              new MaterialPageRoute(
-                  /*check()*/
-                  builder: (context) =>
-                      new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-            ).then((value) {
-              /* if (value == null) {
-                  } else {
-
-                    proList.add(value);
-                  }*/
-              setState(() {});
+            if(response.success == 1){
+              Token_jwt().storeToken(response.token);
+              Navigator.pushNamed(context, '/register2-page');
             }
-            );
+            
+          }else{
+            print("false");
           }
+          print("goto register2");
+          // Navigator.pushNamed(context, '/register2-page');
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -214,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         color: Color(0xFF73AEF5),
         child: Text(
-          'เข้าสู่ระบบ',
+          'สมัครสมาชิก',
           style: TextStyle(
             color: Colors.red[50],
             letterSpacing: 1.5,
@@ -227,97 +232,30 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildSignInWithText() {
-    return Column(
-      children: <Widget>[
-        Text(
-          '- หรือ -',
+   Widget _buildCancelBtn() {
+    return Container(
+      // padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () {
+         print("ยกเลิก");
+         Navigator.pop(context);
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.blueGrey[300],
+        child: Text(
+          'ยกเลิก',
           style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
+            color: Colors.red[50],
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
           ),
-        ),
-        SizedBox(height: 20.0),
-        Text(
-          'ลงชื่อเข้าใช้ด้วย',
-          style: kLabelStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            () => print('Login with Facebook'),
-            AssetImage(
-              'assets/logos/facebook.jpg',
-            ),
-          ),
-          // _buildSocialBtn(
-          //   () => print('Login with Google'),
-          //   AssetImage(
-          //     'assets/logos/google.jpg',
-          //   ),
-          // ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/register-page');
-      },
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'ไม่มีบัญชี? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'ลงชื่อ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -361,7 +299,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'เข้าสู่ระบบ',
+                        'สมัครสมาชิก',
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'OpenSans',
@@ -370,17 +308,26 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 30.0),
+                      SizedBox(height: 30.0),
                       _buildEmailTF(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildPasswordTF(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildPasswordTFconfirm(),
                       SizedBox(
                         height: 30.0,
                       ),
-                      _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildSignInWithText(),
-                      _buildSocialBtnRow(),
-                      _buildSignupBtn(),
+                      
+                      // _buildNameTF(),
+                      // SizedBox(
+                      //   height: 20.0,
+                      // ),
+                      _buildRegisterBtn(),
+                      _buildCancelBtn()
                     ],
                   ),
                 ),
@@ -392,5 +339,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-

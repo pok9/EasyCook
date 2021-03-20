@@ -8,13 +8,15 @@ import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
 import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
-import 'package:easy_cook/pages/addFood_addImage.dart';
+import 'package:easy_cook/pages/addFood_page/addFood_addImage.dart';
 import 'package:easy_cook/pages/test.dart';
+import 'package:easy_cook/pages/video_items.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../class/token_class.dart';
+import 'package:video_player/video_player.dart';
+import '../../class/token_class.dart';
 import 'package:mime/mime.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart'; //->
@@ -34,6 +36,7 @@ class AddFoodPage extends StatefulWidget {
   @override
   _AddFoodPageState createState() => _AddFoodPageState();
 }
+
 var mimeTypeData;
 
 // CreatePostModel
@@ -54,14 +57,19 @@ Future<CreatePostModel> createPosts(
   imageUploadRequest.fields['token'] = tokens;
   imageUploadRequest.fields['recipe_name'] = recipe_name;
   imageUploadRequest.fields['price'] = price.toString();
+
+  print("error0000000");
   var streamedResponse = await imageUploadRequest.send();
+  print("error1111111");
   var response = await http.Response.fromStream(streamedResponse);
+  print("erro222222");
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
 
     return createPostModelFromJson(responseString);
   } else {
+    print("error");
     return null;
   }
 
@@ -80,8 +88,12 @@ Future<CreatePostModel> createPosts(
   // }
 }
 
-Future<AddIngredientsArrayModel> addIngredients(String recipe_ID,
-    List<String> ingredientName, List<String> amount, List<String> step) async {
+Future<AddIngredientsArrayModel> addIngredients(
+    String recipe_ID,
+    List<String> ingredientName,
+    List<String> amount,
+    List<String> step,
+    String token) async {
   final String apiUrl =
       "http://apifood.comsciproject.com/pjPost/addIngredientsArray";
 
@@ -123,7 +135,8 @@ Future<AddHowtoArrayModels> addHowtos(
     List<String> description,
     List<String> step,
     List<String> path_file,
-    List<String> type_file) async {
+    List<String> type_file,
+    String token) async {
   final String apiUrl = "http://apifood.comsciproject.com/pjPost/addHowtoArray";
 
   // print(ingredientName);
@@ -181,7 +194,7 @@ Future<UploadHowtoFileModels> addloadHowtoFiles(File image) async {
 }
 
 var _ctrlNameFood = new TextEditingController(); //ชื่อเมนู
-String token = ""; //โทเคน
+// String token = ""; //โทเคน
 double price = 0.0;
 
 int recipe_id_come = 0;
@@ -213,39 +226,65 @@ Widget _buildNameField() {
 //   // return token[0]['token'];
 //   token = body[0]['token'];
 // }
-Future<String> tokens() async {
-  token = await Token_jwt().getTokens();
-}
+// Future<String> tokens() async {
+//   token = await Token_jwt().getTokens();
+// }
 
 class _AddFoodPageState extends State<AddFoodPage> {
-  _AddFoodPageState() {
-    tokens();
-    print("Token = " + token);
+  String token = "";
+  // _AddFoodPageState() {
+  //   // tokens();
+  //   print("Token = " + token);
 
-    // String str = );
-    // print(str.toString());
+  //   // String str = );
+  //   // print(str.toString());
 
-    // print("pok 555"+token);
-    // String token = await _getTokens();
-    // Future<String> token = getToken();
-    // print(token);
-    // getToken();
+  //   // print("pok 555"+token);
+  //   // String token = await _getTokens();
+  //   // Future<String> token = getToken();
+  //   // print(token);
+  //   // getToken();
+  //   // print("token = " + token);
+
+  //   // print("55555");
+  //   // String token = getToken() as String;
+  //   // print("token = "+token);
+
+  //   // var service = DBService();
+  //   //                   var token = await service.readData();
+  //   //                   token.forEach((token){
+  //   //                     setState(() {
+  //   //                       var tokenModel = Token_jwt();
+  //   //                       print(token['id']);
+  //   //                       print(token['token']);
+  //   //                     });
+  //   //                   });
+  // }
+
+  Future<Null> findUser() async {
+    // token = await Token_jwt().getTokens();
     // print("token = " + token);
-
-    // print("55555");
-    // String token = getToken() as String;
-    // print("token = "+token);
-
-    // var service = DBService();
-    //                   var token = await service.readData();
-    //                   token.forEach((token){
-    //                     setState(() {
-    //                       var tokenModel = Token_jwt();
-    //                       print(token['id']);
-    //                       print(token['token']);
-    //                     });
-    //                   });
+    // setState(() {});
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      print("333333333 = " + token);
+      token = preferences.getString("tokens");
+      print("444444444 = " + token);
+    });
   }
+
+  // Future<Null> findUser() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  //   setState(() {
+  //     print("11111111 = " + token);
+  //     token = preferences.getString("tokens");
+  //     print("22222222 = " + token);
+  //     getMyAccounts();
+  //   });
+  //   // token = await Token_jwt().getTokens();
+  //   // setState(() {});
+  // }
 
   // final storage = new FlutterSecureStorage();
   final _picker = ImagePicker();
@@ -319,7 +358,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
               },
               decoration: InputDecoration(
                 // border: OutlineInputBorder(),
-                hintText: "ขนาดที่ $displayNumber",
+                hintText: "จำนวนที่ $displayNumber",
                 suffixIcon: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
@@ -401,63 +440,77 @@ class _AddFoodPageState extends State<AddFoodPage> {
             ),
           ),
           Expanded(
-            flex: 3,
-            child: (image2[displayNumber - 1].toString() == File('').toString())
-                ? IconButton(
-                    iconSize: 100,
-                    icon: Image.asset('assets/images/add.png'),
-                    // onPressed: () async {
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new AddFood_AddImagePage()),
-                      ).then((value) {
-                        if (value != null) {
-                          image2[displayNumber - 1] = value.image;
-                          mimeTypeData = lookupMimeType(
-                              image2[displayNumber - 1].path,
-                              headerBytes: [0xFF, 0xD8]).split('/');
-                          // print(value.imaged);
-                          print(mimeTypeData[0]);
-                          
+              flex: 3,
+              child: (image2[displayNumber - 1].toString() ==
+                      File('').toString())
+                  ? IconButton(
+                      iconSize: 100,
+                      icon: Image.asset('assets/images/add.png'),
+                      // onPressed: () async {
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new AddFood_AddImagePage()),
+                        ).then((value) {
+                          if (value != null) {
+                            image2[displayNumber - 1] = value.image;
+                            mimeTypeData = lookupMimeType(
+                                image2[displayNumber - 1].path,
+                                headerBytes: [0xFF, 0xD8]).split('/');
+                            // print(value.imaged);
+                            print(mimeTypeData[0]);
+                            typeImage2[displayNumber - 1] = value.type;
 
-                          setState(() {});
-                        }
-                      });
-                    })
-                : InkWell(
-                    child: Image.file(
-                      image2[displayNumber - 1],
-                      width: 0,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    onTap: () async {
-                      print("77777777777777");
-                      print(image2[displayNumber - 1].toString());
-                      final mimeType =
-                          lookupMimeType(image2[displayNumber - 1].path);
-                      print(mimeType);
+                            // print("typeImage2[displayNumber - 1] = "+);
 
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new AddFood_AddImagePage()),
-                      ).then((value) {
-                        if (value != null) {
-                          image2[displayNumber - 1] = value.image;
-                          print(image2[displayNumber - 1]);
-
-                          print(image2[displayNumber - 1].toString());
-                          Image.file(
+                            setState(() {});
+                          }
+                        });
+                      })
+                  : (typeImage2[displayNumber - 1] == "image")
+                      ? InkWell(
+                          child: Image.file(
                             image2[displayNumber - 1],
-                          );
-                          setState(() {});
-                        }
-                      });
-                    }),
-          ),
+                            width: 0,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                          onTap: () async {
+                            print("77777777777777");
+                            print(image2[displayNumber - 1].toString());
+                            final mimeType =
+                                lookupMimeType(image2[displayNumber - 1].path);
+                            print(mimeType);
+                            print("1231231231");
+                            print(image2[displayNumber - 1]);
+                            print("1231231231");
+                            Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                      new AddFood_AddImagePage()),
+                            ).then((value) {
+                              if (value != null) {
+                                image2[displayNumber - 1] = value.image;
+                                typeImage2[displayNumber - 1] = value.type;
+
+                                setState(() {});
+                              }
+                            });
+                          })
+                      : Align(
+                          alignment: Alignment.bottomCenter,
+                          child: AspectRatio(
+                            aspectRatio: 3 / 3,
+                            child: VideoItems(
+                              videoPlayerController: VideoPlayerController.file(
+                                  image2[displayNumber - 1]),
+                              looping: true,
+                              autoplay: false,
+                            ),
+                          ),
+                        )),
           IconButton(
             icon: Icon(Icons.clear),
             onPressed: () {
@@ -482,6 +535,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
         appBar: AppBar(
           centerTitle: true,
           title: Text('เพิ่มสูตรอาหาร'),
+          // title: Text(token),
           actions: <Widget>[
             ElevatedButton(
                 onPressed: () async {
@@ -512,7 +566,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
                     AddIngredientsArrayModel ingredientsData =
                         await addIngredients(recipe_id_come.toString(),
-                            ingredientName, amount, step);
+                            ingredientName, amount, step, token);
 
                     List<String> description = [];
                     List<String> path_file = [];
@@ -542,7 +596,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
                     // addHowto
                     howtoData = await addHowtos(recipe_id_come.toString(),
-                        description, step2, path_file, type_file);
+                        description, step2, path_file, type_file, token);
 
                     print("postsData");
                     print(postsData.success);
@@ -574,23 +628,23 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     .style
                     .apply(fontSizeFactor: 2.0),
               )),
-              ElevatedButton(
-                  onPressed: () {
-                    // for (var list in image2) {
-                    //   print(list);
-                    // }
-                    // // var service = DBService();
-                    // // var token = await service.readData();
-                    // // token.forEach((token){
-                    // //   setState(() {
-                    // //     var tokenModel = Token_jwt();
-                    // //     print(token['id']);
-                    // //     print(token['token']);
-                    // //   });
-                    // // });
-                    print(addImage[0].image);
-                  },
-                  child: Text('show')),
+              // ElevatedButton(
+              //     onPressed: () {
+              //       // for (var list in image2) {
+              //       //   print(list);
+              //       // }
+              //       // // var service = DBService();
+              //       // // var token = await service.readData();
+              //       // // token.forEach((token){
+              //       // //   setState(() {
+              //       // //     var tokenModel = Token_jwt();
+              //       // //     print(token['id']);
+              //       // //     print(token['token']);
+              //       // //   });
+              //       // // });
+              //       print(addImage[0].image);
+              //     },
+              //     child: Text('show')),
               (addImage.length == 0)
                   ? IconButton(
                       iconSize: 200,
@@ -739,6 +793,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
   @override
   void initState() {
     super.initState();
+    findUser();
     fieldCount = widget.initialCount;
     fieldCount2 = widget.initialCount2;
   }
