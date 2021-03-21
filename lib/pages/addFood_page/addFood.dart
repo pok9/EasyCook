@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/class/token_class.dart';
-import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
 import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
@@ -288,11 +287,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   // final storage = new FlutterSecureStorage();
   final _picker = ImagePicker();
-  List<AddImage> addImage = List<AddImage>();
-  // List<AddImage> addImage2 = List<AddImage>();
-
-  // var image = TextEditingController();
-  // var img;
+  // List<AddImage> addImage = List<AddImage>();
+ List<AddImage> addImage = new List<AddImage>();
 
   int fieldCount = 0;
   int nextIndex = 0;
@@ -459,7 +455,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                 image2[displayNumber - 1].path,
                                 headerBytes: [0xFF, 0xD8]).split('/');
                             // print(value.imaged);
-                            print(mimeTypeData[0]);
+                            print("mimeTypeData[0] = "+mimeTypeData[0]);
+                             print("value.type = "+value.type);
                             typeImage2[displayNumber - 1] = value.type;
 
                             // print("typeImage2[displayNumber - 1] = "+);
@@ -494,7 +491,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               if (value != null) {
                                 image2[displayNumber - 1] = value.image;
                                 typeImage2[displayNumber - 1] = value.type;
-
+                               print("value.type = "+value.type);
                                 setState(() {});
                               }
                             });
@@ -615,6 +612,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
           margin: EdgeInsets.all(5),
           child: Form(
               child: ListView(
+                scrollDirection: Axis.vertical,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -726,9 +724,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   setState(() {
                     fieldCount++;
 
-                    for (int i = 0; i < controllers.length; i++) {
-                      //   print("THIS IS  = ${controllers[i].text} + [${i}]");
-                    }
+                    // for (int i = 0; i < controllers.length; i++) {
+                    //   //   print("THIS IS  = ${controllers[i].text} + [${i}]");
+                    // }
                   });
                 },
                 child: Container(
@@ -767,9 +765,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   setState(() {
                     fieldCount2++;
 
-                    for (int i = 0; i < controllers2.length; i++) {
-                      //   print("THIS IS  = ${controllers[i].text} + [${i}]");
-                    }
+                    // for (int i = 0; i < controllers2.length; i++) {
+                    //   //   print("THIS IS  = ${controllers[i].text} + [${i}]");
+                    // }
                   });
                 },
                 child: Container(

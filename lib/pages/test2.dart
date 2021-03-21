@@ -16,43 +16,16 @@ final String appTitle = "Expense App";
 
 class _test2State extends State<test2> {
   @override
+  void initState() { 
+    super.initState();
+    
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('www'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  // FilePickerResult result = await FilePicker.platform.pickFiles();
-                  // if (result != null) {
-                  //   File file = File(result.files.single.path);
-                  //   print(file);
-                  // } else {
-                  //   // User canceled the picker
-                  // }
-                },
-                child: Container(
-                  color: Colors.blue,
-                  child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        'เพิ่ม รูปภาพ จากคลัง',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      )),
-                ),
-              ),
-              // ),
-            ],
-          ),
-        ));
+        );
   }
 }

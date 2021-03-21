@@ -1,5 +1,4 @@
 import 'package:easy_cook/class/token_class.dart';
-import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
@@ -30,7 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    print(dataUser);
+    print("print(dataUser);");
     findUser();
+    print(dataUser);
+    print("print(dataUser);");
     //getMyAccounts();
   }
 
@@ -127,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
           )
         ],*/
       ),
-      body: ListView(
+      body: (dataUser == null)?Container() : ListView(
         children: [
           SizedBox(
             height: 20,

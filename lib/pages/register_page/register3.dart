@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/class/token_class.dart';
@@ -7,6 +8,7 @@ import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage3 extends StatefulWidget {
   RegisterPage3({Key key}) : super(key: key);
@@ -15,24 +17,28 @@ class RegisterPage3 extends StatefulWidget {
   _RegisterPage3State createState() => _RegisterPage3State();
 }
 
-String token = "";
-
-Future<String> tokens() async {
-  token = await Token_jwt().getTokens();
-}
+// Future<String> tokens() async {
+//   token = await Token_jwt().getTokens();
+// }
 
 Future<Register2Model> registers2(
-    String name_surname, String alias_name) async {
+    String token, String name_surname, String alias_name) async {
   // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
   final String apiUrl =
       "http://apifood.comsciproject.com/pjUsers/signupNewStep3";
 
   print("token" + token);
-
+  var data = {
+    "name_surname": name_surname, 
+    "alias_name": alias_name
+  };
+  print(jsonEncode(data));
   final response = await http.post(Uri.parse(apiUrl),
-      body: {"name_surname": name_surname, "alias_name": alias_name},
-      headers: {"Authorization": "Bearer $token"});
+      body: jsonEncode(data),
+      headers: {"Authorization": "Bearer $token","Content-Type": "application/json"});
 
+  print("toke==" +token);
+  print("response.statusCode = "+response.statusCode.toString());
   if (response.statusCode == 200) {
     final String responseString = response.body;
 
@@ -43,12 +49,30 @@ Future<Register2Model> registers2(
 }
 
 class _RegisterPage3State extends State<RegisterPage3> {
+  String token = "";
+
   TextEditingController _ctrlFullName = TextEditingController();
   TextEditingController _ctrlNickName = TextEditingController();
 
-  _RegisterPage3State() {
-    tokens();
+  @override
+  void initState() {
+    super.initState();
+    findToken();
   }
+
+  Future<Null> findToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+    });
+    // token = await Token_jwt().getTokens();
+    // setState(() {});
+  }
+
+  // _RegisterPage3State() {
+  //   tokens();
+  // }
   Widget _buildFullNameTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +158,9 @@ class _RegisterPage3State extends State<RegisterPage3> {
           // registers2
 
           if (_ctrlFullName.text != '' && _ctrlNickName.text != '') {
-            var str = await registers2(_ctrlFullName.text, _ctrlNickName.text);
+            var str =
+                await registers2(token, _ctrlFullName.text, _ctrlNickName.text);
+            print("str =="+str.success.toString());
             if (str.success == 1) {
               Navigator.pushReplacement(
                 context,

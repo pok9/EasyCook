@@ -1,8 +1,8 @@
 import 'package:easy_cook/class/token_class.dart';
-import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/models/register/register_model.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../style/utiltties.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +17,8 @@ class RegisterPage extends StatefulWidget {
 
 Future<RegisterModel> registers(String email, String password) async {
   // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
-  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signupNewStep1";
+  final String apiUrl =
+      "http://apifood.comsciproject.com/pjUsers/signupNewStep1";
 
   final response = await http
       .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
@@ -32,7 +33,6 @@ Future<RegisterModel> registers(String email, String password) async {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   TextEditingController _ctrlEmail = TextEditingController();
   TextEditingController _ctrlPassword = TextEditingController();
   TextEditingController _ctrlCheckPassword = TextEditingController();
@@ -87,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-            controller: _ctrlPassword ,
+            controller: _ctrlPassword,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -190,10 +190,11 @@ class _RegisterPageState extends State<RegisterPage> {
           print(_ctrlPassword.text);
           print(_ctrlCheckPassword.text);
 
-          
-
-          if(_ctrlEmail.text != '' && _ctrlPassword.text == _ctrlCheckPassword.text && _ctrlPassword.text != ''){
-            final RegisterModel response =  await registers(_ctrlEmail.text, _ctrlPassword.text);
+          if (_ctrlEmail.text != '' &&
+              _ctrlPassword.text == _ctrlCheckPassword.text &&
+              _ctrlPassword.text != '') {
+            final RegisterModel response =
+                await registers(_ctrlEmail.text, _ctrlPassword.text);
             print(response.success);
             print(response.token);
             // DBService service = new DBService();
@@ -202,12 +203,13 @@ class _RegisterPageState extends State<RegisterPage> {
             // var data = token_jwt.Token_jwtMap();
             // print(data);
             // service.insertData(data);
-            if(response.success == 1){
-              Token_jwt().storeToken(response.token);
+            if (response.success == 1) {
+              SharedPreferences preferences =
+                  await SharedPreferences.getInstance();
+              preferences.setString("tokens", response.token);
               Navigator.pushNamed(context, '/register2-page');
             }
-            
-          }else{
+          } else {
             print("false");
           }
           print("goto register2");
@@ -232,15 +234,15 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-   Widget _buildCancelBtn() {
+  Widget _buildCancelBtn() {
     return Container(
       // padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-         print("ยกเลิก");
-         Navigator.pop(context);
+          print("ยกเลิก");
+          Navigator.pop(context);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -321,7 +323,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       SizedBox(
                         height: 30.0,
                       ),
-                      
+
                       // _buildNameTF(),
                       // SizedBox(
                       //   height: 20.0,

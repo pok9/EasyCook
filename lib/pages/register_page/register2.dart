@@ -6,13 +6,14 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/class/token_class.dart';
-import 'package:easy_cook/database/db_service.dart';
+
 import 'package:easy_cook/models/register/register2_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../addFood_page/addFood_addImage.dart';
 
@@ -22,8 +23,6 @@ class RegisterPage2 extends StatefulWidget {
   @override
   _RegisterPage2State createState() => _RegisterPage2State();
 }
-
-String token = "";
 
 // Future<String> getToken() async {
 //   var service = DBService();
@@ -55,7 +54,6 @@ Future<Register2Model> registers2(String tokens, File profile_image) async {
       contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
   imageUploadRequest.files.add(file);
   imageUploadRequest.fields['token'] = tokens;
-  
 
   var streamedResponse = await imageUploadRequest.send();
   var response = await http.Response.fromStream(streamedResponse);
@@ -69,17 +67,33 @@ Future<Register2Model> registers2(String tokens, File profile_image) async {
   }
 }
 
-Future<String> tokens() async {
-  token = await Token_jwt().getTokens();
-}
+// Future<String> tokens() async {
+//   token = await Token_jwt().getTokens();
+// }
 
 class _RegisterPage2State extends State<RegisterPage2> {
-  List<AddImage> addImage = List<AddImage>();
+  String token = "";
 
-  _RegisterPage2State() {
-    tokens();
-    print("token = " + token);
+  List<AddImage> addImage = List<AddImage>();
+  @override
+  void initState() {
+    super.initState();
+    findToken();
   }
+
+  Future<Null> findToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+    });
+    // token = await Token_jwt().getTokens();
+    // setState(() {});
+  }
+  // _RegisterPage2State() {
+  //   tokens();
+  //   print("token = " + token);
+  // }
 
   Widget _buildAddPicturetBtn() {
     return Container(

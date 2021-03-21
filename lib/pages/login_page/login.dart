@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:easy_cook/class/token_class.dart';
-import 'package:easy_cook/database/db_service.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/pages/addFood_page/addFood.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
