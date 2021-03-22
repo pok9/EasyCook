@@ -369,7 +369,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
           ),
         ],
       );
-    }).toList(); // แปลงเป็นlist
+    }
+    ).toList(); // แปลงเป็นlist
   }
 
   int fieldCount2 = 0; //ทดสอบ
@@ -529,7 +530,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
     final List<Widget> children2 = _buildList2(); //ทดสอบ
 
     return Scaffold(
-        appBar: AppBar(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: AppBar(
           centerTitle: true,
           title: Text('เพิ่มสูตรอาหาร'),
           // title: Text(token),
@@ -607,7 +610,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 },
                 child: Text('เพิ่ม')),
           ],
-        ),
+        )),
         body: Container(
           margin: EdgeInsets.all(5),
           child: Form(

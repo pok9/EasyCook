@@ -79,8 +79,9 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Easy Cook'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: AppBar(title: Text('Easy Cook'),),
       ),
       body: (token == "")
           ? Container() : ListView.builder(

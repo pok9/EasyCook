@@ -4,6 +4,7 @@ import 'package:easy_cook/pages/addFood_page/addFood.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
+import 'package:easy_cook/pages/showfood_page/showFood.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:easy_cook/pages/test2.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class _SlidePageState extends State<SlidePage> {
     }else if(_currentIndex == 2){
       return AddFoodPage();
     }else if(_currentIndex == 3){
-      return test2(); 
+      return ShowFood(); 
     }else if(_currentIndex == 4){
       return ProfilePage();
     }

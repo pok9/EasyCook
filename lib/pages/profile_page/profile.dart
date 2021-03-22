@@ -99,7 +99,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+
+       appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: AppBar(
         title: Text('โปรไฟล์'),
         actions: <Widget>[
           IconButton(
@@ -155,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           )
         ],*/
-      ),
+      )),
       body: (token == "")
           ? Container()
           : ListView(
