@@ -30,8 +30,21 @@ class _ProfilePageState extends State<ProfilePage> {
 
   //   // print();
   // }
+  showdialog(context) {
+    return showDialog(
+        context: context,
+        builder: (contex) {
+          return AlertDialog(
+              content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text("Loading...   "), CircularProgressIndicator()],
+          ));
+        });
+  }
+
   @override
   void initState() {
+    print(dataUser);
     super.initState();
     print(dataUser);
     print("print(dataUser);");
@@ -99,269 +112,198 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(40.0),
-        child: AppBar(
-        title: Text('โปรไฟล์'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            onPressed: () async {
-              // var service = DBService();
-              // await service.deleteAllData();
-              // print("delete = "+delete);
-              // Navigator.pushReplacement(
-              //   context,
-              //   new MaterialPageRoute(
-              //       /*check()*/
-              //       builder: (context) =>
-              //           new LoginPage()), /////////////////////////////////////////////////////////////////////////////////
-              // ).then((value) {
-              //   /* if (value == null) {
-              //     } else {
-
-              //       proList.add(value);
-              //     }*/
-              //   setState(() {});
-              // });
-              SharedPreferences preferences =
-                  await SharedPreferences.getInstance();
-              preferences.setString("tokens", "");
-              Navigator.pushNamed(context, '/login-page');
-            },
-          )
-        ],
-        /*backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          'ตั้งค่า',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            foreground: Paint()..shader = linearGradient,
-          ),
-        ),
-        centerTitle: true,
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.grey,
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.more_horiz,
-              color: Colors.grey,
-            ),
-          )
-        ],*/
-      )),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(40.0),
+          child: AppBar(
+            title: Text('โปรไฟล์'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                onPressed: () async {
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.setString("tokens", "");
+                  Navigator.pushNamed(context, '/login-page');
+                  // Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => LoginPage()) );
+                },
+              )
+            ],
+          )),
       body: (token == "")
           ? Container()
-          : ListView(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          : (dataUser == null)
+              ? Container()
+              : ListView(
                   children: [
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      height: 110,
-                      width: 110,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            const Color(0xffe43e68),
-                            const Color(0xfffaa449)
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage(dataUser.profileImage),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          dataUser.aliasName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            foreground: Paint()..shader = linearGradient,
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 110,
+                          width: 110,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xffe43e68),
+                                const Color(0xfffaa449)
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey,
+                              backgroundImage:
+                                  NetworkImage(dataUser.profileImage),
+                            ),
                           ),
                         ),
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            InkWell(
-                              child: Container(
-                                height: 50,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      const Color(0xffe43e68),
-                                      const Color(0xfffaa449),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'แก้ไขโปรไฟล์',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 13,
+                            Text(
+                              dataUser.aliasName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                foreground: Paint()..shader = linearGradient,
+                              ),
+                            ),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  child: Container(
+                                    height: 50,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xffe43e68),
+                                          const Color(0xfffaa449),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'แก้ไขโปรไฟล์',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                        ),
+                                      ),
                                     ),
                                   ),
+                                  onTap: () {
+                                    print("5555");
+                                  },
                                 ),
-                              ),
-                              onTap: () {
-                                print("5555");
-                              },
+                              ],
                             ),
                           ],
-                        ),
+                        )
                       ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      Divider(
-                        thickness: 1,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
                         children: [
-                          Column(
-                            children: [
-                              Text(
-                                '10',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                              Text(
-                                'โพสต์',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                              )
-                            ],
+                          Divider(
+                            thickness: 1,
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                '1.2M',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                              Text(
-                                'ผู้ติดตาม',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                              )
-                            ],
+                          SizedBox(
+                            height: 10,
                           ),
-                          Column(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                '132',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                              Text(
-                                'กำลังติดตาม',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(
-                        thickness: 1,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  const Color(0xffe43e68),
-                                  const Color(0xfffaa449),
+                              Column(
+                                children: [
+                                  Text(
+                                    '10',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    'โพสต์',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                  )
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            height: 70,
-                            width: 370, //ฟิกค่าไว้ก่อน
-                            child: Center(
-                              child: Text(
-                                'ยอดเงิน ' +
-                                    dataUser.balance.toString() +
-                                    ' บาท',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                ),
+                              Column(
+                                children: [
+                                  Text(
+                                    '1.2M',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    'ผู้ติดตาม',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                  )
+                                ],
                               ),
-                            ),
+                              Column(
+                                children: [
+                                  Text(
+                                    '132',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    'กำลังติดตาม',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Divider(
+                            thickness: 1,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
                                 decoration: BoxDecoration(
@@ -374,10 +316,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 height: 70,
-                                width: 180, //ฟิกค่าไว้ก่อน
+                                width: 370, //ฟิกค่าไว้ก่อน
                                 child: Center(
                                   child: Text(
-                                    'เติมเงิน',
+                                    'ยอดเงิน ' +
+                                        dataUser.balance.toString() +
+                                        ' บาท',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -389,201 +333,328 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           SizedBox(
-                            width: 10,
+                            height: 10,
                           ),
-                          Column(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      const Color(0xffe43e68),
-                                      const Color(0xfffaa449),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                height: 70,
-                                width: 180, //ฟิกค่าไว้ก่อน
-                                child: Center(
-                                  child: Text(
-                                    'ถอนเงิน',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 17,
+                              Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xffe43e68),
+                                          const Color(0xfffaa449),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    height: 70,
+                                    width: 180, //ฟิกค่าไว้ก่อน
+                                    child: Center(
+                                      child: Text(
+                                        'เติมเงิน',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xffe43e68),
+                                          const Color(0xfffaa449),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    height: 70,
+                                    width: 180, //ฟิกค่าไว้ก่อน
+                                    child: Center(
+                                      child: Text(
+                                        'ถอนเงิน',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(
-                        thickness: 1,
-                      ),
-                      //         ListView.builder(
-                      //   itemCount: 5,
-                      //   itemBuilder: (context, index) => index < 0
-                      //       ? new SizedBox(
-                      //           child: Container(),
-                      //         )
-                      //       : Column(
-                      //           mainAxisAlignment: MainAxisAlignment.start,
-                      //           mainAxisSize: MainAxisSize.min,
-                      //           crossAxisAlignment: CrossAxisAlignment.stretch,
-                      //           children: [
-                      //             //1st row
-                      //             Padding(
-                      //               padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
-                      //               child: Row(
-                      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //                 children: [
-                      //                   Row(
-                      //                     children: [
-                      //                       new Container(
-                      //                         height: 40.0,
-                      //                         width: 40.0,
-                      //                         decoration: new BoxDecoration(
-                      //                             shape: BoxShape.circle,
-                      //                             image: new DecorationImage(
-                      //                                 fit: BoxFit.fill,
-                      //                                 image: new NetworkImage(
-                      //                                     "https://variety.teenee.com/foodforbrain/img8/241131.jpg"))),
-                      //                       ),
-                      //                       new SizedBox(
-                      //                         width: 10.0,
-                      //                       ),
-                      //                       new Text(
-                      //                         "วัยรุ่น ซิมบัพเว",
-                      //                         style: TextStyle(fontWeight: FontWeight.bold),
-                      //                       )
-                      //                     ],
-                      //                   ),
-                      //                   new IconButton(
-                      //                       icon: Icon(Icons.more_vert),
-                      //                       onPressed: () {
-                      //                         print("more_vert" + index.toString());
-                      //                       })
-                      //                 ],
-                      //               ),
-                      //             ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Divider(
+                            thickness: 1,
+                          ),
+                          //         ListView.builder(
+                          //   itemCount: 5,
+                          //   itemBuilder: (context, index) => index < 0
+                          //       ? new SizedBox(
+                          //           child: Container(),
+                          //         )
+                          //       : Column(
+                          //           mainAxisAlignment: MainAxisAlignment.start,
+                          //           mainAxisSize: MainAxisSize.min,
+                          //           crossAxisAlignment: CrossAxisAlignment.stretch,
+                          //           children: [
+                          //             //1st row
+                          //             Padding(
+                          //               padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
+                          //               child: Row(
+                          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //                 children: [
+                          //                   Row(
+                          //                     children: [
+                          //                       new Container(
+                          //                         height: 40.0,
+                          //                         width: 40.0,
+                          //                         decoration: new BoxDecoration(
+                          //                             shape: BoxShape.circle,
+                          //                             image: new DecorationImage(
+                          //                                 fit: BoxFit.fill,
+                          //                                 image: new NetworkImage(
+                          //                                     "https://variety.teenee.com/foodforbrain/img8/241131.jpg"))),
+                          //                       ),
+                          //                       new SizedBox(
+                          //                         width: 10.0,
+                          //                       ),
+                          //                       new Text(
+                          //                         "วัยรุ่น ซิมบัพเว",
+                          //                         style: TextStyle(fontWeight: FontWeight.bold),
+                          //                       )
+                          //                     ],
+                          //                   ),
+                          //                   new IconButton(
+                          //                       icon: Icon(Icons.more_vert),
+                          //                       onPressed: () {
+                          //                         print("more_vert" + index.toString());
+                          //                       })
+                          //                 ],
+                          //               ),
+                          //             ),
 
-                      //             //2nd row
-                      //             Flexible(
-                      //               fit: FlexFit.loose,
-                      //               child: new Image.network(
-                      //                 //รูปอาหาร
-                      //                 "https://i.ytimg.com/vi/LQUhdrHYWSg/maxresdefault.jpg",
-                      //                 fit: BoxFit.cover,
-                      //               ),
-                      //             ),
+                          //             //2nd row
+                          //             Flexible(
+                          //               fit: FlexFit.loose,
+                          //               child: new Image.network(
+                          //                 //รูปอาหาร
+                          //                 "https://i.ytimg.com/vi/LQUhdrHYWSg/maxresdefault.jpg",
+                          //                 fit: BoxFit.cover,
+                          //               ),
+                          //             ),
 
-                      //             //3rd row
-                      //             Padding(
-                      //               padding: const EdgeInsets.all(16.0),
-                      //               child: Row(
-                      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //                 children: [
-                      //                   new Row(
-                      //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //                     children: [
-                      //                       Icon(
-                      //                         Icons.favorite_border,
-                      //                         color: Colors.black,
-                      //                       ),
-                      //                       new SizedBox(
-                      //                         width: 16.0,
-                      //                       ),
-                      //                       Icon(Icons.chat_bubble_outline,
-                      //                           color: Colors.black),
-                      //                       new SizedBox(
-                      //                         width: 16.0,
-                      //                       ),
-                      //                       Icon(Icons.share, color: Colors.black),
-                      //                     ],
-                      //                   ),
-                      //                   Icon(Icons.bookmark_border, color: Colors.black),
-                      //                 ],
-                      //               ),
-                      //             ),
+                          //             //3rd row
+                          //             Padding(
+                          //               padding: const EdgeInsets.all(16.0),
+                          //               child: Row(
+                          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //                 children: [
+                          //                   new Row(
+                          //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //                     children: [
+                          //                       Icon(
+                          //                         Icons.favorite_border,
+                          //                         color: Colors.black,
+                          //                       ),
+                          //                       new SizedBox(
+                          //                         width: 16.0,
+                          //                       ),
+                          //                       Icon(Icons.chat_bubble_outline,
+                          //                           color: Colors.black),
+                          //                       new SizedBox(
+                          //                         width: 16.0,
+                          //                       ),
+                          //                       Icon(Icons.share, color: Colors.black),
+                          //                     ],
+                          //                   ),
+                          //                   Icon(Icons.bookmark_border, color: Colors.black),
+                          //                 ],
+                          //               ),
+                          //             ),
 
-                      //             //4th row
-                      //             Padding(
-                      //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      //               child: Text(
-                      //                 "Liked by pawankumar, pk and 528,331 others",
-                      //                 style: TextStyle(fontWeight: FontWeight.bold),
-                      //               ),
-                      //             ),
+                          //             //4th row
+                          //             Padding(
+                          //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          //               child: Text(
+                          //                 "Liked by pawankumar, pk and 528,331 others",
+                          //                 style: TextStyle(fontWeight: FontWeight.bold),
+                          //               ),
+                          //             ),
 
-                      //             //5th row
-                      //             Padding(
-                      //               padding:
-                      //                   const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-                      //               child: Row(
-                      //                 mainAxisAlignment: MainAxisAlignment.start,
-                      //                 children: [
-                      //                   new Container(
-                      //                     height: 40.0,
-                      //                     width: 40.0,
-                      //                     decoration: new BoxDecoration(
-                      //                         shape: BoxShape.circle,
-                      //                         image: new DecorationImage(
-                      //                             fit: BoxFit.fill,
-                      //                             image: new NetworkImage(
-                      //                                 "https://variety.teenee.com/foodforbrain/img8/241131.jpg"))),
-                      //                   ),
-                      //                   new SizedBox(
-                      //                     width: 10.0,
-                      //                   ),
-                      //                   Expanded(
-                      //                     child: new TextField(
-                      //                       keyboardType: TextInputType.multiline,
-                      //                       maxLines: null,
-                      //                       decoration: new InputDecoration(
-                      //                         border: InputBorder.none,
-                      //                         hintText: "เพิ่ม คอมเมนต์...",
-                      //                       ),
-                      //                     ),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //             ),
+                          //             //5th row
+                          //             Padding(
+                          //               padding:
+                          //                   const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                          //               child: Row(
+                          //                 mainAxisAlignment: MainAxisAlignment.start,
+                          //                 children: [
+                          //                   new Container(
+                          //                     height: 40.0,
+                          //                     width: 40.0,
+                          //                     decoration: new BoxDecoration(
+                          //                         shape: BoxShape.circle,
+                          //                         image: new DecorationImage(
+                          //                             fit: BoxFit.fill,
+                          //                             image: new NetworkImage(
+                          //                                 "https://variety.teenee.com/foodforbrain/img8/241131.jpg"))),
+                          //                   ),
+                          //                   new SizedBox(
+                          //                     width: 10.0,
+                          //                   ),
+                          //                   Expanded(
+                          //                     child: new TextField(
+                          //                       keyboardType: TextInputType.multiline,
+                          //                       maxLines: null,
+                          //                       decoration: new InputDecoration(
+                          //                         border: InputBorder.none,
+                          //                         hintText: "เพิ่ม คอมเมนต์...",
+                          //                       ),
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //             ),
 
-                      //             //6th row
-                      //             Padding(
-                      //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      //               child: Text(
-                      //                 "1 วันที่แล้ว",
-                      //                 style: TextStyle(color: Colors.grey),
-                      //               ),
-                      //             )
-                      //           ],
-                      //         ),
-                      // ),
-                      (newfeed.feeds.length == 0)
-                          ? new SizedBox(
-                              child: Container(),
-                            )
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                //1st row
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      16.0, 16.0, 8.0, 16.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
+                          //             //6th row
+                          //             Padding(
+                          //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          //               child: Text(
+                          //                 "1 วันที่แล้ว",
+                          //                 style: TextStyle(color: Colors.grey),
+                          //               ),
+                          //             )
+                          //           ],
+                          //         ),
+                          // ),
+                          (newfeed.feeds.length == 0)
+                              ? new SizedBox(
+                                  child: Container(),
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    //1st row
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16.0, 16.0, 8.0, 16.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              new Container(
+                                                height: 40.0,
+                                                width: 40.0,
+                                                decoration: new BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: new DecorationImage(
+                                                        fit: BoxFit.fill,
+                                                        image: new NetworkImage(
+                                                            newfeed.feeds[0]
+                                                                .profileImage))),
+                                              ),
+                                              new SizedBox(
+                                                width: 10.0,
+                                              ),
+                                              new Text(
+                                                newfeed.feeds[0].aliasName,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ),
+                                          new IconButton(
+                                              icon: Icon(Icons.more_vert),
+                                              onPressed: () {
+                                                //print("more_vert" + index.toString());
+                                              })
+                                        ],
+                                      ),
+                                    ),
+
+                                    //2nd row
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: new Image.network(
+                                        //รูปอาหาร
+                                        newfeed.feeds[0].image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+
+                                    //3rd row
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          new Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Icon(
+                                                Icons.favorite_border,
+                                                color: Colors.black,
+                                              ),
+                                              new SizedBox(
+                                                width: 16.0,
+                                              ),
+                                              Icon(Icons.chat_bubble_outline,
+                                                  color: Colors.black),
+                                              new SizedBox(
+                                                width: 16.0,
+                                              ),
+                                              Icon(Icons.share,
+                                                  color: Colors.black),
+                                            ],
+                                          ),
+                                          Icon(Icons.bookmark_border,
+                                              color: Colors.black),
+                                        ],
+                                      ),
+                                    ),
+
+                                    //4th row
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      child: Text(
+                                        "Liked by pawankumar, pk and 528,331 others",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+
+                                    //5th row
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16.0, 16.0, 16.0, 16.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
                                           new Container(
                                             height: 40.0,
@@ -599,126 +670,37 @@ class _ProfilePageState extends State<ProfilePage> {
                                           new SizedBox(
                                             width: 10.0,
                                           ),
-                                          new Text(
-                                            newfeed.feeds[0].aliasName,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          )
+                                          Expanded(
+                                            child: new TextField(
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              maxLines: null,
+                                              decoration: new InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: "เพิ่ม คอมเมนต์...",
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                      new IconButton(
-                                          icon: Icon(Icons.more_vert),
-                                          onPressed: () {
-                                            //print("more_vert" + index.toString());
-                                          })
-                                    ],
-                                  ),
-                                ),
+                                    ),
 
-                                //2nd row
-                                Flexible(
-                                  fit: FlexFit.loose,
-                                  child: new Image.network(
-                                    //รูปอาหาร
-                                    newfeed.feeds[0].image,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-
-                                //3rd row
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      new Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Icon(
-                                            Icons.favorite_border,
-                                            color: Colors.black,
-                                          ),
-                                          new SizedBox(
-                                            width: 16.0,
-                                          ),
-                                          Icon(Icons.chat_bubble_outline,
-                                              color: Colors.black),
-                                          new SizedBox(
-                                            width: 16.0,
-                                          ),
-                                          Icon(Icons.share,
-                                              color: Colors.black),
-                                        ],
+                                    //6th row
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      child: Text(
+                                        "1 วันที่แล้ว",
+                                        style: TextStyle(color: Colors.grey),
                                       ),
-                                      Icon(Icons.bookmark_border,
-                                          color: Colors.black),
-                                    ],
-                                  ),
+                                    )
+                                  ],
                                 ),
-
-                                //4th row
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: Text(
-                                    "Liked by pawankumar, pk and 528,331 others",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-
-                                //5th row
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      16.0, 16.0, 16.0, 16.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      new Container(
-                                        height: 40.0,
-                                        width: 40.0,
-                                        decoration: new BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: new DecorationImage(
-                                                fit: BoxFit.fill,
-                                                image: new NetworkImage(newfeed
-                                                    .feeds[0].profileImage))),
-                                      ),
-                                      new SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Expanded(
-                                        child: new TextField(
-                                          keyboardType: TextInputType.multiline,
-                                          maxLines: null,
-                                          decoration: new InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "เพิ่ม คอมเมนต์...",
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                //6th row
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: Text(
-                                    "1 วันที่แล้ว",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                )
-                              ],
-                            ),
-                    ],
-                  ),
-                ), //เส่น hr
-              ],
-            ),
+                        ],
+                      ),
+                    ), //เส่น hr
+                  ],
+                ),
     );
   }
 }

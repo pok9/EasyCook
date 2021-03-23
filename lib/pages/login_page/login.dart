@@ -21,8 +21,24 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+// showdialog(){
+
+// }
+showdialog(context) {
+  return showDialog(
+      context: context,
+      builder: (contex) {
+        return AlertDialog(
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text("Loading...   "), CircularProgressIndicator()],
+        ));
+      });
+}
+
 Future<LoginModel> logins(String email, String password) async {
   // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
   final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
 
   final response = await http
@@ -167,6 +183,7 @@ class _LoginPageState extends State<LoginPage> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
+          showdialog(context);
           final String email = _ctrlEmail.text;
           final String password = _ctrlPassword.text;
 
@@ -176,15 +193,16 @@ class _LoginPageState extends State<LoginPage> {
           _login = login;
 
           print(login);
-          print("ssssssssss"+_login.success.toString());
+          print("ssssssssss" + _login.success.toString());
           // });
           // var data;
           if (_login.success == 1) {
-           SharedPreferences preferences = await SharedPreferences.getInstance();
-           preferences.setString("tokens", _login.token);
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            preferences.setString("tokens", _login.token);
             //Token
-          //  Token_jwt().storeToken(_login.token);-------------------------------------------------------
-            
+            //  Token_jwt().storeToken(_login.token);-------------------------------------------------------
+
             // DBService service = new DBService();
             // Token_jwt token_jwt = new Token_jwt();
             // token_jwt.token = _login.token;
@@ -204,8 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                     proList.add(value);
                   }*/
               setState(() {});
-            }
-            );
+            });
           }
         },
         padding: EdgeInsets.all(15.0),
@@ -392,5 +409,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-

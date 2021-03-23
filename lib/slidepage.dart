@@ -15,7 +15,7 @@ class SlidePage extends StatefulWidget {
 }
 
 class _SlidePageState extends State<SlidePage> {
-   var _currentIndex = 4;
+   var _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class _SlidePageState extends State<SlidePage> {
         animationDuration: Duration(
           milliseconds: 200
         ),
-        index: 4,
+        index: _currentIndex,
         animationCurve: Curves.bounceInOut,
         onTap: (index){
             setState(() {
@@ -49,6 +49,7 @@ class _SlidePageState extends State<SlidePage> {
     );
   }
   getBodyWidget(){
+    print(_currentIndex);
     if(_currentIndex == 0){
       return FeedPage(); 
     }else if(_currentIndex == 1){
@@ -56,7 +57,7 @@ class _SlidePageState extends State<SlidePage> {
     }else if(_currentIndex == 2){
       return AddFoodPage();
     }else if(_currentIndex == 3){
-      return ShowFood(); 
+      // return ShowFood(); 
     }else if(_currentIndex == 4){
       return ProfilePage();
     }

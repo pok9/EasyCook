@@ -102,18 +102,18 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          print("length = " + addImage.length.toString());
-          Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new AddFood_AddImagePage()),
-          ).then((value) {
-            if (value != null) {
-              print(value);
-              addImage.add(value);
-              setState(() {});
-            }
-          });
+          // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
+          // Navigator.push(
+          //   context,
+          //   new MaterialPageRoute(
+          //       builder: (context) => new AddFood_AddImagePage()),
+          // ).then((value) {
+          //   if (value != null) {
+          //     print(value);
+          //     addImage.add(value);
+          //     setState(() {});
+          //   }
+          // });
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -141,18 +141,18 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          print("length = " + addImage.length.toString());
-          Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new AddFood_AddImagePage()),
-          ).then((value) {
-            if (value != null) {
-              print(value);
-              addImage[0].image = value.image;
-              setState(() {});
-            }
-          });
+          // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
+          // Navigator.push(
+          //   context,
+          //   new MaterialPageRoute(
+          //       builder: (context) => new AddFood_AddImagePage()),
+          // ).then((value) {
+          //   if (value != null) {
+          //     print(value);
+          //     addImage[0].image = value.image;
+          //     setState(() {});
+          //   }
+          // });
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
