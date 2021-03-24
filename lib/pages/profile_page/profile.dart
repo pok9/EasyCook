@@ -1,3 +1,4 @@
+
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
@@ -126,7 +127,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   SharedPreferences preferences =
                       await SharedPreferences.getInstance();
                   preferences.setString("tokens", "");
-                  Navigator.pushNamed(context, '/login-page');
+                  // Navigator.pushNamed(context, '/login-page');
+                  Navigator.pushNamedAndRemoveUntil(context, '/login-page', (route) => false);
                   // Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => LoginPage()) );
                 },
               )

@@ -30,8 +30,8 @@ showdialog(context) {
       builder: (contex) {
         return AlertDialog(
             content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("Loading...   "), CircularProgressIndicator()],
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text("กรุณารอสักครู่...   "), CircularProgressIndicator()],
         ));
       });
 }
@@ -184,6 +184,9 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 5.0,
         onPressed: () async {
           showdialog(context);
+          // if(_login == null){
+          //    showdialog(context);
+          // }
           final String email = _ctrlEmail.text;
           final String password = _ctrlPassword.text;
 
@@ -197,9 +200,11 @@ class _LoginPageState extends State<LoginPage> {
           // });
           // var data;
           if (_login.success == 1) {
+            // showdialog(context);
             SharedPreferences preferences =
                 await SharedPreferences.getInstance();
             preferences.setString("tokens", _login.token);
+
             //Token
             //  Token_jwt().storeToken(_login.token);-------------------------------------------------------
 
@@ -209,20 +214,24 @@ class _LoginPageState extends State<LoginPage> {
             // var data = token_jwt.Token_jwtMap();
             // service.insertData(data);
             ///////////////////////////////
-            Navigator.pushReplacement(
-              context,
-              new MaterialPageRoute(
-                  /*check()*/
-                  builder: (context) =>
-                      new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-            ).then((value) {
-              /* if (value == null) {
-                  } else {
+            Navigator.pushNamedAndRemoveUntil(context, '/slide-page', (route) => false);
+            // Navigator.pushReplacement(
+            //   context,
+            //   new MaterialPageRoute(
+            //       /*check()*/
+            //       builder: (context) =>
+            //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
+            // ).then((value) {
+            //   /* if (value == null) {
+            //       } else {
 
-                    proList.add(value);
-                  }*/
-              setState(() {});
-            });
+            //         proList.add(value);
+            //       }*/
+            //   setState(() {});
+            // });
+          } else {
+            print(_login.token);
+            setState(() {});
           }
         },
         padding: EdgeInsets.all(15.0),
@@ -313,7 +322,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildSignupBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/register-page');
+        // Navigator.pushNamed(context, '/register-page');
+        Navigator.pushNamedAndRemoveUntil(context, '/register-page', (Route<dynamic> route) => false);
       },
       child: RichText(
         text: TextSpan(

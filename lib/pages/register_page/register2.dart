@@ -15,7 +15,7 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../addFood_page/addFood_addImage.dart';
+import '../addFood_page/addImage.dart';
 
 class RegisterPage2 extends StatefulWidget {
   RegisterPage2({Key key}) : super(key: key);
@@ -70,6 +70,17 @@ Future<Register2Model> registers2(String tokens, File profile_image) async {
 // Future<String> tokens() async {
 //   token = await Token_jwt().getTokens();
 // }
+showdialog(context) {
+  return showDialog(
+      context: context,
+      builder: (contex) {
+        return AlertDialog(
+            content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text("กรุณารอสักครู่...   "), CircularProgressIndicator()],
+        ));
+      });
+}
 
 class _RegisterPage2State extends State<RegisterPage2> {
   String token = "";
@@ -103,17 +114,17 @@ class _RegisterPage2State extends State<RegisterPage2> {
         elevation: 5.0,
         onPressed: () {
           // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
-          // Navigator.push(
-          //   context,
-          //   new MaterialPageRoute(
-          //       builder: (context) => new AddFood_AddImagePage()),
-          // ).then((value) {
-          //   if (value != null) {
-          //     print(value);
-          //     addImage.add(value);
-          //     setState(() {});
-          //   }
-          // });
+          Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new AddFood_AddImagePage()),
+          ).then((value) {
+            if (value != null) {
+              print(value);
+              addImage.add(value);
+              setState(() {});
+            }
+          });
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -142,17 +153,17 @@ class _RegisterPage2State extends State<RegisterPage2> {
         elevation: 5.0,
         onPressed: () {
           // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
-          // Navigator.push(
-          //   context,
-          //   new MaterialPageRoute(
-          //       builder: (context) => new AddFood_AddImagePage()),
-          // ).then((value) {
-          //   if (value != null) {
-          //     print(value);
-          //     addImage[0].image = value.image;
-          //     setState(() {});
-          //   }
-          // });
+          Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new AddFood_AddImagePage()),
+          ).then((value) {
+            if (value != null) {
+              print(value);
+              addImage[0].image = value.image;
+              setState(() {});
+            }
+          });
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -180,6 +191,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
+          showdialog(context);
           Navigator.pushNamed(context, '/register3-page');
           print("ข้าม");
         },
@@ -209,6 +221,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
+          showdialog(context);
           // final Register2Model response =  await registers(token,addImage[0].image);
           final Register2Model response =
               await registers2(token, addImage[0].image);
@@ -217,7 +230,8 @@ class _RegisterPage2State extends State<RegisterPage2> {
             print(token);
             print("ถัดไป");
             print(addImage[0].image);
-            Navigator.pushNamed(context, '/register3-page');
+            // Navigator.pushNamed(context, '/register3-page');
+            Navigator.pushNamedAndRemoveUntil(context, '/register3-page', (Route<dynamic> route) => false);
           } else {
             print("error");
           }

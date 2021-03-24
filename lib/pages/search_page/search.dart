@@ -42,7 +42,11 @@ class _SearchPageState extends State<SearchPage> {
                     borderRadius: BorderRadius.circular(24.0),
                   ),
                   child: TextFormField(
-                    onChanged: (String txet) {},
+                    onChanged: (String txet) {
+                      setState(() {
+                        
+                      });
+                    },
                     controller: _controller,
                     decoration: InputDecoration(
                         hintText: "ค้นหาสูตรอาหาร",
@@ -57,14 +61,14 @@ class _SearchPageState extends State<SearchPage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  _search();
+                  Navigator.pushNamedAndRemoveUntil(context, '/searchRecipeName', (route) => false);
                 },
               ),
             ],
           ),
         ),
       ),
-      body: GridView.count(
+      body: (_controller.text != "") ? Container() : GridView.count(
           crossAxisCount: 4,
           children: List.generate(6, (index) {
             return Center(

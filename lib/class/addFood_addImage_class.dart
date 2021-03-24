@@ -2,9 +2,7 @@ import 'dart:io';
 
 class AddImage {
   File image;
-  String type;
-  AddImage(File img,String type) {
+  AddImage(File img) {
     this.image = img;
-    this.type = type;
   }
 }

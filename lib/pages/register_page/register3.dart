@@ -162,20 +162,21 @@ class _RegisterPage3State extends State<RegisterPage3> {
                 await registers2(token, _ctrlFullName.text, _ctrlNickName.text);
             print("str =="+str.success.toString());
             if (str.success == 1) {
-              Navigator.pushReplacement(
-                context,
-                new MaterialPageRoute(
-                    /*check()*/
-                    builder: (context) =>
-                        new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-              ).then((value) {
-                /* if (value == null) {
-                  } else {
+              Navigator.pushNamedAndRemoveUntil(context, '/slide-page', (Route<dynamic> route) => false);
+              // Navigator.pushReplacement(
+              //   context,
+              //   new MaterialPageRoute(
+              //       /*check()*/
+              //       builder: (context) =>
+              //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
+              // ).then((value) {
+              //   /* if (value == null) {
+              //     } else {
 
-                    proList.add(value);
-                  }*/
-                setState(() {});
-              });
+              //       proList.add(value);
+              //     }*/
+              //   setState(() {});
+              // });
             }
           }
         },

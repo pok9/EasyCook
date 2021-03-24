@@ -1,10 +1,14 @@
 // import 'dart:html';
 
+import 'package:easy_cook/pages/video_items.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:video_player/video_player.dart';
 
 class ShowFood extends StatefulWidget {
   var newfeed;
@@ -117,7 +121,8 @@ class _ShowFoodState extends State<ShowFood> {
                 dataIngredient[displayNumber].ingredientName +
                 "\t" +
                 dataIngredient[displayNumber].amount,
-            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+            // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+            style: kHintTextStyle2,
           ),
         ),
       );
@@ -153,24 +158,40 @@ class _ShowFoodState extends State<ShowFood> {
                 (displayNumber + 1).toString() +
                     ". " +
                     dataHowto[displayNumber].description,
-                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+                // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+                style: kHintTextStyle2,
               ),
             ),
           ),
-          Card(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    height: 200,
-                    width: 400,
-                    child: Image.network(
-                      dataHowto[displayNumber].pathFile,
-                      fit: BoxFit.cover,
-                    )),
-              ],
-            ),
-          )
+          (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
+              ? Card(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 200,
+                          width: 400,
+                          child: Image.network(
+                            dataHowto[displayNumber].pathFile,
+                            fit: BoxFit.cover,
+                          )),
+                    ],
+                  ),
+                )
+              : Card(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: AspectRatio(
+                      aspectRatio: 6 / 3,
+                      child: VideoItems(
+                        videoPlayerController: VideoPlayerController.network(
+                            dataHowto[displayNumber].pathFile),
+                        looping: true,
+                        autoplay: false,
+                      ),
+                    ),
+                  ),
+                )
         ],
       );
     }).toList(); // แปลงเป็นlist
@@ -314,11 +335,7 @@ class _ShowFoodState extends State<ShowFood> {
                     ),
                     Text(
                       _newfeed.recipeName,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.double),
+                      style: kHintTextStyle3
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -338,12 +355,9 @@ class _ShowFoodState extends State<ShowFood> {
 
                     Text(
                       "ส่วนผสม",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.double),
+                      style: kHintTextStyle3,
                     ),
+                    SizedBox(height: 10,),
                     ListView(
                       padding: EdgeInsets.all(0),
                       shrinkWrap: true,
@@ -356,11 +370,7 @@ class _ShowFoodState extends State<ShowFood> {
                     ),
                     Text(
                       "วิธีทำ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.double),
+                      style: kHintTextStyle3,
                     ),
                     ListView(
                       padding: EdgeInsets.all(0),

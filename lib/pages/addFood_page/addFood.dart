@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
+import 'package:easy_cook/pages/addFood_page/addImageORvideo_class.dart';
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
 import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
-import 'package:easy_cook/pages/addFood_page/addFood_addImage.dart';
+import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:flutter/material.dart';
@@ -378,7 +379,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
   List<File> image2 = <File>[];
-  List<String> typeImage2 = <String>[];
+  // List<String> typeImage2 = <String>[];
 
   List<Widget> _buildList2() {
     //ทดเสอบ
@@ -388,7 +389,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
       for (i = controllers2.length; i < fieldCount2; i++) {
         controllers2.add(TextEditingController());
         image2.add(File(''));
-        typeImage2.add("");
       }
     }
 
@@ -445,28 +445,36 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       icon: Image.asset('assets/images/add.png'),
                       // onPressed: () async {
                       onPressed: () {
-                        // Navigator.push(-----------------------------------------------
-                        //   context,
-                        //   new MaterialPageRoute(
-                        //       builder: (context) => new AddFood_AddImagePage()),
-                        // ).then((value) {
-                        //   if (value != null) {
-                        //     image2[displayNumber - 1] = value.image;
-                        //     mimeTypeData = lookupMimeType(
-                        //         image2[displayNumber - 1].path,
-                        //         headerBytes: [0xFF, 0xD8]).split('/');
-                        //     // print(value.imaged);
-                        //     print("mimeTypeData[0] = " + mimeTypeData[0]);
-                        //     print("value.type = " + value.type);
-                        //     typeImage2[displayNumber - 1] = value.type;
+                        Navigator.push(
+                          context,
+                          // AddImageOrVideo
+                          new MaterialPageRoute(
+                              builder: (context) => new AddImageOrVideo()),
+                        ).then((value) {
+                          if (value != null) {
+                            image2[displayNumber - 1] = value.image;
+                            // mimeTypeData = lookupMimeType(
+                            //     image2[displayNumber - 1].path,
+                            //     headerBytes: [0xFF, 0xD8]).split('/');
+                            // // print(value.imaged);
+                            // print("mimeTypeData[0] = " + mimeTypeData[0]);
+                            // print("mimeTypeData[1] = " + mimeTypeData[1]);
+                            // print(image2[displayNumber - 1]);
+                            // print(image2[displayNumber - 1].isAbsolute);
+                            // final mimeType = lookupMimeType(image2[displayNumber - 1].path);
+                            // print(mimeType[0] == "i");
+                            // print(mimeType[0] == "v");
+                            // print(lookupMimeType(image2[displayNumber - 1].path)[0]);
+                            // print("value.type = " + value.type);
+                            // typeImage2[displayNumber - 1] = value.type;
 
-                        //     // print("typeImage2[displayNumber - 1] = "+);
+                            // // print("typeImage2[displayNumber - 1] = "+);
 
-                        //     setState(() {});
-                        //   }
-                        // });
+                            setState(() {});
+                          }
+                        });
                       })
-                  : (typeImage2[displayNumber - 1] == "image")
+                  : (lookupMimeType(image2[displayNumber - 1].path)[0] == "i")
                       ? InkWell(
                           child: Image.file(
                             image2[displayNumber - 1],
@@ -483,29 +491,31 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             // print("1231231231");
                             // print(image2[displayNumber - 1]);
                             // print("1231231231");
-                            // Navigator.push(
-                            //   context,
-                            //   new MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           new AddFood_AddImagePage()),
-                            // ).then((value) {
-                            //   if (value != null) {
-                            //     image2[displayNumber - 1] = value.image;
-                            //     typeImage2[displayNumber - 1] = value.type;
-                            //     print("value.type = " + value.type);
-                            //     setState(() {});
-                            //   }
-                            // });
+                            Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => new AddImageOrVideo()),
+                            ).then((value) {
+                              if (value != null) {
+                                image2[displayNumber - 1] = value.image;
+                                // typeImage2[displayNumber - 1] = value.type;
+                                // print("value.type = " + value.type);
+                                setState(() {});
+                              }
+                            });
                           })
-                      : Align(
-                          alignment: Alignment.bottomCenter,
-                          child: AspectRatio(
-                            aspectRatio: 3 / 3,
-                            child: VideoItems(
-                              videoPlayerController: VideoPlayerController.file(
-                                  image2[displayNumber - 1]),
-                              looping: true,
-                              autoplay: false,
+                      : Card(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: AspectRatio(
+                              aspectRatio: 3 / 3,
+                              child: VideoItems(
+                                videoPlayerController:
+                                    VideoPlayerController.file(
+                                        image2[displayNumber - 1]),
+                                looping: true,
+                                autoplay: false,
+                              ),
                             ),
                           ),
                         )),
@@ -587,7 +597,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           // print(image2[i].path);
                           step2.add((i + 1).toString());
 
+                          print("test111111");
                           imageData = await addloadHowtoFiles(image2[i]);
+                          print("test22222");
                           path_file.add(imageData.path);
                           type_file.add(imageData.type);
                           // print(dataImage.type);
@@ -601,15 +613,16 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         howtoData = await addHowtos(recipe_id_come.toString(),
                             description, step2, path_file, type_file, token);
 
-                        // print("postsData");
-                        // print();
-                        // print("ingredientsData");
-                        // print();
-                        // print("howtoData");
-                        // print();
-                        if(postsData.success == 1 && ingredientsData.success == 1 && howtoData.success == 1){
-                  
-                        }
+                        print("postsData");
+                        print(postsData.success);
+                        print("ingredientsData");
+                        print(ingredientsData.success);
+                        print("howtoData");
+                        print(howtoData.success);
+                        
+                        if (postsData.success == 1 &&
+                            ingredientsData.success == 1 &&
+                            howtoData.success == 1) {}
                       }
 
                       // var file;
@@ -637,19 +650,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
               )),
               // ElevatedButton(
               //     onPressed: () {
-              //       // for (var list in image2) {
-              //       //   print(list);
-              //       // }
-              //       // // var service = DBService();
-              //       // // var token = await service.readData();
-              //       // // token.forEach((token){
-              //       // //   setState(() {
-              //       // //     var tokenModel = Token_jwt();
-              //       // //     print(token['id']);
-              //       // //     print(token['token']);
-              //       // //   });
-              //       // // });
-              //       print(addImage[0].image);
+              //       for (var item in image2) {
+              //         print(item);
+              //       }
               //     },
               //     child: Text('show')),
               (addImage.length == 0)
@@ -682,6 +685,18 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         //     setState(() {});
                         //   }
                         // });
+
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new AddFood_AddImagePage()),
+                        ).then((value) {
+                          if (value != null) {
+                            print(value);
+                            addImage.add(value);
+                            setState(() {});
+                          }
+                        });
                       })
                   : InkWell(
                       child: Image.file(
@@ -692,19 +707,19 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       ),
                       onTap: () async {
                         // print("77777777777777");---------------------------------------------------------------------------------------------------------------------------------
-                        // Navigator.push(
-                        //   context,
-                        //   new MaterialPageRoute(
-                        //       builder: (context) => new AddFood_AddImagePage()),
-                        // ).then((value) {
-                        //   if (value != null) {
-                        //     // print(value);
-                        //     // addImage.add(value);
-                        //     addImage[0].image = value.image;
-                        //     // img = addImage[0].image;
-                        //     setState(() {});
-                        //   }
-                        // });
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new AddFood_AddImagePage()),
+                        ).then((value) {
+                          if (value != null) {
+                            // print(value);
+                            // addImage.add(value);
+                            addImage[0].image = value.image;
+                            // img = addImage[0].image;
+                            setState(() {});
+                          }
+                        });
                       }),
 
               Divider(

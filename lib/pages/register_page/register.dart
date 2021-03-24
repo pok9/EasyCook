@@ -207,7 +207,8 @@ class _RegisterPageState extends State<RegisterPage> {
               SharedPreferences preferences =
                   await SharedPreferences.getInstance();
               preferences.setString("tokens", response.token);
-              Navigator.pushNamed(context, '/register2-page');
+              // Navigator.pushNamed(context, '/register2-page');
+              Navigator.pushNamedAndRemoveUntil(context, '/register2-page', (Route<dynamic> route) => false);
             }
           } else {
             print("false");
