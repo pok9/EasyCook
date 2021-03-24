@@ -1,3 +1,4 @@
+import 'package:easy_cook/pages/search_page/searchRecipeName.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
     'assets/logos/stew.png',
     'assets/logos/fried.png'
   ];
-  _search() {}
+  // _search() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
                   child: TextFormField(
                     onChanged: (String txet) {
                       setState(() {
-                        
+                        print(txet);
                       });
                     },
                     controller: _controller,
@@ -61,35 +62,42 @@ class _SearchPageState extends State<SearchPage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context, '/searchRecipeName', (route) => false);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SearchRecipeName(_controller.text)));
+                  // Navigator.pushNamed(context, '/searchRecipeName',arguments: _controller.text);
+                  // Navigator.pushNamedAndRemoveUntil(context, '/searchRecipeName', (route) => false);
                 },
               ),
             ],
           ),
         ),
       ),
-      body: (_controller.text != "") ? Container() : GridView.count(
-          crossAxisCount: 4,
-          children: List.generate(6, (index) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  GestureDetector(
-                    child: CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.black,
-                      backgroundImage: AssetImage(iconFood[index]),
-                    ),
+      body: (_controller.text != "")
+          ? Container()
+          : GridView.count(
+              crossAxisCount: 4,
+              children: List.generate(6, (index) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      GestureDetector(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.black,
+                          backgroundImage: AssetImage(iconFood[index]),
+                        ),
+                      ),
+                      Text(
+                        menuFood[index],
+                        // style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ],
                   ),
-                  Text(
-                    menuFood[index],
-                    // style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
-              ),
-            );
-          })),
+                );
+              })),
     );
   }
 }

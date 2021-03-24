@@ -38,6 +38,7 @@ dependencies:
   chewie: ^0.12.2
   video_player: ^1.0.1
   flutter_typeahead: ^3.1.0
+  font_awesome_flutter: ^9.0.0
   # file_picker: ^3.0.0
   # loading: ^1.0.2 #test
   # dio: ^2.2.2

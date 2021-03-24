@@ -75,15 +75,6 @@ class _ShowFoodState extends State<ShowFood> {
     }
   }
 
-  List<String> test = [
-    "ผริกไทย",
-    "22",
-    "33asdasdasdas3333",
-    "444asdasdasdsa44",
-    "55555"
-  ];
-  // List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
-
   List<Widget> _buildList() {
     List<List<TextEditingController>> controllers =
         <List<TextEditingController>>[];
@@ -165,20 +156,21 @@ class _ShowFoodState extends State<ShowFood> {
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
               ? Card(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          height: 200,
-                          width: 400,
-                          child: Image.network(
-                            dataHowto[displayNumber].pathFile,
-                            fit: BoxFit.cover,
-                          )),
-                    ],
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Image.network(
+                    dataHowto[displayNumber].pathFile,
+                    fit: BoxFit.fill,
                   ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 5,
+                  margin: EdgeInsets.all(10),
                 )
               : Card(
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
@@ -191,7 +183,26 @@ class _ShowFoodState extends State<ShowFood> {
                       ),
                     ),
                   ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 5,
+                  margin: EdgeInsets.all(10),
                 )
+          // Card(
+          //     child: Align(
+          //       alignment: Alignment.bottomCenter,
+          //       child: AspectRatio(
+          //         aspectRatio: 6 / 3,
+          //         child: VideoItems(
+          //           videoPlayerController: VideoPlayerController.network(
+          //               dataHowto[displayNumber].pathFile),
+          //           looping: true,
+          //           autoplay: false,
+          //         ),
+          //       ),
+          //     ),
+          //   )
         ],
       );
     }).toList(); // แปลงเป็นlist
@@ -333,19 +344,32 @@ class _ShowFoodState extends State<ShowFood> {
                       thickness: 1,
                       color: Colors.grey,
                     ),
-                    Text(
-                      _newfeed.recipeName,
-                      style: kHintTextStyle3
-                    ),
+                    Text(_newfeed.recipeName, style: kHintTextStyle3),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(16.0),
+                    //   child: Container(
+
+                    //       height: 200,
+                    //       width: 300,
+                    //       child: Image.network(
+                    //         _newfeed.image,
+                    //         fit: BoxFit.cover,
+                    //       )),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Container(
-                          height: 200,
-                          width: 300,
-                          child: Image.network(
-                            _newfeed.image,
+                        width: 300,
+                        height: 200,
+                        child: ClipRRect(
+                          borderRadius: new BorderRadius.circular(24.0),
+                          child: Image(
                             fit: BoxFit.cover,
-                          )),
+                            // alignment: Alignment.topRight,
+                            image: NetworkImage(_newfeed.image),
+                          ),
+                        ),
+                      ),
                     ),
 
                     Divider(
@@ -357,7 +381,9 @@ class _ShowFoodState extends State<ShowFood> {
                       "ส่วนผสม",
                       style: kHintTextStyle3,
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     ListView(
                       padding: EdgeInsets.all(0),
                       shrinkWrap: true,

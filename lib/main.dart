@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/register3-page': (context) => RegisterPage3(),
         '/login-page': (context) => LoginPage(),
         '/feed-page':(context) => FeedPage(),
-        '/searchRecipeName' : (context) => SearchRecipeName(),
+        // '/searchRecipeName' : (context) => SearchRecipeName(),
         '/slide-page' : (context) => SlidePage(),
         // '/showfood-page': (context) => ShowFood(),
       },

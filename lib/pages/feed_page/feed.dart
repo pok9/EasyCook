@@ -91,25 +91,145 @@ class _FeedPageState extends State<FeedPage> {
       ),
       body: (token == "")
           ? Container()
-          : (newfeed == null ) ? Container() : ListView.builder(
-              itemCount: newfeed.feeds.length,
-              itemBuilder: (context, index) => index < 0
-                  ? new SizedBox(
-                      child: Container(),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        //1st row
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+          : (newfeed == null)
+              ? Container()
+              : ListView.builder(
+                  itemCount: newfeed.feeds.length,
+                  itemBuilder: (context, index) => index < 0
+                      ? new SizedBox(
+                          child: Container(),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            //1st row
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  16.0, 16.0, 8.0, 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      new Container(
+                                        height: 40.0,
+                                        width: 40.0,
+                                        decoration: new BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: new DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: new NetworkImage(newfeed
+                                                    .feeds[index]
+                                                    .profileImage))),
+                                      ),
+                                      new SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      new Text(
+                                        newfeed.feeds[index].aliasName,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                  new IconButton(
+                                      icon: Icon(Icons.more_vert),
+                                      onPressed: () {
+                                        print("more_vert" + index.toString());
+                                      })
+                                ],
+                              ),
+                            ),
+
+                            //2nd row
+                            Flexible(
+                                fit: FlexFit.loose,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // print(newfeed.feeds[index].profileImage.toString());
+                                    // Navigator.pushNamed(context, '/showfood-page',arguments: newfeed.feeds[index].rid);
+                                    Navigator.push(context,
+                                        CupertinoPageRoute(builder: (context) {
+                                      return ShowFood(newfeed.feeds[index]);
+                                    }));
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    child: Container(
+                                      width: 300,
+                                      height: 300,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            new BorderRadius.circular(24.0),
+                                        child: Image(
+                                          fit: BoxFit.cover,
+                                          // alignment: Alignment.topRight,
+                                          image: NetworkImage(
+                                              newfeed.feeds[index].image),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  // child: new Image.network(
+                                  //   //รูปอาหาร
+                                  //   newfeed.feeds[index].image,
+                                  //   height: 500,
+                                  //   fit: BoxFit.fill,
+                                  // ),
+                                )),
+
+                            //3rd row
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  new Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.black,
+                                      ),
+                                      new SizedBox(
+                                        width: 16.0,
+                                      ),
+                                      Icon(Icons.chat_bubble_outline,
+                                          color: Colors.black),
+                                      new SizedBox(
+                                        width: 16.0,
+                                      ),
+                                      Icon(Icons.share, color: Colors.black),
+                                    ],
+                                  ),
+                                  Icon(Icons.bookmark_border,
+                                      color: Colors.black),
+                                ],
+                              ),
+                            ),
+
+                            //4th row
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text(
+                                "Liked by pawankumar, pk and 528,331 others",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+
+                            //5th row
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  16.0, 16.0, 16.0, 16.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   new Container(
                                     height: 40.0,
@@ -124,127 +244,36 @@ class _FeedPageState extends State<FeedPage> {
                                   new SizedBox(
                                     width: 10.0,
                                   ),
-                                  new Text(
-                                    newfeed.feeds[index].aliasName,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
+                                  Expanded(
+                                    child: new TextField(
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      decoration: new InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "เพิ่ม คอมเมนต์...",
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                              new IconButton(
-                                  icon: Icon(Icons.more_vert),
-                                  onPressed: () {
-                                    print("more_vert" + index.toString());
-                                  })
-                            ],
-                          ),
+                            ),
+
+                            //6th row
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text(
+                                "1 วันที่แล้ว",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            Divider(
+                              thickness: 1,
+                              color: Colors.grey,
+                            ),
+                          ],
                         ),
-
-                        //2nd row
-                        Flexible(
-                            fit: FlexFit.loose,
-                            child: GestureDetector(
-                              onTap: () {
-                                // print(newfeed.feeds[index].profileImage.toString());
-                                // Navigator.pushNamed(context, '/showfood-page',arguments: newfeed.feeds[index].rid);
-                                Navigator.push(context,
-                                    CupertinoPageRoute(builder: (context) {
-                                  return ShowFood(newfeed.feeds[index]);
-                                }
-                                ));
-                              },
-                              child: new Image.network(
-                                //รูปอาหาร
-                                newfeed.feeds[index].image,
-                                height: 500,
-                                fit: BoxFit.fill,
-                              ),
-                            )),
-
-                        //3rd row
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              new Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Icon(
-                                    Icons.favorite_border,
-                                    color: Colors.black,
-                                  ),
-                                  new SizedBox(
-                                    width: 16.0,
-                                  ),
-                                  Icon(Icons.chat_bubble_outline,
-                                      color: Colors.black),
-                                  new SizedBox(
-                                    width: 16.0,
-                                  ),
-                                  Icon(Icons.share, color: Colors.black),
-                                ],
-                              ),
-                              Icon(Icons.bookmark_border, color: Colors.black),
-                            ],
-                          ),
-                        ),
-
-                        //4th row
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            "Liked by pawankumar, pk and 528,331 others",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        //5th row
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              new Container(
-                                height: 40.0,
-                                width: 40.0,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: new NetworkImage(newfeed
-                                            .feeds[index].profileImage))),
-                              ),
-                              new SizedBox(
-                                width: 10.0,
-                              ),
-                              Expanded(
-                                child: new TextField(
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: null,
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "เพิ่ม คอมเมนต์...",
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        //6th row
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            "1 วันที่แล้ว",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        )
-                      ],
-                    ),
-            ),
+                ),
       //   floatingActionButton: FloatingActionButton(
       //   onPressed: ()  {
 
