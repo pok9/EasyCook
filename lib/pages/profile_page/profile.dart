@@ -1,4 +1,3 @@
-
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
@@ -20,7 +19,7 @@ Datum dataUser;
 
 //NewfeedsProfile
 NewfeedsProfile newfeed;
-Feed post;
+// Feed post;
 
 class _ProfilePageState extends State<ProfilePage> {
   // _ProfilePageState() {
@@ -128,16 +127,31 @@ class _ProfilePageState extends State<ProfilePage> {
                       await SharedPreferences.getInstance();
                   preferences.setString("tokens", "");
                   // Navigator.pushNamed(context, '/login-page');
-                  Navigator.pushNamedAndRemoveUntil(context, '/login-page', (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/login-page', (route) => false);
                   // Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => LoginPage()) );
                 },
               )
             ],
           )),
-      body: (token == "")
-          ? Container()
-          : (dataUser == null)
-              ? Container()
+      body: (token == "" || newfeed == null)
+          ? AlertDialog(
+              content: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("กรุณารอสักครู่...   "),
+                CircularProgressIndicator()
+              ],
+            ))
+          : (dataUser == null || newfeed == null)
+              ? AlertDialog(
+                  content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("กรุณารอสักครู่...   "),
+                    CircularProgressIndicator()
+                  ],
+                ))
               : ListView(
                   children: [
                     SizedBox(
@@ -242,7 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Column(
                                 children: [
                                   Text(
-                                    '10',
+                                    newfeed.feeds.length.toString(),
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,

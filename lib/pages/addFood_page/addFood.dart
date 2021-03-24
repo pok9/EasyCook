@@ -622,7 +622,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         
                         if (postsData.success == 1 &&
                             ingredientsData.success == 1 &&
-                            howtoData.success == 1) {}
+                            howtoData.success == 1) {
+                              Navigator.pushNamedAndRemoveUntil(context, '/slide-page', (route) => false);
+                            }
                       }
 
                       // var file;

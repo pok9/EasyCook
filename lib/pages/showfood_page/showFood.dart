@@ -28,8 +28,20 @@ ShowFoods dataFood;
 List<Ingredient> dataIngredient;
 List<Howto> dataHowto;
 
+showdialog(context) {
+  return showDialog(
+      context: context,
+      builder: (contex) {
+        return AlertDialog(
+            content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text("กรุณารอสักครู่...   "), CircularProgressIndicator()],
+        ));
+      });
+}
+
 class _ShowFoodState extends State<ShowFood> {
-  Feed _newfeed;
+  var _newfeed;
   _ShowFoodState(var newfeed) {
     this._newfeed = newfeed;
   }
@@ -37,7 +49,7 @@ class _ShowFoodState extends State<ShowFood> {
   void initState() {
     super.initState();
     findUser();
-    getPost();
+
     // print(dataHowto[0].description);
   }
 
@@ -46,13 +58,14 @@ class _ShowFoodState extends State<ShowFood> {
 
     setState(() {
       token = preferences.getString("tokens");
+      getPost();
     });
   }
 
   Future<Null> getPost() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/getPost/" +
         _newfeed.rid.toString();
-
+    print("xxlToken = " + token);
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("response = " + response.statusCode.toString());
@@ -88,14 +101,14 @@ class _ShowFoodState extends State<ShowFood> {
     //   }
     // }
 
-    //  if (5 < controllers.length) {
-    for (i = 0; i < dataIngredient.length; i++) {
-      var ctl = <TextEditingController>[];
-      ctl.add(TextEditingController());
-      // ctl.add(TextEditingController());
-      controllers.add(ctl);
+    if (0 < dataIngredient.length) {
+      for (i = 0; i < dataIngredient.length; i++) {
+        var ctl = <TextEditingController>[];
+        ctl.add(TextEditingController());
+        // ctl.add(TextEditingController());
+        controllers.add(ctl);
+      }
     }
-    // }
 
     i = 0;
 
@@ -124,14 +137,14 @@ class _ShowFoodState extends State<ShowFood> {
     List<List<TextEditingController>> controllers2 =
         <List<TextEditingController>>[];
     int i;
-    // if (controllers.length < 5) {
-    for (i = 0; i < dataHowto.length; i++) {
-      var ctl = <TextEditingController>[];
-      ctl.add(TextEditingController());
-      // ctl.add(TextEditingController());
-      controllers2.add(ctl);
+    if (0 < dataHowto.length) {
+      for (i = 0; i < dataHowto.length; i++) {
+        var ctl = <TextEditingController>[];
+        ctl.add(TextEditingController());
+        // ctl.add(TextEditingController());
+        controllers2.add(ctl);
+      }
     }
-    // }
 
     i = 0;
 
@@ -288,8 +301,15 @@ class _ShowFoodState extends State<ShowFood> {
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(),
       ),
-      body: (token == "")
-          ? Container()
+      body: (token == "" || _newfeed == null && test == null && test2 == null)
+          ? AlertDialog(
+              content: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("กรุณารอสักครู่...   "),
+                CircularProgressIndicator()
+              ],
+            ))
           : ListView(
               children: [
                 Column(
@@ -327,9 +347,12 @@ class _ShowFoodState extends State<ShowFood> {
                           child: CircleAvatar(
                             radius: 22,
                             backgroundColor: Colors.grey[300],
-                            child: Icon(
-                              Icons.add,
+                            child: IconButton(
+                              icon: const Icon(Icons.add),
                               color: Colors.black,
+                              onPressed: () {
+                                setState(() {});
+                              },
                             ),
                           ),
                         )

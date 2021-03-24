@@ -90,14 +90,35 @@ class _FeedPageState extends State<FeedPage> {
         ),
       ),
       body: (token == "")
-          ? Container()
+          ? AlertDialog(
+              content: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("กรุณารอสักครู่...   "),
+                CircularProgressIndicator()
+              ],
+            ))
           : (newfeed == null)
-              ? Container()
+              ? AlertDialog(
+                  content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("กรุณารอสักครู่...   "),
+                    CircularProgressIndicator()
+                  ],
+                ))
               : ListView.builder(
                   itemCount: newfeed.feeds.length,
                   itemBuilder: (context, index) => index < 0
                       ? new SizedBox(
-                          child: Container(),
+                          child: AlertDialog(
+                              content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("กรุณารอสักครู่...   "),
+                              CircularProgressIndicator()
+                            ],
+                          )),
                         )
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -151,6 +172,7 @@ class _FeedPageState extends State<FeedPage> {
                                   onTap: () {
                                     // print(newfeed.feeds[index].profileImage.toString());
                                     // Navigator.pushNamed(context, '/showfood-page',arguments: newfeed.feeds[index].rid);
+                                    // print(newfeed.feeds[index].);
                                     Navigator.push(context,
                                         CupertinoPageRoute(builder: (context) {
                                       return ShowFood(newfeed.feeds[index]);
