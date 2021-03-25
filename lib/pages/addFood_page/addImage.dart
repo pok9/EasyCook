@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class AddFood_AddImagePage extends StatefulWidget {
   AddFood_AddImagePage({Key key}) : super(key: key);
@@ -47,29 +48,7 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
 
                   AddImage addImage = new AddImage(File(file.path));
                   Navigator.pop(context, addImage);
-                  // print(file.name);
-                  // print(file.bytes);
-                  // print(file.size);
-                  // print(file.extension);
-                  // print(file.path);
-                } else {
-                  // User canceled the picker
-                }
-
-                // pickedFile =
-                //     await _picker.getImage(source: ImageSource.gallery);
-
-                // img = File(pickedFile.path);
-
-                // // print()
-                // // print();
-                // // print("pickedFile = "+pickedFile.);
-                // AddImage addImage = new AddImage(
-                //   img,
-                //   "image"
-                // );
-                // Navigator.pop(context, addImage);
-                // setState(() {});
+                } else {}
               },
               child: Container(
                 color: Colors.blue,
@@ -89,19 +68,8 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
             ),
             GestureDetector(
               onTap: () async {
-                // pickedFile =
-                //     await _picker.getImage(source: ImageSource.camera);
-
-                // img = File(pickedFile.path);
-
-                // print(img);
-                // // print("pickedFile = "+pickedFile.);
-                // AddImage addImage = new AddImage(
-                //   img,
-                //   "image"
-                // );
-                // Navigator.pop(context, addImage);
-                // setState(() {});
+                // var image = await ImagePicker.pickImage(source: ImageSource.camera);
+                // print(image);
               },
               child: Container(
                 color: Colors.blue,

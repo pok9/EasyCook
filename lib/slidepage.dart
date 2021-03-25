@@ -15,6 +15,8 @@ class SlidePage extends StatefulWidget {
 }
 
 class _SlidePageState extends State<SlidePage> {
+  
+
    var _currentIndex = 0;
   @override
   Widget build(BuildContext context) {

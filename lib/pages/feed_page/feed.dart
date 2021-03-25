@@ -90,14 +90,7 @@ class _FeedPageState extends State<FeedPage> {
         ),
       ),
       body: (token == "")
-          ? AlertDialog(
-              content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("กรุณารอสักครู่...   "),
-                CircularProgressIndicator()
-              ],
-            ))
+          ? Container()
           : (newfeed == null)
               ? AlertDialog(
                   content: Row(

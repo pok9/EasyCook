@@ -214,7 +214,8 @@ class _LoginPageState extends State<LoginPage> {
             // var data = token_jwt.Token_jwtMap();
             // service.insertData(data);
             ///////////////////////////////
-            Navigator.pushNamedAndRemoveUntil(context, '/slide-page', (route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/slide-page', (route) => false);
             // Navigator.pushReplacement(
             //   context,
             //   new MaterialPageRoute(
@@ -303,7 +304,10 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-            () => print('Login with Facebook'),
+            () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/slide-page', (Route<dynamic> route) => false);
+            },
             AssetImage(
               'assets/logos/facebook.jpg',
             ),
@@ -323,7 +327,8 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: () {
         // Navigator.pushNamed(context, '/register-page');
-        Navigator.pushNamedAndRemoveUntil(context, '/register-page', (Route<dynamic> route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/register-page', (Route<dynamic> route) => false);
       },
       child: RichText(
         text: TextSpan(

@@ -134,15 +134,173 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             ],
           )),
-      body: (token == "" || newfeed == null)
-          ? AlertDialog(
-              content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: (token == "")
+          ? ListView(
               children: [
-                Text("กรุณารอสักครู่...   "),
-                CircularProgressIndicator()
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 110,
+                      width: 110,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xffe43e68),
+                            const Color(0xfffaa449)
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Center(
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: NetworkImage('http://apifood.comsciproject.com/uploadProfile/img_avatar.png'),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'User',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            foreground: Paint()..shader = linearGradient,
+                          ),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            InkWell(
+                              child: Container(
+                                height: 50,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      const Color(0xffe43e68),
+                                      const Color(0xfffaa449),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'แก้ไขโปรไฟล์',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onTap: () {
+                                print("5555");
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      Divider(
+                        thickness: 1,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                '???',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                'โพสต์',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                '???',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                'ผู้ติดตาม',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                '???',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                'กำลังติดตาม',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                       SizedBox(
+                        height: 10,
+                      ),
+                      Divider(
+                        thickness: 1,
+                      ),
+                    ],
+                  ),
+                ), //เส่น hr
               ],
-            ))
+            )
           : (dataUser == null || newfeed == null)
               ? AlertDialog(
                   content: Row(
