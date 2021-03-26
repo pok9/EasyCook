@@ -246,7 +246,26 @@ class _SearchPageState extends State<SearchPage> {
                                     ),
                                   ),
                                 )),
-                  Icon(Icons.movie),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: (){print("test = "+index.toString());},
+                          child: ListTile(
+                            title: Text('data'),
+                            subtitle: Text('this'),
+                            leading: CircleAvatar(
+                              child: Text('sss'),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  // Icon(Icons.movie),
                   Icon(Icons.games),
                 ]),
               ))
