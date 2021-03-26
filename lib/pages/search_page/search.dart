@@ -1,4 +1,5 @@
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
+import 'package:easy_cook/models/search/searchUsername_model.dart';
 import 'package:easy_cook/pages/search_page/searchRecipeName.dart';
 import 'package:easy_cook/pages/showfood_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +15,14 @@ class SearchPage extends StatefulWidget {
 }
 
 String token = ""; //โทเคน
+
+//ข้อมูลสูตรอาหาร
 List<Datum> dataRecipe;
+
+//ข้อมูลผู้ใช้
+List<DataUser> dataUser;
+
+
 bool body = true;
 
 class _SearchPageState extends State<SearchPage> {
@@ -52,6 +60,28 @@ class _SearchPageState extends State<SearchPage> {
         // print(dataRecipe[0].recipeName);
         // datas = myAccountFromJson(responseString);
         // dataUser = datas.data[0];
+      });
+    } else {
+      flag = true;
+      return null;
+    }
+  }
+
+  Future<Null> getSearchUserNames(String userName) async {
+    dataUser = [];
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjUsers/searchUser/" + userName;
+
+    print("token = " + token);
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        // dataRecipe = searchRecipeNameFromJson(responseString).data;
+        dataUser = searchUserNameFromJson(responseString).data;
       });
     } else {
       flag = true;
@@ -97,16 +127,39 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   child: TextFormField(
                     onTap: () {
-                      body = false;
+                      
+                      if(body == true){
+                        
+                        // Navigator.pushNamed(context, '/search-page');
+                         body = false;
+                        Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => new SearchPage()),
+                            ).then((value) {
+                              // if (value != null) {
+                              //   image2[displayNumber - 1] = value.image;
+                              //   // typeImage2[displayNumber - 1] = value.type;
+                              //   // print("value.type = " + value.type);
+                              //   
+                              // }
+                              body = true;
+                              setState(() {});
+                            });
+                        
+                      }
+                      //
+                      // 
                       print(body);
                       setState(() {});
                     },
                     onChanged: (String text) {
                       setState(() {
-                        if (text == "") {
-                          body = true;
-                        }
+                        // if (text == "") {
+                        //   body = true;
+                        // }
                         getSearchRecipeNames(text);
+                        getSearchUserNames(text);
                       });
                     },
                     controller: _controller,
@@ -249,16 +302,22 @@ class _SearchPageState extends State<SearchPage> {
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: ListView.builder(
-                      itemCount: 5,
+                      itemCount: dataUser.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: (){print("test = "+index.toString());},
                           child: ListTile(
-                            title: Text('data'),
-                            subtitle: Text('this'),
-                            leading: CircleAvatar(
-                              child: Text('sss'),
-                            ),
+                            title: Text(dataUser[index].aliasName),
+                            subtitle: Text(dataUser[index].nameSurname),
+                            leading: Container(
+                                        height: 40.0,
+                                        width: 40.0,
+                                        decoration: new BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: new DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: new NetworkImage(dataUser[index].profileImage))),
+                                      ),
                           ),
                         );
                       },
