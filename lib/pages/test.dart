@@ -65,6 +65,7 @@ class _testState extends State<test> {
                 Icon(Icons.movie),
                 Icon(Icons.games),
               ]),
-            )));
+            ))
+            );
   }
 }

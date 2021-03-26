@@ -77,10 +77,9 @@ class _SearchPageState extends State<SearchPage> {
     'assets/logos/fried.png'
   ];
   // _search() {}
-  
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('ค้นหา'),
@@ -97,17 +96,14 @@ class _SearchPageState extends State<SearchPage> {
                     borderRadius: BorderRadius.circular(24.0),
                   ),
                   child: TextFormField(
-                    onTap: (){
-                      
+                    onTap: () {
                       body = false;
                       print(body);
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     },
                     onChanged: (String text) {
                       setState(() {
-                        if(text == ""){
+                        if (text == "") {
                           body = true;
                         }
                         getSearchRecipeNames(text);
@@ -115,7 +111,7 @@ class _SearchPageState extends State<SearchPage> {
                     },
                     controller: _controller,
                     decoration: InputDecoration(
-                        hintText: "ค้นหาสูตรอาหาร",
+                        hintText: "ค้นหา",
                         contentPadding: const EdgeInsets.only(left: 24.0),
                         border: InputBorder.none),
                   ),
@@ -143,89 +139,185 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
       body: (_controller.text != "")
-          ? ListView.builder(
-              itemCount: dataRecipe.length,
-              itemBuilder: (context, index) => (index < 0 && flag)
-                  ? new SizedBox(
-                      child: Container(),
-                    )
-                  : (dataRecipe == null)
-                      ? Container()
-                      : Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              print("index = " + index.toString());
-                              print(dataRecipe[index]);
-                              // Navigator.pushReplacement(context, newRoute)
-                               Navigator.push(context,
-                                        CupertinoPageRoute(builder: (context) {
-                                      return ShowFood(dataRecipe[index]);
-                                    }));
-                            },
-                            child: Container(
-                              child: FittedBox(
-                                child: Material(
-                                  color: Colors.white,
-                                  elevation: 14.0,
-                                  borderRadius: BorderRadius.circular(24.0),
-                                  shadowColor: Color(0x802196F3),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 16.0),
-                                          child: myDetailsContainer3(
-                                              dataRecipe, index),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 50,
-                                      ),
-                                      Container(
-                                        width: 250,
-                                        height: 180,
-                                        child: ClipRRect(
+          ? DefaultTabController(
+              length: 3,
+              child: Scaffold(
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(50.0),
+                  child: AppBar(
+                    // backgroundColor: Colors.redAccent,
+                    elevation: 0,
+                    bottom: TabBar(
+                        labelColor: Colors.black,
+                        unselectedLabelColor: Colors.white,
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicator: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                            color: Colors.grey[50]),
+                        tabs: [
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("ค้นชื่อสูตรอาหาร"),
+                            ),
+                          ),
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("ค้นชื่อผู้ใช้"),
+                            ),
+                          ),
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("ค้นชื่อวัตถุดิบ"),
+                            ),
+                          ),
+                        ]),
+                  ),
+                ),
+                body: TabBarView(children: [
+                  ListView.builder(
+                      itemCount: dataRecipe.length,
+                      itemBuilder: (context, index) => (index < 0 && flag)
+                          ? new SizedBox(
+                              child: Container(),
+                            )
+                          : (dataRecipe == null)
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print("index = " + index.toString());
+                                      print(dataRecipe[index]);
+                                      // Navigator.pushReplacement(context, newRoute)
+                                      Navigator.push(context,
+                                          CupertinoPageRoute(
+                                              builder: (context) {
+                                        return ShowFood(dataRecipe[index]);
+                                      }));
+                                    },
+                                    child: Container(
+                                      child: FittedBox(
+                                        child: Material(
+                                          color: Colors.white,
+                                          elevation: 14.0,
                                           borderRadius:
-                                              new BorderRadius.circular(24.0),
-                                          child: Image(
-                                            fit: BoxFit.cover,
-                                            alignment: Alignment.topRight,
-                                            image: NetworkImage(
-                                                dataRecipe[index].image),
+                                              BorderRadius.circular(24.0),
+                                          shadowColor: Color(0x802196F3),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 16.0),
+                                                  child: myDetailsContainer3(
+                                                      dataRecipe, index),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 50,
+                                              ),
+                                              Container(
+                                                width: 250,
+                                                height: 180,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          24.0),
+                                                  child: Image(
+                                                    fit: BoxFit.cover,
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    image: NetworkImage(
+                                                        dataRecipe[index]
+                                                            .image),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ],
+                                    ),
                                   ),
+                                )),
+                  Icon(Icons.movie),
+                  Icon(Icons.games),
+                ]),
+              ))
+          : (body == false)
+              ? DefaultTabController(
+                  length: 3,
+                  child: Scaffold(
+                    appBar: PreferredSize(
+                      preferredSize: Size.fromHeight(50.0),
+                      child: AppBar(
+                        // backgroundColor: Colors.redAccent,
+                        elevation: 0,
+                        bottom: TabBar(
+                            labelColor: Colors.black,
+                            unselectedLabelColor: Colors.white,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            indicator: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                color: Colors.grey[50]),
+                            tabs: [
+                              Tab(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("ค้นชื่อสูตรอาหาร"),
                                 ),
                               ),
+                              Tab(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("ค้นชื่อผู้ใช้"),
+                                ),
+                              ),
+                              Tab(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("ค้นชื่อวัตถุดิบ"),
+                                ),
+                              ),
+                            ]),
+                      ),
+                    ),
+                    // body: TabBarView(children: [
+                    //   Icon(Icons.apps),
+                    //   Icon(Icons.movie),
+                    //   Icon(Icons.games),
+                    // ]),
+                  ))
+              : GridView.count(
+                  crossAxisCount: 4,
+                  children: List.generate(6, (index) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          GestureDetector(
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.black,
+                              backgroundImage: AssetImage(iconFood[index]),
                             ),
                           ),
-                        ))
-          : (body == false) ? Container() : GridView.count(
-              crossAxisCount: 4,
-              children: List.generate(6, (index) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      GestureDetector(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.black,
-                          backgroundImage: AssetImage(iconFood[index]),
-                        ),
+                          Text(
+                            menuFood[index],
+                            // style: Theme.of(context).textTheme.headline5,
+                          ),
+                        ],
                       ),
-                      Text(
-                        menuFood[index],
-                        // style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                );
-              })),
+                    );
+                  })),
     );
   }
 }
