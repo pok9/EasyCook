@@ -15,6 +15,7 @@ class SearchPage extends StatefulWidget {
 
 String token = ""; //โทเคน
 List<Datum> dataRecipe;
+bool body = true;
 
 class _SearchPageState extends State<SearchPage> {
   @override
@@ -76,8 +77,10 @@ class _SearchPageState extends State<SearchPage> {
     'assets/logos/fried.png'
   ];
   // _search() {}
+  
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('ค้นหา'),
@@ -94,8 +97,19 @@ class _SearchPageState extends State<SearchPage> {
                     borderRadius: BorderRadius.circular(24.0),
                   ),
                   child: TextFormField(
+                    onTap: (){
+                      
+                      body = false;
+                      print(body);
+                      setState(() {
+                        
+                      });
+                    },
                     onChanged: (String text) {
                       setState(() {
+                        if(text == ""){
+                          body = true;
+                        }
                         getSearchRecipeNames(text);
                       });
                     },
@@ -190,7 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ),
                         ))
-          : GridView.count(
+          : (body == false) ? Container() : GridView.count(
               crossAxisCount: 4,
               children: List.generate(6, (index) {
                 return Center(
