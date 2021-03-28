@@ -1,7 +1,8 @@
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
 import 'package:easy_cook/pages/search_page/searchRecipeName.dart';
-import 'package:easy_cook/pages/showfood_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -48,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
 
     print("token = " + token);
     final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+        .get(Uri.parse(apiUrl));
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
@@ -62,7 +63,7 @@ class _SearchPageState extends State<SearchPage> {
         // dataUser = datas.data[0];
       });
     } else {
-      flag = true;
+      // flag = true;
       return null;
     }
   }
@@ -74,7 +75,7 @@ class _SearchPageState extends State<SearchPage> {
 
     print("token = " + token);
     final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+        .get(Uri.parse(apiUrl));
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
@@ -84,7 +85,7 @@ class _SearchPageState extends State<SearchPage> {
         dataUser = searchUserNameFromJson(responseString).data;
       });
     } else {
-      flag = true;
+      // flag = true;
       return null;
     }
   }
@@ -166,7 +167,10 @@ class _SearchPageState extends State<SearchPage> {
                     decoration: InputDecoration(
                         hintText: "ค้นหา",
                         contentPadding: const EdgeInsets.only(left: 24.0),
-                        border: InputBorder.none),
+                        border: InputBorder.none,
+                        enabled: true
+                        // filled: true
+                        ),
                   ),
                 ),
               ),
@@ -234,7 +238,7 @@ class _SearchPageState extends State<SearchPage> {
                 body: TabBarView(children: [
                   ListView.builder(
                       itemCount: dataRecipe.length,
-                      itemBuilder: (context, index) => (index < 0 && flag)
+                      itemBuilder: (context, index) => (index < 0)
                           ? new SizedBox(
                               child: Container(),
                             )
@@ -305,7 +309,18 @@ class _SearchPageState extends State<SearchPage> {
                       itemCount: dataUser.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: (){print("test = "+index.toString());},
+                          onTap: (){
+                            print("test = "+index.toString());
+                            print(dataUser[index].userId);
+                            print(dataUser[index].aliasName);
+                            print(dataUser[index].nameSurname);
+                            print(dataUser[index].profileImage);
+                            Navigator.push(context,
+                                          CupertinoPageRoute(
+                                              builder: (context) {
+                                        return ProfileUser(dataUser[index].aliasName,dataUser[index].nameSurname,dataUser[index].profileImage);
+                                      }));
+                            },
                           child: ListTile(
                             title: Text(dataUser[index].aliasName),
                             subtitle: Text(dataUser[index].nameSurname),

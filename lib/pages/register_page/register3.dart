@@ -124,7 +124,6 @@ class _RegisterPage3State extends State<RegisterPage3> {
           height: 60.0,
           child: TextField(
             controller: _ctrlNickName,
-            obscureText: true,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',

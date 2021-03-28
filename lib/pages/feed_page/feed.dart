@@ -5,7 +5,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:easy_cook/pages/showfood_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 class FeedPage extends StatefulWidget {
   @override

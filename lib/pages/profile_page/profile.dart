@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
@@ -108,8 +110,71 @@ class _ProfilePageState extends State<ProfilePage> {
   final Shader linearGradient = LinearGradient(
     colors: <Color>[Color(0xffe433e68), Color(0xfffaa449)],
   ).createShader(Rect.fromLTRB(0.0, 0.0, 200.0, 70.0));
+
+  int selectedIndex = 0; //navbar
+  Color backgroundColor = Colors.white;
+
+  Widget _buildItem(NavigationItem item, bool isSelected) {
+    //navbar
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 270),
+      width: isSelected ? 125 : 50,
+      padding: isSelected ? EdgeInsets.only(left: 16, right: 16) : null,
+      height: double.maxFinite,
+      decoration: isSelected
+          ? BoxDecoration(
+              color: item.color,
+              borderRadius: BorderRadius.all(Radius.circular(50)))
+          : null,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconTheme(
+                data: IconThemeData(size: 24),
+                child: item.icon,
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: isSelected
+                      ? DefaultTextStyle.merge(
+                          style: TextStyle(color: backgroundColor),
+                          child: item.title)
+                      : Container())
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  List<NavigationItem> items = [
+    NavigationItem(
+        Icon(
+          Icons.web,
+        ),
+        Text('สูตรอาหาร'),
+        Colors.deepPurpleAccent),
+    NavigationItem(
+        Icon(
+          Icons.image,
+        ),
+        Text('รูป'),
+        Colors.amber),
+    NavigationItem(
+        Icon(
+          Icons.play_circle_outline,
+          // size: 28,
+        ),
+        Text('วิดีโอ'),
+        Colors.cyan),
+  ];
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -162,7 +227,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.grey,
-                          backgroundImage: NetworkImage('http://apifood.comsciproject.com/uploadProfile/img_avatar.png'),
+                          backgroundImage: NetworkImage(
+                              'http://apifood.comsciproject.com/uploadProfile/img_avatar.png'),
                         ),
                       ),
                     ),
@@ -290,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: 10,
                       ),
                       Divider(
@@ -577,6 +643,75 @@ class _ProfilePageState extends State<ProfilePage> {
                           Divider(
                             thickness: 1,
                           ),
+                          Container(
+                            color: Colors.white70,
+                            height: 56,
+                            padding: EdgeInsets.only(
+                                left: 8, top: 4, bottom: 4, right: 8),
+                            // decoration: BoxDecoration(
+                            //   color: backgroundColor,
+                            //   boxShadow: [
+                            //     BoxShadow(
+                            //       color: Colors.black12,
+                            //       blurRadius: 4
+                            //     )
+                            //   ]
+                            // ),
+                            width: MediaQuery.of(context).size.width,
+                            child: Material(
+                              elevation: 1,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: items.map((item) {
+                                  var itemIndex = items.indexOf(item);
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        // print(selectedIndex);
+                                        selectedIndex = itemIndex;
+                                        print(selectedIndex);
+                                      });
+                                    },
+                                    child: _buildItem(
+                                        item, selectedIndex == itemIndex),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+
+                          // Material(
+                          //   elevation: 1,
+                          //   child: Container(
+                          //     height: 56,
+                          //     child: Row(
+                          //       mainAxisAlignment:
+                          //           MainAxisAlignment.spaceEvenly,
+
+                          //       children: [
+                          //         Icon(
+                          //           Icons.web,
+                          //           color: Colors.black,
+                          //           size: 28,
+                          //         ),
+                          //         Icon(
+                          //           Icons.image,
+                          //           color: Colors.black,
+                          //           size: 28,
+                          //         ),
+                          //         Icon(
+                          //           Icons.play_circle_outline,
+                          //           color: Colors.black,
+                          //           size: 28,
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           //         ListView.builder(
                           //   itemCount: 5,
                           //   itemBuilder: (context, index) => index < 0
@@ -721,155 +856,392 @@ class _ProfilePageState extends State<ProfilePage> {
                               ? new SizedBox(
                                   child: Container(),
                                 )
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    //1st row
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16.0, 16.0, 8.0, 16.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              new Container(
-                                                height: 40.0,
-                                                width: 40.0,
-                                                decoration: new BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: new DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image: new NetworkImage(
-                                                            newfeed.feeds[0]
-                                                                .profileImage))),
-                                              ),
-                                              new SizedBox(
-                                                width: 10.0,
-                                              ),
-                                              new Text(
-                                                newfeed.feeds[0].aliasName,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                          new IconButton(
-                                              icon: Icon(Icons.more_vert),
-                                              onPressed: () {
-                                                //print("more_vert" + index.toString());
-                                              })
-                                        ],
-                                      ),
-                                    ),
+                              : (selectedIndex == 0)
+                                  ? Container(
+                                          height: size.height * 0.60 - 56,
+                                          padding: EdgeInsets.only(
+                                              left: 16,
+                                              right: 16,
+                                              top: 0,
+                                              bottom: 24),
+                                          child: GridView.count(
+                                            crossAxisCount: 1,
+                                            crossAxisSpacing: 8,
+                                            mainAxisSpacing: 8,
+                                            physics: BouncingScrollPhysics(),
+                                            children: List.generate(
+                                                newfeed.feeds.length, (index) {
+                                              return Container(
+                                                  child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.stretch,
+                                                children: [
+                                                  //1st row
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        16.0, 16.0, 8.0, 16.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            new Container(
+                                                              height: 40.0,
+                                                              width: 40.0,
+                                                              decoration: new BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  image: new DecorationImage(
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                      image: new NetworkImage(newfeed
+                                                                          .feeds[
+                                                                              index]
+                                                                          .profileImage))),
+                                                            ),
+                                                            new SizedBox(
+                                                              width: 10.0,
+                                                            ),
+                                                            new Text(
+                                                              newfeed.feeds[index]
+                                                                  .aliasName,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        new IconButton(
+                                                            icon: Icon(Icons
+                                                                .more_vert),
+                                                            onPressed: () {
+                                                              //print("more_vert" + index.toString());
+                                                            })
+                                                      ],
+                                                    ),
+                                                  ),
 
-                                    //2nd row
-                                    Flexible(
-                                      fit: FlexFit.loose,
-                                      child: new Image.network(
-                                        //รูปอาหาร
-                                        newfeed.feeds[0].image,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                                  //2nd row
+                                                  Flexible(
+                                                    fit: FlexFit.loose,
+                                                    child: new Image.network(
+                                                      //รูปอาหาร
+                                                      newfeed.feeds[index].image,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
 
-                                    //3rd row
-                                    Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          new Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Icon(
-                                                Icons.favorite_border,
-                                                color: Colors.black,
-                                              ),
-                                              new SizedBox(
-                                                width: 16.0,
-                                              ),
-                                              Icon(Icons.chat_bubble_outline,
-                                                  color: Colors.black),
-                                              new SizedBox(
-                                                width: 16.0,
-                                              ),
-                                              Icon(Icons.share,
-                                                  color: Colors.black),
-                                            ],
-                                          ),
-                                          Icon(Icons.bookmark_border,
-                                              color: Colors.black),
-                                        ],
-                                      ),
-                                    ),
+                                                  //3rd row
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        new Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .favorite_border,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                            new SizedBox(
+                                                              width: 16.0,
+                                                            ),
+                                                            Icon(
+                                                                Icons
+                                                                    .chat_bubble_outline,
+                                                                color: Colors
+                                                                    .black),
+                                                            new SizedBox(
+                                                              width: 16.0,
+                                                            ),
+                                                            Icon(Icons.share,
+                                                                color: Colors
+                                                                    .black),
+                                                          ],
+                                                        ),
+                                                        Icon(
+                                                            Icons
+                                                                .bookmark_border,
+                                                            color:
+                                                                Colors.black),
+                                                      ],
+                                                    ),
+                                                  ),
 
-                                    //4th row
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: Text(
-                                        "Liked by pawankumar, pk and 528,331 others",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
+                                                  //4th row
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16.0),
+                                                    child: Text(
+                                                      "Liked by pawankumar, pk and 528,331 others",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
 
-                                    //5th row
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16.0, 16.0, 16.0, 16.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          new Container(
-                                            height: 40.0,
-                                            width: 40.0,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: new NetworkImage(
-                                                        newfeed.feeds[0]
-                                                            .profileImage))),
-                                          ),
-                                          new SizedBox(
-                                            width: 10.0,
-                                          ),
-                                          Expanded(
-                                            child: new TextField(
-                                              keyboardType:
-                                                  TextInputType.multiline,
-                                              maxLines: null,
-                                              decoration: new InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText: "เพิ่ม คอมเมนต์...",
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                                  //5th row
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        16.0, 16.0, 16.0, 16.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        new Container(
+                                                          height: 40.0,
+                                                          width: 40.0,
+                                                          decoration: new BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              image: new DecorationImage(
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                  image: new NetworkImage(
+                                                                      newfeed
+                                                                          .feeds[
+                                                                              index]
+                                                                          .profileImage))),
+                                                        ),
+                                                        new SizedBox(
+                                                          width: 10.0,
+                                                        ),
+                                                        Expanded(
+                                                          child: new TextField(
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .multiline,
+                                                            maxLines: null,
+                                                            decoration:
+                                                                new InputDecoration(
+                                                              border:
+                                                                  InputBorder
+                                                                      .none,
+                                                              hintText:
+                                                                  "เพิ่ม คอมเมนต์...",
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
 
-                                    //6th row
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: Text(
-                                        "1 วันที่แล้ว",
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                                  //6th row
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16.0),
+                                                    child: Text(
+                                                      "1 วันที่แล้ว",
+                                                      style: TextStyle(
+                                                          color: Colors.grey),
+                                                    ),
+                                                  )
+                                                ],
+                                              ));
+                                            }),
+                                          ),
+                                        )
+                                  : (selectedIndex == 1)
+                                      ? Container(
+                                          height: size.height * 0.60 - 56,
+                                          padding: EdgeInsets.only(
+                                              left: 16,
+                                              right: 16,
+                                              top: 0,
+                                              bottom: 24),
+                                          child: GridView.count(
+                                            crossAxisCount: 3,
+                                            crossAxisSpacing: 8,
+                                            mainAxisSpacing: 8,
+                                            physics: BouncingScrollPhysics(),
+                                            children: List.generate(
+                                                newfeed.feeds.length, (index) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          newfeed.feeds[index]
+                                                              .image),
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                        )
+                                      : Container(),
+                          // : Column(
+                          //     mainAxisAlignment: MainAxisAlignment.start,
+                          //     mainAxisSize: MainAxisSize.min,
+                          //     crossAxisAlignment:
+                          //         CrossAxisAlignment.stretch,
+                          //     children: [
+                          //       //1st row
+                          //       Padding(
+                          //         padding: const EdgeInsets.fromLTRB(
+                          //             16.0, 16.0, 8.0, 16.0),
+                          //         child: Row(
+                          //           mainAxisAlignment:
+                          //               MainAxisAlignment.spaceBetween,
+                          //           children: [
+                          //             Row(
+                          //               children: [
+                          //                 new Container(
+                          //                   height: 40.0,
+                          //                   width: 40.0,
+                          //                   decoration: new BoxDecoration(
+                          //                       shape: BoxShape.circle,
+                          //                       image: new DecorationImage(
+                          //                           fit: BoxFit.fill,
+                          //                           image: new NetworkImage(
+                          //                               newfeed.feeds[0]
+                          //                                   .profileImage))),
+                          //                 ),
+                          //                 new SizedBox(
+                          //                   width: 10.0,
+                          //                 ),
+                          //                 new Text(
+                          //                   newfeed.feeds[0].aliasName,
+                          //                   style: TextStyle(
+                          //                       fontWeight:
+                          //                           FontWeight.bold),
+                          //                 )
+                          //               ],
+                          //             ),
+                          //             new IconButton(
+                          //                 icon: Icon(Icons.more_vert),
+                          //                 onPressed: () {
+                          //                   //print("more_vert" + index.toString());
+                          //                 })
+                          //           ],
+                          //         ),
+                          //       ),
+
+                          //       //2nd row
+                          //       Flexible(
+                          //         fit: FlexFit.loose,
+                          //         child: new Image.network(
+                          //           //รูปอาหาร
+                          //           newfeed.feeds[0].image,
+                          //           fit: BoxFit.cover,
+                          //         ),
+                          //       ),
+
+                          //       //3rd row
+                          //       Padding(
+                          //         padding: const EdgeInsets.all(16.0),
+                          //         child: Row(
+                          //           mainAxisAlignment:
+                          //               MainAxisAlignment.spaceBetween,
+                          //           children: [
+                          //             new Row(
+                          //               mainAxisAlignment:
+                          //                   MainAxisAlignment.spaceBetween,
+                          //               children: [
+                          //                 Icon(
+                          //                   Icons.favorite_border,
+                          //                   color: Colors.black,
+                          //                 ),
+                          //                 new SizedBox(
+                          //                   width: 16.0,
+                          //                 ),
+                          //                 Icon(Icons.chat_bubble_outline,
+                          //                     color: Colors.black),
+                          //                 new SizedBox(
+                          //                   width: 16.0,
+                          //                 ),
+                          //                 Icon(Icons.share,
+                          //                     color: Colors.black),
+                          //               ],
+                          //             ),
+                          //             Icon(Icons.bookmark_border,
+                          //                 color: Colors.black),
+                          //           ],
+                          //         ),
+                          //       ),
+
+                          //       //4th row
+                          //       Padding(
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 16.0),
+                          //         child: Text(
+                          //           "Liked by pawankumar, pk and 528,331 others",
+                          //           style: TextStyle(
+                          //               fontWeight: FontWeight.bold),
+                          //         ),
+                          //       ),
+
+                          //       //5th row
+                          //       Padding(
+                          //         padding: const EdgeInsets.fromLTRB(
+                          //             16.0, 16.0, 16.0, 16.0),
+                          //         child: Row(
+                          //           mainAxisAlignment:
+                          //               MainAxisAlignment.start,
+                          //           children: [
+                          //             new Container(
+                          //               height: 40.0,
+                          //               width: 40.0,
+                          //               decoration: new BoxDecoration(
+                          //                   shape: BoxShape.circle,
+                          //                   image: new DecorationImage(
+                          //                       fit: BoxFit.fill,
+                          //                       image: new NetworkImage(
+                          //                           newfeed.feeds[0]
+                          //                               .profileImage))),
+                          //             ),
+                          //             new SizedBox(
+                          //               width: 10.0,
+                          //             ),
+                          //             Expanded(
+                          //               child: new TextField(
+                          //                 keyboardType:
+                          //                     TextInputType.multiline,
+                          //                 maxLines: null,
+                          //                 decoration: new InputDecoration(
+                          //                   border: InputBorder.none,
+                          //                   hintText: "เพิ่ม คอมเมนต์...",
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+
+                          //       //6th row
+                          //       Padding(
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 16.0),
+                          //         child: Text(
+                          //           "1 วันที่แล้ว",
+                          //           style: TextStyle(color: Colors.grey),
+                          //         ),
+                          //       )
+                          //     ],
+                          //   ),
                         ],
                       ),
                     ), //เส่น hr
@@ -877,4 +1249,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
     );
   }
+}
+
+class NavigationItem {
+  final Icon icon;
+  final Text title;
+  final Color color;
+
+  NavigationItem(this.icon, this.title, this.color);
 }

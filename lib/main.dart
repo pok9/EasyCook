@@ -6,7 +6,7 @@ import 'package:easy_cook/pages/register_page/register.dart';
 import 'package:easy_cook/pages/register_page/register2.dart';
 import 'package:easy_cook/pages/register_page/register3.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
-import 'package:easy_cook/pages/showfood_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_cook/pages/search_page/searchRecipeName.dart';
