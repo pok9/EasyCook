@@ -24,7 +24,7 @@ class _SlidePageState extends State<SlidePage> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         color: Color(0xFF73AEF5),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white30,
         buttonBackgroundColor: Color(0xFF73AEF5),
         height: 50,
         items: <Widget>[

@@ -24,9 +24,10 @@ class _ProfileUserState extends State<ProfileUser> {
     Size size = MediaQuery.of(context).size;
     var rng = new Random();
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      appBar: AppBar(title: Text(_aliasName),),
+      // extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
-        child: Stack(
+        child: Column(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,7 +40,8 @@ class _ProfileUserState extends State<ProfileUser> {
                         image: NetworkImage(
                             'https://source.unsplash.com/400x255/?food&sig' +
                                 rng.nextInt(100).toString()),
-                        fit: BoxFit.cover),
+                        fit: BoxFit.cover
+                        ),
                   ),
                   child: Column(
                     children: [
@@ -221,15 +223,15 @@ class _ProfileUserState extends State<ProfileUser> {
                 ),
               ],
             ),
-            Positioned(
-              top: 32,
-              left: 16,
-              child: Icon(
-                Icons.keyboard_arrow_left,
-                color: Colors.white,
-                size: 32,
-              ),
-            )
+            // Positioned(
+            //   top: 32,
+            //   left: 16,
+            //   child: Icon(
+            //     Icons.keyboard_arrow_left,
+            //     color: Colors.white,
+            //     size: 32,
+            //   ),
+            // )
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddImageOrVideo extends StatefulWidget {
   AddImageOrVideo({Key key}) : super(key: key);
@@ -12,6 +13,7 @@ class AddImageOrVideo extends StatefulWidget {
 }
 
 class _AddImageOrVideoState extends State<AddImageOrVideo> {
+  final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +85,12 @@ class _AddImageOrVideoState extends State<AddImageOrVideo> {
             ),
             GestureDetector(
               onTap: () async {
+
+                var image = await picker.getImage(source: ImageSource.camera);
+
+                AddImage addImage = new AddImage(File(image.path));
+                Navigator.pop(context, addImage);
+
                 // pickedFile =
                 //     await _picker.getImage(source: ImageSource.camera);
 
@@ -167,6 +175,10 @@ class _AddImageOrVideoState extends State<AddImageOrVideo> {
             ),
             GestureDetector(
               onTap: () async {
+                var image = await picker.getVideo(source: ImageSource.camera);
+
+                AddImage addImage = new AddImage(File(image.path));
+                Navigator.pop(context, addImage);
                 
                 // pickedFile =
                 //     await _picker.getVideo(source: ImageSource.camera);

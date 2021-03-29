@@ -533,6 +533,18 @@ class _AddFoodPageState extends State<AddFoodPage> {
       );
     }).toList(); // แปลงเป็นlist
   }
+  
+  showdialog(context) {
+  return showDialog(
+      context: context,
+      builder: (contex) {
+        return AlertDialog(
+            content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text("กรุณารอสักครู่...   "), CircularProgressIndicator()],
+        ));
+      });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -549,6 +561,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
               actions: <Widget>[
                 ElevatedButton(
                     onPressed: () async {
+                      showdialog(context);
                       if (_ctrlNameFood.text != '') {
                         final CreatePostModel postsData = await createPosts(
                             token,
@@ -816,6 +829,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   @override
   void initState() {
+    _ctrlNameFood.text = "";
     super.initState();
     findUser();
     fieldCount = widget.initialCount;

@@ -4,6 +4,7 @@ import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:file_picker/file_picker.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:image_picker/image_picker.dart';
 
@@ -15,7 +16,7 @@ class AddFood_AddImagePage extends StatefulWidget {
 }
 
 class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
-  // final _picker = ImagePicker();
+  final picker = ImagePicker();
   var img;
   var pickedFile;
 
@@ -68,8 +69,10 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
             ),
             GestureDetector(
               onTap: () async {
-                // var image = await ImagePicker.pickImage(source: ImageSource.camera);
-                // print(image);
+                var image = await picker.getImage(source: ImageSource.camera);
+
+                AddImage addImage = new AddImage(File(image.path));
+                Navigator.pop(context, addImage);
               },
               child: Container(
                 color: Colors.blue,

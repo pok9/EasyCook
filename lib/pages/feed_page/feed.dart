@@ -25,7 +25,9 @@ class _FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
+    print("444444444 = " + token);
     findUser();
+    print("333333333 = " + token);
   }
 
   Future<Null> findUser() async {
@@ -38,7 +40,7 @@ class _FeedPageState extends State<FeedPage> {
       print("22222222 = " + token);
       getMyAccounts();
       newFeedPosts();
-      print(newfeed);
+      print("newfeed"+newfeed.toString());
     });
   }
 
