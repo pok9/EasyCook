@@ -21,6 +21,7 @@ class _SlidePageState extends State<SlidePage> {
    var _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    int args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         color: Color(0xFF73AEF5),
@@ -41,6 +42,7 @@ class _SlidePageState extends State<SlidePage> {
         animationCurve: Curves.bounceInOut,
         onTap: (index){
             setState(() {
+              print(args);
               print(index);
               _currentIndex = index;
             });

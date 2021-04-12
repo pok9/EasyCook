@@ -15,11 +15,11 @@ class MyAccount {
     });
 
     int success;
-    List<Datum> data;
+    List<DataAc> data;
 
     factory MyAccount.fromJson(Map<String, dynamic> json) => MyAccount(
         success: json["success"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<DataAc>.from(json["data"].map((x) => DataAc.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -28,8 +28,8 @@ class MyAccount {
     };
 }
 
-class Datum {
-    Datum({
+class DataAc {
+    DataAc({
         this.userId,
         this.email,
         this.facebookId,
@@ -51,7 +51,7 @@ class Datum {
     int balance;
     String profileImage;
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory DataAc.fromJson(Map<String, dynamic> json) => DataAc(
         userId: json["user_ID"],
         email: json["email"],
         facebookId: json["facebookID"],

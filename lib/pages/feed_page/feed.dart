@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
+import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
@@ -15,7 +15,7 @@ class FeedPage extends StatefulWidget {
 String token = ""; //โทเคน
 //user
 MyAccount datas;
-Datum dataUser;
+DataAc dataUser;
 
 //NewfeedsProfile
 NewfeedsProfile newfeed;
@@ -40,7 +40,7 @@ class _FeedPageState extends State<FeedPage> {
       print("22222222 = " + token);
       getMyAccounts();
       newFeedPosts();
-      print("newfeed"+newfeed.toString());
+      print("newfeed" + newfeed.toString());
     });
   }
 
@@ -159,7 +159,17 @@ class _FeedPageState extends State<FeedPage> {
                                 ],
                               ),
                             ),
-
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                              // child: Text(newfeed.feeds[index].recipeName, style: TextStyle(
+                              //                   fontWeight: FontWeight.bold),),
+                              child: Text(
+                                newfeed.feeds[index].recipeName,
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .apply(fontSizeFactor: 1.5),
+                              ),
+                            ),
                             //2nd row
                             Flexible(
                                 fit: FlexFit.loose,
@@ -236,7 +246,7 @@ class _FeedPageState extends State<FeedPage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
-                                "Liked by pawankumar, pk and 528,331 others",
+                                'คะแนน : 55',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),

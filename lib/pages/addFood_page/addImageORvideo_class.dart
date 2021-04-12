@@ -85,7 +85,6 @@ class _AddImageOrVideoState extends State<AddImageOrVideo> {
             ),
             GestureDetector(
               onTap: () async {
-
                 var image = await picker.getImage(source: ImageSource.camera);
 
                 AddImage addImage = new AddImage(File(image.path));
@@ -123,8 +122,7 @@ class _AddImageOrVideoState extends State<AddImageOrVideo> {
             ),
             GestureDetector(
               onTap: () async {
-
-                 FilePickerResult result =
+                FilePickerResult result =
                     await FilePicker.platform.pickFiles(type: FileType.video);
 
                 if (result != null) {
@@ -179,7 +177,7 @@ class _AddImageOrVideoState extends State<AddImageOrVideo> {
 
                 AddImage addImage = new AddImage(File(image.path));
                 Navigator.pop(context, addImage);
-                
+
                 // pickedFile =
                 //     await _picker.getVideo(source: ImageSource.camera);
 
@@ -212,6 +210,10 @@ class _AddImageOrVideoState extends State<AddImageOrVideo> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          var image = await picker.getImage(source: ImageSource.camera);
+
+          AddImage addImage = new AddImage(File(image.path));
+          Navigator.pop(context, addImage);
           // pickedFile = await _picker.getImage(source: ImageSource.camera);
           // // img = await ImagePicker().getImage(
           // //     source: ImageSource.gallery);

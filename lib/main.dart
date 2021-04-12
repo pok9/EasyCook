@@ -10,6 +10,7 @@ import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_cook/pages/search_page/searchRecipeName.dart';
+
 void main() {
   runApp(MyApp());
 }

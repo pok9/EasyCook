@@ -3,7 +3,7 @@
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
+import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -187,11 +187,11 @@ class _ShowFoodState extends State<ShowFood> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
-                      aspectRatio: 6 / 3,
+                      aspectRatio: 6 / 6,
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.network(
                             dataHowto[displayNumber].pathFile),
-                        looping: true,
+                        looping: false,
                         autoplay: false,
                       ),
                     ),
@@ -467,5 +467,22 @@ class _ShowFoodState extends State<ShowFood> {
               ],
             ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("123");
+    // for (var i = 0; i < dataHowto.length; i++) {
+    //   if (lookupMimeType(dataHowto[i].pathFile)[0] == "v") {
+    //     VideoItems(
+    //       videoPlayerController: null,
+    //       looping: false,
+    //       autoplay: false,
+    //     );
+    //   }
+    // }
+
+    // VideoItems(videoPlayerController: videoPlayerController)
   }
 }

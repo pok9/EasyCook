@@ -2,8 +2,11 @@ import 'dart:math';
 
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
-import 'package:easy_cook/models/profile/newFeedsProfile_model.dart';
+import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
+import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
 import 'package:http/http.dart' as http;
@@ -17,10 +20,12 @@ class ProfilePage extends StatefulWidget {
 String token = ""; //โทเคน
 //user
 MyAccount datas;
-Datum dataUser;
+DataAc dataUser;
 
+//MyPost
+MyPost dataPost;
 //NewfeedsProfile
-NewfeedsProfile newfeed;
+// NewfeedsProfile newfeed;
 // Feed post;
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -64,7 +69,9 @@ class _ProfilePageState extends State<ProfilePage> {
       token = preferences.getString("tokens");
       print("22222222 = " + token);
       getMyAccounts();
-      newFeedPosts();
+      print("dataUser = " + dataUser.toString());
+      // print("newfeed = " + newfeed.toString());
+      // newFeedPosts();
     });
     // token = await Token_jwt().getTokens();
     // setState(() {});
@@ -82,23 +89,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
         datas = myAccountFromJson(responseString);
         dataUser = datas.data[0];
+        myPosts();
       });
     } else {
       return null;
     }
   }
 
-  Future<Null> newFeedPosts() async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjPost/newfeeds";
+  Future<Null> myPosts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mypost/" +
+        dataUser.userId.toString();
 
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+    print("apiUrl = " + apiUrl);
+    final response = await http.get(Uri.parse(apiUrl));
+    print("responsemyPosts = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
 
-        newfeed = newfeedsProfileFromJson(responseString);
+        dataPost = myPostFromJson(responseString);
+        // newfeed = newfeedsProfileFromJson(responseString);
         //  post = newfeed.feeds[0];
         // dataUser = datas.data[0];
       });
@@ -106,6 +116,25 @@ class _ProfilePageState extends State<ProfilePage> {
       return null;
     }
   }
+
+  // Future<Null> newFeedPosts() async {
+  //   final String apiUrl = "http://apifood.comsciproject.com/pjPost/newfeeds";
+
+  //   final response = await http
+  //       .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+  //   print("response = " + response.statusCode.toString());
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       final String responseString = response.body;
+
+  //       newfeed = newfeedsProfileFromJson(responseString);
+  //       //  post = newfeed.feeds[0];
+  //       // dataUser = datas.data[0];
+  //     });
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   final Shader linearGradient = LinearGradient(
     colors: <Color>[Color(0xffe433e68), Color(0xfffaa449)],
@@ -367,7 +396,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ), //เส่น hr
               ],
             )
-          : (dataUser == null || newfeed == null)
+          : (dataUser == null || dataPost == null)
               ? AlertDialog(
                   content: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -480,7 +509,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Column(
                                 children: [
                                   Text(
-                                    newfeed.feeds.length.toString(),
+                                    dataPost.countPost.toString(),
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -498,7 +527,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Column(
                                 children: [
                                   Text(
-                                    '1.2M',
+                                    dataPost.countFollower.toString(),
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -516,7 +545,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Column(
                                 children: [
                                   Text(
-                                    '132',
+                                    dataPost.countFollowing.toString(),
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -852,27 +881,29 @@ class _ProfilePageState extends State<ProfilePage> {
                           //           ],
                           //         ),
                           // ),
-                          (newfeed.feeds.length == 0)
+                          (dataPost.recipePost.length == 0)
                               ? new SizedBox(
                                   child: Container(),
                                 )
                               : (selectedIndex == 0)
                                   ? Container(
-                                          height: size.height * 0.60 - 56,
-                                          padding: EdgeInsets.only(
-                                              left: 16,
-                                              right: 16,
-                                              top: 0,
-                                              bottom: 24),
-                                          child: GridView.count(
-                                            crossAxisCount: 1,
-                                            crossAxisSpacing: 8,
-                                            mainAxisSpacing: 8,
-                                            physics: BouncingScrollPhysics(),
-                                            children: List.generate(
-                                                newfeed.feeds.length, (index) {
-                                              return Container(
-                                                  child: Column(
+                                      height: size.height * 0.8 - 40,
+                                      padding: EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          top: 0,
+                                          bottom: 24),
+                                      child: GridView.count(
+                                        crossAxisCount: 1,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 8,
+                                        physics: BouncingScrollPhysics(),
+                                        children: List.generate(
+                                            dataPost.recipePost.length,
+                                            (index) {
+                                          return Container(
+                                              height: 500,
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
@@ -883,7 +914,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   Padding(
                                                     padding: const EdgeInsets
                                                             .fromLTRB(
-                                                        16.0, 16.0, 8.0, 16.0),
+                                                        16.0, 0, 8.0, 16.0),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -900,16 +931,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                   image: new DecorationImage(
                                                                       fit: BoxFit
                                                                           .fill,
-                                                                      image: new NetworkImage(newfeed
-                                                                          .feeds[
-                                                                              index]
-                                                                          .profileImage))),
+                                                                      image: new NetworkImage(
+                                                                          dataPost
+                                                                              .profileImage))),
                                                             ),
                                                             new SizedBox(
                                                               width: 10.0,
                                                             ),
                                                             new Text(
-                                                              newfeed.feeds[index]
+                                                              dataPost
                                                                   .aliasName,
                                                               style: TextStyle(
                                                                   fontWeight:
@@ -928,15 +958,59 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ),
                                                   ),
 
+                                                  // //2nd row
+                                                  // Flexible(
+                                                  //   fit: FlexFit.loose,
+                                                  //   child: new Image.network(
+                                                  //     //รูปอาหาร
+                                                  //     dataPost
+                                                  //         .recipePost[index].image,
+                                                  //     fit: BoxFit.cover,
+                                                  //   ),
+                                                  // ),
                                                   //2nd row
                                                   Flexible(
-                                                    fit: FlexFit.loose,
-                                                    child: new Image.network(
-                                                      //รูปอาหาร
-                                                      newfeed.feeds[index].image,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
+                                                      fit: FlexFit.loose,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          // Navigator.push(context,
+                                                          //     CupertinoPageRoute(builder: (context) {
+                                                          //   return ShowFood(dataPost.recipePost[index]);
+                                                          // }));
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  8, 0, 8, 0),
+                                                          child: Container(
+                                                            width: 300,
+                                                            height: 100,
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  new BorderRadius
+                                                                          .circular(
+                                                                      24.0),
+                                                              child: Image(
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                // alignment: Alignment.topRight,
+                                                                image: NetworkImage(
+                                                                    newfeed
+                                                                        .feeds[
+                                                                            index]
+                                                                        .image),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        // child: new Image.network(
+                                                        //   //รูปอาหาร
+                                                        //   newfeed.feeds[index].image,
+                                                        //   height: 500,
+                                                        //   fit: BoxFit.fill,
+                                                        // ),
+                                                      )),
 
                                                   //3rd row
                                                   Padding(
@@ -990,7 +1064,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             .symmetric(
                                                         horizontal: 16.0),
                                                     child: Text(
-                                                      "Liked by pawankumar, pk and 528,331 others",
+                                                      "Score : " +
+                                                          dataPost
+                                                              .recipePost[index]
+                                                              .score
+                                                              .toString(),
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -1017,9 +1095,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                   fit: BoxFit
                                                                       .fill,
                                                                   image: new NetworkImage(
-                                                                      newfeed
-                                                                          .feeds[
-                                                                              index]
+                                                                      dataPost
                                                                           .profileImage))),
                                                         ),
                                                         new SizedBox(
@@ -1051,16 +1127,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             .symmetric(
                                                         horizontal: 16.0),
                                                     child: Text(
-                                                      "1 วันที่แล้ว",
+                                                      dataPost.recipePost[index]
+                                                          .date
+                                                          .toString(),
                                                       style: TextStyle(
                                                           color: Colors.grey),
                                                     ),
-                                                  )
+                                                  ),
+
+                                                  Divider(
+                                                    thickness: 1,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ],
                                               ));
-                                            }),
-                                          ),
-                                        )
+                                        }),
+                                      ),
+                                    )
                                   : (selectedIndex == 1)
                                       ? Container(
                                           height: size.height * 0.60 - 56,
