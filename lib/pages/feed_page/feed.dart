@@ -91,6 +91,69 @@ class _FeedPageState extends State<FeedPage> {
           title: Text('Easy Cook'),
         ),
       ),
+      drawer: Container(
+        width: deviceSize.width - 45,
+        child: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(color: Colors.grey
+                    // image: DecorationImage(
+                    //   image: AssetImage('assets/images/camera.png'),
+                    //   fit: BoxFit.cover,
+                    // ),
+                    ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image(
+                      image: AssetImage('assets/images/user.png'),
+                      height: 70,
+                    ),
+                    Text(
+                      'Chanchai Ditthapan',
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'pokhappy1999@gmail.com',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.folder,
+                  size: 28,
+                ),
+                title: Text(
+                  'My files',
+                  style: TextStyle(fontSize: 23),
+                ),
+                onTap: (){
+                  
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: (token == "")
           ? Container()
           : (newfeed == null)
