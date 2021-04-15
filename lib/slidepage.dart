@@ -8,6 +8,7 @@ import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:easy_cook/pages/test2.dart';
+import 'package:easy_cook/sidebar/sidebar_layout.dart';
 import 'package:flutter/material.dart';
 
 class SlidePage extends StatefulWidget {
@@ -56,7 +57,7 @@ class _SlidePageState extends State<SlidePage> {
   getBodyWidget(){
     print(_currentIndex);
     if(_currentIndex == 0){
-      return FeedPage(); 
+      return SideBarLayout(); 
     }else if(_currentIndex == 1){
       return SearchPage();
     }else if(_currentIndex == 2){
