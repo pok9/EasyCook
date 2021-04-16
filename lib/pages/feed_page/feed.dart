@@ -96,45 +96,88 @@ class _FeedPageState extends State<FeedPage> {
         child: Drawer(
           child: ListView(
             children: [
-              DrawerHeader(
-                decoration: BoxDecoration(color: Colors.grey
-                    // image: DecorationImage(
-                    //   image: AssetImage('assets/images/camera.png'),
-                    //   fit: BoxFit.cover,
-                    // ),
-                    ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image(
-                      image: AssetImage('assets/images/user.png'),
-                      height: 70,
-                    ),
-                    Text(
-                      'Chanchai Ditthapan',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return ProfilePage();
+                          },
+                          transitionsBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(0.0, 1.0),
+                                end: Offset(0.0, 0.0),
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                          transitionDuration: Duration(milliseconds: 500)));
+                },
+                child: DrawerHeader(
+                  decoration: BoxDecoration(color: Colors.grey
+                      // image: DecorationImage(
+                      //   image: AssetImage('assets/images/camera.png'),
+                      //   fit: BoxFit.cover,
+                      // ),
                       ),
-                    ),
-                    Row(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    child: Row(
                       children: [
-                        Text(
-                          'pokhappy1999@gmail.com',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                        Column(
+                          children: [
+                            Container(
+                              height: 70.0,
+                              width: 70.0,
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: new NetworkImage(
+                                          datas.data[0].profileImage))),
+                            ),
+                          ],
                         ),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.white,
-                          size: 25,
+                        //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    datas.data[0].aliasName,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       'Chanchai Ditthapan',
+                              //       style: TextStyle(
+                              //         fontSize: 20,
+                              //         color: Colors.white,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
               ListTile(
@@ -146,9 +189,7 @@ class _FeedPageState extends State<FeedPage> {
                   'My files',
                   style: TextStyle(fontSize: 23),
                 ),
-                onTap: (){
-                  
-                },
+                onTap: () {},
               ),
             ],
           ),

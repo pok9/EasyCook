@@ -64,7 +64,8 @@ class _SlidePageState extends State<SlidePage> {
       return AddFoodPage();
     }else if(_currentIndex == 3){
       // return ProfileUser(); 
-    }else if(_currentIndex == 4){
+    }
+    else if(_currentIndex == 4){
       return ProfilePage();
     }
   }
