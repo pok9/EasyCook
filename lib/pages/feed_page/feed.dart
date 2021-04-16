@@ -1,4 +1,5 @@
 import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/sidebar/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
@@ -118,15 +119,15 @@ class _FeedPageState extends State<FeedPage> {
                               child: child,
                             );
                           },
-                          transitionDuration: Duration(milliseconds: 500)));
+                          transitionDuration: Duration(milliseconds: 1000)));
                 },
                 child: DrawerHeader(
-                  decoration: BoxDecoration(color: Colors.grey
-                      // image: DecorationImage(
-                      //   image: AssetImage('assets/images/camera.png'),
-                      //   fit: BoxFit.cover,
-                      // ),
-                      ),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: new NetworkImage(datas.data[0].profileImage),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                     child: Row(
@@ -183,13 +184,48 @@ class _FeedPageState extends State<FeedPage> {
               ListTile(
                 leading: Icon(
                   Icons.folder,
-                  size: 28,
+                  color: Colors.cyan,
+                  size: 30,
                 ),
-                title: Text(
-                  'My files',
-                  style: TextStyle(fontSize: 23),
-                ),
+                title: Text('สูตรที่ซื้อ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 23,
+                        color: Colors.black)),
                 onTap: () {},
+              ),
+              Divider(
+                thickness: 0.5,
+                color: Colors.grey,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.settings,
+                  color: Colors.cyan,
+                  size: 30,
+                ),
+                title: Text('ตั้งค่า',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 23,
+                        color: Colors.black)),
+                onTap: () {},
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.cyan,
+                  size: 30,
+                ),
+                title: Text('ออกจากระบบ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 23,
+                        color: Colors.black)),
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/login-page', (route) => false);
+                },
               ),
             ],
           ),
