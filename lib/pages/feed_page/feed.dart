@@ -93,262 +93,255 @@ class _FeedPageState extends State<FeedPage> {
           title: Text('Easy Cook'),
         ),
       ),
-      drawer: (token != "") ? Container(
-        width: deviceSize.width - 45,
-        child: Drawer(
-          child: ListView(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageTransition(
-                      curve: Curves.linear,
-                      type: PageTransitionType.bottomToTop,
-                      child: ProfilePage(),
-                    ),
-                  );
-                },
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: new NetworkImage(
-                          "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFF73AEF5),
-                                    const Color(0xFF73AEF5)
+      drawer: (token != "")
+          ? Container(
+              width: deviceSize.width - 45,
+              child: Drawer(
+                child: ListView(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            curve: Curves.linear,
+                            type: PageTransitionType.bottomToTop,
+                            child: ProfilePage(),
+                          ),
+                        );
+                      },
+                      child: DrawerHeader(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: new NetworkImage(
+                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                          child: Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xFF73AEF5),
+                                          const Color(0xFF73AEF5)
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Center(
+                                      child: CircleAvatar(
+                                        radius: 39,
+                                        backgroundColor: Colors.grey,
+                                        backgroundImage:
+                                            NetworkImage(dataUser.profileImage),
+                                      ),
+                                    ),
+                                  ),
+                                  // Container(
+                                  //   height: 70.0,
+                                  //   width: 70.0,
+                                  //   decoration: new BoxDecoration(
+                                  //       shape: BoxShape.circle,
+                                  //       image: new DecorationImage(
+                                  //           fit: BoxFit.fill,
+                                  //           image: new NetworkImage(
+                                  //               datas.data[0].profileImage))),
+                                  // ),
+                                ],
+                              ),
+                              //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          datas.data[0].aliasName,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     Text(
+                                    //       'Chanchai Ditthapan',
+                                    //       style: TextStyle(
+                                    //         fontSize: 20,
+                                    //         color: Colors.white,
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(100),
                               ),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 39,
-                                  backgroundColor: Colors.grey,
-                                  backgroundImage:
-                                      NetworkImage(dataUser.profileImage),
-                                ),
-                              ),
-                            ),
-                            // Container(
-                            //   height: 70.0,
-                            //   width: 70.0,
-                            //   decoration: new BoxDecoration(
-                            //       shape: BoxShape.circle,
-                            //       image: new DecorationImage(
-                            //           fit: BoxFit.fill,
-                            //           image: new NetworkImage(
-                            //               datas.data[0].profileImage))),
-                            // ),
-                          ],
+                            ],
+                          ),
                         ),
-                        //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                          child: Column(
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.folder,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('สูตรที่ซื้อ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    Divider(
+                      thickness: 0.5,
+                      color: Colors.grey,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.settings,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ตั้งค่า',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ออกจากระบบ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/login-page', (route) => false);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Container(
+              width: deviceSize.width - 45,
+              child: Drawer(
+                child: ListView(
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: DrawerHeader(
+                        decoration: BoxDecoration(
+                            // image: DecorationImage(
+                            //   image: new NetworkImage(
+                            //       "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                            //   fit: BoxFit.cover,
+                            // ),
+                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                          child: Row(
                             children: [
-                              Row(
+                              Column(
                                 children: [
-                                  Text(
-                                    datas.data[0].aliasName,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
+                                  Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xFF73AEF5),
+                                          const Color(0xFF73AEF5)
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(100),
                                     ),
+                                    child: Center(),
                                   ),
                                 ],
                               ),
-                              // Row(
-                              //   children: [
-                              //     Text(
-                              //       'Chanchai Ditthapan',
-                              //       style: TextStyle(
-                              //         fontSize: 20,
-                              //         color: Colors.white,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.folder,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('สูตรที่ซื้อ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              Divider(
-                thickness: 0.5,
-                color: Colors.grey,
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ตั้งค่า',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ออกจากระบบ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/login-page', (route) => false);
-                },
-              ),
-            ],
-          ),
-        ),
-      ):Container(
-        width: deviceSize.width - 45,
-        child: Drawer(
-          child: ListView(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  
-                },
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    // image: DecorationImage(
-                    //   image: new NetworkImage(
-                    //       "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                    //   fit: BoxFit.cover,
-                    // ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFF73AEF5),
-                                    const Color(0xFF73AEF5)
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                child: Column(
+                                  children: [
+                                    Row(),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(100),
                               ),
-                              child: Center(
-                            
-                              ),
-                            ),
-                           
-                          ],
-                        ),
-                 
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                          child: Column(
-                            children: [
-                              Row(
-                               
-                              ),
-                              
                             ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.folder,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('สูตรที่ซื้อ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    Divider(
+                      thickness: 0.5,
+                      color: Colors.grey,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.settings,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ตั้งค่า',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ออกจากระบบ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/login-page', (route) => false);
+                      },
+                    ),
+                  ],
                 ),
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.folder,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('สูตรที่ซื้อ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              Divider(
-                thickness: 0.5,
-                color: Colors.grey,
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ตั้งค่า',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ออกจากระบบ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/login-page', (route) => false);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
       body: (token == "")
           ? Container()
           : (newfeed == null)
@@ -417,21 +410,13 @@ class _FeedPageState extends State<FeedPage> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                              // child: Text(newfeed.feeds[index].recipeName, style: TextStyle(
-                              //                   fontWeight: FontWeight.bold),),
-                              child: Text(
-                                newfeed.feeds[index].recipeName,
-                                style: DefaultTextStyle.of(context)
-                                    .style
-                                    .apply(fontSizeFactor: 1.5),
-                              ),
-                            ),
+                            
                             //2nd row
-                            Flexible(
-                                fit: FlexFit.loose,
-                                child: GestureDetector(
+                            Stack(
+                              children: [
+                                // Flexible(
+                                // fit: FlexFit.loose,
+                                GestureDetector(
                                   onTap: () {
                                     // print(newfeed.feeds[index].profileImage.toString());
                                     // Navigator.pushNamed(context, '/showfood-page',arguments: newfeed.feeds[index].rid);
@@ -445,7 +430,7 @@ class _FeedPageState extends State<FeedPage> {
                                     padding:
                                         const EdgeInsets.fromLTRB(8, 0, 8, 0),
                                     child: Container(
-                                      width: 300,
+                                      width: deviceSize.width,
                                       height: 300,
                                       child: ClipRRect(
                                         borderRadius:
@@ -459,13 +444,84 @@ class _FeedPageState extends State<FeedPage> {
                                       ),
                                     ),
                                   ),
-                                  // child: new Image.network(
-                                  //   //รูปอาหาร
-                                  //   newfeed.feeds[index].image,
-                                  //   height: 500,
-                                  //   fit: BoxFit.fill,
-                                  // ),
-                                )),
+                                ),
+                                // ),
+                                Positioned(
+                                  left: 0.0,
+                                  bottom: 0.0,
+                                  child: Container(
+                                    height: 60.0,
+                                    width: deviceSize.width,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.black,
+                                          Colors.black12,
+                                        ],
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 10.0,
+                                  bottom: 10.0,
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            newfeed.feeds[index].recipeName,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 16.0,
+                                              ),
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 16.0,
+                                              ),
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 16.0,
+                                              ),
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 16.0,
+                                              ),
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 16.0,
+                                              ),
+                                              SizedBox(width: 5.0,),
+                                              Text("(22.0 Reviews)",style: TextStyle(color: Colors.grey),)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
 
                             //3rd row
                             Padding(
