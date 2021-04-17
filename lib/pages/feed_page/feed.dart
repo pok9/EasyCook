@@ -3,6 +3,7 @@ import 'package:easy_cook/sidebar/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,7 +93,7 @@ class _FeedPageState extends State<FeedPage> {
           title: Text('Easy Cook'),
         ),
       ),
-      drawer: Container(
+      drawer: (token != "") ? Container(
         width: deviceSize.width - 45,
         child: Drawer(
           child: ListView(
@@ -100,31 +101,19 @@ class _FeedPageState extends State<FeedPage> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation) {
-                            return ProfilePage();
-                          },
-                          transitionsBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: Offset(0.0, 1.0),
-                                end: Offset(0.0, 0.0),
-                              ).animate(animation),
-                              child: child,
-                            );
-                          },
-                          transitionDuration: Duration(milliseconds: 1000)));
+                    context,
+                    PageTransition(
+                      curve: Curves.linear,
+                      type: PageTransitionType.bottomToTop,
+                      child: ProfilePage(),
+                    ),
+                  );
                 },
                 child: DrawerHeader(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: new NetworkImage(datas.data[0].profileImage),
+                      image: new NetworkImage(
+                          "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -135,15 +124,36 @@ class _FeedPageState extends State<FeedPage> {
                         Column(
                           children: [
                             Container(
-                              height: 70.0,
-                              width: 70.0,
-                              decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: new NetworkImage(
-                                          datas.data[0].profileImage))),
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF73AEF5),
+                                    const Color(0xFF73AEF5)
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 39,
+                                  backgroundColor: Colors.grey,
+                                  backgroundImage:
+                                      NetworkImage(dataUser.profileImage),
+                                ),
+                              ),
                             ),
+                            // Container(
+                            //   height: 70.0,
+                            //   width: 70.0,
+                            //   decoration: new BoxDecoration(
+                            //       shape: BoxShape.circle,
+                            //       image: new DecorationImage(
+                            //           fit: BoxFit.fill,
+                            //           image: new NetworkImage(
+                            //               datas.data[0].profileImage))),
+                            // ),
                           ],
                         ),
                         //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
@@ -173,6 +183,114 @@ class _FeedPageState extends State<FeedPage> {
                               //     ),
                               //   ],
                               // ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.folder,
+                  color: Colors.cyan,
+                  size: 30,
+                ),
+                title: Text('สูตรที่ซื้อ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 23,
+                        color: Colors.black)),
+                onTap: () {},
+              ),
+              Divider(
+                thickness: 0.5,
+                color: Colors.grey,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.settings,
+                  color: Colors.cyan,
+                  size: 30,
+                ),
+                title: Text('ตั้งค่า',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 23,
+                        color: Colors.black)),
+                onTap: () {},
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.cyan,
+                  size: 30,
+                ),
+                title: Text('ออกจากระบบ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 23,
+                        color: Colors.black)),
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/login-page', (route) => false);
+                },
+              ),
+            ],
+          ),
+        ),
+      ):Container(
+        width: deviceSize.width - 45,
+        child: Drawer(
+          child: ListView(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  
+                },
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    // image: DecorationImage(
+                    //   image: new NetworkImage(
+                    //       "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                    //   fit: BoxFit.cover,
+                    // ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF73AEF5),
+                                    const Color(0xFF73AEF5)
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                            
+                              ),
+                            ),
+                           
+                          ],
+                        ),
+                 
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          child: Column(
+                            children: [
+                              Row(
+                               
+                              ),
+                              
                             ],
                           ),
                         ),
