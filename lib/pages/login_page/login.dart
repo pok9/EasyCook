@@ -326,9 +326,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildSignupBtn() {
     return GestureDetector(
       onTap: () {
-        // Navigator.pushNamed(context, '/register-page');
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/register-page', (Route<dynamic> route) => false);
+        Navigator.pushNamed(context, '/register-page');
       },
       child: RichText(
         text: TextSpan(

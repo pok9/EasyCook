@@ -233,9 +233,12 @@ class _FeedPageState extends State<FeedPage> {
                               fontWeight: FontWeight.w300,
                               fontSize: 23,
                               color: Colors.black)),
-                      onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/login-page', (route) => false);
+                      onTap: () async {
+                        SharedPreferences preferences =
+                            await SharedPreferences.getInstance();
+                        preferences.setString("tokens", "");
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            '/slide-page', (Route<dynamic> route) => false);
                       },
                     ),
                   ],
@@ -251,44 +254,66 @@ class _FeedPageState extends State<FeedPage> {
                       onTap: () {},
                       child: DrawerHeader(
                         decoration: BoxDecoration(
-                            // image: DecorationImage(
-                            //   image: new NetworkImage(
-                            //       "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                            //   fit: BoxFit.cover,
-                            // ),
-                            ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                          child: Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Container(
-                                    height: 80,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          const Color(0xFF73AEF5),
-                                          const Color(0xFF73AEF5)
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(100),
+                          image: DecorationImage(
+                            image: new NetworkImage(
+                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      'เข้าสู่ระบบ',
                                     ),
-                                    child: Center(),
-                                  ),
+                                    style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            BorderSide(
+                                                width: 2, color: Colors.white)),
+                                        foregroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.white),
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 50)),
+                                        textStyle: MaterialStateProperty.all(
+                                            TextStyle(fontSize: 15)))),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/register-page');
+                                    },
+                                    child: Text(
+                                      'สมัครสมาชิก',
+                                    ),
+                                    style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            BorderSide(
+                                                width: 2, color: Colors.white)),
+                                        foregroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.white),
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 43)),
+                                        textStyle: MaterialStateProperty.all(
+                                            TextStyle(fontSize: 15)))),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                              child: Column(
+                                children: [
+                                  Row(),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                                child: Column(
-                                  children: [
-                                    Row(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -333,10 +358,7 @@ class _FeedPageState extends State<FeedPage> {
                               fontWeight: FontWeight.w300,
                               fontSize: 23,
                               color: Colors.black)),
-                      onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/login-page', (route) => false);
-                      },
+                      onTap: () {},
                     ),
                   ],
                 ),
@@ -410,7 +432,7 @@ class _FeedPageState extends State<FeedPage> {
                                 ],
                               ),
                             ),
-                            
+
                             //2nd row
                             Stack(
                               children: [
@@ -470,7 +492,8 @@ class _FeedPageState extends State<FeedPage> {
                                   child: Row(
                                     children: [
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             newfeed.feeds[index].recipeName,
@@ -500,19 +523,25 @@ class _FeedPageState extends State<FeedPage> {
                                                 size: 16.0,
                                               ),
                                               Icon(
-                                                Icons.star,
+                                                Icons.star_half,
                                                 color: Theme.of(context)
                                                     .primaryColor,
                                                 size: 16.0,
                                               ),
                                               Icon(
-                                                Icons.star,
+                                                Icons.star_border,
                                                 color: Theme.of(context)
                                                     .primaryColor,
                                                 size: 16.0,
                                               ),
-                                              SizedBox(width: 5.0,),
-                                              Text("(22.0 Reviews)",style: TextStyle(color: Colors.grey),)
+                                              SizedBox(
+                                                width: 5.0,
+                                              ),
+                                              Text(
+                                                "(คะแนน 55)",
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              )
                                             ],
                                           )
                                         ],
@@ -525,7 +554,8 @@ class _FeedPageState extends State<FeedPage> {
 
                             //3rd row
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.fromLTRB(
+                                  16.0, 12.0, 16.0, 12.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -554,21 +584,10 @@ class _FeedPageState extends State<FeedPage> {
                                 ],
                               ),
                             ),
-
-                            //4th row
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text(
-                                'คะแนน : 55',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-
                             //5th row
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
-                                  16.0, 16.0, 16.0, 16.0),
+                                  16.0, 0, 16.0, 16.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
