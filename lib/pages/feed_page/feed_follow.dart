@@ -95,7 +95,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
           title: Text('Easy Cook'),
         ),
       ),
-      drawer: (token != "")
+      drawer: (token != "" && dataUser != null)
           ? Container(
               width: deviceSize.width - 45,
               child: Drawer(

@@ -58,7 +58,7 @@ class _SlidePageState extends State<SlidePage> {
   getBodyWidget(){
     print(_currentIndex);
     if(_currentIndex == 0){
-      // return FeedPage();
+      return FeedPage();
     }else if(_currentIndex == 1){
       return SearchPage();
     }else if(_currentIndex == 2){
