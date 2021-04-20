@@ -994,12 +994,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               child: Image(
                                                                 fit: BoxFit
                                                                     .cover,
-                                                                // alignment: Alignment.topRight,
-                                                                image: NetworkImage(
-                                                                    newfeed
-                                                                        .feeds[
-                                                                            index]
-                                                                        .image),
+                                                                
+                                                                // image: NetworkImage(////////////////////////////////
+                                                                //     newfeed.feeds[
+                                                                //             index]
+                                                                //         .image
+                                                                //         ),
                                                               ),
                                                             ),
                                                           ),
@@ -1152,28 +1152,28 @@ class _ProfilePageState extends State<ProfilePage> {
                                               right: 16,
                                               top: 0,
                                               bottom: 24),
-                                          child: GridView.count(
-                                            crossAxisCount: 3,
-                                            crossAxisSpacing: 8,
-                                            mainAxisSpacing: 8,
-                                            physics: BouncingScrollPhysics(),
-                                            children: List.generate(
-                                                newfeed.feeds.length, (index) {
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  ),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          newfeed.feeds[index]
-                                                              .image),
-                                                      fit: BoxFit.cover),
-                                                ),
-                                              );
-                                            }),
-                                          ),
+                                          // child: GridView.count(/////////////////////////////////////////////////
+                                          //   crossAxisCount: 3,
+                                          //   crossAxisSpacing: 8,
+                                          //   mainAxisSpacing: 8,
+                                          //   physics: BouncingScrollPhysics(),
+                                          //   children: List.generate(
+                                          //       newfeed.feeds.length, (index) {
+                                          //     return Container(
+                                          //       decoration: BoxDecoration(
+                                          //         borderRadius:
+                                          //             BorderRadius.all(
+                                          //           Radius.circular(10),
+                                          //         ),
+                                          //         image: DecorationImage(
+                                          //             image: NetworkImage(
+                                          //                 newfeed.feeds[index]
+                                          //                     .image),
+                                          //             fit: BoxFit.cover),
+                                          //       ),
+                                          //     );
+                                          //   }),
+                                          // ),
                                         )
                                       : Container(),
                           // : Column(

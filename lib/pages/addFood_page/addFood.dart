@@ -533,18 +533,21 @@ class _AddFoodPageState extends State<AddFoodPage> {
       );
     }).toList(); // แปลงเป็นlist
   }
-  
+
   showdialog(context) {
-  return showDialog(
-      context: context,
-      builder: (contex) {
-        return AlertDialog(
-            content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("กรุณารอสักครู่...   "), CircularProgressIndicator()],
-        ));
-      });
-}
+    return showDialog(
+        context: context,
+        builder: (contex) {
+          return AlertDialog(
+              content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("กรุณารอสักครู่...   "),
+              CircularProgressIndicator()
+            ],
+          ));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -560,6 +563,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
               // title: Text(token),
               actions: <Widget>[
                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.pink, // background
+                      onPrimary: Colors.white, // foreground
+                    ),
                     onPressed: () async {
                       showdialog(context);
                       if (_ctrlNameFood.text != '') {
@@ -632,12 +639,13 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         print(ingredientsData.success);
                         print("howtoData");
                         print(howtoData.success);
-                        
+
                         if (postsData.success == 1 &&
                             ingredientsData.success == 1 &&
                             howtoData.success == 1) {
-                              Navigator.pushNamedAndRemoveUntil(context, '/slide-page', (route) => false);
-                            }
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/slide-page', (route) => false);
+                        }
                       }
 
                       // var file;

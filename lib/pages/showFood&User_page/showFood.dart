@@ -341,21 +341,21 @@ class _ShowFoodState extends State<ShowFood> {
                             ),
                           ),
                         ),
-                        Positioned(
-                          top: 210,
-                          left: 240,
-                          child: CircleAvatar(
-                            radius: 22,
-                            backgroundColor: Colors.grey[300],
-                            child: IconButton(
-                              icon: const Icon(Icons.add),
-                              color: Colors.black,
-                              onPressed: () {
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                        )
+                        // Positioned(
+                        //   top: 210,
+                        //   left: 240,
+                        //   child: CircleAvatar(
+                        //     radius: 22,
+                        //     backgroundColor: Colors.grey[300],
+                        //     child: IconButton(
+                        //       icon: const Icon(Icons.add),
+                        //       color: Colors.black,
+                        //       onPressed: () {
+                        //         setState(() {});
+                        //       },
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                     Text(
@@ -367,18 +367,8 @@ class _ShowFoodState extends State<ShowFood> {
                       thickness: 1,
                       color: Colors.grey,
                     ),
+                   
                     Text(_newfeed.recipeName, style: kHintTextStyle3),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(16.0),
-                    //   child: Container(
-
-                    //       height: 200,
-                    //       width: 300,
-                    //       child: Image.network(
-                    //         _newfeed.image,
-                    //         fit: BoxFit.cover,
-                    //       )),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Container(
@@ -388,18 +378,15 @@ class _ShowFoodState extends State<ShowFood> {
                           borderRadius: new BorderRadius.circular(24.0),
                           child: Image(
                             fit: BoxFit.cover,
-                            // alignment: Alignment.topRight,
                             image: NetworkImage(_newfeed.image),
                           ),
                         ),
                       ),
                     ),
-
                     Divider(
                       thickness: 1,
                       color: Colors.grey,
                     ),
-
                     Text(
                       "ส่วนผสม",
                       style: kHintTextStyle3,
@@ -427,41 +414,6 @@ class _ShowFoodState extends State<ShowFood> {
                       physics: NeverScrollableScrollPhysics(),
                       children: test2,
                     ),
-                    // Text(
-                    //   "วิธีทำ",
-                    //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    // ),
-                    // ListView(
-                    //   padding: EdgeInsets.all(0),
-                    //   shrinkWrap: true,
-                    //   physics: NeverScrollableScrollPhysics(),
-                    //   children: ingredient,
-                    // ),
-
-                    //  SliverFillRemaining(
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.white,
-                    //       border: Border.all(color: Colors.grey),
-                    //       borderRadius: BorderRadius.circular(10),
-                    //     ),
-                    //     margin: const EdgeInsets.all(10),
-                    //     padding: const EdgeInsets.all(10),
-                    //     child: ListView.separated(
-                    //       physics: NeverScrollableScrollPhysics(),
-                    //       itemCount: 5,
-                    //       separatorBuilder: (ctx, index) => Divider(),
-                    //       itemBuilder: (ctx,index) => ListTile(
-                    //         leading: CircleAvatar(
-                    //           child: Text('# ${(index + 1)}'),
-                    //         ),
-                    //         title: Text(
-                    //           "4"
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               ],

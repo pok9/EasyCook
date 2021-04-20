@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
+import 'package:easy_cook/pages/feed_page/feed_follow.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/register_page/register.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         '/register2-page': (context) => RegisterPage2(),
         '/register3-page': (context) => RegisterPage3(),
         '/login-page': (context) => LoginPage(),
-        '/feed-page':(context) => FeedPage(),
+        '/feedFollow-page':(context) => FeedFollowPage(),
         '/search-page':(context) => SearchPage(),
         // '/searchRecipeName' : (context) => SearchRecipeName(),
         '/slide-page' : (context) => SlidePage(),

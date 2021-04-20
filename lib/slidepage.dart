@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_cook/pages/addFood_page/addFood.dart';
 
 import 'package:easy_cook/pages/feed_page/feed.dart';
+import 'package:easy_cook/pages/feed_page/feed_follow.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -30,11 +31,11 @@ class _SlidePageState extends State<SlidePage> {
         buttonBackgroundColor: Color(0xFF73AEF5),
         height: 50,
         items: <Widget>[
-          Icon(Icons.fastfood,size: 25,color: Colors.red[50],),
+          Icon(Icons.home,size: 25,color: Colors.red[50],),
           Icon(Icons.search,size: 25,color: Colors.red[50],),
           Icon(Icons.add,size: 25,color: Colors.red[50],),
-          Icon(Icons.notifications,size: 25,color: Colors.red[50],),
-          Icon(Icons.person,size: 25,color: Colors.red[50],),
+          Icon(Icons.fastfood,size: 25,color: Colors.red[50],),
+          Icon(Icons.folder,size: 25,color: Colors.red[50],),
         ],
         animationDuration: Duration(
           milliseconds: 200
@@ -57,16 +58,16 @@ class _SlidePageState extends State<SlidePage> {
   getBodyWidget(){
     print(_currentIndex);
     if(_currentIndex == 0){
-      return FeedPage(); 
+      // return FeedPage();
     }else if(_currentIndex == 1){
       return SearchPage();
     }else if(_currentIndex == 2){
       return AddFoodPage();
     }else if(_currentIndex == 3){
-      // return ProfileUser(); 
+      return FeedFollowPage();
     }
     else if(_currentIndex == 4){
-      return ProfilePage();
+     
     }
   }
 }

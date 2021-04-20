@@ -254,6 +254,35 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _buildCancelBtn() {
+    return Container(
+      // padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () {
+          print("ยกเลิก");
+          Navigator.pop(context);
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.blueGrey[300],
+        child: Text(
+          'ยกเลิก',
+          style: TextStyle(
+            color: Colors.red[50],
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSignInWithText() {
     return Column(
       children: <Widget>[
@@ -385,7 +414,7 @@ class _LoginPageState extends State<LoginPage> {
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
                     horizontal: 40.0,
-                    vertical: 120.0,
+                    vertical: 80.0,
                   ),
                   child: Form(
                     child: Column(
@@ -409,6 +438,10 @@ class _LoginPageState extends State<LoginPage> {
                         _buildForgotPasswordBtn(),
                         _buildRememberMeCheckbox(),
                         _buildLoginBtn(),
+                        _buildCancelBtn(),
+                        SizedBox(
+                          height: 10.0,
+                        ),
                         _buildSignInWithText(),
                         _buildSocialBtnRow(),
                         _buildSignupBtn(),
