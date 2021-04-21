@@ -555,6 +555,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     final List<Widget> children2 = _buildList2(); //ทดสอบ
 
     return Scaffold(
+      backgroundColor: Color(0xFFf3f5f9),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(40.0),
             child: AppBar(

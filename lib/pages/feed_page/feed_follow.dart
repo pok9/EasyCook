@@ -89,6 +89,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Color(0xFFf3f5f9),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(
