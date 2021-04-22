@@ -10,88 +10,128 @@ class FeedPage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 3.0, bottom: 10),
-                child: Text(
-                  "Easy Cook",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.grey)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: "Find a food or Restaur",
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.indigo,
-                          ),
-                          suffixIcon: Icon(
-                            Icons.add_road_rounded,
-                            color: Colors.grey,
-                          ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 3.0, bottom: 10),
+                    child: Text(
+                      "Easy Cook",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                  )),
-              SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "สูตรอาหารยอดนิยม",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    "ดูทั้งหมด",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                  Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(color: Colors.grey)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              hintText: "Find a food or Restaur",
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.indigo,
+                              ),
+                              suffixIcon: Icon(
+                                Icons.add_road_rounded,
+                                color: Colors.grey,
+                              ),
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none),
+                        ),
+                      )),
+                  SizedBox(
+                    height: 25,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "สูตรอาหารยอดนิยม",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.arrow_forward_rounded,color: Colors.indigo)
+                        // Text(
+                        //   "ดูทั้งหมด",
+                        //   style: TextStyle(
+                        //       fontSize: 20, fontWeight: FontWeight.normal),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      height: 200,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return _foodCard_1(context);
+                          })),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "สูตรอาหารยอดนิยม",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.arrow_forward_rounded,color: Colors.indigo)
+                        // Text(
+                        //   "ดูทั้งหมด",
+                        //   style: TextStyle(
+                        //       fontSize: 20, fontWeight: FontWeight.normal),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      height: 200,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return _foodCard_1(context);
+                          })),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Top Offers",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded,color: Colors.indigo)
+                      // Text(
+                      //   "ดูทั้งหมด",
+                      //   style: TextStyle(
+                      //       fontSize: 20, fontWeight: FontWeight.normal),
+                      // ),
+                    ],
+                  ),
+                  Container(
+                      height: 330,
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return _foodCardSlim_1(context);
+                          })),
                 ],
-              ),
-              Container(
-                  height: 200,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return _foodCard_1(context);
-                      })),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Top Offers",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "ดูทั้งหมด",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
-                  ),
-                ],
-              ),
-              Container(
-                  height: 330,
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return _foodCardSlim_1(context);
-                      })),
+              ), 
             ],
           ),
         ),
@@ -103,25 +143,27 @@ class FeedPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            color: Colors.white,
-            width: 200,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
-                          fit: BoxFit.cover)),
-                ),
-                Row(
+         
+        child: Container(
+          color: Colors.white,
+          width: 200,
+          
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 125,
+                width: 250,
+                decoration: BoxDecoration(
+                    // borderRadius: BorderRadius.circular(50),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                        fit: BoxFit.cover)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -182,9 +224,9 @@ class FeedPage extends StatelessWidget {
                           color: Colors.indigo, fontWeight: FontWeight.bold),
                     )
                   ],
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -195,13 +237,11 @@ class FeedPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: Colors.transparent ,
-      
+        color: Colors.transparent,
         child: Column(
           children: [
             Row(
               children: [
-                
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -230,14 +270,15 @@ class FeedPage extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.bold),
                         ),
-                      
                         Text(
                           "Italian Recipe for you",
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
                     ),
-                    SizedBox(width: 50,),
+                    SizedBox(
+                      width: 50,
+                    ),
                     Text(
                       "ฟรี",
                       style: TextStyle(
@@ -245,12 +286,14 @@ class FeedPage extends StatelessWidget {
                     )
                   ],
                 ),
-                
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 8.0,left: 8.0),
-              child: Divider(height: 2,color: Colors.grey,),
+              padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+              child: Divider(
+                height: 2,
+                color: Colors.grey,
+              ),
             ),
           ],
         ),

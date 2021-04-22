@@ -118,14 +118,25 @@ class _ShowFoodState extends State<ShowFood> {
 
       return Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-        child: Text(
-          (displayNumber + 1).toString() +
-              ". " +
-              dataIngredient[displayNumber].ingredientName +
-              "\t" +
-              dataIngredient[displayNumber].amount,
-          // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
-          style: kHintTextStyle2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                  (displayNumber + 1).toString() +
+                      ". " +
+                      dataIngredient[displayNumber].ingredientName +
+                      "\t" +
+                      dataIngredient[displayNumber].amount,
+                  // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+                  style: kHintTextStyle2,
+                ),
+            SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Divider(height: 2,color: Colors.grey,),
+            ),
+            // Divider(height: 2,color: Colors.grey,),
+          ],
         ),
       );
 
