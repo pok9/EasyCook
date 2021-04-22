@@ -116,20 +116,33 @@ class _ShowFoodState extends State<ShowFood> {
       int displayNumber = i;
       i++;
 
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-          child: Text(
-            (displayNumber + 1).toString() +
-                ". " +
-                dataIngredient[displayNumber].ingredientName +
-                "\t" +
-                dataIngredient[displayNumber].amount,
-            // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
-            style: kHintTextStyle2,
-          ),
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+        child: Text(
+          (displayNumber + 1).toString() +
+              ". " +
+              dataIngredient[displayNumber].ingredientName +
+              "\t" +
+              dataIngredient[displayNumber].amount,
+          // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+          style: kHintTextStyle2,
         ),
       );
+
+      // return Card(
+      //   child: Padding(
+      //     padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+      //     child: Text(
+      //       (displayNumber + 1).toString() +
+      //           ". " +
+      //           dataIngredient[displayNumber].ingredientName +
+      //           "\t" +
+      //           dataIngredient[displayNumber].amount,
+      //       // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+      //       style: kHintTextStyle2,
+      //     ),
+      //   ),
+      // );
     }).toList(); // แปลงเป็นlist
   }
 
@@ -157,15 +170,22 @@ class _ShowFoodState extends State<ShowFood> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-            child: Card(
-              child: Text(
-                (displayNumber + 1).toString() +
-                    ". " +
-                    dataHowto[displayNumber].description,
-                // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
-                style: kHintTextStyle2,
-              ),
+            child: Text(
+              (displayNumber + 1).toString() +
+                  ". " +
+                  dataHowto[displayNumber].description,
+              // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+              style: kHintTextStyle2,
             ),
+            // child: Card(
+            //   child: Text(
+            //     (displayNumber + 1).toString() +
+            //         ". " +
+            //         dataHowto[displayNumber].description,
+            //     // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+            //     style: kHintTextStyle2,
+            //   ),
+            // ),
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
               ? Card(

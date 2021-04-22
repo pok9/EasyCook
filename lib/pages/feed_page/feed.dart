@@ -48,9 +48,19 @@ class FeedPage extends StatelessWidget {
               SizedBox(
                 height: 25,
               ),
-              Text(
-                "สูตรอาหารยอดนิยม",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "สูตรอาหารยอดนิยม",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "ดูทั้งหมด",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                  ),
+                ],
               ),
               Container(
                   height: 200,
@@ -59,6 +69,28 @@ class FeedPage extends StatelessWidget {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return _foodCard_1(context);
+                      })),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Top Offers",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "ดูทั้งหมด",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                  ),
+                ],
+              ),
+              Container(
+                  height: 300,
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return _foodCardSlim_1(context);
                       })),
             ],
           ),
@@ -69,7 +101,7 @@ class FeedPage extends StatelessWidget {
 
   Widget _foodCard_1(context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -83,13 +115,11 @@ class FeedPage extends StatelessWidget {
                   height: 100,
                   width: 100,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: DecorationImage(
-
-                      image: NetworkImage("https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),fit: BoxFit.cover
-                    )
-                  ),
-                  
+                      borderRadius: BorderRadius.circular(50),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                          fit: BoxFit.cover)),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -98,10 +128,17 @@ class FeedPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("ต้ำยำกุ้ง",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),
+                        Text(
+                          "ต้ำยำกุ้ง",
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold),
+                        ),
                         Row(
                           children: [
-                            Text("4.2",style: TextStyle(color: Colors.grey),),
+                            Text(
+                              "4.2",
+                              style: TextStyle(color: Colors.grey),
+                            ),
                             Row(
                               children: [
                                 Icon(
@@ -131,17 +168,80 @@ class FeedPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Text("(12)",style: TextStyle(color: Colors.white),),
+                            Text(
+                              "(12)",
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ],
                         ),
-                      
                       ],
                     ),
-                    Text("\$25",style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.bold),)
+                    Text(
+                      "\$25",
+                      style: TextStyle(
+                          color: Colors.indigo, fontWeight: FontWeight.bold),
+                    )
                   ],
                 )
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _foodCardSlim_1(context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          color: Colors.white,
+          width: 200,
+          child: Row(
+            children: [
+              Container(
+                height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                        fit: BoxFit.cover)),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "ต้ำยำกุ้ง",
+                        style: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.bold),
+                      ),
+                    
+                      Text(
+                        "Italian Recipe for you",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 50,),
+                  Text(
+                    "ฟรี",
+                    style: TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  )
+                ],
+              )
+            ],
           ),
         ),
       ),
