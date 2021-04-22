@@ -85,7 +85,7 @@ class FeedPage extends StatelessWidget {
                 ],
               ),
               Container(
-                  height: 300,
+                  height: 330,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: 5,
@@ -194,55 +194,65 @@ class FeedPage extends StatelessWidget {
   Widget _foodCardSlim_1(context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          color: Colors.white,
-          width: 200,
-          child: Row(
-            children: [
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
-                        fit: BoxFit.cover)),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "ต้ำยำกุ้ง",
-                        style: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.bold),
-                      ),
-                    
-                      Text(
-                        "Italian Recipe for you",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
+      child: Container(
+        color: Colors.transparent ,
+      
+        child: Column(
+          children: [
+            Row(
+              children: [
+                
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                            fit: BoxFit.cover)),
                   ),
-                  SizedBox(width: 50,),
-                  Text(
-                    "ฟรี",
-                    style: TextStyle(
-                        color: Colors.indigo, fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-            ],
-          ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ต้ำยำกุ้ง",
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold),
+                        ),
+                      
+                        Text(
+                          "Italian Recipe for you",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 50,),
+                    Text(
+                      "ฟรี",
+                      style: TextStyle(
+                          color: Colors.indigo, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+                
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0,left: 8.0),
+              child: Divider(height: 2,color: Colors.grey,),
+            ),
+          ],
         ),
       ),
     );
