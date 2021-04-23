@@ -501,12 +501,14 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                 ),
                                 // ),
                                 Positioned(
-                                  left: 0.0,
+                                  left: 8.0,
                                   bottom: 0.0,
+                                  right: 8.0,
                                   child: Container(
                                     height: 60.0,
                                     width: deviceSize.width,
                                     decoration: BoxDecoration(
+                                      borderRadius: new BorderRadius.circular(24.0),
                                       gradient: LinearGradient(
                                         colors: [
                                           Colors.black,
@@ -519,7 +521,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                   ),
                                 ),
                                 Positioned(
-                                  left: 10.0,
+                                  left: 18.0,
                                   bottom: 10.0,
                                   child: Row(
                                     children: [

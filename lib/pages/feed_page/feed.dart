@@ -193,7 +193,7 @@ class FeedPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "สูตรอาหารยอดนิยม",
+                          "สูตรอาหารยอดนิยม1",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -207,7 +207,7 @@ class FeedPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                      height: 240,
+                      height: 210,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
@@ -235,7 +235,7 @@ class FeedPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                      height: 240,
+                      height: 210,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
@@ -282,8 +282,10 @@ class FeedPage extends StatelessWidget {
         child: Container(
           color: Colors.white,
           width: 200,
+          // decoration: BorderRadius.circular(24.0),
+          
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: 125,
@@ -304,30 +306,36 @@ class FeedPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Container(
-                        //   height: 40.0,
-                        //   width: 40.0,
-                        //   decoration: new BoxDecoration(
-                        //       shape: BoxShape.circle,
-                        //       image: new DecorationImage(
-                        //           fit: BoxFit.fill,
-                        //           image: new NetworkImage(
-                        //               "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"))),
+                       
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       height: 20.0,
+                        //       width: 20.0,
+                        //       decoration: new BoxDecoration(
+                        //           shape: BoxShape.circle,
+                        //           image: new DecorationImage(
+                        //               fit: BoxFit.fill,
+                        //               image: new NetworkImage(
+                        //                   "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"))),
+                        //     ),
+                        //     new SizedBox(
+                        //       width: 5.0,
+                        //     ),
+                        //     Text(
+                        //       "ปก เซฟกระทะเหล็กไทยแลน",
+                        //       style: TextStyle(fontSize: 11),
+                        //     ),
+                        //   ],
                         // ),
-                        Container(
-                          height: 40.0,
-                          width: 40.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: new NetworkImage(
-                                      "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"))),
-                        ),
-                        Text(
-                          "ต้ำยำกุ้ง",
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.bold),
+
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0,3,0,3),
+                          child: Text(
+                            "ต้มยำกุ้งสด",
+                            style: TextStyle(
+                                color: Colors.black),
+                          ),
                         ),
                         Row(
                           children: [
