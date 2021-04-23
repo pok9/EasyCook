@@ -20,7 +20,7 @@ import '../../class/token_class.dart';
 import 'package:mime/mime.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart'; //->
-import 'package:easy_cook/slidepage.dart';
+// import 'package:easy_cook/slidepage.dart';
 
 class AddFoodPage extends StatefulWidget {
   /////////////////////ส่วนผสม///////////////////
@@ -555,7 +555,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     final List<Widget> children2 = _buildList2(); //ทดสอบ
 
     return Scaffold(
-      backgroundColor: Color(0xFFf3f5f9),
+        backgroundColor: Color(0xFFf3f5f9),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(40.0),
             child: AppBar(
@@ -665,13 +665,20 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 child: _buildNameField(),
               ),
 
-              Center(
-                  child: Text(
-                "ตั้งรูปปกอาหาร",
-                style: DefaultTextStyle.of(context)
-                    .style
-                    .apply(fontSizeFactor: 2.0),
-              )),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                child: Text(
+                  "ตั้งรูปปกอาหาร",
+                  style: TextStyle(color: Colors.black87, fontSize: 20,fontWeight:  FontWeight.bold),
+                ),
+              ),
+              // Center(
+              //     child: Text(
+              //   "ตั้งรูปปกอาหาร",
+              //   style: DefaultTextStyle.of(context)
+              //       .style
+              //       .apply(fontSizeFactor: 2.0),
+              // )),
               // ElevatedButton(
               //     onPressed: () {
               //       for (var item in image2) {
@@ -751,13 +758,20 @@ class _AddFoodPageState extends State<AddFoodPage> {
               ),
 
               ////////////////////ส่วนผสม//////////////////////
-              Center(
-                  child: Text(
-                "ส่วนผสม",
-                style: DefaultTextStyle.of(context)
-                    .style
-                    .apply(fontSizeFactor: 2.0),
-              )),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                child: Text(
+                  "ส่วนผสม",
+                  style: TextStyle(color: Colors.black87, fontSize: 20,fontWeight:  FontWeight.bold),
+                ),
+              ),
+              // Center(
+              //     child: Text(
+              //   "ส่วนผสม",
+              //   style: DefaultTextStyle.of(context)
+              //       .style
+              //       .apply(fontSizeFactor: 2.0),
+              // )),
 
               ListView(
                 padding: EdgeInsets.all(0),
@@ -791,14 +805,20 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 ),
               ),
               ////////////////////ส่วนผสม//////////////////////
-
-              Center(
-                  child: Text(
-                "วิธีทำ",
-                style: DefaultTextStyle.of(context)
-                    .style
-                    .apply(fontSizeFactor: 2.0),
-              )),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                child: Text(
+                  "วิธีทำ",
+                  style: TextStyle(color: Colors.black87, fontSize: 20,fontWeight:  FontWeight.bold),
+                ),
+              ),
+              // Center(
+              //     child: Text(
+              //   "วิธีทำ",
+              //   style: DefaultTextStyle.of(context)
+              //       .style
+              //       .apply(fontSizeFactor: 2.0),
+              // )),
 
               ListView(
                 padding: EdgeInsets.all(0),

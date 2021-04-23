@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/register/register2_model.dart';
-import 'package:easy_cook/slidepage.dart';
+// import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

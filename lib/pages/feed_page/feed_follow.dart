@@ -1,6 +1,5 @@
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
-import 'package:easy_cook/sidebar/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
@@ -93,7 +92,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(
-          title: Text('Easy Cook'),
+          title: Text('การติดตาม'),
         ),
       ),
       drawer: (token != "" && dataUser != null)

@@ -1,6 +1,6 @@
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/register/register_model.dart';
-import 'package:easy_cook/slidepage.dart';
+// import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../style/utiltties.dart';
