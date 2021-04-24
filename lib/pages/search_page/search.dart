@@ -187,7 +187,7 @@ class _SearchPageState extends State<SearchPage> {
                         hintText: "ค้นหา",
                         contentPadding: const EdgeInsets.only(left: 24.0),
                         border: InputBorder.none,
-                        enabled: true
+                        enabled: true,
                         // filled: true
                         ),
                   ),
@@ -215,135 +215,135 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
 
-      drawer: Container(
-        width: deviceSize.width - 45,
-        child: Drawer(
-          child: ListView(
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: new NetworkImage(
-                          "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/login-page');
-                              },
-                              child: Text(
-                                'เข้าสู่ระบบ',
-                              ),
-                              style: ButtonStyle(
-                                  side: MaterialStateProperty.all(BorderSide(
-                                      width: 2, color: Colors.white)),
-                                  foregroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 50)),
-                                  textStyle: MaterialStateProperty.all(
-                                      TextStyle(fontSize: 15)))),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/register-page');
-                              },
-                              child: Text(
-                                'สมัครสมาชิก',
-                              ),
-                              style: ButtonStyle(
-                                  side: MaterialStateProperty.all(BorderSide(
-                                      width: 2, color: Colors.white)),
-                                  foregroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 43)),
-                                  textStyle: MaterialStateProperty.all(
-                                      TextStyle(fontSize: 15)))),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                        child: Column(
-                          children: [
-                            Row(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.folder,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('สูตรที่ซื้อ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.notifications,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('การแจ้งเตือน',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              Divider(
-                thickness: 0.5,
-                color: Colors.grey,
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ตั้งค่า',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ออกจากระบบ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-      ),
+      // drawer: Container(
+      //   width: deviceSize.width - 45,
+      //   child: Drawer(
+      //     child: ListView(
+      //       children: [
+      //         GestureDetector(
+      //           onTap: () {},
+      //           child: DrawerHeader(
+      //             decoration: BoxDecoration(
+      //               image: DecorationImage(
+      //                 image: new NetworkImage(
+      //                     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+      //                 fit: BoxFit.cover,
+      //               ),
+      //             ),
+      //             child: Row(
+      //               mainAxisAlignment: MainAxisAlignment.center,
+      //               children: [
+      //                 Column(
+      //                   mainAxisAlignment: MainAxisAlignment.center,
+      //                   children: [
+      //                     TextButton(
+      //                         onPressed: () {
+      //                           Navigator.pushNamed(context, '/login-page');
+      //                         },
+      //                         child: Text(
+      //                           'เข้าสู่ระบบ',
+      //                         ),
+      //                         style: ButtonStyle(
+      //                             side: MaterialStateProperty.all(BorderSide(
+      //                                 width: 2, color: Colors.white)),
+      //                             foregroundColor:
+      //                                 MaterialStateProperty.all(Colors.white),
+      //                             padding: MaterialStateProperty.all(
+      //                                 EdgeInsets.symmetric(
+      //                                     vertical: 10, horizontal: 50)),
+      //                             textStyle: MaterialStateProperty.all(
+      //                                 TextStyle(fontSize: 15)))),
+      //                     TextButton(
+      //                         onPressed: () {
+      //                           Navigator.pushNamed(context, '/register-page');
+      //                         },
+      //                         child: Text(
+      //                           'สมัครสมาชิก',
+      //                         ),
+      //                         style: ButtonStyle(
+      //                             side: MaterialStateProperty.all(BorderSide(
+      //                                 width: 2, color: Colors.white)),
+      //                             foregroundColor:
+      //                                 MaterialStateProperty.all(Colors.white),
+      //                             padding: MaterialStateProperty.all(
+      //                                 EdgeInsets.symmetric(
+      //                                     vertical: 10, horizontal: 43)),
+      //                             textStyle: MaterialStateProperty.all(
+      //                                 TextStyle(fontSize: 15)))),
+      //                   ],
+      //                 ),
+      //                 Padding(
+      //                   padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+      //                   child: Column(
+      //                     children: [
+      //                       Row(),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //         ListTile(
+      //           leading: Icon(
+      //             Icons.folder,
+      //             color: Colors.cyan,
+      //             size: 30,
+      //           ),
+      //           title: Text('สูตรที่ซื้อ',
+      //               style: TextStyle(
+      //                   fontWeight: FontWeight.w300,
+      //                   fontSize: 23,
+      //                   color: Colors.black)),
+      //           onTap: () {},
+      //         ),
+      //         ListTile(
+      //           leading: Icon(
+      //             Icons.notifications,
+      //             color: Colors.cyan,
+      //             size: 30,
+      //           ),
+      //           title: Text('การแจ้งเตือน',
+      //               style: TextStyle(
+      //                   fontWeight: FontWeight.w300,
+      //                   fontSize: 23,
+      //                   color: Colors.black)),
+      //           onTap: () {},
+      //         ),
+      //         Divider(
+      //           thickness: 0.5,
+      //           color: Colors.grey,
+      //         ),
+      //         ListTile(
+      //           leading: Icon(
+      //             Icons.settings,
+      //             color: Colors.cyan,
+      //             size: 30,
+      //           ),
+      //           title: Text('ตั้งค่า',
+      //               style: TextStyle(
+      //                   fontWeight: FontWeight.w300,
+      //                   fontSize: 23,
+      //                   color: Colors.black)),
+      //           onTap: () {},
+      //         ),
+      //         ListTile(
+      //           leading: Icon(
+      //             Icons.exit_to_app,
+      //             color: Colors.cyan,
+      //             size: 30,
+      //           ),
+      //           title: Text('ออกจากระบบ',
+      //               style: TextStyle(
+      //                   fontWeight: FontWeight.w300,
+      //                   fontSize: 23,
+      //                   color: Colors.black)),
+      //           onTap: () {},
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       body: (_controller.text != "")
           ? DefaultTabController(
               length: 3,

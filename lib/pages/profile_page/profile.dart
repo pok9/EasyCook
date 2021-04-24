@@ -5,6 +5,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
+import 'package:easy_cook/pages/feed_page/feed_follow.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -995,11 +996,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 fit: BoxFit
                                                                     .cover,
                                                                 
-                                                                // image: NetworkImage(////////////////////////////////
-                                                                //     newfeed.feeds[
-                                                                //             index]
-                                                                //         .image
-                                                                //         ),
+                                                                image: NetworkImage(////////////////////////////////
+                                                                    newfeed.feeds[
+                                                                            index]
+                                                                        .image
+                                                                        ),
                                                               ),
                                                             ),
                                                           ),
@@ -1152,28 +1153,28 @@ class _ProfilePageState extends State<ProfilePage> {
                                               right: 16,
                                               top: 0,
                                               bottom: 24),
-                                          // child: GridView.count(/////////////////////////////////////////////////
-                                          //   crossAxisCount: 3,
-                                          //   crossAxisSpacing: 8,
-                                          //   mainAxisSpacing: 8,
-                                          //   physics: BouncingScrollPhysics(),
-                                          //   children: List.generate(
-                                          //       newfeed.feeds.length, (index) {
-                                          //     return Container(
-                                          //       decoration: BoxDecoration(
-                                          //         borderRadius:
-                                          //             BorderRadius.all(
-                                          //           Radius.circular(10),
-                                          //         ),
-                                          //         image: DecorationImage(
-                                          //             image: NetworkImage(
-                                          //                 newfeed.feeds[index]
-                                          //                     .image),
-                                          //             fit: BoxFit.cover),
-                                          //       ),
-                                          //     );
-                                          //   }),
-                                          // ),
+                                          child: GridView.count(/////////////////////////////////////////////////
+                                            crossAxisCount: 3,
+                                            crossAxisSpacing: 8,
+                                            mainAxisSpacing: 8,
+                                            physics: BouncingScrollPhysics(),
+                                            children: List.generate(
+                                                newfeed.feeds.length, (index) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          newfeed.feeds[index]
+                                                              .image),
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              );
+                                            }),
+                                          ),
                                         )
                                       : Container(),
                           // : Column(

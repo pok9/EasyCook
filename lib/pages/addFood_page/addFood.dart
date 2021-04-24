@@ -651,7 +651,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
                       // var file;
                     },
-                    child: Text('เพิ่ม')),
+                    child: Text('โพสต์')),
               ],
             )),
         body: Container(
