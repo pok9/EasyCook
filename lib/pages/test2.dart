@@ -20,6 +20,7 @@ class _test2State extends State<test2> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
         title: Text('เซฟปก'),
       ),
@@ -160,14 +161,21 @@ class _test2State extends State<test2> {
                 ),
               ],
             ),
+
             Padding(
-              padding: const EdgeInsets.only(left: 18, right: 18, top: 34),
+              padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
               child: Container(
+                // height: 150,
                 padding:
                     EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xffF1F3F6)),
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
+                      fit: BoxFit.cover),
+                ),
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -175,41 +183,76 @@ class _test2State extends State<test2> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "20,600",
+                          "กระเป๋าหลัก()",
                           style: TextStyle(
-                              fontSize: 24,
-                              color: Color(0xff171822),
-                              fontWeight: FontWeight.w800),
+                              fontSize: 11,
+                              color: Colors.white.withOpacity(.7),
+                              fontWeight: FontWeight.w500),
                         ),
                         SizedBox(
                           height: 12,
                         ),
                         Text(
-                          "Current Balance",
+                          "20,600",
                           style: TextStyle(
-                              fontSize: 15,
-                              color: Color(0xff3A4276).withOpacity(.4),
-                              fontWeight: FontWeight.w500),
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800),
                         ),
                       ],
                     ),
-                    RaisedButton(
-                      onPressed: () {},
-                      elevation: 0,
-                      padding: EdgeInsets.all(12),
-                      child: Text(
-                        "+",
-                        style:
-                            TextStyle(color: Color(0xff1B1D28), fontSize: 22),
-                      ),
-                      shape: CircleBorder(),
-                      color: Color(0xffFFAC30),
-                    )
+                    // RaisedButton(
+                    //   onPressed: () {},
+                    //   elevation: 0,
+                    //   padding: EdgeInsets.all(12),
+                    //   child: Text(
+                    //     "+",
+                    //     style:
+                    //         TextStyle(color: Color(0xff1B1D28), fontSize: 22),
+                    //   ),
+                    //   shape: CircleBorder(),
+                    //   color: Color(0xffFFAC30),
+                    // ),
+                    Column(
+                      children: [
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(width: 100, height: 35),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white
+                            ),
+                            child: Text('เติมเงิน',style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),),
+                            onPressed: () {},
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(width: 100, height: 35),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white
+                            ),
+                            child: Text('ถอนเงิน',style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    
+
                   ],
                 ),
               ),
             ),
+            
+            
           ],
+          
         ),
       ),
     );

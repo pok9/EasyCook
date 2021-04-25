@@ -285,6 +285,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                 vertical: 10, horizontal: 43)),
                                         textStyle: MaterialStateProperty.all(
                                             TextStyle(fontSize: 15)))),
+                                            
                               ],
                             ),
                             Padding(
