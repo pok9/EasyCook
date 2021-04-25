@@ -21,7 +21,7 @@ class _test2State extends State<test2> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('name'),
+        title: Text('เซฟปก'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -159,6 +159,55 @@ class _test2State extends State<test2> {
                   ),
                 ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 18, right: 18, top: 34),
+              child: Container(
+                padding:
+                    EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xffF1F3F6)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "20,600",
+                          style: TextStyle(
+                              fontSize: 24,
+                              color: Color(0xff171822),
+                              fontWeight: FontWeight.w800),
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          "Current Balance",
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xff3A4276).withOpacity(.4),
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    RaisedButton(
+                      onPressed: () {},
+                      elevation: 0,
+                      padding: EdgeInsets.all(12),
+                      child: Text(
+                        "+",
+                        style:
+                            TextStyle(color: Color(0xff1B1D28), fontSize: 22),
+                      ),
+                      shape: CircleBorder(),
+                      color: Color(0xffFFAC30),
+                    )
+                  ],
+                ),
+              ),
             ),
           ],
         ),

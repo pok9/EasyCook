@@ -122,77 +122,39 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                          child: Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Container(
-                                    height: 80,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          const Color(0xFF73AEF5),
-                                          const Color(0xFF73AEF5)
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Center(
-                                      child: CircleAvatar(
-                                        radius: 39,
-                                        backgroundColor: Colors.grey,
-                                        backgroundImage:
-                                            NetworkImage(dataUser.profileImage),
-                                      ),
-                                    ),
-                                  ),
-                                  // Container(
-                                  //   height: 70.0,
-                                  //   width: 70.0,
-                                  //   decoration: new BoxDecoration(
-                                  //       shape: BoxShape.circle,
-                                  //       image: new DecorationImage(
-                                  //           fit: BoxFit.fill,
-                                  //           image: new NetworkImage(
-                                  //               datas.data[0].profileImage))),
-                                  // ),
-                                ],
-                              ),
-                              //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          datas.data[0].aliasName,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    // Row(
-                                    //   children: [
-                                    //     Text(
-                                    //       'Chanchai Ditthapan',
-                                    //       style: TextStyle(
-                                    //         fontSize: 20,
-                                    //         color: Colors.white,
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF73AEF5),
+                                    const Color(0xFF73AEF5)
                                   ],
                                 ),
+                                borderRadius: BorderRadius.circular(100),
                               ),
-                            ],
-                          ),
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 39,
+                                  backgroundColor: Colors.grey,
+                                  backgroundImage:
+                                      NetworkImage(dataUser.profileImage),
+                                ),
+                              ),
+                            ),
+                            //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                            Text(
+                              datas.data[0].aliasName,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
