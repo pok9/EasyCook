@@ -1,34 +1,33 @@
-import 'dart:io';
+import 'dart:math';
 
-// import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class test2 extends StatefulWidget {
+class test3 extends StatefulWidget {
+  test3({Key key}) : super(key: key);
+
   @override
-  _test2State createState() => _test2State();
+  _test3State createState() => _test3State();
 }
 
-class _test2State extends State<test2> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class _test3State extends State<test3> {
+  
+   double get randHeight => Random().nextInt(100).toDouble();
 
-  @override
-  Widget build(BuildContext context) {
+  List<Widget> _randomChildren;
+
+  // Children with random heights - You can build your widgets of unknown heights here
+  // I'm just passing the context in case if any widgets built here needs  access to context based data like Theme or MediaQuery
+  List<Widget> _randomHeightWidgets(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      backgroundColor: Color(0xFFf3f5f9),
-      appBar: AppBar(
-        title: Text('เซฟปก'),
-      ),
-      body: ListView(
-        children: [
-          DefaultTabController(
-              length: 3,
-              child: Column(
+    _randomChildren ??= List.generate(1, (index) {
+      // final height = randHeight.clamp(
+      //   500.0,
+      //   MediaQuery.of(context).size.width, // simply using MediaQuery to demonstrate usage of context
+      // );
+      return Container(
+        // color: Colors.primaries[index],
+        height: 400,
+        child: Column(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -276,23 +275,70 @@ class _test2State extends State<test2> {
                   // createChildren()
                 ],
               )
+      );
+    });
+
+    return _randomChildren;
+  }
+
+   @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // Persistent AppBar that never scrolls
+      appBar: AppBar(
+        title: Text('AppBar'),
+        elevation: 0.0,
+      ),
+      body: DefaultTabController(
+        length: 2,
+        child: NestedScrollView(
+          // allows you to build a list of elements that would be scrolled away till the body reached the top
+          headerSliverBuilder: (context, _) {
+            return [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  _randomHeightWidgets(context),
+                ),
               ),
-              //  Expanded(
-              //       child: Container(
-              //         child: TabBarView(children: [
-              //           Container(
-              //             child: Text("Home Body"),
-              //           ),
-              //           Container(
-              //             child: Text("Articles Body"),
-              //           ),
-              //           Container(
-              //             child: Text("User Body"),
-              //           ),
-              //         ]),
-              //       ),
-              //     )
-        ],
+            ];
+          },
+          // You tab view goes here
+          body: Column(
+            children: <Widget>[
+              TabBar(
+                tabs: [
+                  Tab( child: Text(
+                    "feed",
+                    style: TextStyle(color: Colors.black),
+                  ),),
+                  Tab( child: Text(
+                    "body",
+                    style: TextStyle(color: Colors.black),
+                  ),),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    GridView.count(
+                      padding: EdgeInsets.zero,
+                      crossAxisCount: 3,
+                      children: Colors.primaries.map((color) {
+                        return Container(color: color, height: 150.0);
+                      }).toList(),
+                    ),
+                    ListView(
+                      padding: EdgeInsets.zero,
+                      children: Colors.primaries.map((color) {
+                        return Container(color: color, height: 150.0);
+                      }).toList(),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

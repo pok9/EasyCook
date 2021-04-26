@@ -2,6 +2,7 @@ import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:easy_cook/pages/test2.dart';
+import 'package:easy_cook/pages/test3.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
@@ -110,7 +111,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                           PageTransition(
                             curve: Curves.linear,
                             type: PageTransitionType.bottomToTop,
-                            child: test2(),
+                            child: test3(),
                           ),
                         );
                       },

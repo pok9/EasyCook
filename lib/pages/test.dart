@@ -19,57 +19,57 @@ class test extends StatefulWidget {
   _testState createState() => _testState();
 }
 
-custom() {
-  return CustomScrollView(
-    slivers: [
-      SliverAppBar(
-        expandedHeight: 200.0,
-        floating: false,
-        pinned: true,
-        flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            title: Text(
-              "Collapsing Toolbar",
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
-            ),
-            background: Image.network(
-              "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg",
-              fit: BoxFit.cover,
-            )),
-      ),
-      SliverGrid(
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200.0,
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-          childAspectRatio: 4.0,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              color: Colors.teal[100 * (index % 9)],
-              child: Text('Grid Item $index'),
-            );
-          },
-          childCount: 20,
-        ),
-      ),
-      SliverFixedExtentList(
-        itemExtent: 50.0,
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              color: Colors.lightBlue[100 * (index % 9)],
-              child: Text('List Item $index'),
-            );
-          },
-        ),
-      ),
-    ],
-  );
-}
+// custom() {
+//   return CustomScrollView(
+//     slivers: [
+//       SliverAppBar(
+//         expandedHeight: 200.0,
+//         floating: false,
+//         pinned: true,
+//         flexibleSpace: FlexibleSpaceBar(
+//             centerTitle: true,
+//             title: Text(
+//               "Collapsing Toolbar",
+//               style: TextStyle(color: Colors.white, fontSize: 16.0),
+//             ),
+//             background: Image.network(
+//               "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg",
+//               fit: BoxFit.cover,
+//             )),
+//       ),
+//       SliverGrid(
+//         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+//           maxCrossAxisExtent: 200.0,
+//           mainAxisSpacing: 10.0,
+//           crossAxisSpacing: 10.0,
+//           childAspectRatio: 4.0,
+//         ),
+//         delegate: SliverChildBuilderDelegate(
+//           (BuildContext context, int index) {
+//             return Container(
+//               alignment: Alignment.center,
+//               color: Colors.teal[100 * (index % 9)],
+//               child: Text('Grid Item $index'),
+//             );
+//           },
+//           childCount: 20,
+//         ),
+//       ),
+//       SliverFixedExtentList(
+//         itemExtent: 50.0,
+//         delegate: SliverChildBuilderDelegate(
+//           (BuildContext context, int index) {
+//             return Container(
+//               alignment: Alignment.center,
+//               color: Colors.lightBlue[100 * (index % 9)],
+//               child: Text('List Item $index'),
+//             );
+//           },
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
 // nested() {
 //   return NestedScrollView(
@@ -102,7 +102,58 @@ class _testState extends State<test> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: custom(),
+      backgroundColor: Colors.grey[100],
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              backgroundColor: Colors.grey[100],
+              title: Container(
+                color: Colors.grey[100],
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: Text(
+                    "Head",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+            ),
+            SliverAppBar(
+              pinned: true,
+              floating: false,
+              backgroundColor: Colors.blue,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Icon(
+                    Icons.dashboard,
+                    color: Colors.black,
+                  ),
+                  Icon(
+                    Icons.tv,
+                    color: Colors.black,
+                  ),
+                  Icon(
+                    Icons.person,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
+            ),
+            SliverAnimatedList(
+              itemBuilder: (_, index, ___) {
+                return ListTile(
+                  title: Text(index.toString()),
+                );
+              },
+              initialItemCount: 100,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
