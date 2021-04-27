@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/pages/addFood_page/addFood.dart';
-import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/profile_page/test3.dart';
 import 'package:easy_cook/pages/register_page/register.dart';
 import 'package:easy_cook/pages/register_page/register2.dart';
 // import 'package:easy_cook/slidepage.dart';
