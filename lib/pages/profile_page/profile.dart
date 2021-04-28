@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,8 +24,8 @@ class _ProfilePageState extends State<ProfilePage> {
     findUser();
   }
 
+  //ดึง token
   Future<Null> findUser() async {
-    //ดึง token
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
@@ -51,8 +52,34 @@ class _ProfilePageState extends State<ProfilePage> {
 
         data_MyAccount = myAccountFromJson(responseString);
         data_DataAc = data_MyAccount.data[0];
-        print(data_DataAc.aliasName);
-        // myPosts();
+        // print(data_DataAc.userId);
+        getMyPost();
+      });
+    } else {
+      return null;
+    }
+  }
+
+  //ข้อมูลโพสต์ตัวเอง
+  MyPost data_MyPost;
+  List<RecipePost> data_RecipePost;
+  Future<Null> getMyPost() async {
+    String uid = data_DataAc.userId.toString();
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/mypost/" + uid;
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        data_MyPost = myPostFromJson(responseString);
+        data_RecipePost = data_MyPost.recipePost;
+        // newfeed = newfeedsFollowFromJson(responseString);
+        //  post = newfeed.feeds[0];
+        // dataUser = datas.data[0];
       });
     } else {
       return null;
@@ -143,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       height: 4,
                                     ),
                                     Text(
-                                      "1",
+                                      data_RecipePost.length.toString(),
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -167,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       height: 4,
                                     ),
                                     Text(
-                                      "2",
+                                      data_MyPost.countFollower.toString(),
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -191,7 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       height: 4,
                                     ),
                                     Text(
-                                      "3",
+                                      data_MyPost.countFollowing.toString(),
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -241,7 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 12,
                           ),
                           Text(
-                            "20,600",
+                            data_DataAc.balance.toString(),
                             style: TextStyle(
                                 fontSize: 24,
                                 color: Colors.white,
@@ -329,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text(data_DataAc == null ? "" : data_DataAc.aliasName),
         elevation: 0.0,
       ),
-      body: data_DataAc == null
+      body: data_DataAc == null || data_MyPost == null
           ? Container(
               child: AlertDialog(
                   content: Row(
@@ -376,8 +403,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: TabBarView(
                         children: [
                           ListView.builder(
-                            itemCount:
-                                5, /////////////////////////////////////////////////////////////////
+                            itemCount: data_RecipePost
+                                .length, /////////////////////////////////////////////////////////////////
                             itemBuilder: (context, index) => index < 0
                                 ? new SizedBox(
                                     child: AlertDialog(
@@ -414,13 +441,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       image: new DecorationImage(
                                                           fit: BoxFit.fill,
                                                           image: new NetworkImage(
-                                                              data_DataAc.profileImage))), /////////////////////////////////////////////////
+                                                              data_DataAc
+                                                                  .profileImage))), /////////////////////////////////////////////////
                                                 ),
                                                 new SizedBox(
                                                   width: 10.0,
                                                 ),
                                                 new Text(
-                                                  data_DataAc.aliasName, //////////////////////////////////////////////////
+                                                  data_DataAc
+                                                      .aliasName, //////////////////////////////////////////////////
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -442,6 +471,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
+                                              print("up $index");
                                               // Navigator.push(context,////////////////////////////////////////////////
                                               //     CupertinoPageRoute(
                                               //         builder: (context) {
@@ -463,7 +493,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     fit: BoxFit.cover,
                                                     // alignment: Alignment.topRight,
                                                     image: NetworkImage(
-                                                        "https://images.pexels.com/photos/544268/pexels-photo-544268.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"), ////////////////////////////////////////////////////////
+                                                        data_RecipePost[index]
+                                                            .image), ////////////////////////////////////////////////////////
                                                   ),
                                                 ),
                                               ),
@@ -474,20 +505,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                             left: 8.0,
                                             bottom: 0.0,
                                             right: 8.0,
-                                            child: Container(
-                                              height: 60.0,
-                                              width: deviceSize.width,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        24.0),
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.black,
-                                                    Colors.black12,
-                                                  ],
-                                                  begin: Alignment.bottomCenter,
-                                                  end: Alignment.topCenter,
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                print("down $index");
+                                              },
+                                              child: Container(
+                                                height: 60.0,
+                                                width: deviceSize.width,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          24.0),
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.black,
+                                                      Colors.black12,
+                                                    ],
+                                                    begin:
+                                                        Alignment.bottomCenter,
+                                                    end: Alignment.topCenter,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -502,7 +539,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "ต้มยำกุ้ง", /////////////////////////////////////////////////////////
+                                                      data_RecipePost[index]
+                                                          .recipeName, /////////////////////////////////////////////////////////
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 18.0,
@@ -644,7 +682,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                       //     style: TextStyle(color: Colors.grey),
                                       //   ),
                                       // ),
-                                      SizedBox(height: 10,),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
                                       Divider(
                                         thickness: 1,
                                         color: Colors.grey,
