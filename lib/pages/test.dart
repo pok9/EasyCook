@@ -1,159 +1,222 @@
-// import 'dart:html';
-
-// import 'package:file_picker/file_picker.dart';
-// import 'package:file_picker/file_picker.dart';
-// import 'dart:js';
-
-import 'package:easy_cook/pages/feed_page/feed_follow.dart';
-import 'package:easy_cook/pages/video_items.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:video_player/video_player.dart';
-// import 'package:flutter/services.dart';
+import 'package:sliver_fab/sliver_fab.dart';
 
-class test extends StatefulWidget {
-  test() : super();
+class test extends StatelessWidget {
+  const test({Key key}) : super(key: key);
 
-  final String title = "Collpasable Appbar Demo";
-  @override
-  _testState createState() => _testState();
-}
-
-// custom() {
-//   return CustomScrollView(
-//     slivers: [
-//       SliverAppBar(
-//         expandedHeight: 200.0,
-//         floating: false,
-//         pinned: true,
-//         flexibleSpace: FlexibleSpaceBar(
-//             centerTitle: true,
-//             title: Text(
-//               "Collapsing Toolbar",
-//               style: TextStyle(color: Colors.white, fontSize: 16.0),
-//             ),
-//             background: Image.network(
-//               "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg",
-//               fit: BoxFit.cover,
-//             )),
-//       ),
-//       SliverGrid(
-//         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-//           maxCrossAxisExtent: 200.0,
-//           mainAxisSpacing: 10.0,
-//           crossAxisSpacing: 10.0,
-//           childAspectRatio: 4.0,
-//         ),
-//         delegate: SliverChildBuilderDelegate(
-//           (BuildContext context, int index) {
-//             return Container(
-//               alignment: Alignment.center,
-//               color: Colors.teal[100 * (index % 9)],
-//               child: Text('Grid Item $index'),
-//             );
-//           },
-//           childCount: 20,
-//         ),
-//       ),
-//       SliverFixedExtentList(
-//         itemExtent: 50.0,
-//         delegate: SliverChildBuilderDelegate(
-//           (BuildContext context, int index) {
-//             return Container(
-//               alignment: Alignment.center,
-//               color: Colors.lightBlue[100 * (index % 9)],
-//               child: Text('List Item $index'),
-//             );
-//           },
-//         ),
-//       ),
-//     ],
-//   );
-// }
-
-// nested() {
-//   return NestedScrollView(
-//     headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-//       return [
-//         SliverAppBar(
-//           expandedHeight: 200.0,
-//           floating: false,
-//           pinned: true,
-//           flexibleSpace: FlexibleSpaceBar(
-//               centerTitle: true,
-//               title: Text(
-//                 "Collapsing Toolbar",
-//                 style: TextStyle(color: Colors.white, fontSize: 16.0),
-//               ),
-//               background: Image.network(
-//                 "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg",
-//                 fit: BoxFit.cover,
-//               )),
-//         ),
-//       ];
-//     },
-//     body: Center(
-//       child: Text("The Parrot"),
-//     ),
-//   );
-// }
-
-class _testState extends State<test> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              backgroundColor: Colors.grey[100],
-              title: Container(
-                color: Colors.grey[100],
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: Text(
-                    "Head",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ),
-            ),
-            SliverAppBar(
-              pinned: true,
-              floating: false,
-              backgroundColor: Colors.blue,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Icon(
-                    Icons.dashboard,
-                    color: Colors.black,
-                  ),
-                  Icon(
-                    Icons.tv,
-                    color: Colors.black,
-                  ),
-                  Icon(
-                    Icons.person,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-            ),
-            SliverAnimatedList(
-              itemBuilder: (_, index, ___) {
-                return ListTile(
-                  title: Text(index.toString()),
-                );
-              },
-              initialItemCount: 100,
-            )
-          ],
+    return SliverFab(
+      floatingWidget: Container(
+        height: 100,
+        width: 100,
+        child: ClipOval(
+          child: Image.network(
+            'https://saosuay.com/wp-content/uploads/2020/07/%E0%B8%AA%E0%B8%B2%E0%B8%A7%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2-7-819x1024.jpg',
+            fit: BoxFit.fill,
+          ),
         ),
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 8.0)),
       ),
+      expandedHeight: 256.0,
+      floatingPosition: FloatingPosition(top: -20, left: 150),
+      slivers: [
+        SliverAppBar(
+          title: Text('Example 1'),
+          pinned: true,
+          expandedHeight: 256.0,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Image.asset(
+              'assets/images/camera.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        // CustomScrollView(
+        //   slivers: [
+
+        //   ],
+        // ),
+        SliverList(
+            delegate: SliverChildListDelegate(List.generate(
+                1,
+                (index) => Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 500,
+                          color: Colors.white24,
+                        ),
+                        Text(
+                          "เซฟปก",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                        ),
+                        Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                        Text("ต้มยำกุ้ง", style: kHintTextStyle3),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Container(
+                            width: 300,
+                            height: 200,
+                            child: ClipRRect(
+                              borderRadius: new BorderRadius.circular(24.0),
+                              child: Image(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    "https://lumiere-a.akamaihd.net/v1/images/sa_pixar_virtualbg_coco_16x9_9ccd7110.jpeg"),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                        Text(
+                          "ส่วนผสม",
+                          style: kHintTextStyle3,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ListView(
+                          padding: EdgeInsets.all(0),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          // children: test,
+                        ),
+                        Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                        Text(
+                          "วิธีทำ",
+                          style: kHintTextStyle3,
+                        ),
+                        ListView(
+                          padding: EdgeInsets.all(0),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          // children: test2,
+                        ),
+
+                        SizedBox(height: 500,)
+                      ],
+                    )))
+            // delegate: SliverChildListDelegate([
+            //   Column(
+            //     children: [
+            //       Stack(
+            //         children: [
+            //           Container(
+            //             height: 55,
+            //             width: 500,
+            //             color: Colors.white24,
+            //           ),
+            //           // Container(
+            //           //     height: 200,
+            //           //     width: 500,
+            //           //     child: Image.network(
+            //           //       "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg",
+            //           //       fit: BoxFit.cover,
+            //           //     )),
+            //           // Positioned(
+            //           //   top: 100,
+            //           //   left: 120,
+            //           //   child: CircleAvatar(
+            //           //     radius: 80,
+            //           //     backgroundColor: Colors.white,
+            //           //     child: CircleAvatar(
+            //           //       radius: 75,
+            //           //       backgroundImage: NetworkImage("https://saosuay.com/wp-content/uploads/2020/07/%E0%B8%AA%E0%B8%B2%E0%B8%A7%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2-7-819x1024.jpg"),
+            //           //     ),
+            //           //   ),
+            //           // ),
+            //           // Positioned(
+            //           //   top: 210,
+            //           //   left: 240,
+            //           //   child: CircleAvatar(
+            //           //     radius: 22,
+            //           //     backgroundColor: Colors.grey[300],
+            //           //     child: IconButton(
+            //           //       icon: const Icon(Icons.add),
+            //           //       color: Colors.black,
+            //           //       onPressed: () {
+            //           //         setState(() {});
+            //           //       },
+            //           //     ),
+            //           //   ),
+            //           // )
+            //         ],
+            //       ),
+            //       Text(
+            //         "เซฟปก",
+            //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            //       ),
+            //       Divider(
+            //         thickness: 1,
+            //         color: Colors.grey,
+            //       ),
+            //       Text("ต้มยำกุ้ง", style: kHintTextStyle3),
+            //       Padding(
+            //         padding: const EdgeInsets.all(16.0),
+            //         child: Container(
+            //           width: 300,
+            //           height: 200,
+            //           child: ClipRRect(
+            //             borderRadius: new BorderRadius.circular(24.0),
+            //             child: Image(
+            //               fit: BoxFit.cover,
+            //               image: NetworkImage("https://lumiere-a.akamaihd.net/v1/images/sa_pixar_virtualbg_coco_16x9_9ccd7110.jpeg"),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Divider(
+            //         thickness: 1,
+            //         color: Colors.grey,
+            //       ),
+            //       Text(
+            //         "ส่วนผสม",
+            //         style: kHintTextStyle3,
+            //       ),
+            //       SizedBox(
+            //         height: 10,
+            //       ),
+            //       ListView(
+            //         padding: EdgeInsets.all(0),
+            //         shrinkWrap: true,
+            //         physics: NeverScrollableScrollPhysics(),
+            //         // children: test,
+            //       ),
+            //       Divider(
+            //         thickness: 1,
+            //         color: Colors.grey,
+            //       ),
+            //       Text(
+            //         "วิธีทำ",
+            //         style: kHintTextStyle3,
+            //       ),
+            //       ListView(
+            //         padding: EdgeInsets.all(0),
+            //         shrinkWrap: true,
+            //         physics: NeverScrollableScrollPhysics(),
+            //         // children: test2,
+            //       ),
+            //     ],
+            //   ),
+            // ]
+            // ),
+            )
+      ],
     );
   }
 }

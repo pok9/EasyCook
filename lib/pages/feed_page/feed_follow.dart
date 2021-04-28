@@ -1,5 +1,4 @@
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
-import 'package:easy_cook/pages/profile_page/test3.dart';
 import 'package:easy_cook/pages/test.dart';
 import 'package:easy_cook/pages/test2.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';

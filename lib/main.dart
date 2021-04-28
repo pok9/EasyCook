@@ -4,7 +4,6 @@ import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
-import 'package:easy_cook/pages/profile_page/test3.dart';
 import 'package:easy_cook/pages/register_page/register.dart';
 import 'package:easy_cook/pages/register_page/register2.dart';
 import 'package:easy_cook/pages/register_page/register3.dart';
