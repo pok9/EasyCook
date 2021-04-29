@@ -96,8 +96,13 @@ class _ShowFoodState extends State<ShowFood> {
                   dataIngredient[displayNumber].ingredientName +
                   "\t" +
                   dataIngredient[displayNumber].amount,
-              style: TextStyle(fontWeight: FontWeight.normal,fontFamily: 'OpenSans', fontSize: 17,color: Colors.black,decoration: TextDecoration.none),
-              // 
+              style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontFamily: 'OpenSans',
+                  fontSize: 17,
+                  color: Colors.black,
+                  decoration: TextDecoration.none),
+              //
               // style: kHintTextStyle2,
             ),
             SizedBox(
@@ -144,7 +149,12 @@ class _ShowFoodState extends State<ShowFood> {
               (displayNumber + 1).toString() +
                   ". " +
                   dataHowto[displayNumber].description,
-              style: TextStyle(fontWeight: FontWeight.normal,fontFamily: 'OpenSans', fontSize: 17,color: Colors.black,decoration: TextDecoration.none),
+              style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontFamily: 'OpenSans',
+                  fontSize: 17,
+                  color: Colors.black,
+                  decoration: TextDecoration.none),
               // style: kHintTextStyle2,
             ),
             // child: Card(
@@ -262,19 +272,28 @@ class _ShowFoodState extends State<ShowFood> {
                             width: 500,
                             color: Colors.white24,
                           ),
-                          Text(
-                            _newfeed.aliasName,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
+                          Text(_newfeed.aliasName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'OpenSans',
+                                fontSize: 25,
                                 color: Colors.black,
-                                ),
-                          ),
+                                decoration: TextDecoration.none,
+                              )),
                           Divider(
                             thickness: 1,
                             color: Colors.grey,
                           ),
-                          Text(_newfeed.recipeName, style: kHintTextStyle3),
+                          Text(
+                            _newfeed.recipeName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontFamily: 'OpenSans',
+                              fontSize: 25,
+                              color: Colors.black,
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Container(
@@ -293,12 +312,27 @@ class _ShowFoodState extends State<ShowFood> {
                             thickness: 1,
                             color: Colors.grey,
                           ),
-                          Text(
-                            "ส่วนผสม",
-                            style: kHintTextStyle3,
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "ส่วนผสม",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 25,
+                                      color: Colors.black,
+                                      decoration: TextDecoration.underline,
+                                      decorationStyle:
+                                          TextDecorationStyle.double,
+                                      decorationColor: Colors.red),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 15,
                           ),
                           ListView(
                             padding: EdgeInsets.all(0),
@@ -306,13 +340,34 @@ class _ShowFoodState extends State<ShowFood> {
                             physics: NeverScrollableScrollPhysics(),
                             children: ingredient,
                           ),
+                          SizedBox(
+                            height: 5,
+                          ),
                           Divider(
                             thickness: 1,
                             color: Colors.grey,
                           ),
-                          Text(
-                            "วิธีทำ",
-                            style: kHintTextStyle3,
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "วิธีทำ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 25,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.underline,
+                                    decorationStyle: TextDecorationStyle.double,
+                                    decorationColor: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
                           ),
                           ListView(
                             padding: EdgeInsets.all(0),

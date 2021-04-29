@@ -3,7 +3,7 @@ import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood2.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
-import 'package:easy_cook/pages/showFood&User_page/test.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

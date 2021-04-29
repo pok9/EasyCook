@@ -2,7 +2,7 @@ import 'package:easy_cook/pages/addFood_page/addFood.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
-import 'package:easy_cook/pages/showFood&User_page/test.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
