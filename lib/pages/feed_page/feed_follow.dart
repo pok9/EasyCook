@@ -1,5 +1,5 @@
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
-import 'package:easy_cook/pages/test.dart';
+import 'package:easy_cook/pages/showFood&User_page/test.dart';
 import 'package:easy_cook/pages/test2.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood2.dart';
 class FeedFollowPage extends StatefulWidget {
   // FeedFollowPage({Key key}) : super(key: key);
 

@@ -9,7 +9,7 @@ import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
 import 'package:easy_cook/pages/addFood_page/addImage.dart';
-import 'package:easy_cook/pages/test.dart';
+import 'package:easy_cook/pages/showFood&User_page/test.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
