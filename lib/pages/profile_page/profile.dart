@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
+
+// import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -85,6 +87,31 @@ class _ProfilePageState extends State<ProfilePage> {
       return null;
     }
   }
+
+  //   //ข้อมูลสูตรอาหาร
+  //   List<Datum> dataRecipe;
+  // //ข้อมูลอาหารที่กดเพื่อจะส่งไปหน้า showFood
+  // Future<Null> getDataSendPost(int rid) async {
+  //   print("rid = "+rid.toString());
+  //   dataRecipe = [];
+  //   final String apiUrl =
+  //       "http://apifood.comsciproject.com/pjPost/getPost/" + rid.toString();
+  
+  //   final response = await http
+  //       .get(Uri.parse(apiUrl));
+  //   print("response = " + response.statusCode.toString());
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       final String responseString = response.body;
+  //       // searchRecipeNameFromJson
+  //       // dataRecipe = searchRecipeNameFromJson(responseString).data;
+  //       // searchRecipeNameFromJson(responseString);
+  //       // print(123123123123);
+  //     });
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -470,8 +497,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Stack(
                                         children: [
                                           GestureDetector(
-                                            onTap: () {
+                                            onTap: ()  {
                                               print("up $index");
+                                              // print(data_RecipePost[index].rid);
+                                              //  getDataSendPost(data_RecipePost[index].rid);
                                               // Navigator.push(context,////////////////////////////////////////////////
                                               //     CupertinoPageRoute(
                                               //         builder: (context) {

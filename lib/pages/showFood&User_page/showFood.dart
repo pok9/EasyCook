@@ -1,4 +1,5 @@
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +11,16 @@ import 'package:video_player/video_player.dart';
 
 class ShowFood extends StatefulWidget {
   // const test({Key key}) : super(key: key);
-  var newfeed;
-  ShowFood(this.newfeed);
+  var req_rid;
+  ShowFood(this.req_rid);
 
   @override
-  _ShowFoodState createState() => _ShowFoodState(newfeed);
+  _ShowFoodState createState() => _ShowFoodState(req_rid);
 }
 
 class _ShowFoodState extends State<ShowFood> {
-  var _newfeed;
-  _ShowFoodState(this._newfeed);
+  var req_rid;
+  _ShowFoodState(this.req_rid);
 
   @override
   void initState() {
@@ -44,10 +45,11 @@ class _ShowFoodState extends State<ShowFood> {
   List<Ingredient> dataIngredient;
   //ข้อมูลวัตถุดิบ
   List<Howto> dataHowto;
+
   //ดึงข้อมูลสูตรอาหารที่ค้นหา
   Future<Null> getPost() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/getPost/" +
-        _newfeed.rid.toString();
+        req_rid.toString();
     // print("xxlToken = " + token);
     final response = await http.get(Uri.parse(apiUrl));
     print("response = " + response.statusCode.toString());
@@ -226,13 +228,13 @@ class _ShowFoodState extends State<ShowFood> {
     final List<Widget> ingredient = dataIngredient == null ? [] : _buildList();
     final List<Widget> howto = dataHowto == null ? [] : _buildList2();
 
-    return SliverFab(
+    return dataFood == null ? Container() :SliverFab(
       floatingWidget: Container(
         height: 100,
         width: 100,
         child: ClipOval(
           child: Image.network(
-            _newfeed.profileImage,
+            "https://i.pinimg.com/originals/b7/bd/14/b7bd145d8d7202b93f90d52f921721c3.jpg",//////////////////////////////////
             fit: BoxFit.fill,
           ),
         ),
@@ -245,12 +247,12 @@ class _ShowFoodState extends State<ShowFood> {
       floatingPosition: FloatingPosition(top: -20, left: 150),
       slivers: [
         SliverAppBar(
-          title: Text(_newfeed.recipeName),
+          title: Text(dataFood.recipeName),
           pinned: true,
           expandedHeight: 256.0,
           flexibleSpace: FlexibleSpaceBar(
             background: Image.network(
-              _newfeed.image,
+              dataFood.image,///////////////////////////
               fit: BoxFit.cover,
             ),
           ),
@@ -272,7 +274,7 @@ class _ShowFoodState extends State<ShowFood> {
                             width: 500,
                             color: Colors.white24,
                           ),
-                          Text(_newfeed.aliasName,
+                          Text("ชื่อเล่น",///////////////////////////
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontFamily: 'OpenSans',
@@ -285,7 +287,7 @@ class _ShowFoodState extends State<ShowFood> {
                             color: Colors.grey,
                           ),
                           Text(
-                            _newfeed.recipeName,
+                            dataFood.recipeName,////////////////////////////////
                             style: TextStyle(
                               fontWeight: FontWeight.normal,
                               fontFamily: 'OpenSans',
@@ -303,7 +305,7 @@ class _ShowFoodState extends State<ShowFood> {
                                 borderRadius: new BorderRadius.circular(24.0),
                                 child: Image(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(_newfeed.image),
+                                  image: NetworkImage(dataFood.image),///////////////////////
                                 ),
                               ),
                             ),
