@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 // import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -96,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
   //   dataRecipe = [];
   //   final String apiUrl =
   //       "http://apifood.comsciproject.com/pjPost/getPost/" + rid.toString();
-  
+
   //   final response = await http
   //       .get(Uri.parse(apiUrl));
   //   print("response = " + response.statusCode.toString());
@@ -497,8 +498,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Stack(
                                         children: [
                                           GestureDetector(
-                                            onTap: ()  {
+                                            onTap: () {
                                               print("up $index");
+                                              print(data_RecipePost[index].rid);
+                                              Navigator.push(context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) {
+                                                return ShowFood(
+                                                    data_RecipePost[index].rid);
+                                              }));
                                               // print(data_RecipePost[index].rid);
                                               //  getDataSendPost(data_RecipePost[index].rid);
                                               // Navigator.push(context,////////////////////////////////////////////////
@@ -535,8 +543,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                             bottom: 0.0,
                                             right: 8.0,
                                             child: GestureDetector(
-                                              onTap: (){
+                                              onTap: () {
                                                 print("down $index");
+                                                Navigator.push(context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) {
+                                                  return ShowFood(
+                                                      data_RecipePost[index]
+                                                          .rid);
+                                                }));
                                               },
                                               child: Container(
                                                 height: 60.0,
