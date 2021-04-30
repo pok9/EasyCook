@@ -3,6 +3,7 @@ import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/test2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -129,7 +130,7 @@ class _SlidePageState extends State<SlidePage> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          currenetScreen = ShowFood(152);
+                          currenetScreen = test2(46);
                           currentTab = 3;
                         });
                       },
