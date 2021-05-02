@@ -1,63 +1,50 @@
+import 'dart:math';
+
 import 'package:easy_cook/models/checkFollower/checkFollower_model.dart';
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
-import 'package:easy_cook/models/search/searchUsername_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileUser extends StatefulWidget {
-  // String aliasName;
-  // String nameSurname;
-  // String profileImage;
-  DataUser dataUser;
-  ProfileUser(this.dataUser);
+  var reqUid;
+
+  ProfileUser(this.reqUid);
 
   @override
-  _ProfileUserState createState() => _ProfileUserState(this.dataUser);
+  _ProfileUserState createState() => _ProfileUserState(reqUid);
 }
-// //ข้อมูลผู้ใช้
-// List<DataUser> dataUser;
-
-//MyPost ข้อมูลของคนที่ค้นหา
-MyPost dataPost;
 
 class _ProfileUserState extends State<ProfileUser> {
-  DataUser _dataUser; //ข้อมูลที่ login
-  _ProfileUserState(this._dataUser);
+  var reqUid;
+  _ProfileUserState(this.reqUid);
 
   @override
   void initState() {
-    // checkFollowers = null;
     super.initState();
     findUser();
-
-    // print("checkkkkk = "+checkFollowers.checkFollower.toString());
   }
 
   String token = ""; //โทเคน
-//user
-  MyAccount datas;
-  DataAc dataUser;
 
+  //ดึงข้อมูล Token
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     setState(() {
-      // print("11111111 = " + token);
       token = preferences.getString("tokens");
-      // print("22222222 = " + token);
+      // print(token);
       getMyAccounts();
-      // print("dataUser = " + dataUser.toString());
-      // print("newfeed = " + newfeed.toString());
-      // newFeedPosts();
+      getPostUser();
     });
-    // token = await Token_jwt().getTokens();
-    // setState(() {});
   }
 
+  //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)
+  MyAccount datas;
+  DataAc dataUser; //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)-คนที่เข้ามาดู
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
@@ -70,29 +57,31 @@ class _ProfileUserState extends State<ProfileUser> {
 
         datas = myAccountFromJson(responseString);
         dataUser = datas.data[0];
-        myPosts();
       });
     } else {
       return null;
     }
   }
 
-  Future<Null> myPosts() async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mypost/" +
-        _dataUser.userId.toString();
+  //ข้อมูลโพสต์ที่ค้นหาจะได้ข้อมูลเจ้าของด้วย
+  MyPost data_PostUser;
+  List<RecipePost> data_RecipePost;
+  Future<Null> getPostUser() async {
+    String uid = reqUid.toString();
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/mypost/" + uid;
 
-    // print("apiUrl = " + apiUrl);
     final response = await http.get(Uri.parse(apiUrl));
-    // print("_dataUser" + response.toString());
-    // print("responsemyPosts = " + response.statusCode.toString());
+    print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
 
-        dataPost = myPostFromJson(responseString);
+        data_PostUser = myPostFromJson(responseString);
+        data_RecipePost = data_PostUser.recipePost;
+        print("data_PostUser.userId = " + data_PostUser.userId.toString());
         checkFollower();
-        // print("dataPost = " + dataPost.countPost.toString());
-        // newfeed = newfeedsProfileFromJson(responseString);
+        // newfeed = newfeedsFollowFromJson(responseString);
         //  post = newfeed.feeds[0];
         // dataUser = datas.data[0];
       });
@@ -101,17 +90,16 @@ class _ProfileUserState extends State<ProfileUser> {
     }
   }
 
+  //เช็คว่าเราติดตามไปแล้วหรือยัง
   CheckFolloweer checkFollowers;
   Future<Null> checkFollower() async {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjFollow/checkFollower/" +
-            dataPost.userId.toString();
+            data_PostUser.userId.toString();
 
-    print("apiUrlcheckFol = " + apiUrl);
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("_dataUser" + response.toString());
-    print("responsemyPosts = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -119,288 +107,582 @@ class _ProfileUserState extends State<ProfileUser> {
         setState(() {
           print("checkkkkk222 = " + checkFollowers.checkFollower.toString());
         });
-        // dataPost = myPostFromJson(responseString);
-        //  print("checkkkkk222 = "+checkFollowers.checkFollower.toString());
       });
     } else {
       return null;
     }
   }
 
+
+  //จัดการติดตามหรือยกเลิกติดตาม
   Future<Null> manageFollow(String state, int following_ID) async {
     // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
 
     final String apiUrl =
         "http://apifood.comsciproject.com/pjFollow/ManageFollow";
-    print("manageFollow111");
     final response = await http.post(Uri.parse(apiUrl),
         body: {"state": state, "following_ID": following_ID.toString()},
         headers: {"Authorization": "Bearer $token"});
-    print("manageFollo22222");
-    print(response.statusCode);
+    
     if (response.statusCode == 200) {
       final String responseString = response.body;
       ManageFollow aa = manageFollowFromJson(responseString);
         print(aa.success);
       setState(() {
-        // initState();
-        myPosts();
+        getPostUser();
+        // this.initState();
       });
     } else {
       return null;
     }
   }
-var rng = new Random();
-  @override
-  Widget build(BuildContext context) {
-    //checkFoller เช็คติดตาม
 
+  //===========================================================================
+
+  double get randHeight => Random().nextInt(100).toDouble();
+  List<Widget> _bodyUp;
+  List<Widget> _randomHeightWidgets(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(this._dataUser.aliasName),
-      ),
-      // extendBodyBehindAppBar: true,
-      body: (dataUser == null)
-          ? Container()
-          : SingleChildScrollView(
-              child: Column(
+    _bodyUp ??= List.generate(1, (index) {
+      // final height = randHeight.clamp(
+      //   500.0,
+      //   MediaQuery.of(context).size.width, // simply using MediaQuery to demonstrate usage of context
+      // );
+      // 
+      
+      return Container(
+          // color: Colors.primaries[index],
+          height: 233,
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: size.height * 0.40,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://source.unsplash.com/400x255/?food&sig' +
-                                      rng.nextInt(100).toString()),
-                              fit: BoxFit.cover),
+                  Container(
+                    height: size.height * 0.30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                          fit: BoxFit.cover),
+                    ),
+                    child: Column(
+                      children: [
+                        // SizedBox(
+                        //   height: 36,
+                        // ),
+                        SizedBox(
+                          height: 10,
                         ),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 36,
-                            ),
-                            CircleAvatar(
-                              radius: 48,
-                              backgroundImage:
-                                  NetworkImage(this._dataUser.profileImage),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              this._dataUser.aliasName,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              this._dataUser.nameSurname,
-                              style: TextStyle(
-                                  color: Colors.white70, fontSize: 14),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            (dataUser.userId == dataPost.userId ||
-                                    checkFollowers == null)
-                                ? Container()
-                                : (checkFollowers.checkFollower == 0)
-                                    ? MaterialButton(
-                                        splashColor: Colors.grey,
-                                        color: Colors.red[400],
-                                        onPressed: () {
-                                          print("ติดตาม");
-                                          manageFollow("fol", dataPost.userId);
-                                        },
-                                        child: Text(
-                                          'ติดตาม',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        shape: StadiumBorder(),
-                                      )
-                                    : MaterialButton(
-                                        splashColor: Colors.grey,
-                                        color: Colors.grey,
-                                        onPressed: () {
-                                          print("ยกเลิกติดตาม");
-                                          manageFollow(
-                                              "unfol", dataPost.userId);
-                                        },
-                                        child: Text(
-                                          'กำลังติดตาม',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        shape: StadiumBorder(),
-                                      ),
-                            Expanded(child: Container()),
-                            Container(
-                              height: 64,
-                              color: Colors.black.withOpacity(0.4),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    width: 110,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'โพสต์',
-                                          style: TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 12),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          dataPost.countPost.toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 110,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'ติดตาม',
-                                          style: TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 12),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          dataPost.countFollower.toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 110,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'กำลังติดตาม',
-                                          style: TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 12),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          dataPost.countFollowing.toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+
+                        CircleAvatar(
+                          radius: 48,
+                          backgroundImage: NetworkImage(
+                              data_PostUser.profileImage), //////////////////
                         ),
-                      ),
-                      Material(
-                        elevation: 1,
-                        child: Container(
-                          height: 56,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        (checkFollowers.checkFollower == 0)
+                            ? MaterialButton(
+                                splashColor: Colors.grey,
+                                color: Colors.red[400],
+                                onPressed: () {
+                                  print("ติดตาม");
+                                  manageFollow("fol", this.data_PostUser.userId);
+                                  
+                                },
+                                child: Text(
+                                  'ติดตาม',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                shape: StadiumBorder(),
+                              )
+                            : MaterialButton(
+                                splashColor: Colors.grey,
+                                color: Colors.grey,
+                                onPressed: () {
+                                  print("ยกเลิกติดตาม");
+                                  manageFollow("unfol", this.data_PostUser.userId);
+                                  
+                                },
+                                child: Text(
+                                  'กำลังติดตาม',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                shape: StadiumBorder(),
+                              ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Expanded(child: Container()),
+                        Container(
+                          height: 64,
+                          color: Colors.black.withOpacity(0.4),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Icon(
-                                Icons.web,
-                                color: Colors.black,
-                                size: 28,
+                              Container(
+                                width: 110,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'โพสต์',
+                                      style: TextStyle(
+                                          color: Colors.white70, fontSize: 12),
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      data_PostUser.countPost.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Icon(
-                                Icons.image,
-                                color: Colors.black,
-                                size: 28,
+                              Container(
+                                width: 110,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'ติดตาม',
+                                      style: TextStyle(
+                                          color: Colors.white70, fontSize: 12),
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      data_PostUser.countFollower.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Icon(
-                                Icons.play_circle_outline,
-                                color: Colors.black,
-                                size: 28,
+                              Container(
+                                width: 110,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'กำลังติดตาม',
+                                      style: TextStyle(
+                                          color: Colors.white70, fontSize: 12),
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      data_PostUser.countFollowing.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      (dataPost.recipePost == null)
-                          ? Container()
-                          : Container(
-                              height: size.height * 0.60 - 56,
-                              padding: EdgeInsets.only(
-                                  left: 16, right: 16, top: 0, bottom: 24),
-                              child: GridView.count(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8,
-                                physics: BouncingScrollPhysics(),
-                                children: List.generate(
-                                    dataPost.recipePost.length, (index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://source.unsplash.com/400x255/?food&sig' +
-                                                  rng.nextInt(100).toString()),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
-                  // Positioned(
-                  //   top: 32,
-                  //   left: 16,
-                  //   child: Icon(
-                  //     Icons.keyboard_arrow_left,
-                  //     color: Colors.white,
-                  //     size: 32,
-                  //   ),
-                  // )
                 ],
+              ),
+            ],
+          ));
+    });
+
+    return _bodyUp;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
+    return Scaffold(
+      // Persistent AppBar that never scrolls
+      backgroundColor: Color(0xFFf3f5f9),
+      appBar: AppBar(
+        title: Text(data_PostUser == null ? "" : data_PostUser.aliasName),
+        elevation: 0.0,
+      ),
+      body: data_PostUser == null || checkFollowers == null
+          ? Container(
+              child: AlertDialog(
+                  content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("กรุณารอสักครู่...   "),
+                  CircularProgressIndicator()
+                ],
+              )),
+            )
+          : DefaultTabController(
+              length: 2,
+              child: NestedScrollView(
+                // allows you to build a list of elements that would be scrolled away till the body reached the top
+                headerSliverBuilder: (context, _) {
+                  return [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        _randomHeightWidgets(context),
+                      ),
+                    ),
+                  ];
+                },
+                // You tab view goes here
+                body: Column(
+                  children: <Widget>[
+                    TabBar(
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            "อาหาร",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            "body",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          ListView.builder(
+                            itemCount: data_RecipePost.length,
+                            itemBuilder: (context, index) => index < 0
+                                ? new SizedBox(
+                                    child: AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("กรุณารอสักครู่...   "),
+                                        CircularProgressIndicator()
+                                      ],
+                                    )),
+                                  )
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      //1st row
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16.0, 16.0, 8.0, 16.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                new Container(
+                                                  height: 40.0,
+                                                  width: 40.0,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(
+                                                              data_PostUser
+                                                                  .profileImage))),
+                                                ),
+                                                new SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                new Text(
+                                                  data_PostUser.aliasName,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
+                                            new IconButton(
+                                                icon: Icon(Icons.more_vert),
+                                                onPressed: () {
+                                                  print("more_vert" +
+                                                      index.toString());
+                                                })
+                                          ],
+                                        ),
+                                      ),
+
+                                      //2nd row
+                                      Stack(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              print("up $index");
+                                              // print(data_RecipePost[index].rid);/////////////////////////////////////////////
+                                              // Navigator.push(context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) {
+                                              //   return ShowFood(
+                                              //       data_RecipePost[index].rid);
+                                              // }));
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      8, 0, 8, 0),
+                                              child: Container(
+                                                width: deviceSize.width,
+                                                height: 300,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          24.0),
+                                                  child: Image(
+                                                    fit: BoxFit.cover,
+                                                    // alignment: Alignment.topRight,
+                                                    image: NetworkImage(
+                                                        data_RecipePost[index]
+                                                            .image),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // ),
+                                          Positioned(
+                                            left: 8.0,
+                                            bottom: 0.0,
+                                            right: 8.0,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                print("down $index");
+                                                // Navigator.push(context,////////////////////////////////////
+                                                //     CupertinoPageRoute(
+                                                //         builder: (context) {
+                                                //   return ShowFood(
+                                                //       data_RecipePost[index]
+                                                //           .rid);
+                                                // }));
+                                              },
+                                              child: Container(
+                                                height: 60.0,
+                                                width: deviceSize.width,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          24.0),
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.black,
+                                                      Colors.black12,
+                                                    ],
+                                                    begin:
+                                                        Alignment.bottomCenter,
+                                                    end: Alignment.topCenter,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 18.0,
+                                            bottom: 10.0,
+                                            child: Row(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      data_RecipePost[index]
+                                                          .recipeName,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.star,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star_half,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star_border,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.0,
+                                                        ),
+                                                        Text(
+                                                          "(คะแนน " +
+                                                              (data_RecipePost[
+                                                                      index]
+                                                                  .score
+                                                                  .toString()) +
+                                                              ")",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+
+                                      // //3rd row
+                                      // Padding(
+                                      //   padding: const EdgeInsets.fromLTRB(
+                                      //       16.0, 12.0, 16.0, 12.0),
+                                      //   child: Row(
+                                      //     mainAxisAlignment:
+                                      //         MainAxisAlignment.spaceBetween,
+                                      //     children: [
+                                      //       new Row(
+                                      //         mainAxisAlignment:
+                                      //             MainAxisAlignment
+                                      //                 .spaceBetween,
+                                      //         children: [
+                                      //           Icon(
+                                      //             Icons.favorite_border,
+                                      //             color: Colors.black,
+                                      //           ),
+                                      //           new SizedBox(
+                                      //             width: 16.0,
+                                      //           ),
+                                      //           Icon(Icons.chat_bubble_outline,
+                                      //               color: Colors.black),
+                                      //           new SizedBox(
+                                      //             width: 16.0,
+                                      //           ),
+                                      //           Icon(Icons.share,
+                                      //               color: Colors.black),
+                                      //         ],
+                                      //       ),
+                                      //       Icon(Icons.bookmark_border,
+                                      //           color: Colors.black),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      // //5th row
+                                      // Padding(
+                                      //   padding: const EdgeInsets.fromLTRB(
+                                      //       16.0, 0, 16.0, 16.0),
+                                      //   child: Row(
+                                      //     mainAxisAlignment:
+                                      //         MainAxisAlignment.start,
+                                      //     children: [
+                                      //       new Container(
+                                      //         height: 40.0,
+                                      //         width: 40.0,
+                                      //         decoration: new BoxDecoration(
+                                      //             shape: BoxShape.circle,
+                                      //             image: new DecorationImage(
+                                      //                 fit: BoxFit.fill,
+                                      //                 image: new NetworkImage(
+                                      //                     "https://i.pravatar.cc/300"))), ///////////////////////////////////////
+                                      //       ),
+                                      //       new SizedBox(
+                                      //         width: 10.0,
+                                      //       ),
+                                      //       Expanded(
+                                      //         child: new TextField(
+                                      //           keyboardType:
+                                      //               TextInputType.multiline,
+                                      //           maxLines: null,
+                                      //           decoration: new InputDecoration(
+                                      //             border: InputBorder.none,
+                                      //             hintText: "เพิ่ม คอมเมนต์...",
+                                      //           ),
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
+
+                                      // //6th row
+                                      // Padding(
+                                      //   padding: const EdgeInsets.symmetric(
+                                      //       horizontal: 16.0),
+                                      //   child: Text(
+                                      //     "1 วันที่แล้ว",
+                                      //     style: TextStyle(color: Colors.grey),
+                                      //   ),
+                                      // ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Divider(
+                                        thickness: 1,
+                                        color: Colors.grey,
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                          GridView.count(
+                            padding: EdgeInsets.zero,
+                            crossAxisCount: 3,
+                            children: Colors.primaries.map((color) {
+                              return Container(color: color, height: 150.0);
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
     );

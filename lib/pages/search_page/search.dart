@@ -1,10 +1,8 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFood2.dart';
-import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
-import 'package:easy_cook/pages/test2.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -345,7 +343,7 @@ class _SearchPageState extends State<SearchPage> {
                               // }));
                               Navigator.push(context,
                                   CupertinoPageRoute(builder: (context) {
-                                return test2(
+                                return ProfileUser(
                                     dataUser[index].userId,
                                    );
                               }));

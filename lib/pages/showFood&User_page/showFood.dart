@@ -1,5 +1,5 @@
 import 'package:easy_cook/models/showfood/showfood_model.dart';
-import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser2.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
