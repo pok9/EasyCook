@@ -235,19 +235,19 @@ class _SearchPageState extends State<SearchPage> {
                           Tab(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("ค้นชื่อสูตรอาหาร"),
+                              child: Text("สูตรอาหาร"),
                             ),
                           ),
                           Tab(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("ค้นชื่อผู้ใช้"),
+                              child: Text("ผู้ใช้"),
                             ),
                           ),
                           Tab(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("ค้นชื่อวัตถุดิบ"),
+                              child: Text("วัตถุดิบ"),
                             ),
                           ),
                         ]),
@@ -393,19 +393,19 @@ class _SearchPageState extends State<SearchPage> {
                               Tab(
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Text("ค้นชื่อสูตรอาหาร"),
+                                  child: Text("สูตรอาหาร"),
                                 ),
                               ),
                               Tab(
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Text("ค้นชื่อผู้ใช้"),
+                                  child: Text("ผู้ใช้"),
                                 ),
                               ),
                               Tab(
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Text("ค้นชื่อวัตถุดิบ"),
+                                  child: Text("วัตถุดิบ"),
                                 ),
                               ),
                             ]),
