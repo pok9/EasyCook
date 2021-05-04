@@ -130,7 +130,7 @@ class _SlidePageState extends State<SlidePage> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          currenetScreen = ProfileUser(46);
+                          currenetScreen = Container();
                           currentTab = 3;
                         });
                       },

@@ -48,8 +48,8 @@ class _ShowFoodState extends State<ShowFood> {
 
   //ดึงข้อมูลสูตรอาหารที่ค้นหา
   Future<Null> getPost() async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjPost/getPost/" +
-        req_rid.toString();
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/getPost/" + req_rid.toString();
     // print("xxlToken = " + token);
     final response = await http.get(Uri.parse(apiUrl));
     print("response = " + response.statusCode.toString());
@@ -223,167 +223,218 @@ class _ShowFoodState extends State<ShowFood> {
     }).toList(); // แปลงเป็นlist
   }
 
+  int indexHowTo = 0;
   @override
   Widget build(BuildContext context) {
     final List<Widget> ingredient = dataIngredient == null ? [] : _buildList();
     final List<Widget> howto = dataHowto == null ? [] : _buildList2();
 
-    return dataFood == null ? Container() :SliverFab(
-      floatingWidget: Container(
-        height: 100,
-        width: 100,
-        child: ClipOval(
-          child: Image.network(
-            "https://i.pinimg.com/originals/b7/bd/14/b7bd145d8d7202b93f90d52f921721c3.jpg",//////////////////////////////////
-            fit: BoxFit.fill,
-          ),
-        ),
-        decoration: BoxDecoration(
-            color: Colors.grey,
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width: 8.0)),
-      ),
-      expandedHeight: 256.0,
-      floatingPosition: FloatingPosition(top: -20, left: 150),
-      slivers: [
-        SliverAppBar(
-          title: Text(dataFood.recipeName),
-          pinned: true,
-          expandedHeight: 256.0,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Image.network(
-              dataFood.image,///////////////////////////
-              fit: BoxFit.cover,
+    return dataFood == null
+        ? Container()
+        : SliverFab(
+            floatingWidget: Container(
+              height: 100,
+              width: 100,
+              child: ClipOval(
+                child: Image.network(
+                  "https://i.pinimg.com/originals/b7/bd/14/b7bd145d8d7202b93f90d52f921721c3.jpg", //////////////////////////////////
+                  fit: BoxFit.fill,
+                ),
+              ),
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 8.0)),
             ),
-          ),
-        ),
-        // CustomScrollView(
-        //   slivers: [
+            expandedHeight: 256.0,
+            floatingPosition: FloatingPosition(top: -20, left: 150),
+            slivers: [
+              SliverAppBar(
+                title: Text(dataFood.recipeName),
+                pinned: true,
+                expandedHeight: 256.0,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Image.network(
+                    dataFood.image, ///////////////////////////
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              // CustomScrollView(
+              //   slivers: [
 
-        //   ],
-        // ),
-        SliverList(
-            delegate: SliverChildListDelegate(List.generate(
-                1,
-                (index) => Container(
-                      color: Color(0xFFf3f5f9),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 500,
-                            color: Colors.white24,
-                          ),
-                          Text("ชื่อเล่น",///////////////////////////
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'OpenSans',
-                                fontSize: 25,
-                                color: Colors.black,
-                                decoration: TextDecoration.none,
-                              )),
-                          Divider(
-                            thickness: 1,
-                            color: Colors.grey,
-                          ),
-                          Text(
-                            dataFood.recipeName,////////////////////////////////
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'OpenSans',
-                              fontSize: 25,
-                              color: Colors.black,
-                              decoration: TextDecoration.none,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Container(
-                              width: 300,
-                              height: 200,
-                              child: ClipRRect(
-                                borderRadius: new BorderRadius.circular(24.0),
-                                child: Image(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(dataFood.image),///////////////////////
+              //   ],
+              // ),
+              SliverList(
+                  delegate: SliverChildListDelegate(List.generate(
+                      1,
+                      (index) => Container(
+                            color: Color(0xFFf3f5f9),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 50,
+                                  width: 500,
+                                  color: Colors.white24,
                                 ),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            thickness: 1,
-                            color: Colors.grey,
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  "ส่วนผสม",
-                                  style: TextStyle(
+                                Text("ชื่อเล่น", ///////////////////////////
+                                    style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontFamily: 'OpenSans',
                                       fontSize: 25,
                                       color: Colors.black,
-                                      decoration: TextDecoration.underline,
-                                      decorationStyle:
-                                          TextDecorationStyle.double,
-                                      decorationColor: Colors.red),
+                                      decoration: TextDecoration.none,
+                                    )),
+                                Divider(
+                                  thickness: 1,
+                                  color: Colors.grey,
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          ListView(
-                            padding: EdgeInsets.all(0),
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            children: ingredient,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Divider(
-                            thickness: 1,
-                            color: Colors.grey,
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  "วิธีทำ",
+                                Text(
+                                  dataFood
+                                      .recipeName, ////////////////////////////////
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontFamily: 'OpenSans',
                                     fontSize: 25,
                                     color: Colors.black,
-                                    decoration: TextDecoration.underline,
-                                    decorationStyle: TextDecorationStyle.double,
-                                    decorationColor: Colors.red,
+                                    decoration: TextDecoration.none,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          ListView(
-                            padding: EdgeInsets.all(0),
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            children: howto,
-                          ),
-                          SizedBox(
-                            height: 25,
-                          )
-                        ],
-                      ),
-                    ))))
-      ],
-    );
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Container(
+                                    width: 300,
+                                    height: 200,
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          new BorderRadius.circular(24.0),
+                                      child: Image(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(dataFood
+                                            .image), ///////////////////////
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                ),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        "ส่วนผสม",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 25,
+                                          color: Colors.black,
+                                          decoration: TextDecoration.none,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                ListView(
+                                  padding: EdgeInsets.all(0),
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: ingredient,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Divider(
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                ),
+                                Container(
+                                  height: 50,
+                                  // color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          "วิธีทำ",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 25,
+                                            color: Colors.black,
+                                            decoration: TextDecoration.none,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Row(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                indexHowTo = 0;
+                                                print(indexHowTo);
+                                                setState(() {});
+                                              },
+                                              child: Icon(
+                                                (indexHowTo == 0)
+                                                    ? Icons.contacts
+                                                    : Icons.contacts_outlined,
+                                                color: Colors.black,
+                                                size: 30.0,
+                                                semanticLabel:
+                                                    'Text to announce in accessibility modes',
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                indexHowTo = 1;
+                                                print(indexHowTo);
+                                                setState(() {});
+                                              },
+                                              child: Icon(
+                                                (indexHowTo == 1)
+                                                    ? Icons.contacts
+                                                    : Icons.contacts_outlined,
+                                                color: Colors.black,
+                                                size: 30.0,
+                                                semanticLabel:
+                                                    'Text to announce in accessibility modes',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                (indexHowTo == 0)
+                                    ? ListView(
+                                        padding: EdgeInsets.all(0),
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        children: howto,
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  height: 25,
+                                )
+                              ],
+                            ),
+                          ))))
+            ],
+          );
   }
 }
