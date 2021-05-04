@@ -539,263 +539,262 @@ class _ProfileUserState extends State<ProfileUser> {
                   ];
                 },
 
-                body: Container(),
                 // You tab view goes here
-                // body: Column(
-                //   children: <Widget>[
-                //     TabBar(
-                //       tabs: [
-                //         Tab(
-                //           child: Text(
-                //             "อาหาร",
-                //             style: TextStyle(color: Colors.black),
-                //           ),
-                //         ),
-                //         Tab(
-                //           child: Text(
-                //             "body",
-                //             style: TextStyle(color: Colors.black),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //     Expanded(
-                //       child: TabBarView(
-                //         children: [
-                //           ListView.builder(
-                //             itemCount: data_RecipePost.length,
-                //             itemBuilder: (context, index) => index < 0
-                //                 ? new SizedBox(
-                //                     child: AlertDialog(
-                //                         content: Row(
-                //                       mainAxisAlignment:
-                //                           MainAxisAlignment.center,
-                //                       children: [
-                //                         Text("กรุณารอสักครู่...   "),
-                //                         CircularProgressIndicator()
-                //                       ],
-                //                     )),
-                //                   )
-                //                 : Column(
-                //                     mainAxisAlignment: MainAxisAlignment.start,
-                //                     mainAxisSize: MainAxisSize.min,
-                //                     crossAxisAlignment:
-                //                         CrossAxisAlignment.stretch,
-                //                     children: [
-                //                       //1st row
-                //                       Padding(
-                //                         padding: const EdgeInsets.fromLTRB(
-                //                             16.0, 16.0, 8.0, 16.0),
-                //                         child: Row(
-                //                           mainAxisAlignment:
-                //                               MainAxisAlignment.spaceBetween,
-                //                           children: [
-                //                             Row(
-                //                               children: [
-                //                                 new Container(
-                //                                   height: 40.0,
-                //                                   width: 40.0,
-                //                                   decoration: new BoxDecoration(
-                //                                       shape: BoxShape.circle,
-                //                                       image: new DecorationImage(
-                //                                           fit: BoxFit.fill,
-                //                                           image: new NetworkImage(
-                //                                               data_PostUser
-                //                                                   .profileImage))),
-                //                                 ),
-                //                                 new SizedBox(
-                //                                   width: 10.0,
-                //                                 ),
-                //                                 new Text(
-                //                                   data_PostUser.aliasName,
-                //                                   style: TextStyle(
-                //                                       fontWeight:
-                //                                           FontWeight.bold),
-                //                                 )
-                //                               ],
-                //                             ),
-                //                             new IconButton(
-                //                                 icon: Icon(Icons.more_vert),
-                //                                 onPressed: () {
-                //                                   print("more_vert" +
-                //                                       index.toString());
-                //                                 })
-                //                           ],
-                //                         ),
-                //                       ),
+                body: Column(
+                  children: <Widget>[
+                    TabBar(
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            "อาหาร",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            "body",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          ListView.builder(
+                            itemCount: data_RecipePost.length,
+                            itemBuilder: (context, index) => index < 0
+                                ? new SizedBox(
+                                    child: AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("กรุณารอสักครู่...   "),
+                                        CircularProgressIndicator()
+                                      ],
+                                    )),
+                                  )
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      //1st row
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16.0, 16.0, 8.0, 16.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                new Container(
+                                                  height: 40.0,
+                                                  width: 40.0,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(
+                                                              data_PostUser
+                                                                  .profileImage))),
+                                                ),
+                                                new SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                new Text(
+                                                  data_PostUser.aliasName,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
+                                            new IconButton(
+                                                icon: Icon(Icons.more_vert),
+                                                onPressed: () {
+                                                  print("more_vert" +
+                                                      index.toString());
+                                                })
+                                          ],
+                                        ),
+                                      ),
 
-                //                       //2nd row
-                //                       Stack(
-                //                         children: [
-                //                           GestureDetector(
-                //                             onTap: () {
-                //                               print("up $index");
-                //                               // print(data_RecipePost[index].rid);/////////////////////////////////////////////
-                //                               // Navigator.push(context,
-                //                               //     CupertinoPageRoute(
-                //                               //         builder: (context) {
-                //                               //   return ShowFood(
-                //                               //       data_RecipePost[index].rid);
-                //                               // }));
-                //                             },
-                //                             child: Padding(
-                //                               padding:
-                //                                   const EdgeInsets.fromLTRB(
-                //                                       8, 0, 8, 0),
-                //                               child: Container(
-                //                                 width: deviceSize.width,
-                //                                 height: 300,
-                //                                 child: ClipRRect(
-                //                                   borderRadius:
-                //                                       new BorderRadius.circular(
-                //                                           24.0),
-                //                                   child: Image(
-                //                                     fit: BoxFit.cover,
-                //                                     // alignment: Alignment.topRight,
-                //                                     image: NetworkImage(
-                //                                         data_RecipePost[index]
-                //                                             .image),
-                //                                   ),
-                //                                 ),
-                //                               ),
-                //                             ),
-                //                           ),
-                //                           // ),
-                //                           Positioned(
-                //                             left: 8.0,
-                //                             bottom: 0.0,
-                //                             right: 8.0,
-                //                             child: GestureDetector(
-                //                               onTap: () {
-                //                                 print("down $index");
-                //                                 // Navigator.push(context,////////////////////////////////////
-                //                                 //     CupertinoPageRoute(
-                //                                 //         builder: (context) {
-                //                                 //   return ShowFood(
-                //                                 //       data_RecipePost[index]
-                //                                 //           .rid);
-                //                                 // }));
-                //                               },
-                //                               child: Container(
-                //                                 height: 60.0,
-                //                                 width: deviceSize.width,
-                //                                 decoration: BoxDecoration(
-                //                                   borderRadius:
-                //                                       new BorderRadius.circular(
-                //                                           24.0),
-                //                                   gradient: LinearGradient(
-                //                                     colors: [
-                //                                       Colors.black,
-                //                                       Colors.black12,
-                //                                     ],
-                //                                     begin:
-                //                                         Alignment.bottomCenter,
-                //                                     end: Alignment.topCenter,
-                //                                   ),
-                //                                 ),
-                //                               ),
-                //                             ),
-                //                           ),
-                //                           Positioned(
-                //                             left: 18.0,
-                //                             bottom: 10.0,
-                //                             child: Row(
-                //                               children: [
-                //                                 Column(
-                //                                   crossAxisAlignment:
-                //                                       CrossAxisAlignment.start,
-                //                                   children: [
-                //                                     Text(
-                //                                       data_RecipePost[index]
-                //                                           .recipeName,
-                //                                       style: TextStyle(
-                //                                           color: Colors.white,
-                //                                           fontSize: 18.0,
-                //                                           fontWeight:
-                //                                               FontWeight.bold),
-                //                                     ),
-                //                                     Row(
-                //                                       children: [
-                //                                         Icon(
-                //                                           Icons.star,
-                //                                           color:
-                //                                               Theme.of(context)
-                //                                                   .primaryColor,
-                //                                           size: 16.0,
-                //                                         ),
-                //                                         Icon(
-                //                                           Icons.star,
-                //                                           color:
-                //                                               Theme.of(context)
-                //                                                   .primaryColor,
-                //                                           size: 16.0,
-                //                                         ),
-                //                                         Icon(
-                //                                           Icons.star,
-                //                                           color:
-                //                                               Theme.of(context)
-                //                                                   .primaryColor,
-                //                                           size: 16.0,
-                //                                         ),
-                //                                         Icon(
-                //                                           Icons.star_half,
-                //                                           color:
-                //                                               Theme.of(context)
-                //                                                   .primaryColor,
-                //                                           size: 16.0,
-                //                                         ),
-                //                                         Icon(
-                //                                           Icons.star_border,
-                //                                           color:
-                //                                               Theme.of(context)
-                //                                                   .primaryColor,
-                //                                           size: 16.0,
-                //                                         ),
-                //                                         SizedBox(
-                //                                           width: 5.0,
-                //                                         ),
-                //                                         Text(
-                //                                           "(คะแนน " +
-                //                                               (data_RecipePost[
-                //                                                       index]
-                //                                                   .score
-                //                                                   .toString()) +
-                //                                               ")",
-                //                                           style: TextStyle(
-                //                                               color:
-                //                                                   Colors.grey),
-                //                                         )
-                //                                       ],
-                //                                     )
-                //                                   ],
-                //                                 ),
-                //                               ],
-                //                             ),
-                //                           )
-                //                         ],
-                //                       ),
-                //                       SizedBox(
-                //                         height: 10,
-                //                       ),
-                //                       Divider(
-                //                         thickness: 1,
-                //                         color: Colors.grey,
-                //                       ),
-                //                     ],
-                //                   ),
-                //           ),
-                //           GridView.count(
-                //             padding: EdgeInsets.zero,
-                //             crossAxisCount: 3,
-                //             children: Colors.primaries.map((color) {
-                //               return Container(color: color, height: 150.0);
-                //             }).toList(),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                                      //2nd row
+                                      Stack(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              print("up $index");
+                                              // print(data_RecipePost[index].rid);/////////////////////////////////////////////
+                                              // Navigator.push(context,
+                                              //     CupertinoPageRoute(
+                                              //         builder: (context) {
+                                              //   return ShowFood(
+                                              //       data_RecipePost[index].rid);
+                                              // }));
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      8, 0, 8, 0),
+                                              child: Container(
+                                                width: deviceSize.width,
+                                                height: 300,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          24.0),
+                                                  child: Image(
+                                                    fit: BoxFit.cover,
+                                                    // alignment: Alignment.topRight,
+                                                    image: NetworkImage(
+                                                        data_RecipePost[index]
+                                                            .image),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // ),
+                                          Positioned(
+                                            left: 8.0,
+                                            bottom: 0.0,
+                                            right: 8.0,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                print("down $index");
+                                                // Navigator.push(context,////////////////////////////////////
+                                                //     CupertinoPageRoute(
+                                                //         builder: (context) {
+                                                //   return ShowFood(
+                                                //       data_RecipePost[index]
+                                                //           .rid);
+                                                // }));
+                                              },
+                                              child: Container(
+                                                height: 60.0,
+                                                width: deviceSize.width,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          24.0),
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.black,
+                                                      Colors.black12,
+                                                    ],
+                                                    begin:
+                                                        Alignment.bottomCenter,
+                                                    end: Alignment.topCenter,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 18.0,
+                                            bottom: 10.0,
+                                            child: Row(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      data_RecipePost[index]
+                                                          .recipeName,
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.star,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star_half,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.star_border,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16.0,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.0,
+                                                        ),
+                                                        Text(
+                                                          "(คะแนน " +
+                                                              (data_RecipePost[
+                                                                      index]
+                                                                  .score
+                                                                  .toString()) +
+                                                              ")",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Divider(
+                                        thickness: 1,
+                                        color: Colors.grey,
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                          GridView.count(
+                            padding: EdgeInsets.zero,
+                            crossAxisCount: 3,
+                            children: Colors.primaries.map((color) {
+                              return Container(color: color, height: 150.0);
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
     );

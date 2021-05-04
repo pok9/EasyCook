@@ -9,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:flutter/cupertino.dart';
+
 class FeedFollowPage extends StatefulWidget {
   // FeedFollowPage({Key key}) : super(key: key);
 
@@ -26,28 +27,27 @@ NewfeedsFollow newfeed;
 Feed post;
 
 class _FeedFollowPageState extends State<FeedFollowPage> {
-   @override
+  @override
   void initState() {
     super.initState();
-    print("444444444 = " + token);
+
     findUser();
-    print("333333333 = " + token);
   }
 
-   Future<Null> findUser() async {
+  Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     setState(() {
-      print(newfeed);
-      print("11111111 = " + token);
       token = preferences.getString("tokens");
-      print("22222222 = " + token);
-      getMyAccounts();
-      newFeedPosts();
-      print("newfeed" + newfeed.toString());
+
+      if (token != "") {
+        getMyAccounts();
+        newFeedPosts();
+      }
     });
   }
-   Future<Null> getMyAccounts() async {
+
+  Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
@@ -83,7 +83,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
       return null;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +169,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                               color: Colors.black)),
                       onTap: () {},
                     ),
-                     ListTile(
+                    ListTile(
                       leading: Icon(
                         Icons.notifications,
                         color: Colors.cyan,
@@ -284,7 +283,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                 vertical: 10, horizontal: 43)),
                                         textStyle: MaterialStateProperty.all(
                                             TextStyle(fontSize: 15)))),
-                                            
                               ],
                             ),
                             Padding(
@@ -471,7 +469,8 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                     height: 60.0,
                                     width: deviceSize.width,
                                     decoration: BoxDecoration(
-                                      borderRadius: new BorderRadius.circular(24.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(24.0),
                                       gradient: LinearGradient(
                                         colors: [
                                           Colors.black,

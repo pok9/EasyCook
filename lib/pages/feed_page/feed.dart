@@ -1,7 +1,57 @@
+import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class FeedPage extends StatelessWidget {
+class FeedPage extends StatefulWidget {
   const FeedPage({Key key}) : super(key: key);
+
+  @override
+  _FeedPageState createState() => _FeedPageState();
+}
+
+class _FeedPageState extends State<FeedPage> {
+  @override
+  void initState() {
+    super.initState();
+    findUser();
+  }
+
+  String token = ""; //โทเคน
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+
+      if (token != "") {
+        getMyAccounts();
+      }
+    });
+  }
+
+  //user
+  MyAccount datas;
+  DataAc dataUser;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        datas = myAccountFromJson(responseString);
+        dataUser = datas.data[0];
+      });
+    } else {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,135 +64,268 @@ class FeedPage extends StatelessWidget {
           title: Text('Easy Cook'),
         ),
       ),
-      drawer: Container(
-        width: deviceSize.width - 45,
-        child: Drawer(
-          child: ListView(
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: new NetworkImage(
-                          "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/login-page');
-                              },
-                              child: Text(
-                                'เข้าสู่ระบบ',
-                              ),
-                              style: ButtonStyle(
-                                  side: MaterialStateProperty.all(BorderSide(
-                                      width: 2, color: Colors.white)),
-                                  foregroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 50)),
-                                  textStyle: MaterialStateProperty.all(
-                                      TextStyle(fontSize: 15)))),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/register-page');
-                              },
-                              child: Text(
-                                'สมัครสมาชิก',
-                              ),
-                              style: ButtonStyle(
-                                  side: MaterialStateProperty.all(BorderSide(
-                                      width: 2, color: Colors.white)),
-                                  foregroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 43)),
-                                  textStyle: MaterialStateProperty.all(
-                                      TextStyle(fontSize: 15)))),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+      drawer: (token != "" && dataUser != null)
+          ? Container(
+              width: deviceSize.width - 45,
+              child: Drawer(
+                child: ListView(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            curve: Curves.linear,
+                            type: PageTransitionType.bottomToTop,
+                            child: ProfilePage(),
+                          ),
+                        );
+                      },
+                      child: DrawerHeader(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: new NetworkImage(
+                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Row(),
+                            Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF73AEF5),
+                                    const Color(0xFF73AEF5)
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 39,
+                                  backgroundColor: Colors.grey,
+                                  backgroundImage:
+                                      NetworkImage(dataUser.profileImage),
+                                ),
+                              ),
+                            ),
+                            //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                            Text(
+                              datas.data[0].aliasName,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.folder,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('สูตรที่ซื้อ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.notifications,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('การแจ้งเตือน',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    Divider(
+                      thickness: 0.5,
+                      color: Colors.grey,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.settings,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ตั้งค่า',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ออกจากระบบ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () async {
+                        SharedPreferences preferences =
+                            await SharedPreferences.getInstance();
+                        preferences.setString("tokens", "");
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            '/slide-page', (Route<dynamic> route) => false);
+                      },
+                    ),
+                  ],
                 ),
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.folder,
-                  color: Colors.cyan,
-                  size: 30,
+            )
+          : Container(
+              width: deviceSize.width - 45,
+              child: Drawer(
+                child: ListView(
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: DrawerHeader(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: new NetworkImage(
+                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/login-page');
+                                    },
+                                    child: Text(
+                                      'เข้าสู่ระบบ',
+                                    ),
+                                    style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            BorderSide(
+                                                width: 2, color: Colors.white)),
+                                        foregroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.white),
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 50)),
+                                        textStyle: MaterialStateProperty.all(
+                                            TextStyle(fontSize: 15)))),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/register-page');
+                                    },
+                                    child: Text(
+                                      'สมัครสมาชิก',
+                                    ),
+                                    style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            BorderSide(
+                                                width: 2, color: Colors.white)),
+                                        foregroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.white),
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 43)),
+                                        textStyle: MaterialStateProperty.all(
+                                            TextStyle(fontSize: 15)))),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                              child: Column(
+                                children: [
+                                  Row(),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.folder,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('สูตรที่ซื้อ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.notifications,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('การแจ้งเตือน',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    Divider(
+                      thickness: 0.5,
+                      color: Colors.grey,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.settings,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ตั้งค่า',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.cyan,
+                        size: 30,
+                      ),
+                      title: Text('ออกจากระบบ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 23,
+                              color: Colors.black)),
+                      onTap: () {},
+                    ),
+                  ],
                 ),
-                title: Text('สูตรที่ซื้อ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.notifications,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('การแจ้งเตือน',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              Divider(
-                thickness: 0.5,
-                color: Colors.grey,
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ตั้งค่า',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.cyan,
-                  size: 30,
-                ),
-                title: Text('ออกจากระบบ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 23,
-                        color: Colors.black)),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -283,7 +466,7 @@ class FeedPage extends StatelessWidget {
           color: Colors.white,
           width: 200,
           // decoration: BorderRadius.circular(24.0),
-          
+
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -306,7 +489,6 @@ class FeedPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                       
                         // Row(
                         //   children: [
                         //     Container(
@@ -330,11 +512,10 @@ class FeedPage extends StatelessWidget {
                         // ),
 
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0,3,0,3),
+                          padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
                           child: Text(
                             "ต้มยำกุ้งสด",
-                            style: TextStyle(
-                                color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                         Row(

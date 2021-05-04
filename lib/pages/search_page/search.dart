@@ -1,6 +1,7 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -183,12 +184,12 @@ class _SearchPageState extends State<SearchPage> {
                     },
                     controller: _controller,
                     decoration: InputDecoration(
-                        hintText: "ค้นหา",
-                        contentPadding: const EdgeInsets.only(left: 24.0),
-                        border: InputBorder.none,
-                        enabled: true,
-                        // filled: true
-                        ),
+                      hintText: "ค้นหา",
+                      contentPadding: const EdgeInsets.only(left: 24.0),
+                      border: InputBorder.none,
+                      enabled: true,
+                      // filled: true
+                    ),
                   ),
                 ),
               ),
@@ -334,19 +335,19 @@ class _SearchPageState extends State<SearchPage> {
                             print(dataUser[index].nameSurname);
                             print(dataUser[index].profileImage);
 
-                            
-                              // Navigator.push(context,
-                              //     CupertinoPageRoute(builder: (context) {
-                              //   return ProfileUser(
-                              //       dataUser[index].userId,
-                              //      );
-                              // }));
+                            if (dataAcUser.userId == dataUser[index].userId) {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfilePage();
+                              }));
+                            } else {
                               Navigator.push(context,
                                   CupertinoPageRoute(builder: (context) {
                                 return ProfileUser(
-                                    dataUser[index].userId,
-                                   );
+                                  dataUser[index].userId,
+                                );
                               }));
+                            }
                           },
                           child: ListTile(
                             title: Text(dataUser[index].aliasName),
