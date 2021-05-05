@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -245,8 +246,55 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                               children: [
                                 TextButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/login-page');
+                                      // Navigator.pushNamed(
+                                      //     context, '/login-page');
+                                      Alert(
+                                          context: context,
+                                          title: "LOGIN",
+                                          content: Column(
+                                            children: <Widget>[
+                                              TextField(
+                                                decoration: InputDecoration(
+                                                  icon: Icon(
+                                                      Icons.account_circle),
+                                                  labelText: 'Username',
+                                                ),
+                                              ),
+                                              TextField(
+                                                obscureText: true,
+                                                decoration: InputDecoration(
+                                                  icon: Icon(Icons.lock),
+                                                  labelText: 'Password',
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 25,
+                                              ),
+                                              DialogButton(
+                                                onPressed: () {
+                                                  print("Login");
+                                                },
+                                                child: Text(
+                                                  "LOGIN",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          buttons: [
+                                            DialogButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text(
+                                                "Facebook",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ]).show();
                                     },
                                     child: Text(
                                       'เข้าสู่ระบบ',

@@ -376,42 +376,44 @@ class _ShowFoodState extends State<ShowFood> {
                                       ),
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: Row(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                indexHowTo = 0;
-                                                print(indexHowTo);
-                                                setState(() {});
-                                              },
-                                              child: Icon(
-                                                (indexHowTo == 0)
-                                                    ? Icons.contacts
-                                                    : Icons.contacts_outlined,
-                                                color: Colors.black,
-                                                size: 30.0,
-                                                semanticLabel:
-                                                    'Text to announce in accessibility modes',
+                                            const EdgeInsets.only(right: 40),
+                                        child: Container(
+                                          child: Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  indexHowTo = 0;
+                                                  print(indexHowTo);
+                                                  setState(() {});
+                                                },
+                                                child: Icon(
+                                                  (indexHowTo == 0)
+                                                      ? Icons.contacts
+                                                      : Icons.contacts_outlined,
+                                                  color: Colors.black,
+                                                  size: 40.0,
+                                                  semanticLabel:
+                                                      'Text to announce in accessibility modes',
+                                                ),
                                               ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                indexHowTo = 1;
-                                                print(indexHowTo);
-                                                setState(() {});
-                                              },
-                                              child: Icon(
-                                                (indexHowTo == 1)
-                                                    ? Icons.contacts
-                                                    : Icons.contacts_outlined,
-                                                color: Colors.black,
-                                                size: 30.0,
-                                                semanticLabel:
-                                                    'Text to announce in accessibility modes',
+                                              GestureDetector(
+                                                onTap: () {
+                                                  indexHowTo = 1;
+                                                  print(indexHowTo);
+                                                  setState(() {});
+                                                },
+                                                child: Icon(
+                                                  (indexHowTo == 1)
+                                                      ? Icons.contacts
+                                                      : Icons.contacts_outlined,
+                                                  color: Colors.black,
+                                                  size: 40.0,
+                                                  semanticLabel:
+                                                      'Text to announce in accessibility modes',
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -427,7 +429,7 @@ class _ShowFoodState extends State<ShowFood> {
                                         physics: NeverScrollableScrollPhysics(),
                                         children: howto,
                                       )
-                                    : Container(),
+                                    : Container(height: 550,),
                                 SizedBox(
                                   height: 25,
                                 )
