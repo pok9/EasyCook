@@ -85,9 +85,14 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
     }
   }
 
+  TextEditingController _ctrlEmail = TextEditingController(); //email
+  TextEditingController _ctrlPassword = TextEditingController(); // password
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
+    // int indexLogin = 1;
     return Scaffold(
       backgroundColor: Color(0xFFf3f5f9),
       appBar: PreferredSize(
@@ -250,21 +255,46 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                       //     context, '/login-page');
                                       Alert(
                                           context: context,
-                                          title: "LOGIN",
+                                          title: "เข้าส่ระบบ",
                                           content: Column(
                                             children: <Widget>[
-                                              TextField(
-                                                decoration: InputDecoration(
-                                                  icon: Icon(
-                                                      Icons.account_circle),
-                                                  labelText: 'Username',
-                                                ),
-                                              ),
-                                              TextField(
-                                                obscureText: true,
-                                                decoration: InputDecoration(
-                                                  icon: Icon(Icons.lock),
-                                                  labelText: 'Password',
+                                              Form(
+                                                key: _formKey,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    TextFormField(
+                                                      validator: (value) {
+                                                        if (value.isEmpty) {
+                                                          return 'กรุณากรอก อีเมล';
+                                                        }
+                                                        return null;
+                                                      },
+                                                      controller: _ctrlEmail,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        icon: Icon(Icons
+                                                            .account_circle),
+                                                        labelText: 'อีเมล',
+                                                      ),
+                                                    ),
+                                                    TextFormField(
+                                                      validator: (value) {
+                                                        if (value.isEmpty) {
+                                                          return 'กรุณากรอก รหัสผ่าน';
+                                                        }
+                                                        return null;
+                                                      },
+                                                      controller: _ctrlPassword,
+                                                      obscureText: true,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        icon: Icon(Icons.lock),
+                                                        labelText: 'รหัสผ่าน',
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                               SizedBox(
@@ -273,14 +303,19 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                               DialogButton(
                                                 onPressed: () {
                                                   print("Login");
+                                                  print(_ctrlEmail.text);
+                                                  print(_ctrlPassword.text);
+
+                                                  if (_formKey.currentState
+                                                      .validate()) {}
                                                 },
                                                 child: Text(
-                                                  "LOGIN",
+                                                  "เข้าส่ระบบ",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 20),
                                                 ),
-                                              ),
+                                              )
                                             ],
                                           ),
                                           buttons: [
