@@ -1,4 +1,5 @@
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
+import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
@@ -80,6 +81,23 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
         //  post = newfeed.feeds[0];
         // dataUser = datas.data[0];
       });
+    } else {
+      return null;
+    }
+  }
+
+  Future<LoginModel> logins(String email, String password) async {
+    // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final response = await http
+        .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return loginModelFromJson(responseString);
     } else {
       return null;
     }
@@ -220,8 +238,9 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
                         preferences.setString("tokens", "");
-                        Navigator.pushNamedAndRemoveUntil(context,
-                            '/slide-page', (Route<dynamic> route) => false);
+                        // Navigator.pushNamedAndRemoveUntil(context,
+                        //     '/slide-page', (Route<dynamic> route) => false);
+                            findUser();
                       },
                     ),
                   ],
@@ -255,7 +274,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                       //     context, '/login-page');
                                       Alert(
                                           context: context,
-                                          title: "เข้าส่ระบบ",
+                                          title: "เข้าสู่ระบบ",
                                           content: Column(
                                             children: <Widget>[
                                               Form(
@@ -301,16 +320,43 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                 height: 25,
                                               ),
                                               DialogButton(
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   print("Login");
                                                   print(_ctrlEmail.text);
                                                   print(_ctrlPassword.text);
 
                                                   if (_formKey.currentState
-                                                      .validate()) {}
+                                                      .validate()) {
+                                                    print("pok");
+                                                    LoginModel login =
+                                                        await logins(
+                                                            _ctrlEmail.text,
+                                                            _ctrlPassword.text);
+                                                    print("login.success = " +
+                                                        login.success
+                                                            .toString());
+                                                    print("login.token = " +
+                                                        login.token);
+
+                                                    if (login.success == 1) {
+                                                      _ctrlEmail.text = "";
+                                                      _ctrlPassword.text = "";
+                                                      SharedPreferences
+                                                          preferences =
+                                                          await SharedPreferences
+                                                              .getInstance();
+                                                      preferences.setString(
+                                                          "tokens",
+                                                          login.token);
+                                                      findUser();
+                                                      Navigator.pop(context);
+                                                        
+                                                      
+                                                    }
+                                                  }
                                                 },
                                                 child: Text(
-                                                  "เข้าส่ระบบ",
+                                                  "เข้าสู่ระบบ",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 20),
