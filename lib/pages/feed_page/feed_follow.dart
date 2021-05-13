@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -8,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -86,7 +89,8 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
     }
   }
 
-  Future<LoginModel> logins(String email, String password) async {
+  LoginModel login;
+  Future<Null> logins(String email, String password) async {
     // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
 
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
@@ -97,7 +101,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
-      return loginModelFromJson(responseString);
+      login = loginModelFromJson(responseString);
     } else {
       return null;
     }
@@ -107,9 +111,35 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
   TextEditingController _ctrlPassword = TextEditingController(); // password
   final _formKey = GlobalKey<FormState>();
 
+  // String validateEmail(String value) {
+  //   // value = "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง";
+  //   if (value.isEmpty) {
+  //     return "กรุณากรอก อีเมล";
+  //   }
+  //   // if (login != null) {
+  //   //   if (login.success == 0) {
+  //   //     return login.message;
+  //   //   }
+  //   // }
+  //   // else if(value == "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง"){
+  //   //   return value;
+  //   // }
+
+  //   return null;
+  // }
+
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+  // void _doSomething() async {
+  //   Timer(Duration(seconds: 10), () {
+  //     _btnController.success();
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
+
     // int indexLogin = 1;
     return Scaffold(
       backgroundColor: Color(0xFFf3f5f9),
@@ -240,7 +270,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                         preferences.setString("tokens", "");
                         // Navigator.pushNamedAndRemoveUntil(context,
                         //     '/slide-page', (Route<dynamic> route) => false);
-                            findUser();
+                        findUser();
                       },
                     ),
                   ],
@@ -286,10 +316,40 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                     TextFormField(
                                                       validator: (value) {
                                                         if (value.isEmpty) {
-                                                          return 'กรุณากรอก อีเมล';
+                                                          return "กรุณากรอก อีเมล";
                                                         }
+
                                                         return null;
                                                       },
+                                                      // validator: (value) {
+                                                      //   if (value.isEmpty) {
+                                                      //     return 'กรุณากรอก อีเมล';
+                                                      //   }
+                                                      //   // if (login != null) {
+                                                      //   //   if (login.success ==
+                                                      //   //       0) {
+                                                      //   //     return login.message;
+                                                      //   //   }
+                                                      //   // }
+                                                      //   // if (login.success ==
+                                                      //   //     0) {
+                                                      //   //   if (login.message ==
+                                                      //   //       "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง") {
+                                                      //   //     return login.message;
+                                                      //   //   }
+                                                      //   // }
+                                                      //   return null;
+                                                      // },
+
+                                                      // onChanged: (String value){
+                                                      //   // print(value);
+                                                      //   if(value.isEmpty){
+
+                                                      //   }else{
+                                                      //     print(value);
+                                                      //     return null;
+                                                      //   }
+                                                      // },
                                                       controller: _ctrlEmail,
                                                       decoration:
                                                           InputDecoration(
@@ -299,11 +359,53 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                       ),
                                                     ),
                                                     TextFormField(
+                                                      // onChanged: (String text){
+                                                      //   print(text);
+                                                      //   return null;
+                                                      // },
                                                       validator: (value) {
+                                                        // print(value);
                                                         if (value.isEmpty) {
                                                           return 'กรุณากรอก รหัสผ่าน';
                                                         }
+                                                        // if (login != null) {
+                                                        //   if (login.success ==
+                                                        //       0) {
+                                                        //     return login
+                                                        //         .message;
+                                                        //   }
+                                                        // }
+                                                        // if (login != null) {
+                                                        //   if (login.success ==
+                                                        //       0) {
+                                                        //     return login.message;
+                                                        //   }
+                                                        // }
+                                                        // if (login.success ==
+                                                        //     0) {
+                                                        //   return 'รหัสผ่านไม่ถูกต้อง';
+                                                        // }
+
+                                                        // if (login.success ==
+                                                        //     0) {
+                                                        //   // if (login.message
+                                                        //   //     .contains(
+                                                        //   //         "รหัสผ่านไม่ถูกต้อง")) {
+                                                        //   //   return login
+                                                        //   //       .message;
+                                                        //   // }
+                                                        //   return login.message;
+                                                        // }
+                                                        // if(login.message.contains("รหัสผ่านไม่ถูกต้อง")){
+                                                        //   return login.message;
+                                                        // }
+                                                        // print("5555555595959");
+                                                        // print(login.message);
+                                                        // print(login.success);
+
                                                         return null;
+
+                                                       
                                                       },
                                                       controller: _ctrlPassword,
                                                       obscureText: true,
@@ -319,49 +421,125 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                               SizedBox(
                                                 height: 25,
                                               ),
-                                              DialogButton(
-                                                onPressed: () async {
-                                                  print("Login");
-                                                  print(_ctrlEmail.text);
-                                                  print(_ctrlPassword.text);
 
-                                                  if (_formKey.currentState
-                                                      .validate()) {
-                                                    print("pok");
-                                                    LoginModel login =
-                                                        await logins(
-                                                            _ctrlEmail.text,
-                                                            _ctrlPassword.text);
-                                                    print("login.success = " +
-                                                        login.success
-                                                            .toString());
-                                                    print("login.token = " +
-                                                        login.token);
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: RoundedLoadingButton(
+                                                  child: Text('เข้าสู่ระบบ',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                  controller: _btnController,
+                                                  onPressed: () async {
+                                                    if (_formKey.currentState
+                                                        .validate()) {
+                                                      print(_ctrlEmail.text);
+                                                      print(_ctrlPassword.text);
 
-                                                    if (login.success == 1) {
-                                                      _ctrlEmail.text = "";
-                                                      _ctrlPassword.text = "";
-                                                      SharedPreferences
-                                                          preferences =
-                                                          await SharedPreferences
-                                                              .getInstance();
-                                                      preferences.setString(
-                                                          "tokens",
-                                                          login.token);
-                                                      findUser();
-                                                      Navigator.pop(context);
-                                                        
-                                                      
+                                                      await logins(
+                                                          _ctrlEmail.text,
+                                                          _ctrlPassword.text);
+
+                                                      print(login.success);
+                                                      print(login.message);
+
+                                                      if (login.success == 1) {
+                                                        _btnController
+                                                            .success();
+                                                        _ctrlEmail.text = "";
+                                                        _ctrlPassword.text = "";
+                                                        SharedPreferences
+                                                            preferences =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        preferences.setString(
+                                                            "tokens",
+                                                            login.token);
+                                                        findUser();
+                                                        Navigator.pop(context);
+                                                      } else {
+                                                        _btnController.reset();
+                                                      }
+
+                                                      // validateEmail(_ctrlEmail.text);
+                                                      // validateEmail(
+                                                      //     "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง");
+                                                      // await logins(
+                                                      //     _ctrlEmail.text,
+                                                      //     _ctrlPassword.text);
+                                                      // print(login.success);
+                                                      // if (login.success == 1) {
+                                                      //   print(login.token);
+                                                      //   _btnController
+                                                      //       .success();
+                                                      // } else {
+                                                      //   print(login.message);
+                                                      //   _btnController.reset();
+                                                      //   setState(() {});
+                                                      // }
+
+                                                      // print("yesssssss");
+                                                      // Timer(Duration(), () {
+                                                      //   // _btnController.success();
+                                                      //   // _btnController.error();
+                                                      // });
+                                                      //  _btnController.success();
+
+                                                    } else {
+                                                      _btnController.reset();
+                                                      print("noooooooo");
+                                                      print(login.success);
                                                     }
-                                                  }
-                                                },
-                                                child: Text(
-                                                  "เข้าสู่ระบบ",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20),
+                                                  },
                                                 ),
                                               )
+
+                                              // DialogButton(
+                                              //   onPressed: () async {
+
+                                              //     print("Login");
+                                              //     print(_ctrlEmail.text);
+                                              //     print(_ctrlPassword.text);
+
+                                              //     if (_formKey.currentState
+                                              //         .validate()) {
+                                              //       print("pok");
+
+                                              //       await logins(
+                                              //           _ctrlEmail.text,
+                                              //           _ctrlPassword.text);
+                                              //       print("login.success = " +
+                                              //           login.success
+                                              //               .toString());
+                                              //       // print("login.message = " +
+                                              //       //     login.message);
+                                              //       // print("login.token = " +
+                                              //       //     login.token);
+
+                                              //       if (login.success == 1) {
+                                              //         _ctrlEmail.text = "";
+                                              //         _ctrlPassword.text = "";
+                                              //         SharedPreferences
+                                              //             preferences =
+                                              //             await SharedPreferences
+                                              //                 .getInstance();
+                                              //         preferences.setString(
+                                              //             "tokens",
+                                              //             login.token);
+                                              //         findUser();
+                                              //         Navigator.pop(context);
+                                              //       } else {
+                                              //         setState(() {});
+                                              //       }
+                                              //     }
+                                              //   },
+                                              //   child: Text(
+                                              //     "เข้าสู่ระบบ",
+                                              //     style: TextStyle(
+                                              //         color: Colors.white,
+                                              //         fontSize: 20),
+                                              //   ),
+                                              // )
                                             ],
                                           ),
                                           buttons: [

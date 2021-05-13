@@ -183,8 +183,9 @@ class _FeedPageState extends State<FeedPage> {
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
                         preferences.setString("tokens", "");
-                        Navigator.pushNamedAndRemoveUntil(context,
-                            '/slide-page', (Route<dynamic> route) => false);
+                        // Navigator.pushNamedAndRemoveUntil(context,
+                        //     '/slide-page', (Route<dynamic> route) => false);
+                        findUser();
                       },
                     ),
                   ],
