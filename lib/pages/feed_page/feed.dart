@@ -391,7 +391,7 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                   ),
                   Container(
-                      height: 210,
+                      height: 250,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
@@ -424,7 +424,7 @@ class _FeedPageState extends State<FeedPage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            return _foodCard_1(context);
+                            return _foodCard_2(context);
                           })),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -460,14 +460,180 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Widget _foodCard_1(context) {
+    return Container(
+      // height: 500,
+      width: 200,
+      child: Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      new Container(
+                        height: 30.0,
+                        width: 30.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: new NetworkImage(
+                                    "https://placeimg.com/640/480/any"))),
+                      ),
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                      new Text(
+                        "เซฟปก",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.more_vert),
+                      onPressed: () {
+                        // print("more_vert" + index.toString());
+                      })
+                ],
+              ),
+            ),
+
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Row(
+            //         children: [
+            //           new Container(
+            //             height: 30.0,
+            //             width: 30.0,
+            //             decoration: new BoxDecoration(
+            //                 shape: BoxShape.circle,
+            //                 image: new DecorationImage(
+            //                     fit: BoxFit.fill,
+            //                     image: new NetworkImage(
+            //                         'https://placeimg.com/640/480/any'))),
+            //           ),
+            //           new SizedBox(
+            //             width: 10.0,
+            //           ),
+            //           new Text(
+            //             'เซฟปก',
+            //             style: TextStyle(fontWeight: FontWeight.bold),
+            //           )
+            //         ],
+            //       ),
+            //       new IconButton(
+            //           icon: Icon(Icons.more_vert),
+            //           onPressed: () {
+            //             // print("more_vert" + index.toString());
+            //           })
+            //     ],
+            //   ),
+            // ),
+
+            Container(
+              height: 125,
+              width: 250,
+              decoration: BoxDecoration(
+                  // borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                      fit: BoxFit.cover)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                        child: Text(
+                          "ต้มยำกุ้งสด",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "4.2",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_half,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_border,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "(12)",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "\$25",
+                    style: TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: EdgeInsets.all(10),
+      ),
+    );
+  }
+
+  Widget _foodCard_2(context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-      child: Card(
-        child: Container(
-          color: Colors.white,
-          width: 200,
-          // decoration: BorderRadius.circular(24.0),
+      child: Container(
+        // color: Colors.white,
+        width: 200,
 
+        child: Card(
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -490,28 +656,6 @@ class _FeedPageState extends State<FeedPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Row(
-                        //   children: [
-                        //     Container(
-                        //       height: 20.0,
-                        //       width: 20.0,
-                        //       decoration: new BoxDecoration(
-                        //           shape: BoxShape.circle,
-                        //           image: new DecorationImage(
-                        //               fit: BoxFit.fill,
-                        //               image: new NetworkImage(
-                        //                   "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"))),
-                        //     ),
-                        //     new SizedBox(
-                        //       width: 5.0,
-                        //     ),
-                        //     Text(
-                        //       "ปก เซฟกระทะเหล็กไทยแลน",
-                        //       style: TextStyle(fontSize: 11),
-                        //     ),
-                        //   ],
-                        // ),
-
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
                           child: Text(
