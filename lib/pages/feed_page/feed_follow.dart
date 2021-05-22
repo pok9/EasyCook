@@ -404,8 +404,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                         // print(login.success);
 
                                                         return null;
-
-                                                       
                                                       },
                                                       controller: _ctrlPassword,
                                                       obscureText: true,
@@ -727,7 +725,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                   new IconButton(
                                       icon: Icon(Icons.more_vert),
                                       onPressed: () {
-                                        print("more_vert" + index.toString());
+                                        // print("more_vert" + index.toString());
                                       })
                                 ],
                               ),
