@@ -419,13 +419,43 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                   ),
                   Container(
-                      height: 210,
+                      height: 250,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
                           itemBuilder: (context, index) {
                             return _foodCard_2(context);
                           })),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "แนะนำเซฟ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                        // Text(
+                        //   "ดูทั้งหมด",
+                        //   style: TextStyle(
+                        //       fontSize: 20, fontWeight: FontWeight.normal),
+                        // ),
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                      height: 135,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return _introduce_safe_Card(context);
+                          })),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -627,95 +657,189 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Widget _foodCard_2(context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-      child: Container(
-        // color: Colors.white,
-        width: 200,
-
-        child: Card(
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                height: 125,
-                width: 250,
-                decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(50),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
-                        fit: BoxFit.cover)),
+    return Container(
+      // height: 500,
+      width: 200,
+      child: Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      new Container(
+                        height: 30.0,
+                        width: 30.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: new NetworkImage(
+                                    "https://placeimg.com/640/480/any"))),
+                      ),
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                      new Text(
+                        "เซฟปก",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.more_vert),
+                      onPressed: () {
+                        // print("more_vert" + index.toString());
+                      })
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-                          child: Text(
-                            "ต้มยำกุ้งสด",
-                            style: TextStyle(color: Colors.black),
+            ),
+            Container(
+              height: 125,
+              width: 250,
+              decoration: BoxDecoration(
+                  // borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                      fit: BoxFit.cover)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                        child: Text(
+                          "ต้มยำกุ้งสด",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "4.2",
+                            style: TextStyle(color: Colors.grey),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "4.2",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 16.0,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 16.0,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 16.0,
-                                ),
-                                Icon(
-                                  Icons.star_half,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 16.0,
-                                ),
-                                Icon(
-                                  Icons.star_border,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 16.0,
-                                ),
-                              ],
-                            ),
-                            Text(
-                              "(12)",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "\$25",
-                      style: TextStyle(
-                          color: Colors.indigo, fontWeight: FontWeight.bold),
-                    )
-                  ],
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_half,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_border,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "(12)",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "\$25",
+                    style: TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: EdgeInsets.all(10),
+      ),
+    );
+  }
+
+  Widget _introduce_safe_Card(context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+      child: Container(
+        // height: 500,
+        // width: 50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 65.0,
+                  width: 65.0,
+                  decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                          fit: BoxFit.fill,
+                          image: new NetworkImage(
+                              "https://placeimg.com/640/480/any"))),
                 ),
-              )
-            ],
-          ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "เซฟปก",
+                  style: TextStyle(fontWeight: FontWeight.normal),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  width: 90,
+                  height: 25,
+                  child: MaterialButton(
+                    splashColor: Colors.grey,
+                    color: Colors.white,
+                    onPressed: () {
+                      print("ติดตาม");
+                    },
+                    child: Text(
+                      '+ ติดตาม',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    shape: StadiumBorder(
+                        side: BorderSide(width: 1, color: Colors.blue)),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
