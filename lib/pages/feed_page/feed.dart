@@ -1,7 +1,10 @@
+import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,6 +55,31 @@ class _FeedPageState extends State<FeedPage> {
       return null;
     }
   }
+
+  LoginModel login;
+  Future<Null> logins(String email, String password) async {
+    // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final response = await http
+        .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      login = loginModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  TextEditingController _ctrlEmail = TextEditingController(); //email
+  TextEditingController _ctrlPassword = TextEditingController(); // password
+  final _formKey = GlobalKey<FormState>();
+
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
@@ -215,8 +243,117 @@ class _FeedPageState extends State<FeedPage> {
                               children: [
                                 TextButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/login-page');
+                                      // Navigator.pushNamed(
+                                      //     context, '/login-page');
+                                      Alert(
+                                          context: context,
+                                          title: "เข้าสู่ระบบ",
+                                          content: Column(
+                                            children: <Widget>[
+                                              Form(
+                                                key: _formKey,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    TextFormField(
+                                                      validator: (value) {
+                                                        if (value.isEmpty) {
+                                                          return "กรุณากรอก อีเมล";
+                                                        }
+
+                                                        return null;
+                                                      },
+                                                      controller: _ctrlEmail,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        icon: Icon(Icons
+                                                            .account_circle),
+                                                        labelText: 'อีเมล',
+                                                      ),
+                                                    ),
+                                                    TextFormField(
+                                                      validator: (value) {
+                                                        if (value.isEmpty) {
+                                                          return 'กรุณากรอก รหัสผ่าน';
+                                                        }
+
+                                                        return null;
+                                                      },
+                                                      controller: _ctrlPassword,
+                                                      obscureText: true,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        icon: Icon(Icons.lock),
+                                                        labelText: 'รหัสผ่าน',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 25,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: RoundedLoadingButton(
+                                                  child: Text('เข้าสู่ระบบ',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                  controller: _btnController,
+                                                  onPressed: () async {
+                                                    if (_formKey.currentState
+                                                        .validate()) {
+                                                      print(_ctrlEmail.text);
+                                                      print(_ctrlPassword.text);
+
+                                                      await logins(
+                                                          _ctrlEmail.text,
+                                                          _ctrlPassword.text);
+
+                                                      print(login.success);
+                                                      print(login.message);
+
+                                                      if (login.success == 1) {
+                                                        _btnController
+                                                            .success();
+                                                        _ctrlEmail.text = "";
+                                                        _ctrlPassword.text = "";
+                                                        SharedPreferences
+                                                            preferences =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        preferences.setString(
+                                                            "tokens",
+                                                            login.token);
+                                                        findUser();
+                                                        Navigator.pop(context);
+                                                      } else {
+                                                        _btnController.reset();
+                                                      }
+                                                    } else {
+                                                      _btnController.reset();
+                                                      print("noooooooo");
+                                                      print(login.success);
+                                                    }
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          buttons: [
+                                            DialogButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text(
+                                                "Facebook",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ]).show();
                                     },
                                     child: Text(
                                       'เข้าสู่ระบบ',

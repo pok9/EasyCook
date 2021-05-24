@@ -300,8 +300,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                               children: [
                                 TextButton(
                                     onPressed: () {
-                                      // Navigator.pushNamed(
-                                      //     context, '/login-page');
                                       Alert(
                                           context: context,
                                           title: "เข้าสู่ระบบ",
@@ -321,35 +319,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
 
                                                         return null;
                                                       },
-                                                      // validator: (value) {
-                                                      //   if (value.isEmpty) {
-                                                      //     return 'กรุณากรอก อีเมล';
-                                                      //   }
-                                                      //   // if (login != null) {
-                                                      //   //   if (login.success ==
-                                                      //   //       0) {
-                                                      //   //     return login.message;
-                                                      //   //   }
-                                                      //   // }
-                                                      //   // if (login.success ==
-                                                      //   //     0) {
-                                                      //   //   if (login.message ==
-                                                      //   //       "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง") {
-                                                      //   //     return login.message;
-                                                      //   //   }
-                                                      //   // }
-                                                      //   return null;
-                                                      // },
-
-                                                      // onChanged: (String value){
-                                                      //   // print(value);
-                                                      //   if(value.isEmpty){
-
-                                                      //   }else{
-                                                      //     print(value);
-                                                      //     return null;
-                                                      //   }
-                                                      // },
                                                       controller: _ctrlEmail,
                                                       decoration:
                                                           InputDecoration(
@@ -359,49 +328,10 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                       ),
                                                     ),
                                                     TextFormField(
-                                                      // onChanged: (String text){
-                                                      //   print(text);
-                                                      //   return null;
-                                                      // },
                                                       validator: (value) {
-                                                        // print(value);
                                                         if (value.isEmpty) {
                                                           return 'กรุณากรอก รหัสผ่าน';
                                                         }
-                                                        // if (login != null) {
-                                                        //   if (login.success ==
-                                                        //       0) {
-                                                        //     return login
-                                                        //         .message;
-                                                        //   }
-                                                        // }
-                                                        // if (login != null) {
-                                                        //   if (login.success ==
-                                                        //       0) {
-                                                        //     return login.message;
-                                                        //   }
-                                                        // }
-                                                        // if (login.success ==
-                                                        //     0) {
-                                                        //   return 'รหัสผ่านไม่ถูกต้อง';
-                                                        // }
-
-                                                        // if (login.success ==
-                                                        //     0) {
-                                                        //   // if (login.message
-                                                        //   //     .contains(
-                                                        //   //         "รหัสผ่านไม่ถูกต้อง")) {
-                                                        //   //   return login
-                                                        //   //       .message;
-                                                        //   // }
-                                                        //   return login.message;
-                                                        // }
-                                                        // if(login.message.contains("รหัสผ่านไม่ถูกต้อง")){
-                                                        //   return login.message;
-                                                        // }
-                                                        // print("5555555595959");
-                                                        // print(login.message);
-                                                        // print(login.success);
 
                                                         return null;
                                                       },
@@ -419,7 +349,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                               SizedBox(
                                                 height: 25,
                                               ),
-
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
@@ -458,31 +387,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                       } else {
                                                         _btnController.reset();
                                                       }
-
-                                                      // validateEmail(_ctrlEmail.text);
-                                                      // validateEmail(
-                                                      //     "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง");
-                                                      // await logins(
-                                                      //     _ctrlEmail.text,
-                                                      //     _ctrlPassword.text);
-                                                      // print(login.success);
-                                                      // if (login.success == 1) {
-                                                      //   print(login.token);
-                                                      //   _btnController
-                                                      //       .success();
-                                                      // } else {
-                                                      //   print(login.message);
-                                                      //   _btnController.reset();
-                                                      //   setState(() {});
-                                                      // }
-
-                                                      // print("yesssssss");
-                                                      // Timer(Duration(), () {
-                                                      //   // _btnController.success();
-                                                      //   // _btnController.error();
-                                                      // });
-                                                      //  _btnController.success();
-
                                                     } else {
                                                       _btnController.reset();
                                                       print("noooooooo");
@@ -491,53 +395,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                                   },
                                                 ),
                                               )
-
-                                              // DialogButton(
-                                              //   onPressed: () async {
-
-                                              //     print("Login");
-                                              //     print(_ctrlEmail.text);
-                                              //     print(_ctrlPassword.text);
-
-                                              //     if (_formKey.currentState
-                                              //         .validate()) {
-                                              //       print("pok");
-
-                                              //       await logins(
-                                              //           _ctrlEmail.text,
-                                              //           _ctrlPassword.text);
-                                              //       print("login.success = " +
-                                              //           login.success
-                                              //               .toString());
-                                              //       // print("login.message = " +
-                                              //       //     login.message);
-                                              //       // print("login.token = " +
-                                              //       //     login.token);
-
-                                              //       if (login.success == 1) {
-                                              //         _ctrlEmail.text = "";
-                                              //         _ctrlPassword.text = "";
-                                              //         SharedPreferences
-                                              //             preferences =
-                                              //             await SharedPreferences
-                                              //                 .getInstance();
-                                              //         preferences.setString(
-                                              //             "tokens",
-                                              //             login.token);
-                                              //         findUser();
-                                              //         Navigator.pop(context);
-                                              //       } else {
-                                              //         setState(() {});
-                                              //       }
-                                              //     }
-                                              //   },
-                                              //   child: Text(
-                                              //     "เข้าสู่ระบบ",
-                                              //     style: TextStyle(
-                                              //         color: Colors.white,
-                                              //         fontSize: 20),
-                                              //   ),
-                                              // )
                                             ],
                                           ),
                                           buttons: [
