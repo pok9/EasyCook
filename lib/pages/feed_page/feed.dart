@@ -433,6 +433,55 @@ class _FeedPageState extends State<FeedPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
+                          "วัตถุดิบแนะนำยอดนิยม",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                        // Text(
+                        //   "ดูทั้งหมด",
+                        //   style: TextStyle(
+                        //       fontSize: 20, fontWeight: FontWeight.normal),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  ingredients(),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "สูตรอาหารยอดนิยม",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                        // Text(
+                        //   "ดูทั้งหมด",
+                        //   style: TextStyle(
+                        //       fontSize: 20, fontWeight: FontWeight.normal),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      height: 325,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return _foodCard_3(context);
+                          })),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
                           "แนะนำเซฟ",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
@@ -456,30 +505,39 @@ class _FeedPageState extends State<FeedPage> {
                             return _introduce_safe_Card(context);
                           })),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Top Offers",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      // Text(
-                      //   "ดูทั้งหมด",
-                      //   style: TextStyle(
-                      //       fontSize: 20, fontWeight: FontWeight.normal),
-                      // ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8, right: 8, top: 15, bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "สูตรล่าสุด",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      ],
+                    ),
                   ),
+
                   Container(
-                      height: 330,
+                      height: 580,
                       child: ListView.builder(
-                          scrollDirection: Axis.vertical,
+                          // scrollDirection: Axis.vertical,
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            return _foodCardSlim_1(context);
+                            return _foodCard_latest(context);
                           })),
+
+                  // Container(
+                  //     height: 330,
+                  //     child: ListView.builder(
+                  //         scrollDirection: Axis.vertical,
+                  //         itemCount: 5,
+                  //         itemBuilder: (context, index) {
+                  //           return _foodCardSlim_1(context);
+                  //         })),
                 ],
               ),
             ],
@@ -532,42 +590,6 @@ class _FeedPageState extends State<FeedPage> {
                 ],
               ),
             ),
-
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       Row(
-            //         children: [
-            //           new Container(
-            //             height: 30.0,
-            //             width: 30.0,
-            //             decoration: new BoxDecoration(
-            //                 shape: BoxShape.circle,
-            //                 image: new DecorationImage(
-            //                     fit: BoxFit.fill,
-            //                     image: new NetworkImage(
-            //                         'https://placeimg.com/640/480/any'))),
-            //           ),
-            //           new SizedBox(
-            //             width: 10.0,
-            //           ),
-            //           new Text(
-            //             'เซฟปก',
-            //             style: TextStyle(fontWeight: FontWeight.bold),
-            //           )
-            //         ],
-            //       ),
-            //       new IconButton(
-            //           icon: Icon(Icons.more_vert),
-            //           onPressed: () {
-            //             // print("more_vert" + index.toString());
-            //           })
-            //     ],
-            //   ),
-            // ),
-
             Container(
               height: 125,
               width: 250,
@@ -575,7 +597,7 @@ class _FeedPageState extends State<FeedPage> {
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                          "https://www.fatfeedfun.com/wp-content/uploads/2018/09/easy-food_003790-e1537459041930.jpg"),
                       fit: BoxFit.cover)),
             ),
             Padding(
@@ -787,6 +809,186 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  Padding ingredients() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 13, right: 13, top: 18, bottom: 18),
+      child: Container(
+        height: 150,
+        padding: EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+              image: NetworkImage(
+                  "https://ed.edtfiles-media.com/ud/news/1/155/463477/1_5-850x567.jpg"),
+              fit: BoxFit.cover),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'เนื้อ',
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
+                Text(
+                  'ดูเพิ่มเติม >',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w100),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _foodCard_3(context) {
+    return Container(
+      // height: 500,
+      width: 280,
+      child: Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      new Container(
+                        height: 30.0,
+                        width: 30.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: new NetworkImage(
+                                    "https://placeimg.com/640/480/any"))),
+                      ),
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                      new Text(
+                        "เซฟปก",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.more_vert),
+                      onPressed: () {
+                        // print("more_vert" + index.toString());
+                      })
+                ],
+              ),
+            ),
+            Container(
+              height: 200,
+              width: 280,
+              decoration: BoxDecoration(
+                  // borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://www.thairestaurantphuket.com/blog/wp-content/uploads/2017/07/%E0%B8%97%E0%B8%AD%E0%B8%94%E0%B8%A1%E0%B8%B1%E0%B8%99%E0%B8%81%E0%B8%B8%E0%B9%89%E0%B8%87.jpg"),
+                      fit: BoxFit.cover)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                        child: Text(
+                          "ต้มยำกุ้งสด",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "4.2",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_half,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_border,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "(12)",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "\$25",
+                    style: TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: EdgeInsets.all(10),
+      ),
+    );
+  }
+
   Widget _introduce_safe_Card(context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
@@ -845,71 +1047,202 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Widget _foodCardSlim_1(context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        color: Colors.transparent,
+  Widget _foodCard_latest(context) {
+    return Container(
+      // height: 500,
+      width: 280,
+      child: Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Column(
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
-                            fit: BoxFit.cover)),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "ต้ำยำกุ้ง",
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Italian Recipe for you",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 50,
-                    ),
-                    Text(
-                      "ฟรี",
-                      style: TextStyle(
-                          color: Colors.indigo, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ],
-            ),
             Padding(
-              padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-              child: Divider(
-                height: 2,
-                color: Colors.grey,
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      new Container(
+                        height: 30.0,
+                        width: 30.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: new NetworkImage(
+                                    "https://placeimg.com/640/480/any"))),
+                      ),
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                      new Text(
+                        "เซฟปก",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.more_vert),
+                      onPressed: () {
+                        // print("more_vert" + index.toString());
+                      })
+                ],
               ),
             ),
+            Container(
+              height: 200,
+              // width: 500,
+              decoration: BoxDecoration(
+                  // borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://www.thairestaurantphuket.com/blog/wp-content/uploads/2017/07/%E0%B8%97%E0%B8%AD%E0%B8%94%E0%B8%A1%E0%B8%B1%E0%B8%99%E0%B8%81%E0%B8%B8%E0%B9%89%E0%B8%87.jpg"),
+                      fit: BoxFit.cover)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                        child: Text(
+                          "ต้มยำกุ้งสด",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "4.2",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_half,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                              Icon(
+                                Icons.star_border,
+                                color: Theme.of(context).primaryColor,
+                                size: 16.0,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "(12)",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "\$25",
+                    style: TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            )
           ],
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        margin: EdgeInsets.all(10),
       ),
     );
   }
+
+  // Widget _foodCardSlim_1(context) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: Container(
+  //       color: Colors.transparent,
+  //       child: Column(
+  //         children: [
+  //           Row(
+  //             children: [
+  //               Padding(
+  //                 padding: const EdgeInsets.all(8.0),
+  //                 child: Container(
+  //                   height: 80,
+  //                   width: 80,
+  //                   decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(10),
+  //                       image: DecorationImage(
+  //                           image: NetworkImage(
+  //                               "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+  //                           fit: BoxFit.cover)),
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 width: 10,
+  //               ),
+  //               Row(
+  //                 crossAxisAlignment: CrossAxisAlignment.end,
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       Text(
+  //                         "ต้ำยำกุ้ง",
+  //                         style: TextStyle(
+  //                             color: Colors.grey, fontWeight: FontWeight.bold),
+  //                       ),
+  //                       Text(
+  //                         "Italian Recipe for you",
+  //                         style: TextStyle(color: Colors.grey),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   SizedBox(
+  //                     width: 50,
+  //                   ),
+  //                   Text(
+  //                     "ฟรี",
+  //                     style: TextStyle(
+  //                         color: Colors.indigo, fontWeight: FontWeight.bold),
+  //                   )
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //           Padding(
+  //             padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+  //             child: Divider(
+  //               height: 2,
+  //               color: Colors.grey,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
