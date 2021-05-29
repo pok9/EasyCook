@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_cook/pages/addFood_page/addFood.dart';
+import 'package:easy_cook/pages/test.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
@@ -26,11 +27,12 @@ class MyApp extends StatelessWidget {
         '/register2-page': (context) => RegisterPage2(),
         '/register3-page': (context) => RegisterPage3(),
         '/login-page': (context) => LoginPage(),
-        '/feedFollow-page':(context) => FeedFollowPage(),
-        '/search-page':(context) => SearchPage(),
+        '/feedFollow-page': (context) => FeedFollowPage(),
+        '/search-page': (context) => SearchPage(),
         // '/searchRecipeName' : (context) => SearchRecipeName(),
-        '/slide-page' : (context) => SlidePage(),
-        '/addFood-page' : (context) => AddFoodPage(),
+        '/slide-page': (context) => SlidePage(),
+        '/addFood-page': (context) => AddFoodPage(),
+        '/test': (context) => test(),
         // '/showfood-page': (context) => ShowFood(),
       },
     );

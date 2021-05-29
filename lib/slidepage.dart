@@ -29,7 +29,8 @@ class _SlidePageState extends State<SlidePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, '/addFood-page');
+          // Navigator.pushNamed(context, '/addFood-page');
+          Navigator.pushNamed(context, '/test');
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

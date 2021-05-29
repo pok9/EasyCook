@@ -25,12 +25,12 @@ class _AddFood_AddImagePageState extends State<AddFood_AddImagePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('เพิ่มรูป'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {},
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.add),
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

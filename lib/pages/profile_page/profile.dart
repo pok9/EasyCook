@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
+import 'package:easy_cook/pages/profile_page/edit_profile_page.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 // import 'package:easy_cook/models/search/searchRecipe_model.dart';
@@ -163,7 +164,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           splashColor: Colors.white,
                           color: Colors.blue,
                           onPressed: () {
-                            print("ติดตาม");
+                            print("แก้ไขโปรไฟล์");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditProfilePage()),
+                            );
                           },
                           child: Text(
                             'แก้ไขโปรไฟล์',

@@ -669,7 +669,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
                 child: Text(
                   "ตั้งรูปปกอาหาร",
-                  style: TextStyle(color: Colors.black87, fontSize: 20,fontWeight:  FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               // Center(
@@ -762,7 +765,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
                 child: Text(
                   "ส่วนผสม",
-                  style: TextStyle(color: Colors.black87, fontSize: 20,fontWeight:  FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               // Center(
@@ -809,7 +815,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
                 child: Text(
                   "วิธีทำ",
-                  style: TextStyle(color: Colors.black87, fontSize: 20,fontWeight:  FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               // Center(
