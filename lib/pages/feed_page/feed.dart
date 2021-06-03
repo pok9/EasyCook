@@ -659,9 +659,11 @@ class _FeedPageState extends State<FeedPage> {
                   ),
 
                   Container(
-                      height: 580,
+                      // height: 580,
                       child: ListView.builder(
                           // scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           itemCount: 5,
                           itemBuilder: (context, index) {
                             return _foodCard_latest(context);
