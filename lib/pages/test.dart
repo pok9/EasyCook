@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class test extends StatefulWidget {
-  test({Key key}) : super(key: key);
-
+  // test({Key key}) : super(key: key);
+  const test({
+    this.initialCount = 1,
+  });
+  final int initialCount;
   @override
   _testState createState() => _testState();
 }
@@ -57,6 +60,88 @@ class _testState extends State<test> {
     "เมนูตุ่น",
     "เมนูทอด",
   ];
+
+  int fieldCount = 0;
+  List<List<TextEditingController>> controllers =
+      <List<TextEditingController>>[];
+  List<Widget> _buildListingredient() {
+    int i;
+    if (controllers.length < fieldCount) {
+      for (i = controllers.length; i < fieldCount; i++) {
+        var ctl = <TextEditingController>[];
+        ctl.add(TextEditingController());
+        ctl.add(TextEditingController());
+        controllers.add(ctl);
+      }
+    }
+
+    i = 0;
+
+    return controllers.map<Widget>((List<TextEditingController> controller) {
+      int displayNumber = i + 1;
+      i++;
+
+      return Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Text(
+                "${displayNumber}.",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: controllers[displayNumber - 1][0],
+                onChanged: (text) {
+                  // controllers1[displayNumber] = text;
+                  // print(text + "" + displayNumber.toString());
+                  print('Left:' + controllers[displayNumber - 1][0].text);
+                  // print(text + "${displayNumber}.");
+                },
+                decoration: InputDecoration(
+                  // border: OutlineInputBorder(),
+                  hintText: "ส่วนผสมที่ $displayNumber",
+                  // labelText: 'ส่วนผสม',
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: controllers[displayNumber - 1][1],
+                onChanged: (text) {
+                  // controllers2[displayNumber] = text;
+                  // print(text + "" + displayNumber.toString());
+                  print('Right:' + controllers[displayNumber - 1][1].text);
+                  // print(text + "${displayNumber}.");
+                  // print(controllers2[displayNumber]);
+                },
+                decoration: InputDecoration(
+                  // border: OutlineInputBorder(),
+                  hintText: "จำนวนที่ $displayNumber",
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      setState(() {
+                        fieldCount--;
+                        controllers.remove(controller);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList(); // แปลงเป็นlist
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,6 +245,9 @@ class _testState extends State<test> {
     //     ),
     //   ),
     // ];
+    var screen = MediaQuery.of(context).size;
+
+    final List<Widget> ingredient = _buildListingredient();
     return Scaffold(
       backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
@@ -212,30 +300,81 @@ class _testState extends State<test> {
                     ),
                   ),
                 ),
+                // Card(
+                //   semanticContainer: true,
+                //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                //   child: InkWell(
+                //     onTap: () {
+                //       print("tap card");
+                //     },
+                //     child: Container(
+                //       height: 200,
+                //       // width: 500,
+                //       decoration: BoxDecoration(
+                //           // borderRadius: BorderRadius.circular(50),
+                //           image: DecorationImage(
+                //               image: NetworkImage(
+                //                   'https://aumento.officemate.co.th/media/catalog/product/O/F/OFM0007140.jpg?imwidth=640'),
+                //               fit: BoxFit.cover)),
+                //     ),
+                //   ),
+
+                //   shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(0),
+                //   ),
+                //   // elevation: 5,
+                //   margin: EdgeInsets.all(0),
+                // ),
+                // Card(
+                //   semanticContainer: true,
+                //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                //   child: Container(
+                //     color: Colors.grey,
+                //     height: 300,
+                //     width: screen.width,
+                //     child: IconButton(
+                //       iconSize: 48,
+                //       color: Colors.white,
+                //       icon: const Icon(Icons.camera_alt_rounded),
+                //       // tooltip: 'Toggle Bluetooth',
+                //       onPressed: () {
+                //         setState(() {
+                //           // _volume += 10;
+                //         });
+                //       },
+                //     ),
+                //   ),
+
+                //   shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(0),
+                //   ),
+                //   // elevation: 5,
+                //   margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                //   // margin: EdgeInsets.zero,
+                // ),
                 Card(
                   semanticContainer: true,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: InkWell(
-                    onTap: () {
-                      print("tap card");
-                    },
-                    child: Container(
-                      height: 200,
-                      // width: 500,
-                      decoration: BoxDecoration(
-                          // borderRadius: BorderRadius.circular(50),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://aumento.officemate.co.th/media/catalog/product/O/F/OFM0007140.jpg?imwidth=640'),
-                              fit: BoxFit.cover)),
-                    ),
-                  ),
+                  child: Container(
+                      color: Colors.grey,
+                      height: 300,
+                      width: screen.width,
+                      child: TextButton.icon(
+                        icon: Icon(Icons.camera),
+                        label: Text('Take A Photo'),
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+                      )),
 
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
                   ),
                   // elevation: 5,
-                  margin: EdgeInsets.all(0),
+                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  // margin: EdgeInsets.zero,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -408,13 +547,20 @@ class _testState extends State<test> {
                 //         title: Text('test'),
                 //       ),
                 //     ]),
-
+                ListView(
+                    padding: EdgeInsets.all(0),
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: ingredient),
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(
                     style: flatButtonStyle,
                     onPressed: () {
                       print('Button pressed');
+                      setState(() {
+                        fieldCount++;
+                      });
                     },
                     child: Text('เพิ่มสูตรอาหาร'),
                   ),
@@ -440,22 +586,33 @@ class _testState extends State<test> {
             ),
           ),
           Card(
-            child: Column(
-              children: [
-                TextField(
-                  style: TextStyle(fontWeight: FontWeight.w300),
+            color: Colors.red,
+            child: Container(
+              height: 500,
+              child: Column(
+                children: [
+                  // TextField(
+                  //   style: TextStyle(fontWeight: FontWeight.w300),
 
-                  // controller: nameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    // labelText: 'User Name',
-                  ),
-                )
-              ],
+                  //   // controller: nameController,
+                  //   decoration: InputDecoration(
+                  //     border: OutlineInputBorder(),
+                  //     // labelText: 'User Name',
+                  //   ),
+                  // )
+                ],
+              ),
             ),
           )
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fieldCount = widget.initialCount;
   }
 }

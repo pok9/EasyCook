@@ -60,7 +60,8 @@ dependencies:
   # rounded_loading_button: ^2.0.3
   rounded_loading_button: ^1.0.18
 
-  reorderables: ^0.4.1
+  # reorderables: ^0.4.1
+  implicitly_animated_reorderable_list: ^0.4.0
 
 dev_dependencies:
   flutter_test:
