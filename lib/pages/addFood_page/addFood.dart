@@ -447,28 +447,11 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          // AddImageOrVideo
                           new MaterialPageRoute(
                               builder: (context) => new AddImageOrVideo()),
                         ).then((value) {
                           if (value != null) {
                             image2[displayNumber - 1] = value.image;
-                            // mimeTypeData = lookupMimeType(
-                            //     image2[displayNumber - 1].path,
-                            //     headerBytes: [0xFF, 0xD8]).split('/');
-                            // // print(value.imaged);
-                            // print("mimeTypeData[0] = " + mimeTypeData[0]);
-                            // print("mimeTypeData[1] = " + mimeTypeData[1]);
-                            // print(image2[displayNumber - 1]);
-                            // print(image2[displayNumber - 1].isAbsolute);
-                            // final mimeType = lookupMimeType(image2[displayNumber - 1].path);
-                            // print(mimeType[0] == "i");
-                            // print(mimeType[0] == "v");
-                            // print(lookupMimeType(image2[displayNumber - 1].path)[0]);
-                            // print("value.type = " + value.type);
-                            // typeImage2[displayNumber - 1] = value.type;
-
-                            // // print("typeImage2[displayNumber - 1] = "+);
 
                             setState(() {});
                           }
@@ -732,29 +715,30 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           }
                         });
                       })
-                  : InkWell(
-                      child: Image.file(
-                        addImage[0].image,
-                        width: 0,
-                        height: 300,
-                        fit: BoxFit.cover,
-                      ),
-                      onTap: () async {
-                        // print("77777777777777");---------------------------------------------------------------------------------------------------------------------------------
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new AddFood_AddImagePage()),
-                        ).then((value) {
-                          if (value != null) {
-                            // print(value);
-                            // addImage.add(value);
-                            addImage[0].image = value.image;
-                            // img = addImage[0].image;
-                            setState(() {});
-                          }
-                        });
-                      }),
+                  : Image.file(addImage[0].image),
+              // : InkWell(
+              //     child: Image.file(
+              //       addImage[0].image,
+              //       width: 0,
+              //       height: 300,
+              //       fit: BoxFit.cover,
+              //     ),
+              //     onTap: () async {
+              //       // print("77777777777777");---------------------------------------------------------------------------------------------------------------------------------
+              //       Navigator.push(
+              //         context,
+              //         new MaterialPageRoute(
+              //             builder: (context) => new AddFood_AddImagePage()),
+              //       ).then((value) {
+              //         if (value != null) {
+              //           // print(value);
+              //           // addImage.add(value);
+              //           addImage[0].image = value.image;
+              //           // img = addImage[0].image;
+              //           setState(() {});
+              //         }
+              //       });
+              //     }),
 
               Divider(
                 thickness: 2,

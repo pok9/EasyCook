@@ -1,3 +1,5 @@
+import 'package:easy_cook/class/addFood_addImage_class.dart';
+import 'package:easy_cook/pages/test2.dart';
 import 'package:flutter/material.dart';
 
 class test extends StatefulWidget {
@@ -142,6 +144,8 @@ class _testState extends State<test> {
       );
     }).toList(); // แปลงเป็นlist
   }
+
+  List<AddImage> addImage = new List<AddImage>();
 
   @override
   Widget build(BuildContext context) {
@@ -352,30 +356,61 @@ class _testState extends State<test> {
                 //   margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                 //   // margin: EdgeInsets.zero,
                 // ),
-                Card(
-                  semanticContainer: true,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Container(
-                      color: Colors.grey,
-                      height: 300,
-                      width: screen.width,
-                      child: TextButton.icon(
-                        icon: Icon(Icons.camera),
-                        label: Text('Take A Photo'),
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                        ),
-                      )),
+                (addImage.length == 0)
+                    ? Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Container(
+                            color: Colors.grey,
+                            height: 300,
+                            width: screen.width,
+                            child: TextButton.icon(
+                              icon: Icon(Icons.camera),
+                              label: Text('Take A Photo'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new test2()),
+                                ).then((value) {
+                                  if (value != null) {
+                                    // image2[displayNumber - 1] = value.image;
 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  // elevation: 5,
-                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                  // margin: EdgeInsets.zero,
-                ),
+                                    setState(() {
+                                      addImage.add(value);
+                                    });
+                                  }
+                                });
+                              },
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                              ),
+                            )),
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        // elevation: 5,
+                        margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        // margin: EdgeInsets.zero,
+                      )
+                    : Card(
+                        child: Container(
+                          height: 350.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: FileImage(addImage[0].image),
+                                fit: BoxFit.cover),
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        // elevation: 5,
+                        margin: EdgeInsets.zero,
+                      ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
