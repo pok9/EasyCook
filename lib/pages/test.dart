@@ -252,6 +252,9 @@ class _testState extends State<test> {
     var screen = MediaQuery.of(context).size;
 
     final List<Widget> ingredient = _buildListingredient();
+
+    final transformationController = TransformationController();
+
     return Scaffold(
       backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
@@ -396,21 +399,105 @@ class _testState extends State<test> {
                         margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                         // margin: EdgeInsets.zero,
                       )
-                    : Card(
-                        child: Container(
+                    : Container(
+                        constraints: new BoxConstraints.expand(
                           height: 350.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: FileImage(addImage[0].image),
-                                fit: BoxFit.cover),
+                        ),
+                        alignment: Alignment.bottomRight,
+                        padding: new EdgeInsets.only(right: 10, bottom: 8.0),
+                        decoration: new BoxDecoration(
+                          image: new DecorationImage(
+                            image: FileImage(addImage[0].image),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        // elevation: 5,
-                        margin: EdgeInsets.zero,
-                      ),
+                        child: ToggleButtons(
+                          color: Colors.black.withOpacity(0.60),
+                          selectedColor: Colors.black,
+                          selectedBorderColor: Colors.grey,
+                          // fillColor: Color(0xFF6200EE).withOpacity(0.08),
+                          splashColor: Colors.blue,
+                          hoverColor: Color(0xFF6200EE).withOpacity(0.04),
+                          borderRadius: BorderRadius.circular(20.0),
+                          constraints: BoxConstraints(minHeight: 30.0),
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                ),
+                                SizedBox(
+                                  width: 1,
+                                ),
+                                Text("แก้ไข")
+                              ],
+                            ),
+                            Row(
+                              children: [Icon(Icons.delete), Text("ลบ")],
+                            ),
+                          ],
+                          isSelected: [true, true],
+                          onPressed: (int index) {
+                            setState(() {
+                              // print(index);
+                              if (index == 0) {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new test2()),
+                                ).then((value) {
+                                  if (value != null) {
+                                    // image2[displayNumber - 1] = value.image;
+                                    addImage.removeAt(0);
+                                    setState(() {
+                                      addImage.add(value);
+                                    });
+                                  }
+                                });
+                              } else if (index == 1) {
+                                print("delete");
+                                for (var list in addImage) {
+                                  print(list);
+                                }
+                                addImage.removeAt(0);
+                                for (var list in addImage) {
+                                  print(list);
+                                }
+                                print(addImage.length);
+                              }
+                            });
+                          },
+                        )),
+                // : Card(
+                //     child: InteractiveViewer(
+                //       // boundaryMargin: EdgeInsets.all(double.infinity),
+                //       transformationController: transformationController,
+                //       onInteractionEnd: (details) {
+                //         setState(() {
+                //           transformationController.toScene(Offset.zero);
+                //         });
+                //       },
+                //       // boundaryMargin: EdgeInsets.all(100.0),
+                //       minScale: 0.1,
+                //       maxScale: 1.6,
+                //       child: ClipRRect(
+                //         child: Image.file(addImage[0].image),
+                //         // child: Container(
+                //         //   height: 350.0,
+                //         //   decoration: BoxDecoration(
+                //         //     image: DecorationImage(
+                //         //         image: FileImage(addImage[0].image),
+                //         //         fit: BoxFit.cover),
+                //         //   ),
+                //         // ),
+                //       ),
+                //     ),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(0),
+                //     ),
+                //     // elevation: 5,
+                //     margin: EdgeInsets.zero,
+                //   ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
