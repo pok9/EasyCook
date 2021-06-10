@@ -219,7 +219,12 @@ class _testState extends State<test> {
                         print(text + "${displayNumber}.");
                       },
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
                         hintText: "วิธีทำที่ $displayNumber",
                         // suffixIcon: IconButton(
                         //   icon: Icon(Icons.clear),
@@ -409,35 +414,40 @@ class _testState extends State<test> {
                                                 },
                                               )),
                                         )
-                                      : Align(
-                                          alignment: Alignment.topCenter,
-                                          child: AspectRatio(
-                                            aspectRatio: 1,
-                                            child: Container(
-                                              // width: 120,
-                                              height: 50.0,
-                                              // color: Colors.green,
-                                              child: VideoItems(
-                                                videoPlayerController:
-                                                    VideoPlayerController.file(
-                                                        image2[
-                                                            displayNumber - 1]),
-                                                looping: false,
-                                                autoplay: false,
+                                      : Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 10, 0, 0),
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: AspectRatio(
+                                              aspectRatio: 1,
+                                              child: Container(
+                                                // width: 100,
+                                                // height: 100.0,
+                                                // color: Colors.green,
+                                                child: VideoItems(
+                                                  videoPlayerController:
+                                                      VideoPlayerController
+                                                          .file(image2[
+                                                              displayNumber -
+                                                                  1]),
+                                                  looping: false,
+                                                  autoplay: false,
+                                                ),
                                               ),
                                             ),
+                                            // child: AspectRatio(
+                                            //   aspectRatio: 10 / 9,
+                                            //   child: VideoItems(
+                                            //     videoPlayerController:
+                                            //         VideoPlayerController.file(
+                                            //             image2[
+                                            //                 displayNumber - 1]),
+                                            //     looping: true,
+                                            //     autoplay: false,
+                                            //   ),
+                                            // ),
                                           ),
-                                          // child: AspectRatio(
-                                          //   aspectRatio: 10 / 9,
-                                          //   child: VideoItems(
-                                          //     videoPlayerController:
-                                          //         VideoPlayerController.file(
-                                          //             image2[
-                                          //                 displayNumber - 1]),
-                                          //     looping: true,
-                                          //     autoplay: false,
-                                          //   ),
-                                          // ),
                                         )),
                         ],
                       ),
