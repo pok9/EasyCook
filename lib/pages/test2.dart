@@ -14,7 +14,8 @@ class test2 extends StatefulWidget {
 }
 
 class _test2State extends State<test2> {
-  ImagePicker picker;
+  // ImagePicker picker;
+  final picker = ImagePicker();
   File imageFile;
   pickCropImage() async {
     FilePickerResult result =
@@ -26,6 +27,15 @@ class _test2State extends State<test2> {
       imageFile = File(file.path);
       cropImage();
     } else {}
+  }
+
+  captureImage() async {
+    var image = await picker.getImage(source: ImageSource.camera);
+
+    if (image != null) {
+      imageFile = File(image.path);
+      cropImage();
+    }
   }
 
   cropImage() async {
@@ -77,7 +87,22 @@ class _test2State extends State<test2> {
               child: Text(
                 'Pick&Crop',
                 style: TextStyle(color: Colors.white, fontSize: 20),
-              ))
+              )),
+          GestureDetector(
+            onTap: captureImage,
+            child: Container(
+              color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  'ถ่ายรูปภาพ ',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

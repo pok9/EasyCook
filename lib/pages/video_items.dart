@@ -12,7 +12,6 @@ class VideoItems extends StatefulWidget {
       {@required this.videoPlayerController,
       this.looping,
       this.autoplay,
-
       Key key})
       : super(key: key);
 
@@ -25,12 +24,12 @@ class _VideoItemsState extends State<VideoItems> {
 
   @override
   void initState() {
-    
     // TODO: implement initState
     super.initState();
     _chewieController = ChewieController(
         videoPlayerController: widget.videoPlayerController,
-        aspectRatio: 30 / 15,
+        // aspectRatio: 30 / 15,
+        aspectRatio: 1,
         autoInitialize: true,
         autoPlay: widget.autoplay,
         looping: widget.looping,

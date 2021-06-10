@@ -1,13 +1,23 @@
+import 'dart:io';
+
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/pages/test2.dart';
+import 'package:easy_cook/pages/test3.dart';
+import 'package:easy_cook/pages/video_items.dart';
 import 'package:flutter/material.dart';
+import 'package:mime/mime.dart';
+import 'package:video_player/video_player.dart';
+
+import 'addFood_page/addImageORvideo_class.dart';
 
 class test extends StatefulWidget {
   // test({Key key}) : super(key: key);
   const test({
     this.initialCount = 1,
+    this.initialCount2 = 1, //ทดสอบ
   });
   final int initialCount;
+  final int initialCount2; //ทดสอบ
   @override
   _testState createState() => _testState();
 }
@@ -63,7 +73,7 @@ class _testState extends State<test> {
     "เมนูทอด",
   ];
 
-  int fieldCount = 0;
+  int fieldCount = 0; //จำนวนแถว
   List<List<TextEditingController>> controllers =
       <List<TextEditingController>>[];
   List<Widget> _buildListingredient() {
@@ -145,113 +155,311 @@ class _testState extends State<test> {
     }).toList(); // แปลงเป็นlist
   }
 
-  List<AddImage> addImage = new List<AddImage>();
+  int fieldCount2 = 0; //ทดสอบ
+
+  List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
+  List<File> image2 = <File>[];
+  // List<String> typeImage2 = <String>[];
+
+  List<Widget> _buildList2() {
+    //ทดเสอบ
+
+    int i;
+    if (controllers2.length < fieldCount2) {
+      for (i = controllers2.length; i < fieldCount2; i++) {
+        controllers2.add(TextEditingController());
+        image2.add(File(''));
+      }
+    }
+
+    i = 0;
+
+    return controllers2.map<Widget>((TextEditingController controller2) {
+      int displayNumber = i + 1;
+      i++;
+      return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        // elevation: 5,
+        margin: EdgeInsets.all(0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Text(
+                      "${displayNumber}.",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    // child: TextField(
+                    //   obscureText: true,
+                    //   decoration: InputDecoration(
+                    //     border: OutlineInputBorder(),
+                    //     labelText: 'Password',
+                    //   ),
+                    // ),
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      maxLines: 5,
+                      controller: controller2,
+                      onChanged: (text) {
+                        print(text + "${displayNumber}.");
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "วิธีทำที่ $displayNumber",
+                        // suffixIcon: IconButton(
+                        //   icon: Icon(Icons.clear),
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       // fieldCount2--;
+                        //       // controllers2.remove(controller2);
+                        //     });
+                        //   },
+                        // ),
+                        // labelText: 'ส่วนผสม',
+                      ),
+                    ),
+                  ),
+                  (image2[displayNumber - 1].toString() == File('').toString())
+                      ? Expanded(
+                          flex: 2,
+                          child: IconButton(
+                              iconSize: 100,
+                              icon: Image.asset('assets/images/dot.png'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new test3()),
+                                ).then((value) {
+                                  if (value != null) {
+                                    image2[displayNumber - 1] = value.image;
+
+                                    setState(() {});
+                                  }
+                                });
+                              }))
+                      : Container(),
+                  IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      print("${displayNumber}");
+                      fieldCount2--;
+                      controllers2.remove(controller2);
+                      image2.remove(image2[displayNumber - 1]);
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+              (image2[displayNumber - 1].toString() == File('').toString())
+                  ? Container()
+                  : Container(
+                      height: 350,
+                      child: Row(
+                        children: [
+                          Expanded(
+                              // flex: 3,
+                              child: (image2[displayNumber - 1].toString() ==
+                                      File('').toString())
+                                  ? Container()
+                                  : (lookupMimeType(image2[displayNumber - 1]
+                                              .path)[0] ==
+                                          "i")
+                                      ? Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 20, 0, 0),
+                                          child: Container(
+                                              constraints:
+                                                  new BoxConstraints.expand(
+                                                height: 350.0,
+                                              ),
+                                              alignment: Alignment.bottomRight,
+                                              padding: new EdgeInsets.only(
+                                                  right: 10, bottom: 8.0),
+                                              decoration: new BoxDecoration(
+                                                image: new DecorationImage(
+                                                  image: FileImage(image2[
+                                                      displayNumber - 1]),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              child: ToggleButtons(
+                                                color: Colors.black
+                                                    .withOpacity(0.60),
+                                                selectedColor: Colors.black,
+                                                selectedBorderColor:
+                                                    Colors.grey,
+                                                // fillColor: Color(0xFF6200EE).withOpacity(0.08),
+                                                splashColor: Colors.blue,
+                                                hoverColor: Color(0xFF6200EE)
+                                                    .withOpacity(0.04),
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                constraints: BoxConstraints(
+                                                    minHeight: 30.0),
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.camera_alt,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 1,
+                                                      ),
+                                                      Text("แก้ไข")
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.delete),
+                                                      Text("ลบ")
+                                                    ],
+                                                  ),
+                                                ],
+                                                isSelected: [true, true],
+                                                onPressed: (int index) {
+                                                  setState(() {
+                                                    // print(index);
+                                                    if (index == 0) {
+                                                      Navigator.push(
+                                                        context,
+                                                        new MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                new test3()),
+                                                      ).then((value) {
+                                                        if (value != null) {
+                                                          // image2[displayNumber - 1] = value.image;
+                                                          // addImage.removeAt(0);
+                                                          // image2[displayNumber -
+                                                          //     1] = File('');
+                                                          setState(() {
+                                                            // addImage.add(value);
+                                                            image2[
+                                                                displayNumber -
+                                                                    1] = value
+                                                                .image;
+                                                          });
+                                                        }
+                                                      });
+                                                    } else if (index == 1) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              title: const Text(
+                                                                  'ยืนยัน'),
+                                                              content: const Text(
+                                                                  'คุณต้องการลบรูปนี้ ?'),
+                                                              actions: <Widget>[
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          context,
+                                                                          'Cancel'),
+                                                                  child:
+                                                                      const Text(
+                                                                    'ยกเลิก',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .red),
+                                                                  ),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      print(
+                                                                          image2);
+                                                                      image2[displayNumber -
+                                                                              1] =
+                                                                          File(
+                                                                              '');
+
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    'ตกลง',
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          });
+                                                    }
+                                                  });
+                                                },
+                                              )),
+                                        )
+                                      : Align(
+                                          alignment: Alignment.topCenter,
+                                          child: AspectRatio(
+                                            aspectRatio: 1,
+                                            child: Container(
+                                              // width: 120,
+                                              height: 50.0,
+                                              // color: Colors.green,
+                                              child: VideoItems(
+                                                videoPlayerController:
+                                                    VideoPlayerController.file(
+                                                        image2[
+                                                            displayNumber - 1]),
+                                                looping: false,
+                                                autoplay: false,
+                                              ),
+                                            ),
+                                          ),
+                                          // child: AspectRatio(
+                                          //   aspectRatio: 10 / 9,
+                                          //   child: VideoItems(
+                                          //     videoPlayerController:
+                                          //         VideoPlayerController.file(
+                                          //             image2[
+                                          //                 displayNumber - 1]),
+                                          //     looping: true,
+                                          //     autoplay: false,
+                                          //   ),
+                                          // ),
+                                        )),
+                        ],
+                      ),
+                    ),
+              Divider(
+                color: Colors.black,
+              )
+            ],
+          ),
+        ),
+      );
+    }).toList(); // แปลงเป็นlist
+  }
+
+  List<AddImage> addImage = []; //รูปหน้าปก สูตรอาหาร
 
   @override
   Widget build(BuildContext context) {
-    // final List<Widget> children = [
-    //   Padding(
-    //     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: [
-    //         Padding(
-    //           padding: const EdgeInsets.only(right: 20),
-    //           child: Text(
-    //             "${1}.",
-    //             style: TextStyle(
-    //               fontSize: 15,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //         ),
-    //         Expanded(
-    //           child: TextField(
-    //             //controller: controllers[displayNumber - 1][0],
-    //             onChanged: (text) {
-    //               //print('Left:' + controllers[displayNumber - 1][0].text);
-    //             },
-    //             decoration: InputDecoration(
-    //               hintText: "ส่วนผสมที่ 1",
-    //             ),
-    //           ),
-    //         ),
-    //         Expanded(
-    //           child: TextField(
-    //             //controller: controllers[displayNumber - 1][1],
-    //             onChanged: (text) {
-    //               //print('Right:' + controllers[displayNumber - 1][1].text);
-    //             },
-    //             decoration: InputDecoration(
-    //               hintText: "จำนวนที่ 1",
-    //               suffixIcon: IconButton(
-    //                 icon: Icon(Icons.clear),
-    //                 onPressed: () {
-    //                   setState(() {
-    //                     //fieldCount--;
-    //                     //controllers.remove(controller);
-    //                   });
-    //                 },
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    //   Padding(
-    //     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: [
-    //         Padding(
-    //           padding: const EdgeInsets.only(right: 20),
-    //           child: Text(
-    //             "${2}.",
-    //             style: TextStyle(
-    //               fontSize: 15,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //         ),
-    //         Expanded(
-    //           child: TextField(
-    //             //controller: controllers[displayNumber - 1][0],
-    //             onChanged: (text) {
-    //               //print('Left:' + controllers[displayNumber - 1][0].text);
-    //             },
-    //             decoration: InputDecoration(
-    //               hintText: "ส่วนผสมที่ 2",
-    //             ),
-    //           ),
-    //         ),
-    //         Expanded(
-    //           child: TextField(
-    //             //controller: controllers[displayNumber - 1][1],
-    //             onChanged: (text) {
-    //               //print('Right:' + controllers[displayNumber - 1][1].text);
-    //             },
-    //             decoration: InputDecoration(
-    //               hintText: "จำนวนที่ 2",
-    //               suffixIcon: IconButton(
-    //                 icon: Icon(Icons.clear),
-    //                 onPressed: () {
-    //                   setState(() {
-    //                     //fieldCount--;
-    //                     //controllers.remove(controller);
-    //                   });
-    //                 },
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // ];
     var screen = MediaQuery.of(context).size;
 
     final List<Widget> ingredient = _buildListingredient();
+    final List<Widget> howto = _buildList2(); //ทดสอบ
 
     final transformationController = TransformationController();
 
@@ -270,9 +478,6 @@ class _testState extends State<test> {
               child: Text('โพสต์'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.grey,
-                // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                // textStyle:
-                //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold)
               ),
             ),
           )
@@ -303,62 +508,9 @@ class _testState extends State<test> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey),
-                      // labelText: 'User Name',
                     ),
                   ),
                 ),
-                // Card(
-                //   semanticContainer: true,
-                //   clipBehavior: Clip.antiAliasWithSaveLayer,
-                //   child: InkWell(
-                //     onTap: () {
-                //       print("tap card");
-                //     },
-                //     child: Container(
-                //       height: 200,
-                //       // width: 500,
-                //       decoration: BoxDecoration(
-                //           // borderRadius: BorderRadius.circular(50),
-                //           image: DecorationImage(
-                //               image: NetworkImage(
-                //                   'https://aumento.officemate.co.th/media/catalog/product/O/F/OFM0007140.jpg?imwidth=640'),
-                //               fit: BoxFit.cover)),
-                //     ),
-                //   ),
-
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(0),
-                //   ),
-                //   // elevation: 5,
-                //   margin: EdgeInsets.all(0),
-                // ),
-                // Card(
-                //   semanticContainer: true,
-                //   clipBehavior: Clip.antiAliasWithSaveLayer,
-                //   child: Container(
-                //     color: Colors.grey,
-                //     height: 300,
-                //     width: screen.width,
-                //     child: IconButton(
-                //       iconSize: 48,
-                //       color: Colors.white,
-                //       icon: const Icon(Icons.camera_alt_rounded),
-                //       // tooltip: 'Toggle Bluetooth',
-                //       onPressed: () {
-                //         setState(() {
-                //           // _volume += 10;
-                //         });
-                //       },
-                //     ),
-                //   ),
-
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(0),
-                //   ),
-                //   // elevation: 5,
-                //   margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                //   // margin: EdgeInsets.zero,
-                // ),
                 (addImage.length == 0)
                     ? Card(
                         semanticContainer: true,
@@ -455,49 +607,41 @@ class _testState extends State<test> {
                                   }
                                 });
                               } else if (index == 1) {
-                                print("delete");
-                                for (var list in addImage) {
-                                  print(list);
-                                }
-                                addImage.removeAt(0);
-                                for (var list in addImage) {
-                                  print(list);
-                                }
-                                print(addImage.length);
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('ยืนยัน'),
+                                        content:
+                                            const Text('คุณต้องการลบรูปนี้ ?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                context, 'Cancel'),
+                                            child: const Text(
+                                              'ยกเลิก',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                addImage.removeAt(0);
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                            child: const Text(
+                                              'ตกลง',
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
                               }
                             });
                           },
                         )),
-                // : Card(
-                //     child: InteractiveViewer(
-                //       // boundaryMargin: EdgeInsets.all(double.infinity),
-                //       transformationController: transformationController,
-                //       onInteractionEnd: (details) {
-                //         setState(() {
-                //           transformationController.toScene(Offset.zero);
-                //         });
-                //       },
-                //       // boundaryMargin: EdgeInsets.all(100.0),
-                //       minScale: 0.1,
-                //       maxScale: 1.6,
-                //       child: ClipRRect(
-                //         child: Image.file(addImage[0].image),
-                //         // child: Container(
-                //         //   height: 350.0,
-                //         //   decoration: BoxDecoration(
-                //         //     image: DecorationImage(
-                //         //         image: FileImage(addImage[0].image),
-                //         //         fit: BoxFit.cover),
-                //         //   ),
-                //         // ),
-                //       ),
-                //     ),
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(0),
-                //     ),
-                //     // elevation: 5,
-                //     margin: EdgeInsets.zero,
-                //   ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -563,15 +707,9 @@ class _testState extends State<test> {
                         ),
                         Container(
                           padding: EdgeInsets.only(left: 16, right: 16),
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(color: Colors.grey, width: 1),
-                          //     borderRadius: BorderRadius.circular(15)),
                           child: DropdownButton(
                             hint: Text('ภายใน 3 นาที'),
-                            // icon: Icon(Icons.arrow_drop_down),
-                            // iconSize: 36,
                             isExpanded: true,
-                            // style: TextStyle(color: Colors.black, fontSize: 22),
                             underline: SizedBox(),
                             value: valueChooseTime,
                             onChanged: (newValue) {
@@ -595,15 +733,9 @@ class _testState extends State<test> {
                         ),
                         Container(
                           padding: EdgeInsets.only(left: 16, right: 16),
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(color: Colors.grey, width: 1),
-                          //     borderRadius: BorderRadius.circular(15)),
                           child: DropdownButton(
                             hint: Text('ภายใน 3 นาที'),
-                            // icon: Icon(Icons.arrow_drop_down),
-                            // iconSize: 36,
                             isExpanded: true,
-                            // style: TextStyle(color: Colors.black, fontSize: 22),
                             underline: SizedBox(),
                             value: valueChooseFood,
                             onChanged: (newValue) {
@@ -630,8 +762,6 @@ class _testState extends State<test> {
             height: 5,
           ),
           Card(
-            // semanticContainer: true,
-            // clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
@@ -654,21 +784,6 @@ class _testState extends State<test> {
                     ],
                   ),
                 ),
-                // ListView(
-                //     padding: EdgeInsets.all(0),
-                //     shrinkWrap: true,
-                //     physics: NeverScrollableScrollPhysics(),
-                //     children: children),
-                // ReorderableListView(
-                //     onReorder: (int oldIndex, int newIndex) {},
-                //     children: [
-                //       // for (final course in _courses)
-                //       ListTile(
-                //         key: ValueKey(1),
-                //         // leading: Image.network(course.imageLocation),
-                //         title: Text('test'),
-                //       ),
-                //     ]),
                 ListView(
                     padding: EdgeInsets.all(0),
                     shrinkWrap: true,
@@ -684,46 +799,56 @@ class _testState extends State<test> {
                         fieldCount++;
                       });
                     },
-                    child: Text('เพิ่มสูตรอาหาร'),
+                    child: Text('เพิ่มส่วนผสม'),
                   ),
                 ),
-                // Container(
-                //   color: Colors.red,
-                //   child: FractionallySizedBox(
-                //       widthFactor: 1,
-                //       child: FlatButton(
-                //           materialTapTargetSize:
-                //               MaterialTapTargetSize.shrinkWrap,
-                //           onPressed: () {
-                //             print("เพิ่มสูตรอาหาร");
-                //           },
-                //           color: Color(0xFF00A0BE),
-                //           textColor: Color(0xFFFFFFFF),
-                //           child: Text('LOGIN',
-                //               style: TextStyle(letterSpacing: 4.0)),
-                //           shape:
-                //               RoundedRectangleBorder(side: BorderSide.none))),
-                // ),
               ],
             ),
           ),
+          SizedBox(
+            height: 5,
+          ),
           Card(
-            color: Colors.red,
-            child: Container(
-              height: 500,
-              child: Column(
-                children: [
-                  // TextField(
-                  //   style: TextStyle(fontWeight: FontWeight.w300),
-
-                  //   // controller: nameController,
-                  //   decoration: InputDecoration(
-                  //     border: OutlineInputBorder(),
-                  //     // labelText: 'User Name',
-                  //   ),
-                  // )
-                ],
-              ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            margin: EdgeInsets.all(0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "วิธีทำ",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                ListView(
+                  padding: EdgeInsets.all(0),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: howto,
+                ),
+                FractionallySizedBox(
+                  widthFactor: 1,
+                  child: TextButton(
+                    style: flatButtonStyle,
+                    onPressed: () {
+                      print('Button pressed');
+                      setState(() {
+                        fieldCount2++;
+                      });
+                    },
+                    child: Text('เพิ่ม วิธีทำ'),
+                  ),
+                ),
+              ],
             ),
           )
         ],
@@ -736,5 +861,6 @@ class _testState extends State<test> {
     // TODO: implement initState
     super.initState();
     fieldCount = widget.initialCount;
+    fieldCount2 = widget.initialCount2;
   }
 }

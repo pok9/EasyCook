@@ -375,7 +375,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
   }
 
   int fieldCount2 = 0; //ทดสอบ
-  int nextIndex2 = 0; //ทดสอบ
 
   List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
   List<File> image2 = <File>[];
