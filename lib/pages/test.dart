@@ -143,6 +143,10 @@ class _testState extends State<test> {
                       setState(() {
                         fieldCount--;
                         controllers.remove(controller);
+                        if (controllers.length == 0) {
+                          this.fieldCount = 1;
+                        }
+                        print('controllers ${controllers.length}');
                       });
                     },
                   ),
@@ -266,6 +270,10 @@ class _testState extends State<test> {
                       fieldCount2--;
                       controllers2.remove(controller2);
                       image2.remove(image2[displayNumber - 1]);
+                      if (controllers2.length == 0) {
+                        this.fieldCount2 = 1;
+                      }
+                      print('controllers2.length =  ${controllers2.length}');
                       setState(() {});
                     },
                   ),
@@ -463,6 +471,8 @@ class _testState extends State<test> {
   }
 
   List<AddImage> addImage = []; //รูปหน้าปก สูตรอาหาร
+  var _ctrlNameFood = TextEditingController();
+  var _ctrlExplain = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -482,8 +492,13 @@ class _testState extends State<test> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                // Respond to button press
-                print(valueChoosePeople);
+                print('ชื่อสูตรอาหาร ' + _ctrlNameFood.text);
+                print(addImage[0].image);
+                print('อธิบายสูตร' + _ctrlExplain.text);
+
+                print('สำหรับ ' + valueChoosePeople);
+                print('เวลา ' + valueChooseTime);
+                print('หมวดหมู่อาหาร ' + valueChooseFood);
               },
               child: Text('โพสต์'),
               style: ElevatedButton.styleFrom(
@@ -507,8 +522,7 @@ class _testState extends State<test> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     style: TextStyle(fontWeight: FontWeight.w300),
-
-                    // controller: nameController,
+                    controller: _ctrlNameFood,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Color(0xFFf3f5f9),
@@ -655,6 +669,7 @@ class _testState extends State<test> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: _ctrlExplain,
                     minLines: 4,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
