@@ -13,11 +13,11 @@ import 'addFood_page/addImageORvideo_class.dart';
 
 class test extends StatefulWidget {
   const test({
-    this.initialCount = 1,
-    this.initialCount2 = 1, //ทดสอบ
+    this.ingredient_row_start = 1,
+    this.howto_row_start = 1, //ทดสอบ
   });
-  final int initialCount;
-  final int initialCount2; //ทดสอบ
+  final int ingredient_row_start; //จำนวนแถวส่วนผสมตั้งต้น
+  final int howto_row_start; //ทดสอบ
   @override
   _testState createState() => _testState();
 }
@@ -66,13 +66,13 @@ class _testState extends State<test> {
   //########################################################################################################/
 
   //*******************************************************************************************************/
-  int fieldCount = 0; //จำนวนแถว
+  int ingredient_row = 0; //จำนวนแถวส่วนผสม
   List<List<TextEditingController>> controllers =
       <List<TextEditingController>>[];
   List<Widget> _buildListingredient() {
     int i;
-    if (controllers.length < fieldCount) {
-      for (i = controllers.length; i < fieldCount; i++) {
+    if (controllers.length < ingredient_row) {
+      for (i = controllers.length; i < ingredient_row; i++) {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
         ctl.add(TextEditingController());
@@ -124,10 +124,10 @@ class _testState extends State<test> {
                     icon: Icon(Icons.clear),
                     onPressed: () {
                       setState(() {
-                        fieldCount--;
+                        ingredient_row--;
                         controllers.remove(controller);
                         if (controllers.length == 0) {
-                          this.fieldCount = 1;
+                          this.ingredient_row = 1;
                         }
                         print('controllers ${controllers.length}');
                       });
@@ -144,7 +144,7 @@ class _testState extends State<test> {
   //########################################################################################################/
 
   //*******************************************************************************************************/
-  int fieldCount2 = 0; //ทดสอบ
+  int howto_row = 0; //จำนวนแถววิธีทำ
   List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
   List<File> image2 = <File>[];
 
@@ -152,8 +152,8 @@ class _testState extends State<test> {
     //ทดเสอบ
 
     int i;
-    if (controllers2.length < fieldCount2) {
-      for (i = controllers2.length; i < fieldCount2; i++) {
+    if (controllers2.length < howto_row) {
+      for (i = controllers2.length; i < howto_row; i++) {
         controllers2.add(TextEditingController());
         image2.add(File(''));
       }
@@ -233,11 +233,11 @@ class _testState extends State<test> {
                     icon: Icon(Icons.clear),
                     onPressed: () {
                       print("${displayNumber}");
-                      fieldCount2--;
+                      howto_row--;
                       controllers2.remove(controller2);
                       image2.remove(image2[displayNumber - 1]);
                       if (controllers2.length == 0) {
-                        this.fieldCount2 = 1;
+                        this.howto_row = 1;
                       }
                       print('controllers2.length =  ${controllers2.length}');
                       setState(() {});
@@ -792,7 +792,7 @@ class _testState extends State<test> {
                     onPressed: () {
                       print('Button pressed');
                       setState(() {
-                        fieldCount++;
+                        ingredient_row++;
                       });
                     },
                     child: Text('เพิ่มส่วนผสม'),
@@ -838,7 +838,7 @@ class _testState extends State<test> {
                     onPressed: () {
                       print('Button pressed');
                       setState(() {
-                        fieldCount2++;
+                        howto_row++;
                       });
                     },
                     child: Text('เพิ่ม วิธีทำ'),
@@ -856,7 +856,7 @@ class _testState extends State<test> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fieldCount = widget.initialCount;
-    fieldCount2 = widget.initialCount2;
+    ingredient_row = widget.ingredient_row_start;
+    howto_row = widget.howto_row_start;
   }
 }
