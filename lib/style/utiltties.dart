@@ -4,21 +4,22 @@ final kHintTextStyle = TextStyle(
   color: Colors.white54,
   fontFamily: 'OpenSans',
 );
-final kHintTextStyle2 = TextStyle(//ส่วนผสมวิธีืทำ
+final kHintTextStyle2 = TextStyle(
+  //ส่วนผสมวิธีืทำ
   fontSize: 17,
   color: Colors.black,
   fontFamily: 'OpenSans',
   // fontSize: 40
 );
 final kHintTextStyle3 = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 20,
-  color: Colors.black,
-  fontFamily: 'OpenSans',
-  decoration: TextDecoration.underline,
-  decorationStyle: TextDecorationStyle.double
-  // fontSize: 40
-);
+    fontWeight: FontWeight.bold,
+    fontSize: 20,
+    color: Colors.black,
+    fontFamily: 'OpenSans',
+    decoration: TextDecoration.underline,
+    decorationStyle: TextDecorationStyle.double
+    // fontSize: 40
+    );
 
 final kLabelStyle = TextStyle(
   color: Colors.white,
@@ -41,4 +42,15 @@ final kBoxDecorationStyle = BoxDecoration(
       offset: Offset(0, 2),
     ),
   ],
+);
+
+//ปุ่มของหน้า test(เพิ่มสูตรอาหาร)
+final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+  primary: Colors.white,
+  minimumSize: Size(88, 44),
+  padding: EdgeInsets.symmetric(horizontal: 16.0),
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+  ),
+  backgroundColor: Colors.blue,
 );

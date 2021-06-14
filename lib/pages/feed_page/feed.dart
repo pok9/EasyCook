@@ -679,6 +679,9 @@ class _FeedPageState extends State<FeedPage> {
                   //         })),
                 ],
               ),
+              SizedBox(
+                height: 15,
+              ),
             ],
           ),
         ),

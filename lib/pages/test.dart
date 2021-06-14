@@ -4,6 +4,7 @@ import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/pages/test2.dart';
 import 'package:easy_cook/pages/test3.dart';
 import 'package:easy_cook/pages/video_items.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 import 'package:video_player/video_player.dart';
@@ -11,7 +12,6 @@ import 'package:video_player/video_player.dart';
 import 'addFood_page/addImageORvideo_class.dart';
 
 class test extends StatefulWidget {
-  // test({Key key}) : super(key: key);
   const test({
     this.initialCount = 1,
     this.initialCount2 = 1, //ทดสอบ
@@ -23,16 +23,7 @@ class test extends StatefulWidget {
 }
 
 class _testState extends State<test> {
-  final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-    primary: Colors.white,
-    minimumSize: Size(88, 44),
-    padding: EdgeInsets.symmetric(horizontal: 16.0),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-    ),
-    backgroundColor: Colors.blue,
-  );
-
+  //*******************************************************************************************************/
   String valueChoosePeople = "1 คน";
   List listPeopleItem = [
     "1 คน",
@@ -72,7 +63,9 @@ class _testState extends State<test> {
     "เมนูตุ่น",
     "เมนูทอด",
   ];
+  //########################################################################################################/
 
+  //*******************************************************************************************************/
   int fieldCount = 0; //จำนวนแถว
   List<List<TextEditingController>> controllers =
       <List<TextEditingController>>[];
@@ -112,15 +105,10 @@ class _testState extends State<test> {
               child: TextField(
                 controller: controllers[displayNumber - 1][0],
                 onChanged: (text) {
-                  // controllers1[displayNumber] = text;
-                  // print(text + "" + displayNumber.toString());
                   print('Left:' + controllers[displayNumber - 1][0].text);
-                  // print(text + "${displayNumber}.");
                 },
                 decoration: InputDecoration(
-                  // border: OutlineInputBorder(),
                   hintText: "ส่วนผสมที่ $displayNumber",
-                  // labelText: 'ส่วนผสม',
                 ),
               ),
             ),
@@ -128,14 +116,9 @@ class _testState extends State<test> {
               child: TextField(
                 controller: controllers[displayNumber - 1][1],
                 onChanged: (text) {
-                  // controllers2[displayNumber] = text;
-                  // print(text + "" + displayNumber.toString());
                   print('Right:' + controllers[displayNumber - 1][1].text);
-                  // print(text + "${displayNumber}.");
-                  // print(controllers2[displayNumber]);
                 },
                 decoration: InputDecoration(
-                  // border: OutlineInputBorder(),
                   hintText: "จำนวนที่ $displayNumber",
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear),
@@ -158,14 +141,14 @@ class _testState extends State<test> {
       );
     }).toList(); // แปลงเป็นlist
   }
+  //########################################################################################################/
 
+  //*******************************************************************************************************/
   int fieldCount2 = 0; //ทดสอบ
-
   List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
   List<File> image2 = <File>[];
-  // List<String> typeImage2 = <String>[];
 
-  List<Widget> _buildList2() {
+  List<Widget> _buildhowto() {
     //ทดเสอบ
 
     int i;
@@ -207,13 +190,6 @@ class _testState extends State<test> {
                   ),
                   Expanded(
                     flex: 5,
-                    // child: TextField(
-                    //   obscureText: true,
-                    //   decoration: InputDecoration(
-                    //     border: OutlineInputBorder(),
-                    //     labelText: 'Password',
-                    //   ),
-                    // ),
                     child: TextField(
                       keyboardType: TextInputType.multiline,
                       minLines: 1,
@@ -230,16 +206,6 @@ class _testState extends State<test> {
                           borderSide: BorderSide.none,
                         ),
                         hintText: "วิธีทำที่ $displayNumber",
-                        // suffixIcon: IconButton(
-                        //   icon: Icon(Icons.clear),
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       // fieldCount2--;
-                        //       // controllers2.remove(controller2);
-                        //     });
-                        //   },
-                        // ),
-                        // labelText: 'ส่วนผสม',
                       ),
                     ),
                   ),
@@ -347,7 +313,6 @@ class _testState extends State<test> {
                                                 isSelected: [true, true],
                                                 onPressed: (int index) {
                                                   setState(() {
-                                                    // print(index);
                                                     if (index == 0) {
                                                       Navigator.push(
                                                         context,
@@ -356,12 +321,7 @@ class _testState extends State<test> {
                                                                 new test3()),
                                                       ).then((value) {
                                                         if (value != null) {
-                                                          // image2[displayNumber - 1] = value.image;
-                                                          // addImage.removeAt(0);
-                                                          // image2[displayNumber -
-                                                          //     1] = File('');
                                                           setState(() {
-                                                            // addImage.add(value);
                                                             image2[
                                                                 displayNumber -
                                                                     1] = value
@@ -430,9 +390,6 @@ class _testState extends State<test> {
                                             child: AspectRatio(
                                               aspectRatio: 1,
                                               child: Container(
-                                                // width: 100,
-                                                // height: 100.0,
-                                                // color: Colors.green,
                                                 child: VideoItems(
                                                   videoPlayerController:
                                                       VideoPlayerController
@@ -444,17 +401,6 @@ class _testState extends State<test> {
                                                 ),
                                               ),
                                             ),
-                                            // child: AspectRatio(
-                                            //   aspectRatio: 10 / 9,
-                                            //   child: VideoItems(
-                                            //     videoPlayerController:
-                                            //         VideoPlayerController.file(
-                                            //             image2[
-                                            //                 displayNumber - 1]),
-                                            //     looping: true,
-                                            //     autoplay: false,
-                                            //   ),
-                                            // ),
                                           ),
                                         )),
                         ],
@@ -470,18 +416,46 @@ class _testState extends State<test> {
     }).toList(); // แปลงเป็นlist
   }
 
+  //########################################################################################################/
+
   List<AddImage> addImage = []; //รูปหน้าปก สูตรอาหาร
-  var _ctrlNameFood = TextEditingController();
-  var _ctrlExplain = TextEditingController();
+  var _ctrlNameFood = TextEditingController(); //ชื่อสูตรอาหาร
+  var _ctrlExplain = TextEditingController(); //อธิบายสูตรอาหาร
+
+  //แจ้งเตือนตอนกดโพส
+  showdialogPost(context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "แจ้งเตือน",
+              style: TextStyle(color: Colors.red),
+            ),
+            content: Text("กรุณาเพิ่มรูปภาพปกอาหาร"),
+            actions: [
+              TextButton(
+                child: Text(
+                  "ตกลง",
+                  style: TextStyle(color: Colors.blue),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var screen = MediaQuery.of(context).size;
+    var screen = MediaQuery.of(context).size; //ขนาดของหน้าจอ
 
     final List<Widget> ingredient = _buildListingredient();
-    final List<Widget> howto = _buildList2(); //ทดสอบ
+    final List<Widget> howto = _buildhowto();
 
-    final transformationController = TransformationController();
+    // final transformationController = TransformationController();
 
     return Scaffold(
       backgroundColor: Color(0xFFf3f5f9),
@@ -493,7 +467,15 @@ class _testState extends State<test> {
             child: ElevatedButton(
               onPressed: () {
                 print('ชื่อสูตรอาหาร ' + _ctrlNameFood.text);
-                print(addImage[0].image);
+                try {
+                  print(addImage[0].image);
+                } catch (e) {
+                  print("5555555555555");
+                }
+                if (addImage.length == 0) {
+                  showdialogPost(context);
+                }
+
                 print('อธิบายสูตร' + _ctrlExplain.text);
 
                 print('สำหรับ ' + valueChoosePeople);
@@ -511,7 +493,8 @@ class _testState extends State<test> {
       body: ListView(
         children: [
           Card(
-            margin: EdgeInsets.zero,
+            margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+            //ปรับขอบการ์ด
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
@@ -521,11 +504,14 @@ class _testState extends State<test> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
-                    style: TextStyle(fontWeight: FontWeight.w300),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20),
                     controller: _ctrlNameFood,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFf3f5f9),
+                      fillColor: Color(0xFFFAFAFA),
                       border: OutlineInputBorder(),
                       hintText: "ชื่อเมนู",
                       hintStyle: TextStyle(
@@ -544,8 +530,8 @@ class _testState extends State<test> {
                             height: 300,
                             width: screen.width,
                             child: TextButton.icon(
-                              icon: Icon(Icons.camera),
-                              label: Text('Take A Photo'),
+                              icon: Icon(Icons.camera_alt),
+                              label: Text('รูปภาพอาหาร'),
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -553,8 +539,6 @@ class _testState extends State<test> {
                                       builder: (context) => new test2()),
                                 ).then((value) {
                                   if (value != null) {
-                                    // image2[displayNumber - 1] = value.image;
-
                                     setState(() {
                                       addImage.add(value);
                                     });
@@ -567,13 +551,10 @@ class _testState extends State<test> {
                                         Colors.white),
                               ),
                             )),
-
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0),
                         ),
-                        // elevation: 5,
                         margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        // margin: EdgeInsets.zero,
                       )
                     : Container(
                         constraints: new BoxConstraints.expand(
@@ -591,7 +572,6 @@ class _testState extends State<test> {
                           color: Colors.black.withOpacity(0.60),
                           selectedColor: Colors.black,
                           selectedBorderColor: Colors.grey,
-                          // fillColor: Color(0xFF6200EE).withOpacity(0.08),
                           splashColor: Colors.blue,
                           hoverColor: Color(0xFF6200EE).withOpacity(0.04),
                           borderRadius: BorderRadius.circular(20.0),
@@ -615,7 +595,6 @@ class _testState extends State<test> {
                           isSelected: [true, true],
                           onPressed: (int index) {
                             setState(() {
-                              // print(index);
                               if (index == 0) {
                                 Navigator.push(
                                   context,
@@ -623,7 +602,6 @@ class _testState extends State<test> {
                                       builder: (context) => new test2()),
                                 ).then((value) {
                                   if (value != null) {
-                                    // image2[displayNumber - 1] = value.image;
                                     addImage.removeAt(0);
                                     setState(() {
                                       addImage.add(value);
@@ -675,9 +653,8 @@ class _testState extends State<test> {
                     maxLines: null,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFf3f5f9),
+                      fillColor: Color(0xFFFAFAFA),
                       border: OutlineInputBorder(),
-                      // labelText: 'User Name',
                       hintText: "อธิบายสูตรอาหาร",
                       hintStyle: TextStyle(
                           fontSize: 16,
@@ -687,11 +664,10 @@ class _testState extends State<test> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                   child: Table(
                     border: TableBorder.all(),
                     textDirection: TextDirection.ltr,
-                    // defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
                       TableRow(children: [
                         Padding(
@@ -699,29 +675,26 @@ class _testState extends State<test> {
                           child: Text('สำหรับ'),
                         ),
                         Container(
+                          width: 300.0,
                           padding: EdgeInsets.only(left: 16, right: 16),
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(color: Colors.grey, width: 1),
-                          //     borderRadius: BorderRadius.circular(15)),
-                          child: DropdownButton(
-                            hint: Text('1 คน'),
-                            // icon: Icon(Icons.arrow_drop_down),
-                            // iconSize: 36,
-                            isExpanded: true,
-                            // style: TextStyle(color: Colors.black, fontSize: 22),
-                            underline: SizedBox(),
-                            value: valueChoosePeople,
-                            onChanged: (newValue) {
-                              setState(() {
-                                valueChoosePeople = newValue;
-                              });
-                            },
-                            items: listPeopleItem.map((valueItem) {
-                              return DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(valueItem),
-                              );
-                            }).toList(),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              // hint: Text('1 คน'),
+                              isExpanded: true,
+                              underline: SizedBox(),
+                              value: valueChoosePeople,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueChoosePeople = newValue;
+                                });
+                              },
+                              items: listPeopleItem.map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Text(valueItem),
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ]),
@@ -790,10 +763,8 @@ class _testState extends State<test> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
-            // elevation: 5,
             margin: EdgeInsets.all(0),
             child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
