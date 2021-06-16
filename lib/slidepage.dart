@@ -22,17 +22,25 @@ class _SlidePageState extends State<SlidePage> {
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currenetScreen = FeedPage();
+
   @override
   Widget build(BuildContext context) {
+    // resizeToAvoidBottomPadding:
+    // false;
+    bool keyboardIsOpened =
+        MediaQuery.of(context).viewInsets.bottom != 0.0; //ทำให้ floating หาย
     return Scaffold(
       body: PageStorage(bucket: bucket, child: currenetScreen),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          // Navigator.pushNamed(context, '/addFood-page');
-          Navigator.pushNamed(context, '/test');
-          // Navigator.pushNamed(context, '/test2');
-        },
+      floatingActionButton: Opacity(
+        opacity: keyboardIsOpened ? 0 : 1,
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            // Navigator.pushNamed(context, '/addFood-page');
+            Navigator.pushNamed(context, '/test');
+            // Navigator.pushNamed(context, '/test2');
+          },
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(

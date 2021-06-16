@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
@@ -28,6 +30,7 @@ List<DataUser> dataUser;
 DataAc dataAcUser;
 
 bool body = true;
+bool textFocus = false;
 
 class _SearchPageState extends State<SearchPage> {
   @override
@@ -149,7 +152,9 @@ class _SearchPageState extends State<SearchPage> {
                     borderRadius: BorderRadius.circular(24.0),
                   ),
                   child: TextFormField(
+                    autofocus: textFocus,
                     onTap: () {
+                      textFocus = true;
                       if (body == true) {
                         // Navigator.pushNamed(context, '/search-page');
                         body = false;
@@ -164,7 +169,9 @@ class _SearchPageState extends State<SearchPage> {
                           //   // print("value.type = " + value.type);
                           //
                           // }
+                          print("back pop");
                           body = true;
+                          textFocus = false;
                           setState(() {});
                         });
                       }
@@ -175,9 +182,10 @@ class _SearchPageState extends State<SearchPage> {
                     },
                     onChanged: (String text) {
                       setState(() {
-                        // if (text == "") {
-                        //   body = true;
-                        // }
+                        if (text == "") {
+                          body = true;
+                          // Navigator.pop(context);
+                        }
                         getSearchRecipeNames(text);
                         getSearchUserNames(text);
                       });

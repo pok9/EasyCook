@@ -1,15 +1,24 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
+import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
+import 'package:easy_cook/models/addFood/addhowto_model.dart';
+import 'package:easy_cook/models/addFood/createPost_model.dart';
+import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
+import 'package:easy_cook/pages/addFood_page/addFood.dart';
 import 'package:easy_cook/pages/test2.dart';
 import 'package:easy_cook/pages/test3.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 import 'addFood_page/addImageORvideo_class.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class test extends StatefulWidget {
   const test({
@@ -23,6 +32,100 @@ class test extends StatefulWidget {
 }
 
 class _testState extends State<test> {
+  //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== CreatePostModel(สร้างโพส(success,recipeId )) ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
+// CreatePostModel
+  var mimeTypeData;
+  Future<CreatePostModel> createPosts(
+      String tokens, File image, String recipe_name, String price) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/createPost";
+
+    mimeTypeData =
+        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+    final file = await http.MultipartFile.fromPath('image', image.path,
+        contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(file);
+    imageUploadRequest.fields['token'] = tokens;
+    imageUploadRequest.fields['recipe_name'] = recipe_name;
+    imageUploadRequest.fields['price'] = price;
+
+    print("error0000000");
+    var streamedResponse = await imageUploadRequest.send();
+    print("error1111111");
+    var response = await http.Response.fromStream(streamedResponse);
+    print("erro222222");
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return createPostModelFromJson(responseString);
+    } else {
+      print("error");
+      return null;
+    }
+  }
+  //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
+
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== addIngredients(เพิ่มส่วนผสม) ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
+  Future<AddIngredientsArrayModel> addIngredients(
+      String recipe_ID,
+      List<String> ingredientName,
+      List<String> amount,
+      List<String> step,
+      String token) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/addIngredientsArray";
+
+    print(ingredientName);
+    print(amount);
+    print(step);
+
+    // List<st>
+    var data = {
+      "recipe_ID": recipe_ID,
+      "ingredientName": ingredientName,
+      "amount": amount,
+      "step": step
+    };
+    print("jsonEncode(data) = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    // print( );
+    // addIngredientsArrayModelFromJson
+    // print("addIngredients======");
+    print("addIngredients======" + (response.statusCode.toString()));
+    // print("addIngredients======"+(response));
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return addIngredientsArrayModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
+
+//#################################----คั้นกลาง---##########################################################################
+
+  //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== Token ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
+  //Token
+  String token = "";
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString("tokens");
+    });
+  }
+  //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
+
   //*******************************************************************************************************/
   String valueChoosePeople = "1 คน";
   List listPeopleItem = [
@@ -63,26 +166,31 @@ class _testState extends State<test> {
     "เมนูตุ่น",
     "เมนูทอด",
   ];
+
+  TextEditingController _ctrlPrice = TextEditingController()
+    ..text = 'ฟรี'; //ราคา
+
   //########################################################################################################/
 
   //*******************************************************************************************************/
   int ingredient_row = 0; //จำนวนแถวส่วนผสม
-  List<List<TextEditingController>> controllers =
+  List<List<TextEditingController>> ctl_ingredient_row =
       <List<TextEditingController>>[];
   List<Widget> _buildListingredient() {
     int i;
-    if (controllers.length < ingredient_row) {
-      for (i = controllers.length; i < ingredient_row; i++) {
+    if (ctl_ingredient_row.length < ingredient_row) {
+      for (i = ctl_ingredient_row.length; i < ingredient_row; i++) {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
         ctl.add(TextEditingController());
-        controllers.add(ctl);
+        ctl_ingredient_row.add(ctl);
       }
     }
 
     i = 0;
 
-    return controllers.map<Widget>((List<TextEditingController> controller) {
+    return ctl_ingredient_row
+        .map<Widget>((List<TextEditingController> controller) {
       int displayNumber = i + 1;
       i++;
 
@@ -103,9 +211,10 @@ class _testState extends State<test> {
             ),
             Expanded(
               child: TextField(
-                controller: controllers[displayNumber - 1][0],
+                controller: ctl_ingredient_row[displayNumber - 1][0],
                 onChanged: (text) {
-                  print('Left:' + controllers[displayNumber - 1][0].text);
+                  print(
+                      'Left:' + ctl_ingredient_row[displayNumber - 1][0].text);
                 },
                 decoration: InputDecoration(
                   hintText: "ส่วนผสมที่ $displayNumber",
@@ -114,9 +223,10 @@ class _testState extends State<test> {
             ),
             Expanded(
               child: TextField(
-                controller: controllers[displayNumber - 1][1],
+                controller: ctl_ingredient_row[displayNumber - 1][1],
                 onChanged: (text) {
-                  print('Right:' + controllers[displayNumber - 1][1].text);
+                  print(
+                      'Right:' + ctl_ingredient_row[displayNumber - 1][1].text);
                 },
                 decoration: InputDecoration(
                   hintText: "จำนวนที่ $displayNumber",
@@ -125,11 +235,11 @@ class _testState extends State<test> {
                     onPressed: () {
                       setState(() {
                         ingredient_row--;
-                        controllers.remove(controller);
-                        if (controllers.length == 0) {
+                        ctl_ingredient_row.remove(controller);
+                        if (ctl_ingredient_row.length == 0) {
                           this.ingredient_row = 1;
                         }
-                        print('controllers ${controllers.length}');
+                        print('controllers ${ctl_ingredient_row.length}');
                       });
                     },
                   ),
@@ -145,23 +255,23 @@ class _testState extends State<test> {
 
   //*******************************************************************************************************/
   int howto_row = 0; //จำนวนแถววิธีทำ
-  List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
+  List<TextEditingController> ctl_howto_row = <TextEditingController>[]; //ทดสอบ
   List<File> image2 = <File>[];
 
   List<Widget> _buildhowto() {
     //ทดเสอบ
 
     int i;
-    if (controllers2.length < howto_row) {
-      for (i = controllers2.length; i < howto_row; i++) {
-        controllers2.add(TextEditingController());
+    if (ctl_howto_row.length < howto_row) {
+      for (i = ctl_howto_row.length; i < howto_row; i++) {
+        ctl_howto_row.add(TextEditingController());
         image2.add(File(''));
       }
     }
 
     i = 0;
 
-    return controllers2.map<Widget>((TextEditingController controller2) {
+    return ctl_howto_row.map<Widget>((TextEditingController controller2) {
       int displayNumber = i + 1;
       i++;
       return Card(
@@ -233,13 +343,34 @@ class _testState extends State<test> {
                     icon: Icon(Icons.clear),
                     onPressed: () {
                       print("${displayNumber}");
+                      if (lookupMimeType(image2[displayNumber - 1].path)[0] !=
+                          "i") {
+                        // VideoPlayerController.file(image2[displayNumber - 1])
+                        //     .setVolume(0);
+
+                        // image2[displayNumber - 1] = null;
+                        print("มันคือ วิดีโอออออออ11111111");
+
+                        // print(VideoPlayerController.file(
+                        //         image2[displayNumber - 1])
+                        //     .value
+                        //     .isPlaying);
+                        // print(VideoPlayerController.file(
+                        //         image2[displayNumber - 1])
+                        //     .play());
+                        // print(displayNumber - 1);
+
+                        print("มันคือ วิดีโอออออออ222222");
+                        setState(() {});
+                      }
                       howto_row--;
-                      controllers2.remove(controller2);
+                      ctl_howto_row.remove(controller2);
                       image2.remove(image2[displayNumber - 1]);
-                      if (controllers2.length == 0) {
+
+                      if (ctl_howto_row.length == 0) {
                         this.howto_row = 1;
                       }
-                      print('controllers2.length =  ${controllers2.length}');
+                      print('controllers2.length =  ${ctl_howto_row.length}');
                       setState(() {});
                     },
                   ),
@@ -465,22 +596,91 @@ class _testState extends State<test> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              onPressed: () {
-                print('ชื่อสูตรอาหาร ' + _ctrlNameFood.text);
-                try {
-                  print(addImage[0].image);
-                } catch (e) {
-                  print("5555555555555");
+              onPressed: () async {
+                print("โทเคน = " + token);
+                print("รูปภาพปกอาหาร= ${addImage[0].image}");
+                print("ชื่อสูตรอาหาร" + _ctrlNameFood.text);
+                print("ราคา" + _ctrlPrice.text);
+
+                //createPost
+                final CreatePostModel postsData = await createPosts(token,
+                    addImage[0].image, _ctrlNameFood.text, _ctrlPrice.text);
+
+                // print(postsData.success);
+                // print(postsData.recipeId);
+
+                //ingredient
+                List<String> ingredientName = [];
+                List<String> amount = [];
+                List<String> ingredientName_step = [];
+
+                for (var i = 0; i < ctl_ingredient_row.length; i++) {
+                  if (ctl_ingredient_row[i][0].text == "") {
+                    continue;
+                  }
+                  ingredientName.add(ctl_ingredient_row[i][0].text);
+                  amount.add(ctl_ingredient_row[i][1].text);
                 }
-                if (addImage.length == 0) {
-                  showdialogPost(context);
+                for (var i = 0; i < amount.length; i++) {
+                  ingredientName_step.add((i + 1).toString());
                 }
 
-                print('อธิบายสูตร' + _ctrlExplain.text);
+                AddIngredientsArrayModel ingredientsData = await addIngredients(
+                    postsData.recipeId.toString(),
+                    ingredientName,
+                    amount,
+                    ingredientName_step,
+                    token);
 
-                print('สำหรับ ' + valueChoosePeople);
-                print('เวลา ' + valueChooseTime);
-                print('หมวดหมู่อาหาร ' + valueChooseFood);
+                // print("success_ingredientsData = ${ingredientsData.success}");
+
+                //how to
+                List<String> description_howto = [];
+                List<String> path_file = [];
+                List<String> howto_step = [];
+                List<String> type_file = [];
+
+                var mimeTypeData;
+                for (var i = 0; i < ctl_howto_row.length; i++) {
+                  description_howto.add(ctl_howto_row[i].text);
+
+                  howto_step.add((i + 1).toString());
+
+                  UploadHowtoFileModels imageData =
+                      await addloadHowtoFiles(image2[i]);
+
+                  path_file.add(imageData.path);
+                  type_file.add(imageData.type);
+                }
+
+                AddHowtoArrayModels howtoData = await addHowtos(
+                    postsData.recipeId.toString(),
+                    description_howto,
+                    howto_step,
+                    path_file,
+                    type_file,
+                    token);
+
+                print(howtoData.success);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/slide-page', (route) => false);
+
+                // print('ชื่อสูตรอาหาร ' + _ctrlNameFood.text);
+                // try {
+                //   print(addImage[0].image);
+                // } catch (e) {
+                //   print(e);
+                // }
+                // if (addImage.length == 0) {
+                //   showdialogPost(context);
+                // }
+
+                // print('อธิบายสูตร' + _ctrlExplain.text);
+
+                // print('สำหรับ ' + valueChoosePeople);
+                // print('เวลา ' + valueChooseTime);
+                // print('หมวดหมู่อาหาร ' + valueChooseFood);
+                // print('ราคา ' + _ctrlPrice.text);
               },
               child: Text('โพสต์'),
               style: ElevatedButton.styleFrom(
@@ -706,7 +906,6 @@ class _testState extends State<test> {
                         Container(
                           padding: EdgeInsets.only(left: 16, right: 16),
                           child: DropdownButton(
-                            hint: Text('ภายใน 3 นาที'),
                             isExpanded: true,
                             underline: SizedBox(),
                             value: valueChooseTime,
@@ -732,7 +931,6 @@ class _testState extends State<test> {
                         Container(
                           padding: EdgeInsets.only(left: 16, right: 16),
                           child: DropdownButton(
-                            hint: Text('ภายใน 3 นาที'),
                             isExpanded: true,
                             underline: SizedBox(),
                             value: valueChooseFood,
@@ -747,6 +945,22 @@ class _testState extends State<test> {
                                 child: Text(valueItem),
                               );
                             }).toList(),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text('ราคา(\u0E3F)'),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: TextField(
+                            controller: _ctrlPrice,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
                       ]),
@@ -856,7 +1070,29 @@ class _testState extends State<test> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    findUser();
     ingredient_row = widget.ingredient_row_start;
     howto_row = widget.howto_row_start;
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
+
+  // @override
+  // void didUpdateWidget(test oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  // }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  // }
 }

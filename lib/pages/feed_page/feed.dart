@@ -465,6 +465,7 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
       body: SafeArea(
+        minimum: EdgeInsets.zero,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView(
