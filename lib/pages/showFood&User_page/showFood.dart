@@ -170,26 +170,59 @@ class _ShowFoodState extends State<ShowFood> {
             // ),
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
-              ? Card(
-                  semanticContainer: true,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Image.network(
-                    dataHowto[displayNumber].pathFile,
-                    fit: BoxFit.fill,
+              // ? Card(
+              //     semanticContainer: true,
+              //     clipBehavior: Clip.antiAliasWithSaveLayer,
+              //     child: Image.network(
+              //       dataHowto[displayNumber].pathFile,
+              //       fit: BoxFit.fill,
+              //     ),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(10.0),
+              //     ),
+              //     elevation: 5,
+              //     margin: EdgeInsets.all(10),
+              //   )
+              ? Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Container(
+                    constraints: new BoxConstraints.expand(
+                      height: 350.0,
+                    ),
+                    alignment: Alignment.bottomRight,
+                    padding: new EdgeInsets.only(right: 10, bottom: 8.0),
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        image: NetworkImage(dataHowto[displayNumber].pathFile),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  elevation: 5,
-                  margin: EdgeInsets.all(10),
                 )
+              // : Padding(
+              //     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              //     child: Align(
+              //       alignment: Alignment.topCenter,
+              //       child: AspectRatio(
+              //         aspectRatio: 1,
+              //         child: Container(
+              //           child: VideoItems(
+              //             videoPlayerController: VideoPlayerController.network(
+              //                 dataHowto[displayNumber].pathFile),
+              //             looping: false,
+              //             autoplay: false,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   )
               : Card(
                   semanticContainer: true,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
-                      aspectRatio: 6 / 6,
+                      aspectRatio: 1,
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.network(
                             dataHowto[displayNumber].pathFile),
@@ -309,7 +342,7 @@ class _ShowFoodState extends State<ShowFood> {
                                       borderRadius:
                                           new BorderRadius.circular(24.0),
                                       child: Image(
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                         image: NetworkImage(dataFood
                                             .image), ///////////////////////
                                       ),
@@ -429,7 +462,9 @@ class _ShowFoodState extends State<ShowFood> {
                                         physics: NeverScrollableScrollPhysics(),
                                         children: howto,
                                       )
-                                    : Container(height: 550,),
+                                    : Container(
+                                        height: 550,
+                                      ),
                                 SizedBox(
                                   height: 25,
                                 )

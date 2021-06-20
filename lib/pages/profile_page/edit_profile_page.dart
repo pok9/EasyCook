@@ -1,5 +1,6 @@
-import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:flutter/material.dart';
+
+import '../addFood_page/addImage.dart';
 
 class EditProfilePage extends StatefulWidget {
   EditProfilePage({Key key}) : super(key: key);
@@ -76,8 +77,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                    builder: (context) =>
-                                        new AddFood_AddImagePage()),
+                                    builder: (context) => new test2()),
                               ).then((value) {
                                 print(value);
                                 // if (value != null) {

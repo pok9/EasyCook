@@ -2,520 +2,657 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
-import 'package:easy_cook/pages/addFood_page/addImageORvideo_class.dart';
-import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
 import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
+
 import 'package:easy_cook/pages/addFood_page/addImage.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/addFood_page/addImageOrVideo.dart';
 import 'package:easy_cook/pages/video_items.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:image_picker/image_picker.dart';--------------------------------------------------------------------------------------
+import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
-import '../../class/token_class.dart';
-import 'package:mime/mime.dart';
+
+import 'xxx_addImageORvideo_class.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart'; //->
-// import 'package:easy_cook/slidepage.dart';
+import 'package:http_parser/http_parser.dart';
 
-class AddFoodPage extends StatefulWidget {
-  /////////////////////ส่วนผสม///////////////////
-  // AddFoodPage({Key key}) : super(key: key);
-  const AddFoodPage({
-    this.initialCount = 1,
-    this.initialCount2 = 1, //ทดสอบ
+class test extends StatefulWidget {
+  const test({
+    this.ingredient_row_start = 1,
+    this.howto_row_start = 1, //ทดสอบ
   });
-  // ยังอนุญาตให้มีจำนวนผู้เล่นเริ่มต้นแบบไดนามิก
-  final int initialCount;
-  final int initialCount2; //ทดสอบ
-  /////////////////////ส่วนผสม///////////////////
-
+  final int ingredient_row_start; //จำนวนแถวส่วนผสมตั้งต้น
+  final int howto_row_start; //ทดสอบ
   @override
-  _AddFoodPageState createState() => _AddFoodPageState();
+  _testState createState() => _testState();
 }
 
-var mimeTypeData;
-
+class _testState extends State<test> {
+  //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== 1.CreatePostModel(สร้างโพส(success,recipeId )) ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
 // CreatePostModel
-Future<CreatePostModel> createPosts(
-    String tokens, File image, String recipe_name, double price) async {
-  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
-  final String apiUrl = "http://apifood.comsciproject.com/pjPost/createPost";
+  var mimeTypeData;
+  Future<CreatePostModel> createPosts(
+      String tokens, File image, String recipe_name, String price) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/createPost";
 
-  mimeTypeData =
-      lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+    mimeTypeData =
+        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
 
-  final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
 
-  final file = await http.MultipartFile.fromPath('image', image.path,
-      contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+    final file = await http.MultipartFile.fromPath('image', image.path,
+        contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
 
-  imageUploadRequest.files.add(file);
-  imageUploadRequest.fields['token'] = tokens;
-  imageUploadRequest.fields['recipe_name'] = recipe_name;
-  imageUploadRequest.fields['price'] = price.toString();
+    imageUploadRequest.files.add(file);
+    imageUploadRequest.fields['token'] = tokens;
+    imageUploadRequest.fields['recipe_name'] = recipe_name;
+    imageUploadRequest.fields['price'] = price;
 
-  print("error0000000");
-  var streamedResponse = await imageUploadRequest.send();
-  print("error1111111");
-  var response = await http.Response.fromStream(streamedResponse);
-  print("erro222222");
+    print("error0000000");
+    var streamedResponse = await imageUploadRequest.send();
+    print("error1111111");
+    var response = await http.Response.fromStream(streamedResponse);
+    print("erro222222");
 
-  if (response.statusCode == 200) {
-    final String responseString = response.body;
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
 
-    return createPostModelFromJson(responseString);
-  } else {
-    print("error");
-    return null;
+      return createPostModelFromJson(responseString);
+    } else {
+      print("error");
+      return null;
+    }
+  }
+  //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
+
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== 2.addIngredients(เพิ่มส่วนผสม) ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
+  Future<AddIngredientsArrayModel> addIngredients(
+      String recipe_ID,
+      List<String> ingredientName,
+      List<String> amount,
+      List<String> step,
+      String token) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/addIngredientsArray";
+
+    print(ingredientName);
+    print(amount);
+    print(step);
+
+    // List<st>
+    var data = {
+      "recipe_ID": recipe_ID,
+      "ingredientName": ingredientName,
+      "amount": amount,
+      "step": step
+    };
+    print("jsonEncode(data) = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    // print( );
+    // addIngredientsArrayModelFromJson
+    // print("addIngredients======");
+    print("addIngredients======" + (response.statusCode.toString()));
+    // print("addIngredients======"+(response));
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return addIngredientsArrayModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
+
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== 3.addloadHowtoFiles ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
+  Future<UploadHowtoFileModels> addloadHowtoFiles(File image) async {
+    // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/uploadHowtoFile";
+
+    mimeTypeData =
+        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+    final images = await http.MultipartFile.fromPath('file', image.path,
+        contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(images);
+
+    var streamedResponse = await imageUploadRequest.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return uploadHowtoFileModelsFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
+
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== 4.addHowtos ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
+  Future<AddHowtoArrayModels> addHowtos(
+      String recipe_ID,
+      List<String> description,
+      List<String> step,
+      List<String> path_file,
+      List<String> type_file,
+      String token) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/addHowtoArray";
+
+    // print(ingredientName);
+    // print(amount);
+    // print(step);
+    var data = {
+      "recipe_ID": recipe_ID,
+      "description": description,
+      "step": step,
+      "path_file": path_file,
+      "type_file": type_file
+    };
+
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return addHowtoArrayModelsFromJson(responseString);
+    } else {
+      return null;
+    }
   }
 
-  // imageUploadRequest.files.add(file);
-  // imageUploadRequest.fields['token'] = tokens;
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
 
-  // var streamedResponse = await imageUploadRequest.send();
-  // var response = await http.Response.fromStream(streamedResponse);
+//########################------------คั้นกลาง---------------##############################################################
 
-  // if (response.statusCode == 200) {
-  //   final String responseString = response.body;
-
-  //   return register2ModelFromJson(responseString);
-  // } else {
-  //   return null;
-  // }
-}
-
-Future<AddIngredientsArrayModel> addIngredients(
-    String recipe_ID,
-    List<String> ingredientName,
-    List<String> amount,
-    List<String> step,
-    String token) async {
-  final String apiUrl =
-      "http://apifood.comsciproject.com/pjPost/addIngredientsArray";
-
-  print(ingredientName);
-  print(amount);
-  print(step);
-
-  // List<st>
-  var data = {
-    "recipe_ID": recipe_ID,
-    "ingredientName": ingredientName,
-    "amount": amount,
-    "step": step
-  };
-  print("jsonEncode(data) = " + jsonEncode(data));
-  final response = await http.post(Uri.parse(apiUrl),
-      body: jsonEncode(data),
-      headers: {
-        "Authorization": "Bearer $token",
-        "Content-Type": "application/json"
-      });
-
-  // print( );
-  // addIngredientsArrayModelFromJson
-  // print("addIngredients======");
-  print("addIngredients======" + (response.statusCode.toString()));
-  // print("addIngredients======"+(response));
-  if (response.statusCode == 200) {
-    final String responseString = response.body;
-
-    return addIngredientsArrayModelFromJson(responseString);
-  } else {
-    return null;
-  }
-}
-
-Future<AddHowtoArrayModels> addHowtos(
-    String recipe_ID,
-    List<String> description,
-    List<String> step,
-    List<String> path_file,
-    List<String> type_file,
-    String token) async {
-  final String apiUrl = "http://apifood.comsciproject.com/pjPost/addHowtoArray";
-
-  // print(ingredientName);
-  // print(amount);
-  // print(step);
-  var data = {
-    "recipe_ID": recipe_ID,
-    "description": description,
-    "step": step,
-    "path_file": path_file,
-    "type_file": type_file
-  };
-
-  print(jsonEncode(data));
-  final response = await http.post(Uri.parse(apiUrl),
-      body: jsonEncode(data),
-      headers: {
-        "Authorization": "Bearer $token",
-        "Content-Type": "application/json"
-      });
-
-  if (response.statusCode == 200) {
-    final String responseString = response.body;
-
-    return addHowtoArrayModelsFromJson(responseString);
-  } else {
-    return null;
-  }
-}
-
-Future<UploadHowtoFileModels> addloadHowtoFiles(File image) async {
-  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
-  final String apiUrl =
-      "http://apifood.comsciproject.com/pjPost/uploadHowtoFile";
-
-  mimeTypeData =
-      lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
-
-  final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
-
-  final images = await http.MultipartFile.fromPath('file', image.path,
-      contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
-
-  imageUploadRequest.files.add(images);
-
-  var streamedResponse = await imageUploadRequest.send();
-  var response = await http.Response.fromStream(streamedResponse);
-
-  if (response.statusCode == 200) {
-    final String responseString = response.body;
-    return uploadHowtoFileModelsFromJson(responseString);
-  } else {
-    return null;
-  }
-}
-
-var _ctrlNameFood = new TextEditingController(); //ชื่อเมนู
-// String token = ""; //โทเคน
-double price = 0.0;
-
-int recipe_id_come = 0;
-
-Widget _buildNameField() {
-  return TextFormField(
-    controller: _ctrlNameFood,
-    decoration: InputDecoration(labelText: 'ชื่อเมนู'),
-    // maxLength: 30,
-    // onChanged: (String text) {
-    //   _name = text;
-    // },
-  );
-}
-
-// String _name;
-
-// Future<String> getToken() async {
-//   var service = DBService();
-//   var body = await service.readData();
-//   body.forEach((token) {
-//     // setState(() {
-//       var tokenModel = Token_jwt();
-//       print(token['id']);
-//       print(token['token']);
-//     // });
-//   });
-//   // return token['token'];
-//   // return token[0]['token'];
-//   token = body[0]['token'];
-// }
-// Future<String> tokens() async {
-//   token = await Token_jwt().getTokens();
-// }
-
-class _AddFoodPageState extends State<AddFoodPage> {
+  //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== Token ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
+  //Token
   String token = "";
-  // _AddFoodPageState() {
-  //   // tokens();
-  //   print("Token = " + token);
-
-  //   // String str = );
-  //   // print(str.toString());
-
-  //   // print("pok 555"+token);
-  //   // String token = await _getTokens();
-  //   // Future<String> token = getToken();
-  //   // print(token);
-  //   // getToken();
-  //   // print("token = " + token);
-
-  //   // print("55555");
-  //   // String token = getToken() as String;
-  //   // print("token = "+token);
-
-  //   // var service = DBService();
-  //   //                   var token = await service.readData();
-  //   //                   token.forEach((token){
-  //   //                     setState(() {
-  //   //                       var tokenModel = Token_jwt();
-  //   //                       print(token['id']);
-  //   //                       print(token['token']);
-  //   //                     });
-  //   //                   });
-  // }
-
   Future<Null> findUser() async {
-    // token = await Token_jwt().getTokens();
-    // print("token = " + token);
-    // setState(() {});
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      print("333333333 = " + token);
       token = preferences.getString("tokens");
-      print("444444444 = " + token);
     });
   }
+  //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
 
-  // Future<Null> findUser() async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //*******************************************************************************************************/
+  String valueChoosePeople = "1 คน";
+  List listPeopleItem = [
+    "1 คน",
+    "2 คน",
+    "3 คน",
+    "4 คน",
+    "5 คน",
+    "6 คน",
+    "7 คน",
+    "8 คน",
+    "9 คน",
+    "10 คน",
+    "มากกว่า 10 คน",
+    "มากกว่า 50 คน",
+    "มากกว่า 100 คน"
+  ];
 
-  //   setState(() {
-  //     print("11111111 = " + token);
-  //     token = preferences.getString("tokens");
-  //     print("22222222 = " + token);
-  //     getMyAccounts();
-  //   });
-  //   // token = await Token_jwt().getTokens();
-  //   // setState(() {});
-  // }
+  String valueChooseTime = "ภายใน 3 นาที";
+  List listTimeItem = [
+    "ภายใน 3 นาที",
+    "ภายใน 5 นาที",
+    "ภายใน 10 นาที",
+    "ภายใน 15 นาที",
+    "ภายใน 30 นาที",
+    "ภายใน 60 นาที",
+    "ภายใน 90 นาที",
+    "ภายใน 2 ชั่วโมง",
+    "มากกว่า 2 ชั่วโมง",
+  ];
 
-  // final storage = new FlutterSecureStorage();
-  // final _picker = ImagePicker();-------------------------------------------
-  // List<AddImage> addImage = List<AddImage>();
-  List<AddImage> addImage = new List<AddImage>();
+  String valueChooseFood = "เมนูน้ำ";
+  List listFoodItem = [
+    "เมนูน้ำ",
+    "เมนูต้ม",
+    "เมนูสุขภาพ",
+    "เมนูนิ่ง",
+    "เมนูตุ่น",
+    "เมนูทอด",
+  ];
 
-  int fieldCount = 0;
-  int nextIndex = 0;
+  TextEditingController _ctrlPrice = TextEditingController()
+    ..text = 'ฟรี'; //ราคา
 
-  List<List<TextEditingController>> controllers =
+  //########################################################################################################/
+
+  //*******************************************************************************************************/
+  int ingredient_row = 0; //จำนวนแถวส่วนผสม
+  List<List<TextEditingController>> ctl_ingredient_row =
       <List<TextEditingController>>[];
-
-  List<Widget> _buildList() {
+  List<Widget> _buildListingredient() {
     int i;
-    if (controllers.length < fieldCount) {
-      for (i = controllers.length; i < fieldCount; i++) {
+    if (ctl_ingredient_row.length < ingredient_row) {
+      for (i = ctl_ingredient_row.length; i < ingredient_row; i++) {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
         ctl.add(TextEditingController());
-        controllers.add(ctl);
+        ctl_ingredient_row.add(ctl);
       }
     }
 
     i = 0;
 
-    return controllers.map<Widget>((List<TextEditingController> controller) {
+    return ctl_ingredient_row
+        .map<Widget>((List<TextEditingController> controller) {
       int displayNumber = i + 1;
       i++;
 
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Text(
-              "${displayNumber}.",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Expanded(
-            child: TextField(
-              controller: controllers[displayNumber - 1][0],
-              onChanged: (text) {
-                // controllers1[displayNumber] = text;
-                // print(text + "" + displayNumber.toString());
-                print('Left:' + controllers[displayNumber - 1][0].text);
-                // print(text + "${displayNumber}.");
-              },
-              decoration: InputDecoration(
-                // border: OutlineInputBorder(),
-                hintText: "ส่วนผสมที่ $displayNumber",
-                // labelText: 'ส่วนผสม',
-              ),
-            ),
-          ),
-          Expanded(
-            child: TextField(
-              controller: controllers[displayNumber - 1][1],
-              onChanged: (text) {
-                // controllers2[displayNumber] = text;
-                // print(text + "" + displayNumber.toString());
-                print('Right:' + controllers[displayNumber - 1][1].text);
-                // print(text + "${displayNumber}.");
-                // print(controllers2[displayNumber]);
-              },
-              decoration: InputDecoration(
-                // border: OutlineInputBorder(),
-                hintText: "จำนวนที่ $displayNumber",
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      fieldCount--;
-                      controllers.remove(controller);
-                    });
-                  },
+      return Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Text(
+                "${displayNumber}.",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: TextField(
+                controller: ctl_ingredient_row[displayNumber - 1][0],
+                onChanged: (text) {
+                  print(
+                      'Left:' + ctl_ingredient_row[displayNumber - 1][0].text);
+                },
+                decoration: InputDecoration(
+                  hintText: "ส่วนผสมที่ $displayNumber",
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: ctl_ingredient_row[displayNumber - 1][1],
+                onChanged: (text) {
+                  print(
+                      'Right:' + ctl_ingredient_row[displayNumber - 1][1].text);
+                },
+                decoration: InputDecoration(
+                  hintText: "จำนวนที่ $displayNumber",
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      setState(() {
+                        ingredient_row--;
+                        ctl_ingredient_row.remove(controller);
+                        if (ctl_ingredient_row.length == 0) {
+                          this.ingredient_row = 1;
+                        }
+                        print('controllers ${ctl_ingredient_row.length}');
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       );
     }).toList(); // แปลงเป็นlist
   }
+  //########################################################################################################/
 
-  int fieldCount2 = 0; //ทดสอบ
+  //*******************************************************************************************************/
+  int howto_row = 0; //จำนวนแถววิธีทำ
+  List<TextEditingController> ctl_howto_row = <TextEditingController>[]; //ทดสอบ
+  List<File> imageHowto = <File>[];
 
-  List<TextEditingController> controllers2 = <TextEditingController>[]; //ทดสอบ
-  List<File> image2 = <File>[];
-  // List<String> typeImage2 = <String>[];
-
-  List<Widget> _buildList2() {
+  List<Widget> _buildhowto() {
     //ทดเสอบ
 
     int i;
-    if (controllers2.length < fieldCount2) {
-      for (i = controllers2.length; i < fieldCount2; i++) {
-        controllers2.add(TextEditingController());
-        image2.add(File(''));
+    if (ctl_howto_row.length < howto_row) {
+      for (i = ctl_howto_row.length; i < howto_row; i++) {
+        ctl_howto_row.add(TextEditingController());
+        imageHowto.add(File(''));
       }
     }
 
     i = 0;
 
-    return controllers2.map<Widget>((TextEditingController controller2) {
+    return ctl_howto_row.map<Widget>((TextEditingController controller2) {
       int displayNumber = i + 1;
       i++;
-      return Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Text(
-              "${displayNumber}.",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: TextField(
-              keyboardType: TextInputType.multiline,
-              minLines: 1,
-              maxLines: 5,
-              controller: controller2,
-              onChanged: (text) {
-                print(text + "${displayNumber}.");
-              },
-              decoration: InputDecoration(
-                // border: OutlineInputBorder(),
-                hintText: "วิธีทำที่ $displayNumber",
-                // suffixIcon: IconButton(
-                //   icon: Icon(Icons.clear),
-                //   onPressed: () {
-                //     setState(() {
-                //       // fieldCount2--;
-                //       // controllers2.remove(controller2);
-                //     });
-                //   },
-                // ),
-                // labelText: 'ส่วนผสม',
-              ),
-            ),
-          ),
-          Expanded(
-              flex: 3,
-              child: (image2[displayNumber - 1].toString() ==
-                      File('').toString())
-                  ? IconButton(
-                      iconSize: 100,
-                      icon: Image.asset('assets/images/add.png'),
-                      // onPressed: () async {
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new AddImageOrVideo()),
-                        ).then((value) {
-                          if (value != null) {
-                            image2[displayNumber - 1] = value.image;
+      return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        // elevation: 5,
+        margin: EdgeInsets.all(0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Text(
+                      "${displayNumber}.",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      maxLines: 5,
+                      controller: controller2,
+                      onChanged: (text) {
+                        print(text + "${displayNumber}.");
+                      },
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: "วิธีทำที่ $displayNumber",
+                      ),
+                    ),
+                  ),
+                  (imageHowto[displayNumber - 1].toString() ==
+                          File('').toString())
+                      ? Expanded(
+                          flex: 2,
+                          child: IconButton(
+                              iconSize: 100,
+                              icon: Image.asset('assets/images/dot.png'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new test3()),
+                                ).then((value) {
+                                  if (value != null) {
+                                    imageHowto[displayNumber - 1] = value.image;
 
-                            setState(() {});
-                          }
-                        });
-                      })
-                  : (lookupMimeType(image2[displayNumber - 1].path)[0] == "i")
-                      ? InkWell(
-                          child: Image.file(
-                            image2[displayNumber - 1],
-                            width: 0,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                          onTap: () async {
-                            // print("77777777777777");--------------------------------------------------------------------------------------
-                            // print(image2[displayNumber - 1].toString());
-                            // final mimeType =
-                            //     lookupMimeType(image2[displayNumber - 1].path);
-                            // print(mimeType);
-                            // print("1231231231");
-                            // print(image2[displayNumber - 1]);
-                            // print("1231231231");
-                            Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => new AddImageOrVideo()),
-                            ).then((value) {
-                              if (value != null) {
-                                image2[displayNumber - 1] = value.image;
-                                // typeImage2[displayNumber - 1] = value.type;
-                                // print("value.type = " + value.type);
-                                setState(() {});
-                              }
-                            });
-                          })
-                      : Card(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: AspectRatio(
-                              aspectRatio: 3 / 3,
-                              child: VideoItems(
-                                videoPlayerController:
-                                    VideoPlayerController.file(
-                                        image2[displayNumber - 1]),
-                                looping: true,
-                                autoplay: false,
-                              ),
-                            ),
-                          ),
-                        )),
-          IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              print("${displayNumber}");
-              fieldCount2--;
-              controllers2.remove(controller2);
-              image2.remove(image2[displayNumber - 1]);
-              setState(() {});
-            },
+                                    setState(() {});
+                                  }
+                                });
+                              }))
+                      : Container(),
+                  IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      print("${displayNumber}");
+                      // if (lookupMimeType(
+                      //         imageHowto[displayNumber - 1].path)[0] !=
+                      //     "i") {
+                      //   // VideoPlayerController.file(image2[displayNumber - 1])
+                      //   //     .setVolume(0);
+
+                      //   // image2[displayNumber - 1] = null;
+                      //   print("มันคือ วิดีโอออออออ11111111");
+
+                      //   // print(VideoPlayerController.file(
+                      //   //         image2[displayNumber - 1])
+                      //   //     .value
+                      //   //     .isPlaying);
+                      //   // print(VideoPlayerController.file(
+                      //   //         image2[displayNumber - 1])
+                      //   //     .play());
+                      //   // print(displayNumber - 1);
+
+                      //   print("มันคือ วิดีโอออออออ222222");
+                      //   setState(() {});
+                      // }
+                      howto_row--;
+                      ctl_howto_row.remove(controller2);
+                      imageHowto.remove(imageHowto[displayNumber - 1]);
+
+                      if (ctl_howto_row.length == 0) {
+                        howto_row = 1;
+                      }
+                      print('controllers2.length =  ${ctl_howto_row.length}');
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+              (imageHowto[displayNumber - 1].toString() == File('').toString())
+                  ? Container()
+                  : Container(
+                      height: 350,
+                      child: Row(
+                        children: [
+                          Expanded(
+                              // flex: 3,
+                              child: (imageHowto[displayNumber - 1]
+                                          .toString() ==
+                                      File('').toString())
+                                  ? Container()
+                                  : (lookupMimeType(
+                                              imageHowto[displayNumber - 1]
+                                                  .path)[0] ==
+                                          "i")
+                                      ? Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 20, 0, 0),
+                                          child: Container(
+                                              constraints:
+                                                  new BoxConstraints.expand(
+                                                height: 350.0,
+                                              ),
+                                              alignment: Alignment.bottomRight,
+                                              padding: new EdgeInsets.only(
+                                                  right: 10, bottom: 8.0),
+                                              decoration: new BoxDecoration(
+                                                image: new DecorationImage(
+                                                  image: FileImage(imageHowto[
+                                                      displayNumber - 1]),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              child: ToggleButtons(
+                                                color: Colors.black
+                                                    .withOpacity(0.60),
+                                                selectedColor: Colors.black,
+                                                selectedBorderColor:
+                                                    Colors.grey,
+                                                // fillColor: Color(0xFF6200EE).withOpacity(0.08),
+                                                splashColor: Colors.blue,
+                                                hoverColor: Color(0xFF6200EE)
+                                                    .withOpacity(0.04),
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                constraints: BoxConstraints(
+                                                    minHeight: 30.0),
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.camera_alt,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 1,
+                                                      ),
+                                                      Text("แก้ไข")
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.delete),
+                                                      Text("ลบ")
+                                                    ],
+                                                  ),
+                                                ],
+                                                isSelected: [true, true],
+                                                onPressed: (int index) {
+                                                  setState(() {
+                                                    if (index == 0) {
+                                                      Navigator.push(
+                                                        context,
+                                                        new MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                new test3()),
+                                                      ).then((value) {
+                                                        if (value != null) {
+                                                          setState(() {
+                                                            imageHowto[
+                                                                displayNumber -
+                                                                    1] = value
+                                                                .image;
+                                                          });
+                                                        }
+                                                      });
+                                                    } else if (index == 1) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              title: const Text(
+                                                                  'ยืนยัน'),
+                                                              content: const Text(
+                                                                  'คุณต้องการลบรูปนี้ ?'),
+                                                              actions: <Widget>[
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          context,
+                                                                          'Cancel'),
+                                                                  child:
+                                                                      const Text(
+                                                                    'ยกเลิก',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .red),
+                                                                  ),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      print(
+                                                                          imageHowto);
+                                                                      imageHowto[
+                                                                          displayNumber -
+                                                                              1] = File(
+                                                                          '');
+
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    'ตกลง',
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          });
+                                                    }
+                                                  });
+                                                },
+                                              )),
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 10, 0, 0),
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: AspectRatio(
+                                              aspectRatio: 1,
+                                              child: Container(
+                                                child: VideoItems(
+                                                  videoPlayerController:
+                                                      VideoPlayerController
+                                                          .file(imageHowto[
+                                                              displayNumber -
+                                                                  1]),
+                                                  looping: false,
+                                                  autoplay: false,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )),
+                        ],
+                      ),
+                    ),
+              Divider(
+                color: Colors.black,
+              )
+            ],
           ),
-        ],
+        ),
       );
     }).toList(); // แปลงเป็นlist
   }
 
+  //########################################################################################################/
+
+  List<AddImage> addImage = []; //รูปหน้าปก สูตรอาหาร
+  var _ctrlNameFood = TextEditingController(); //ชื่อสูตรอาหาร
+  var _ctrlExplain = TextEditingController(); //อธิบายสูตรอาหาร
+
+  //แจ้งเตือนตอนกดโพส
+  showdialogPost(context, String txt) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "แจ้งเตือน",
+              style: TextStyle(color: Colors.red),
+            ),
+            content: Text(txt),
+            actions: [
+              TextButton(
+                child: Text(
+                  "ตกลง",
+                  style: TextStyle(color: Colors.blue),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  //dialog รอ
   showdialog(context) {
     return showDialog(
         context: context,
@@ -531,349 +668,548 @@ class _AddFoodPageState extends State<AddFoodPage> {
         });
   }
 
+  bool _validate = false;
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = _buildList();
-    final List<Widget> children2 = _buildList2(); //ทดสอบ
+    var screen = MediaQuery.of(context).size; //ขนาดของหน้าจอ
+
+    final List<Widget> ingredient = _buildListingredient();
+    final List<Widget> howto = _buildhowto();
+
+    // final transformationController = TransformationController();
 
     return Scaffold(
-        backgroundColor: Color(0xFFf3f5f9),
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(40.0),
-            child: AppBar(
-              centerTitle: true,
-              title: Text('เพิ่มสูตรอาหาร'),
-              // title: Text(token),
-              actions: <Widget>[
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.pink, // background
-                      onPrimary: Colors.white, // foreground
+      backgroundColor: Color(0xFFf3f5f9),
+      appBar: AppBar(
+        title: Text('เขียนสูตรอาหาร'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                String text = "";
+                bool check = true;
+                if (_ctrlNameFood.text.length == 0) {
+                  // print("_ctrlNameFood.text.length" +
+                  //     _ctrlNameFood.text.length.toString());
+                  check = false;
+                  _validate = true;
+                }
+                //เช็ครูปภาพอาหาร
+                if (addImage.length == 0) {
+                  text += "กรุณาเพิ่มรูปภาพปกอาหาร";
+                }
+                //เช็คส่วนผสม
+                if (ingredient.length == 1) {
+                  //   print("ส่วนผสม = " + ingredient.length.toString());
+                  //   print();
+                  if (ctl_ingredient_row[0][0].text == "") {
+                    text += "\nกรุณกรอกส่วนผสม";
+                  }
+                }
+                if (howto.length == 1) {
+                  if (imageHowto[0].toString() == File('').toString()) {
+                    text += "\nกรุณกรอกวิธีทำกับภาพรูปวิธีทำ";
+                  }
+                }
+
+                if (text != "") {
+                  showdialogPost(context, text);
+                  check = false;
+                }
+                if (check) {
+                  showdialog(context);
+                  print("โทเคน = " + token);
+                  print("รูปภาพปกอาหาร= ${addImage[0].image}");
+                  print("ชื่อสูตรอาหาร" + _ctrlNameFood.text);
+                  print("ราคา" + _ctrlPrice.text);
+
+                  //createPost
+                  final CreatePostModel postsData = await createPosts(token,
+                      addImage[0].image, _ctrlNameFood.text, _ctrlPrice.text);
+
+                  // print(postsData.success);
+                  // print(postsData.recipeId);
+
+                  //ingredient
+                  List<String> ingredientName = [];
+                  List<String> amount = [];
+                  List<String> ingredientName_step = [];
+
+                  for (var i = 0; i < ctl_ingredient_row.length; i++) {
+                    if (ctl_ingredient_row[i][0].text == "") {
+                      continue;
+                    }
+                    ingredientName.add(ctl_ingredient_row[i][0].text);
+                    amount.add(ctl_ingredient_row[i][1].text);
+                  }
+                  for (var i = 0; i < amount.length; i++) {
+                    ingredientName_step.add((i + 1).toString());
+                  }
+
+                  AddIngredientsArrayModel ingredientsData =
+                      await addIngredients(postsData.recipeId.toString(),
+                          ingredientName, amount, ingredientName_step, token);
+
+                  // print("success_ingredientsData = ${ingredientsData.success}");
+
+                  //how to
+                  List<String> description_howto = [];
+                  List<String> path_file = [];
+                  List<String> howto_step = [];
+                  List<String> type_file = [];
+
+                  var mimeTypeData;
+                  for (var i = 0; i < ctl_howto_row.length; i++) {
+                    description_howto.add(ctl_howto_row[i].text);
+
+                    howto_step.add((i + 1).toString());
+
+                    UploadHowtoFileModels imageData =
+                        await addloadHowtoFiles(imageHowto[i]);
+
+                    path_file.add(imageData.path);
+                    type_file.add(imageData.type);
+                  }
+
+                  AddHowtoArrayModels howtoData = await addHowtos(
+                      postsData.recipeId.toString(),
+                      description_howto,
+                      howto_step,
+                      path_file,
+                      type_file,
+                      token);
+
+                  if (postsData.success == 1 &&
+                      ingredientsData.success == 1 &&
+                      howtoData.success == 1) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/slide-page', (route) => false);
+                  }
+                }
+                setState(() {});
+              },
+              child: Text('โพสต์'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.grey,
+              ),
+            ),
+          )
+        ],
+      ),
+      body: ListView(
+        children: [
+          Card(
+            margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+            //ปรับขอบการ์ด
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            color: Colors.white,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    maxLength: 30,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20),
+                    controller: _ctrlNameFood,
+                    decoration: InputDecoration(
+                      errorText: _validate ? 'โปรดใส่ชื่อเมนู' : null,
+                      filled: true,
+                      fillColor: Color(0xFFFAFAFA),
+                      border: OutlineInputBorder(),
+                      hintText: "ชื่อเมนู",
+                      hintStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey),
                     ),
-                    onPressed: () async {
-                      showdialog(context);
-                      if (_ctrlNameFood.text != '') {
-                        final CreatePostModel postsData = await createPosts(
-                            token,
-                            addImage[0].image,
-                            _ctrlNameFood.text,
-                            price);
-
-                        recipe_id_come = postsData.recipeId;
-
-                        List<String> ingredientName = [];
-                        List<String> amount = [];
-                        List<String> step = [];
-
-                        for (var i = 0; i < controllers.length; i++) {
-                          if (controllers[i][0].text == "") {
-                            continue;
-                          }
-                          ingredientName.add(controllers[i][0].text);
-                          amount.add(controllers[i][1].text);
-                        }
-                        for (var i = 0; i < amount.length; i++) {
-                          step.add((i + 1).toString());
-                        }
-
-                        // print(ingredientName);
-                        // print(amount);
-                        // print(step);
-
-                        AddIngredientsArrayModel ingredientsData =
-                            await addIngredients(recipe_id_come.toString(),
-                                ingredientName, amount, step, token);
-
-                        List<String> description = [];
-                        List<String> path_file = [];
-                        List<String> step2 = [];
-                        List<String> type_file = [];
-
-                        AddHowtoArrayModels howtoData;
-                        UploadHowtoFileModels imageData;
-                        var mimeTypeData;
-                        for (var i = 0; i < controllers2.length; i++) {
-                          // print(controllers2[i].text);
-                          // print(image2[i]);
-                          description.add(controllers2[i].text);
-                          // path_file.add("http://apifood.comsciproject.com/uploadPost"+image2[i].path);
-                          // print(image2[i].path);
-                          step2.add((i + 1).toString());
-
-                          print("test111111");
-                          imageData = await addloadHowtoFiles(image2[i]);
-                          print("test22222");
-                          path_file.add(imageData.path);
-                          type_file.add(imageData.type);
-                          // print(dataImage.type);
-                          // mimeTypeData = lookupMimeType(image2[i].path,
-                          //     headerBytes: [0xFF, 0xD8]).split('/');
-                          // type_file.add(mimeTypeData[0]);
-                        }
-                        // print(path_file);
-
-                        // addHowto
-                        howtoData = await addHowtos(recipe_id_come.toString(),
-                            description, step2, path_file, type_file, token);
-
-                        print("postsData");
-                        print(postsData.success);
-                        print("ingredientsData");
-                        print(ingredientsData.success);
-                        print("howtoData");
-                        print(howtoData.success);
-
-                        if (postsData.success == 1 &&
-                            ingredientsData.success == 1 &&
-                            howtoData.success == 1) {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, '/slide-page', (route) => false);
-                        }
-                      }
-
-                      // var file;
-                    },
-                    child: Text('โพสต์')),
-              ],
-            )),
-        body: Container(
-          margin: EdgeInsets.all(5),
-          child: Form(
-              child: ListView(
-            scrollDirection: Axis.vertical,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: _buildNameField(),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                child: Text(
-                  "ตั้งรูปปกอาหาร",
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              // Center(
-              //     child: Text(
-              //   "ตั้งรูปปกอาหาร",
-              //   style: DefaultTextStyle.of(context)
-              //       .style
-              //       .apply(fontSizeFactor: 2.0),
-              // )),
-              // ElevatedButton(
-              //     onPressed: () {
-              //       for (var item in image2) {
-              //         print(item);
-              //       }
-              //     },
-              //     child: Text('show')),
-              (addImage.length == 0)
-                  ? IconButton(
-                      iconSize: 200,
-                      icon: Image.asset('assets/images/camera.png'),
-                      // onPressed: () async {
-
-                      //   final pickedFile =
-                      //       await _picker.getImage(source: ImageSource.gallery);
-                      //   // img = await ImagePicker().getImage(
-                      //   //     source: ImageSource.gallery);
-                      //   img = File(pickedFile.path);
-                      //   // String bit = base64Encode(img.readAsBytesSync());
-                      //   // image.text = bit;
-
-                      //   print(img);
-                      //   setState(() {});
-                      // }
-                      onPressed: () {
-                        // print("5555555555555555555");--------------------------------------------------------------------------------------
-                        // Navigator.push(
-                        //   context,
-                        //   new MaterialPageRoute(
-                        //       builder: (context) => new AddFood_AddImagePage()),
-                        // ).then((value) {
-                        //   if (value != null) {
-                        //     print(value);
-                        //     addImage.add(value);
-                        //     setState(() {});
-                        //   }
-                        // });
-
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new AddFood_AddImagePage()),
-                        ).then((value) {
-                          if (value != null) {
-                            print(value);
-                            addImage.add(value);
-                            setState(() {});
-                          }
+                    onChanged: (value) {
+                      if (value.length > 0) {
+                        setState(() {
+                          _validate = false;
                         });
-                      })
-                  : Image.file(addImage[0].image),
-              // : InkWell(
-              //     child: Image.file(
-              //       addImage[0].image,
-              //       width: 0,
-              //       height: 300,
-              //       fit: BoxFit.cover,
-              //     ),
-              //     onTap: () async {
-              //       // print("77777777777777");---------------------------------------------------------------------------------------------------------------------------------
-              //       Navigator.push(
-              //         context,
-              //         new MaterialPageRoute(
-              //             builder: (context) => new AddFood_AddImagePage()),
-              //       ).then((value) {
-              //         if (value != null) {
-              //           // print(value);
-              //           // addImage.add(value);
-              //           addImage[0].image = value.image;
-              //           // img = addImage[0].image;
-              //           setState(() {});
-              //         }
-              //       });
-              //     }),
-
-              Divider(
-                thickness: 2,
-              ),
-
-              ////////////////////ส่วนผสม//////////////////////
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                child: Text(
-                  "ส่วนผสม",
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                      }
+                    },
+                  ),
                 ),
-              ),
-              // Center(
-              //     child: Text(
-              //   "ส่วนผสม",
-              //   style: DefaultTextStyle.of(context)
-              //       .style
-              //       .apply(fontSizeFactor: 2.0),
-              // )),
-
-              ListView(
-                padding: EdgeInsets.all(0),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: children,
-              ),
-              GestureDetector(
-                onTap: () {
-                  // เมื่อเพิ่มlist(ส่วนผสม)เราจำเป็นต้องใส่ fieldCount เท่านั้น, because the _buildList()
-                  // จะจัดการสร้าง TextEditingController ใหม่
-                  setState(() {
-                    fieldCount++;
-
-                    // for (int i = 0; i < controllers.length; i++) {
-                    //   //   print("THIS IS  = ${controllers[i].text} + [${i}]");
-                    // }
-                  });
-                },
-                child: Container(
-                  color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'เพิ่ม ส่วนผสม',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                (addImage.length == 0)
+                    ? Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Container(
+                            color: Colors.grey,
+                            height: 300,
+                            width: screen.width,
+                            child: TextButton.icon(
+                              icon: Icon(Icons.camera_alt),
+                              label: Text('รูปภาพอาหาร'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new test2()),
+                                ).then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      addImage.add(value);
+                                    });
+                                  }
+                                });
+                              },
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                              ),
+                            )),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      )
+                    : Container(
+                        constraints: new BoxConstraints.expand(
+                          height: 350.0,
+                        ),
+                        alignment: Alignment.bottomRight,
+                        padding: new EdgeInsets.only(right: 10, bottom: 8.0),
+                        decoration: new BoxDecoration(
+                          image: new DecorationImage(
+                            image: FileImage(addImage[0].image),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: ToggleButtons(
+                          color: Colors.black.withOpacity(0.60),
+                          selectedColor: Colors.black,
+                          selectedBorderColor: Colors.grey,
+                          splashColor: Colors.blue,
+                          hoverColor: Color(0xFF6200EE).withOpacity(0.04),
+                          borderRadius: BorderRadius.circular(20.0),
+                          constraints: BoxConstraints(minHeight: 30.0),
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                ),
+                                SizedBox(
+                                  width: 1,
+                                ),
+                                Text("แก้ไข")
+                              ],
+                            ),
+                            Row(
+                              children: [Icon(Icons.delete), Text("ลบ")],
+                            ),
+                          ],
+                          isSelected: [true, true],
+                          onPressed: (int index) {
+                            setState(() {
+                              if (index == 0) {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new test2()),
+                                ).then((value) {
+                                  if (value != null) {
+                                    addImage.removeAt(0);
+                                    setState(() {
+                                      addImage.add(value);
+                                    });
+                                  }
+                                });
+                              } else if (index == 1) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('ยืนยัน'),
+                                        content:
+                                            const Text('คุณต้องการลบรูปนี้ ?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                context, 'Cancel'),
+                                            child: const Text(
+                                              'ยกเลิก',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                addImage.removeAt(0);
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                            child: const Text(
+                                              'ตกลง',
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              }
+                            });
+                          },
+                        )),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _ctrlExplain,
+                    maxLength: 60,
+                    minLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFFAFAFA),
+                      border: OutlineInputBorder(),
+                      hintText: "อธิบายสูตรอาหาร",
+                      hintStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey),
                     ),
                   ),
                 ),
-              ),
-              ////////////////////ส่วนผสม//////////////////////
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                child: Text(
-                  "วิธีทำ",
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              // Center(
-              //     child: Text(
-              //   "วิธีทำ",
-              //   style: DefaultTextStyle.of(context)
-              //       .style
-              //       .apply(fontSizeFactor: 2.0),
-              // )),
-
-              ListView(
-                padding: EdgeInsets.all(0),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: children2,
-              ),
-              GestureDetector(
-                onTap: () {
-                  // เมื่อเพิ่มlist(ส่วนผสม)เราจำเป็นต้องใส่ fieldCount เท่านั้น, because the _buildList()
-                  // จะจัดการสร้าง TextEditingController ใหม่
-                  setState(() {
-                    fieldCount2++;
-
-                    // for (int i = 0; i < controllers2.length; i++) {
-                    //   //   print("THIS IS  = ${controllers[i].text} + [${i}]");
-                    // }
-                  });
-                },
-                child: Container(
-                  color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'เพิ่ม วิธีทำ',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: Table(
+                    border: TableBorder.all(),
+                    textDirection: TextDirection.ltr,
+                    children: [
+                      TableRow(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text('สำหรับ'),
+                        ),
+                        Container(
+                          width: 300.0,
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              // hint: Text('1 คน'),
+                              isExpanded: true,
+                              underline: SizedBox(),
+                              value: valueChoosePeople,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueChoosePeople = newValue;
+                                });
+                              },
+                              items: listPeopleItem.map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Text(valueItem),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text('เวลา'),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            underline: SizedBox(),
+                            value: valueChooseTime,
+                            onChanged: (newValue) {
+                              setState(() {
+                                valueChooseTime = newValue;
+                              });
+                            },
+                            items: listTimeItem.map((valueItem) {
+                              return DropdownMenuItem(
+                                value: valueItem,
+                                child: Text(valueItem),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text('หมวดหมู่อาหาร'),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            underline: SizedBox(),
+                            value: valueChooseFood,
+                            onChanged: (newValue) {
+                              setState(() {
+                                valueChooseFood = newValue;
+                              });
+                            },
+                            items: listFoodItem.map((valueItem) {
+                              return DropdownMenuItem(
+                                value: valueItem,
+                                child: Text(valueItem),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text('ราคา(\u0E3F)'),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: TextField(
+                            controller: _ctrlPrice,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          )),
-        ));
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            margin: EdgeInsets.all(0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "ส่วนผสม",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                ListView(
+                    padding: EdgeInsets.all(0),
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: ingredient),
+                FractionallySizedBox(
+                  widthFactor: 1,
+                  child: TextButton(
+                    style: flatButtonStyle,
+                    onPressed: () {
+                      print('Button pressed');
+                      setState(() {
+                        ingredient_row++;
+                      });
+                    },
+                    child: Text('เพิ่มส่วนผสม'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            margin: EdgeInsets.all(0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "วิธีทำ",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                ListView(
+                  padding: EdgeInsets.all(0),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: howto,
+                ),
+                FractionallySizedBox(
+                  widthFactor: 1,
+                  child: TextButton(
+                    style: flatButtonStyle,
+                    onPressed: () {
+                      print('Button pressed');
+                      setState(() {
+                        howto_row++;
+                      });
+                    },
+                    child: Text('เพิ่ม วิธีทำ'),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   @override
   void initState() {
-    _ctrlNameFood.text = "";
+    // TODO: implement initState
     super.initState();
     findUser();
-    fieldCount = widget.initialCount;
-    fieldCount2 = widget.initialCount2;
+    ingredient_row = widget.ingredient_row_start;
+    howto_row = widget.howto_row_start;
   }
 
   @override
   void dispose() {
+    // TODO: implement dispose
     super.dispose();
   }
 
-  @override
-  void didUpdateWidget(AddFoodPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didUpdateWidget(test oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  // }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  // }
 }
-
-// Future<String> _getTokens() async {
-//   SharedPreferences preferences = await SharedPreferences.getInstance();
-//   token =  preferences.getString("token") ?? null;
-// }

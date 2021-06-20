@@ -1,4 +1,4 @@
-import 'package:easy_cook/pages/addFood_page/addFood.dart';
+import 'package:easy_cook/pages/addFood_page/xxx_addFood.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
 import 'package:easy_cook/pages/search_page/search.dart';

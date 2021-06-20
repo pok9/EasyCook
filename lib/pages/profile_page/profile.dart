@@ -292,7 +292,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "กระเป๋าหลัก()",
+                            "กระเป๋าหลัก(\u0E3F)",
                             style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.white.withOpacity(.7),
@@ -527,7 +527,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       8, 0, 8, 0),
                                               child: Container(
                                                 width: deviceSize.width,
-                                                height: 300,
+                                                height: 350,
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       new BorderRadius.circular(

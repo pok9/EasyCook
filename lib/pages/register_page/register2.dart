@@ -8,6 +8,7 @@ import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/class/token_class.dart';
 
 import 'package:easy_cook/models/register/register2_model.dart';
+import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../addFood_page/addImage.dart';
+import '../addFood_page/xxx_addImage.dart';
 
 class RegisterPage2 extends StatefulWidget {
   RegisterPage2({Key key}) : super(key: key);
@@ -116,8 +117,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
           // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
           Navigator.push(
             context,
-            new MaterialPageRoute(
-                builder: (context) => new AddFood_AddImagePage()),
+            new MaterialPageRoute(builder: (context) => new test2()),
           ).then((value) {
             if (value != null) {
               print(value);
@@ -155,8 +155,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
           // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
           Navigator.push(
             context,
-            new MaterialPageRoute(
-                builder: (context) => new AddFood_AddImagePage()),
+            new MaterialPageRoute(builder: (context) => new test2()),
           ).then((value) {
             if (value != null) {
               print(value);
@@ -231,7 +230,8 @@ class _RegisterPage2State extends State<RegisterPage2> {
             print("ถัดไป");
             print(addImage[0].image);
             // Navigator.pushNamed(context, '/register3-page');
-            Navigator.pushNamedAndRemoveUntil(context, '/register3-page', (Route<dynamic> route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/register3-page', (Route<dynamic> route) => false);
           } else {
             print("error");
           }
