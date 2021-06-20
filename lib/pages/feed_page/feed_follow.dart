@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/login/login_model.dart';
+import 'package:easy_cook/pages/login_page/login.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:page_transition/page_transition.dart';
@@ -136,6 +138,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
   //   });
   // }
 
+  bool hidePassword = true;
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -300,115 +303,147 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                               children: [
                                 TextButton(
                                     onPressed: () {
-                                      Alert(
+                                      showDialog(
                                           context: context,
-                                          title: "เข้าสู่ระบบ",
-                                          content: Column(
-                                            children: <Widget>[
-                                              Form(
-                                                key: _formKey,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    TextFormField(
-                                                      validator: (value) {
-                                                        if (value.isEmpty) {
-                                                          return "กรุณากรอก อีเมล";
-                                                        }
+                                          builder: (_) {
+                                            return LoginPage();
+                                          }).then((value) {
+                                        findUser();
+                                        Navigator.pop(context);
+                                      });
+                                      // Alert(
+                                      //     context: context,
+                                      //     title: "เข้าสู่ระบบ",
+                                      //     content: Column(
+                                      //       children: <Widget>[
+                                      //         Form(
+                                      //           key: _formKey,
+                                      //           child: Column(
+                                      //             crossAxisAlignment:
+                                      //                 CrossAxisAlignment.start,
+                                      //             children: <Widget>[
+                                      //               TextFormField(
+                                      //                 validator: (value) {
+                                      //                   if (value.isEmpty) {
+                                      //                     return "กรุณากรอก อีเมล";
+                                      //                   }
 
-                                                        return null;
-                                                      },
-                                                      controller: _ctrlEmail,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        icon: Icon(Icons
-                                                            .account_circle),
-                                                        labelText: 'อีเมล',
-                                                      ),
-                                                    ),
-                                                    TextFormField(
-                                                      validator: (value) {
-                                                        if (value.isEmpty) {
-                                                          return 'กรุณากรอก รหัสผ่าน';
-                                                        }
+                                      //                   return null;
+                                      //                 },
+                                      //                 controller: _ctrlEmail,
+                                      //                 decoration:
+                                      //                     InputDecoration(
+                                      //                   icon: Icon(Icons
+                                      //                       .account_circle),
+                                      //                   labelText: 'อีเมล',
+                                      //                 ),
+                                      //               ),
+                                      //               TextFormField(
+                                      //                 validator: (value) {
+                                      //                   if (value.isEmpty) {
+                                      //                     return 'กรุณากรอก รหัสผ่าน';
+                                      //                   }
 
-                                                        return null;
-                                                      },
-                                                      controller: _ctrlPassword,
-                                                      obscureText: true,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        icon: Icon(Icons.lock),
-                                                        labelText: 'รหัสผ่าน',
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 25,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: RoundedLoadingButton(
-                                                  child: Text('เข้าสู่ระบบ',
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
-                                                  controller: _btnController,
-                                                  onPressed: () async {
-                                                    if (_formKey.currentState
-                                                        .validate()) {
-                                                      print(_ctrlEmail.text);
-                                                      print(_ctrlPassword.text);
+                                      //                   return null;
+                                      //                 },
+                                      //                 controller: _ctrlPassword,
+                                      //                 obscureText: hidePassword,
+                                      //                 decoration:
+                                      //                     InputDecoration(
+                                      //                         icon: Icon(
+                                      //                             Icons.lock),
+                                      //                         labelText:
+                                      //                             'รหัสผ่าน',
+                                      //                         suffixIcon:
+                                      //                             GestureDetector(
+                                      //                           onTap: () {
+                                      //                             setState(() {
+                                      //                               print(
+                                      //                                   "okkkkk");
+                                      //                               hidePassword =
+                                      //                                   !hidePassword;
+                                      //                             });
+                                      //                           },
+                                      //                           child: Icon(
+                                      //                             hidePassword ==
+                                      //                                     true
+                                      //                                 ? FontAwesomeIcons
+                                      //                                     .solidEye
+                                      //                                 : FontAwesomeIcons
+                                      //                                     .solidEyeSlash,
+                                      //                             size: 18,
+                                      //                           ),
+                                      //                         )),
+                                      //               ),
+                                      //             ],
+                                      //           ),
+                                      //         ),
+                                      //         SizedBox(
+                                      //           height: 25,
+                                      //         ),
+                                      //         Padding(
+                                      //           padding:
+                                      //               const EdgeInsets.all(8.0),
+                                      //           child: RoundedLoadingButton(
+                                      //             child: Text('เข้าสู่ระบบ',
+                                      //                 style: TextStyle(
+                                      //                     color: Colors.white)),
+                                      //             controller: _btnController,
+                                      //             onPressed: () async {
+                                      //               if (_formKey.currentState
+                                      //                   .validate()) {
+                                      //                 print(_ctrlEmail.text);
+                                      //                 print(_ctrlPassword.text);
 
-                                                      await logins(
-                                                          _ctrlEmail.text,
-                                                          _ctrlPassword.text);
+                                      //                 await logins(
+                                      //                     _ctrlEmail.text,
+                                      //                     _ctrlPassword.text);
 
-                                                      print(login.success);
-                                                      print(login.message);
+                                      //                 print(login.success);
+                                      //                 print(login.message);
 
-                                                      if (login.success == 1) {
-                                                        _btnController
-                                                            .success();
-                                                        _ctrlEmail.text = "";
-                                                        _ctrlPassword.text = "";
-                                                        SharedPreferences
-                                                            preferences =
-                                                            await SharedPreferences
-                                                                .getInstance();
-                                                        preferences.setString(
-                                                            "tokens",
-                                                            login.token);
-                                                        findUser();
-                                                        Navigator.pop(context);
-                                                      } else {
-                                                        _btnController.reset();
-                                                      }
-                                                    } else {
-                                                      _btnController.reset();
-                                                      print("noooooooo");
-                                                      print(login.success);
-                                                    }
-                                                  },
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          buttons: [
-                                            DialogButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: Text(
-                                                "Facebook",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          ]).show();
+                                      //                 if (login.success == 1) {
+                                      //                   _btnController
+                                      //                       .success();
+                                      //                   _ctrlEmail.text = "";
+                                      //                   _ctrlPassword.text = "";
+                                      //                   SharedPreferences
+                                      //                       preferences =
+                                      //                       await SharedPreferences
+                                      //                           .getInstance();
+                                      //                   preferences.setString(
+                                      //                       "tokens",
+                                      //                       login.token);
+                                      //                   findUser();
+                                      //                   Navigator.pop(context);
+                                      //                 } else {
+                                      //                   _btnController.reset();
+                                      //                 }
+                                      //               } else {
+                                      //                 _btnController.reset();
+                                      //                 print("noooooooo");
+                                      //                 print(login.success);
+                                      //               }
+                                      //             },
+                                      //           ),
+                                      //         )
+                                      //       ],
+                                      //     ),
+                                      //     buttons: [
+                                      //       DialogButton(
+                                      //         onPressed: () =>
+                                      //             Navigator.pop(context),
+                                      //         child: Text(
+                                      //           "Facebook",
+                                      //           style: TextStyle(
+                                      //               color: Colors.white,
+                                      //               fontSize: 20),
+                                      //         ),
+                                      //       ),
+                                      //     ]).show();
+
+                                      // findUser();
+                                      // setState(() {});
                                     },
                                     child: Text(
                                       'เข้าสู่ระบบ',

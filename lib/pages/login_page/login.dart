@@ -1,458 +1,316 @@
-import 'dart:convert';
+// import 'dart:html';
 
-import 'package:easy_cook/class/token_class.dart';
 import 'package:easy_cook/models/login/login_model.dart';
-import 'package:easy_cook/pages/addFood_page/xxx_addFood.dart';
-import 'package:easy_cook/pages/register_page/register.dart';
-import 'package:easy_cook/pages/register_page/register2.dart';
-// import 'package:easy_cook/slidepage.dart';
-import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:progress_state_button/progress_button.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../style/utiltties.dart';
-import '../../class/token_class.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-// showdialog(){
-
-// }
-showdialog(context) {
-  return showDialog(
-      context: context,
-      builder: (contex) {
-        return AlertDialog(
-            content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("กรุณารอสักครู่...   "), CircularProgressIndicator()],
-        ));
-      });
-}
-
-Future<LoginModel> logins(String email, String password) async {
-  // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
-
-  final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
-
-  final response = await http
-      .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
-
-  if (response.statusCode == 200) {
-    final String responseString = response.body;
-
-    return loginModelFromJson(responseString);
-  } else {
-    return null;
-  }
+  _LoginPageState createState() => new _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // final storage = new FlutterSecureStorage();
+  TextEditingController _ctrlEmail = TextEditingController(); //email
+  TextEditingController _ctrlPassword = TextEditingController(); // password
+  final _formKey = GlobalKey<FormState>();
 
-  LoginModel _login;
-
-  bool _rememberMe = false;
-
-  TextEditingController _ctrlEmail = TextEditingController();
-  TextEditingController _ctrlPassword = TextEditingController();
-
-  Widget _buildEmailTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'อีเมล์',
-          style: kLabelStyle,
+  ButtonState stateOnlyText = ButtonState.idle;
+  Widget buildCustomButton() {
+    var progressTextButton = ProgressButton(
+      stateWidgets: {
+        ButtonState.idle: Text(
+          "เข้าสู่ระบบ",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
-          decoration: kBoxDecorationStyle, //กรอบ
-          height: 60.0,
-          child: TextFormField(
-            controller: _ctrlEmail,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
-              ),
-              hintText: 'ป้อนอีเมล์ของคุณ',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
+        ButtonState.loading: Text(
+          "กรุณารอสักครู่",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
-      ],
-    );
-  }
-
-  Widget _buildPasswordTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'รหัสผ่าน',
-          style: kLabelStyle,
+        ButtonState.fail: Text(
+          "Fail",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            controller: _ctrlPassword,
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-              hintText: 'ป้อนรหัสผ่านของคุณ',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: FlatButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'ลืมรหัสผ่าน?',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      height: 20.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-          Text(
-            'จดจำฉัน',
-            style: kLabelStyle,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoginBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () async {
-          showdialog(context);
-          // if(_login == null){
-          //    showdialog(context);
-          // }
-          final String email = _ctrlEmail.text;
-          final String password = _ctrlPassword.text;
-
-          final LoginModel login = await logins(email, password);
-
-          // setState(() {
-          _login = login;
-
-          print(login);
-          print("ssssssssss" + _login.success.toString());
-          // });
-          // var data;
-          if (_login.success == 1) {
-            // showdialog(context);
-            SharedPreferences preferences =
-                await SharedPreferences.getInstance();
-            preferences.setString("tokens", _login.token);
-
-            //Token
-            //  Token_jwt().storeToken(_login.token);-------------------------------------------------------
-
-            // DBService service = new DBService();
-            // Token_jwt token_jwt = new Token_jwt();
-            // token_jwt.token = _login.token;
-            // var data = token_jwt.Token_jwtMap();
-            // service.insertData(data);
-            ///////////////////////////////
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/slide-page', (route) => false);
-            // Navigator.pushReplacement(
-            //   context,
-            //   new MaterialPageRoute(
-            //       /*check()*/
-            //       builder: (context) =>
-            //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-            // ).then((value) {
-            //   /* if (value == null) {
-            //       } else {
-
-            //         proList.add(value);
-            //       }*/
-            //   setState(() {});
-            // });
-          } else {
-            print(_login.token);
-            setState(() {});
-          }
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Color(0xFF73AEF5),
-        child: Text(
-          'เข้าสู่ระบบ',
-          style: TextStyle(
-            color: Colors.red[50],
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCancelBtn() {
-    return Container(
-      // padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          print("ยกเลิก");
-          Navigator.pop(context);
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.blueGrey[300],
-        child: Text(
-          'ยกเลิก',
-          style: TextStyle(
-            color: Colors.red[50],
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSignInWithText() {
-    return Column(
-      children: <Widget>[
-        Text(
-          '- หรือ -',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 20.0),
-        Text(
-          'ลงชื่อเข้าใช้ด้วย',
-          style: kLabelStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/slide-page', (Route<dynamic> route) => false);
-            },
-            AssetImage(
-              'assets/logos/facebook.jpg',
-            ),
-          ),
-          // _buildSocialBtn(
-          //   () => print('Login with Google'),
-          //   AssetImage(
-          //     'assets/logos/google.jpg',
-          //   ),
-          // ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/register-page');
+        ButtonState.success: Text(
+          "Success",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        )
       },
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'ไม่มีบัญชี? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
+      stateColors: {
+        ButtonState.idle: Colors.blue,
+        ButtonState.loading: Colors.blue.shade300,
+        ButtonState.fail: Colors.red.shade300,
+        ButtonState.success: Colors.green.shade400,
+      },
+      onPressed: onPressedCustomButton,
+      state: stateOnlyText,
+      padding: EdgeInsets.all(8.0),
+      radius: 5.0,
+    );
+    return progressTextButton;
+  }
+
+  _getCloseButton(context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+      child: GestureDetector(
+        onTap: () {},
+        child: Container(
+          alignment: FractionalOffset.topRight,
+          child: GestureDetector(
+            child: Icon(
+              Icons.clear,
+              color: Colors.grey,
             ),
-            TextSpan(
-              text: 'สมัครสมาชิก',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
     );
+  }
+
+  // _getColButtons(context) {
+  //   return [
+  //     DialogButton(
+  //       child: Text(
+  //         "Continue",
+  //         style: TextStyle(color: Colors.white, fontSize: 18),
+  //       ),
+  //       onPressed: () => Navigator.pop(context),
+  //       color: Color.fromRGBO(0, 179, 134, 1.0),
+  //     ),
+  //     DialogButton(
+  //       child: Text(
+  //         "Cancel",
+  //         style: TextStyle(color: Colors.white, fontSize: 18),
+  //       ),
+  //       onPressed: () => Navigator.pop(context),
+  //       gradient: LinearGradient(colors: [
+  //         Color.fromRGBO(116, 116, 191, 1.0),
+  //         Color.fromRGBO(52, 138, 199, 1.0)
+  //       ]),
+  //     )
+  //   ];
+  // }
+
+  Future<LoginModel> logins(String email, String password) async {
+    // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final response = await http
+        .post(Uri.parse(apiUrl), body: {"email": email, "password": password});
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return loginModelFromJson(responseString);
+    } else {
+      return null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.blueGrey,
-                      Colors.blueAccent,
-                      Colors.blueGrey,
-                      Colors.blue,
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
-                  ),
-                ),
+    return AlertDialog(
+      content: Container(
+        height: 400.0,
+        child: Column(
+          children: [
+            _getCloseButton(context),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'เข้าสู่ระบบ',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
               ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 80.0,
-                  ),
-                  child: Form(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'เข้าสู่ระบบ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 30.0),
-                        _buildEmailTF(),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        _buildPasswordTF(),
-                        _buildForgotPasswordBtn(),
-                        _buildRememberMeCheckbox(),
-                        _buildLoginBtn(),
-                        _buildCancelBtn(),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        _buildSignInWithText(),
-                        _buildSocialBtnRow(),
-                        _buildSignupBtn(),
-                      ],
+            ),
+            Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "กรุณากรอก อีเมล";
+                        }
+
+                        return null;
+                      },
+                      controller: _ctrlEmail,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.account_circle),
+                        labelText: 'อีเมล',
+                      ),
                     ),
-                  ),
-                ),
-              )
-            ],
-          ),
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'กรุณากรอก รหัสผ่าน';
+                        }
+
+                        return null;
+                      },
+                      controller: _ctrlPassword,
+                      // obscureText: hidePassword,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.lock),
+                        labelText: 'รหัสผ่าน',
+                        // suffixIcon:
+                        //     GestureDetector(
+                        //   onTap: () {
+                        //     setState(() {
+                        //       print(
+                        //           "okkkkk");
+                        //       // hidePassword =
+                        //       //     !hidePassword;
+                        //     });
+                        //   },
+                        //   child: Icon(
+                        //     hidePassword ==
+                        //             true
+                        //         ? FontAwesomeIcons
+                        //             .solidEye
+                        //         : FontAwesomeIcons
+                        //             .solidEyeSlash,
+                        //     size: 18,
+                        //   ),
+                        // )
+                      ),
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: 30,
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: RoundedLoadingButton(
+            //     child:
+            //         Text('เข้าสู่ระบบ', style: TextStyle(color: Colors.white)),
+            //     // controller: _btnController,
+            //     onPressed: () async {
+            //       // if (_formKey.currentState
+            //       //     .validate()) {
+            //       //   print(_ctrlEmail.text);
+            //       //   print(_ctrlPassword.text);
+
+            //       //   await logins(
+            //       //       _ctrlEmail.text,
+            //       //       _ctrlPassword.text);
+
+            //       //   print(login.success);
+            //       //   print(login.message);
+
+            //       //   if (login.success == 1) {
+            //       //     _btnController
+            //       //         .success();
+            //       //     _ctrlEmail.text = "";
+            //       //     _ctrlPassword.text = "";
+            //       //     SharedPreferences
+            //       //         preferences =
+            //       //         await SharedPreferences
+            //       //             .getInstance();
+            //       //     preferences.setString(
+            //       //         "tokens",
+            //       //         login.token);
+            //       //     findUser();
+            //       //     Navigator.pop(context);
+            //       //   } else {
+            //       //     _btnController.reset();
+            //       //   }
+            //       // } else {
+            //       //   _btnController.reset();
+            //       //   print("noooooooo");
+            //       //   print(login.success);
+            //       // }
+            //     },
+            //   ),
+            // ),
+            Container(width: 220, height: 45, child: buildCustomButton()),
+            DialogButton(
+              height: 45,
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                "Facebook",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  void onPressedCustomButton() async {
+    // Navigator.pop(context);
+    // print("true 5555");
+
+    if (_formKey.currentState.validate()) {
+      stateOnlyText = ButtonState.loading;
+
+      print("true 5555");
+      print(_ctrlEmail.text);
+      print(_ctrlPassword.text);
+
+      LoginModel login = await logins(_ctrlEmail.text, _ctrlPassword.text);
+
+      if (login.success == 1) {
+        print("loginToken = " + login.token);
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString("tokens", login.token);
+        stateOnlyText = ButtonState.success;
+        Navigator.pop(context);
+      } else {
+        print("loginSuccess = " + login.success.toString());
+        print("loginMessage = " + login.message);
+        stateOnlyText = ButtonState.fail;
+      }
+
+      //   print(login.success);
+      //   print(login.message);
+
+      //   if (login.success == 1) {
+      //     _btnController.success();
+      //     _ctrlEmail.text = "";
+      //     _ctrlPassword.text = "";
+      //     SharedPreferences preferences = await SharedPreferences.getInstance();
+      //     preferences.setString("tokens", login.token);
+      //     findUser();
+      //     Navigator.pop(context);
+      //   } else {
+      //     _btnController.reset();
+      //   }
+      // } else {
+      //   _btnController.reset();
+      //   print("noooooooo");
+      //   print(login.success);
+    } else {
+      print("false 5555");
+    }
+
+    setState(() {});
+    // setState(() {
+    //   switch (stateOnlyText) {
+    //     case ButtonState.idle:
+    //       stateOnlyText = ButtonState.loading;
+    //       break;
+    //     case ButtonState.loading:
+    //       stateOnlyText = ButtonState.fail;
+    //       break;
+    //     case ButtonState.success:
+    //       stateOnlyText = ButtonState.idle;
+    //       break;
+    //     case ButtonState.fail:
+    //       stateOnlyText = ButtonState.success;
+    //       break;
+    //   }
+    // });
   }
 }
