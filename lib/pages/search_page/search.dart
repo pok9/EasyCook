@@ -420,34 +420,70 @@ class _SearchPageState extends State<SearchPage> {
                             ]),
                       ),
                     ),
-                    // body: TabBarView(children: [
-                    //   Icon(Icons.apps),
-                    //   Icon(Icons.movie),
-                    //   Icon(Icons.games),
-                    // ]),
                   ))
-              : GridView.count(
-                  crossAxisCount: 4,
-                  children: List.generate(6, (index) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          GestureDetector(
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.black,
-                              backgroundImage: AssetImage(iconFood[index]),
-                            ),
+              : DefaultTabController(
+                  length: 2,
+                  child: new Scaffold(
+                    appBar: new PreferredSize(
+                      preferredSize: Size.fromHeight(40),
+                      child: new Container(
+                        color: Colors.white70,
+                        child: new SafeArea(
+                          child: Column(
+                            children: <Widget>[
+                              new Expanded(child: new Container()),
+                              new TabBar(
+                                tabs: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: new Text(
+                                      "หมวดหมู่",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                  new Text(
+                                    "Cart",
+                                    style: TextStyle(color: Colors.black),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
-                          Text(
-                            menuFood[index],
-                            // style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ],
+                        ),
                       ),
-                    );
-                  })),
+                    ),
+                    body: new TabBarView(
+                      children: <Widget>[
+                        GridView.count(
+                            crossAxisCount: 4,
+                            children: List.generate(6, (index) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor: Colors.black,
+                                        backgroundImage:
+                                            AssetImage(iconFood[index]),
+                                      ),
+                                    ),
+                                    Text(
+                                      menuFood[index],
+                                      // style: Theme.of(context).textTheme.headline5,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            })),
+                        new Column(
+                          children: <Widget>[new Text("Cart Page")],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
     );
   }
 }

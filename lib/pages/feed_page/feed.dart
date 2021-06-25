@@ -2,7 +2,9 @@ import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -160,11 +162,17 @@ class _FeedPageState extends State<FeedPage> {
                         color: Colors.cyan,
                         size: 30,
                       ),
-                      title: Text('สูตรที่ซื้อ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
+                      title: Text(
+                        'สูตรที่ซื้อ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
                       onTap: () {},
                     ),
                     ListTile(
@@ -173,11 +181,17 @@ class _FeedPageState extends State<FeedPage> {
                         color: Colors.cyan,
                         size: 30,
                       ),
-                      title: Text('การแจ้งเตือน',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
+                      title: Text(
+                        'การแจ้งเตือน',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
                       onTap: () {},
                     ),
                     Divider(
@@ -190,11 +204,17 @@ class _FeedPageState extends State<FeedPage> {
                         color: Colors.cyan,
                         size: 30,
                       ),
-                      title: Text('ตั้งค่า',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
+                      title: Text(
+                        'ตั้งค่า',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
                       onTap: () {},
                     ),
                     ListTile(
@@ -203,11 +223,17 @@ class _FeedPageState extends State<FeedPage> {
                         color: Colors.cyan,
                         size: 30,
                       ),
-                      title: Text('ออกจากระบบ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
+                      title: Text(
+                        'ออกจากระบบ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
                       onTap: () async {
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();

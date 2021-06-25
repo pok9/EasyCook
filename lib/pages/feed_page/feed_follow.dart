@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/login/login_model.dart';
+import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:page_transition/page_transition.dart';
@@ -174,25 +176,78 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                         color: Colors.cyan,
                         size: 30,
                       ),
-                      title: Text('สูตรที่ซื้อ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
+                      title: Text(
+                        'สูตรที่ซื้อ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
                       onTap: () {},
                     ),
                     ListTile(
-                      leading: Icon(
-                        Icons.notifications,
-                        color: Colors.cyan,
-                        size: 30,
+                      leading: Stack(
+                        children: <Widget>[
+                          new Icon(
+                            Icons.notifications,
+                            color: Colors.cyan,
+                            size: 30,
+                          ),
+                          new Positioned(
+                            right: 0,
+                            child: new Container(
+                              padding: EdgeInsets.all(1),
+                              decoration: new BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 13,
+                                minHeight: 13,
+                              ),
+                              child: new Text(
+                                '5',
+                                style: new TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 9,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      title: Text('การแจ้งเตือน',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
+                      title: Text(
+                        'การแจ้งเตือน',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      // trailing: Container(
+                      //   width: 75,
+                      //   child: MaterialButton(
+                      //     splashColor: Colors.grey[900],
+                      //     color: Colors.red[400],
+                      //     child: Text(
+                      //       '1,000',
+                      //       style: TextStyle(color: Colors.white),
+                      //     ),
+                      //     shape: StadiumBorder(),
+                      //     onPressed: () {},
+                      //   ),
+                      // ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NotificationPage()),
+                        );
+                      },
                     ),
                     Divider(
                       thickness: 0.5,
@@ -204,11 +259,17 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                         color: Colors.cyan,
                         size: 30,
                       ),
-                      title: Text('ตั้งค่า',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
+                      title: Text(
+                        'ตั้งค่า',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
                       onTap: () {},
                     ),
                     ListTile(
@@ -217,11 +278,17 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                         color: Colors.cyan,
                         size: 30,
                       ),
-                      title: Text('ออกจากระบบ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
+                      title: Text(
+                        'ออกจากระบบ',
+                        style: GoogleFonts.kanit(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
                       onTap: () async {
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
@@ -315,62 +382,6 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                           ],
                         ),
                       ),
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.folder,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('สูตรที่ซื้อ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.notifications,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('การแจ้งเตือน',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
-                    ),
-                    Divider(
-                      thickness: 0.5,
-                      color: Colors.grey,
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.settings,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('ตั้งค่า',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('ออกจากระบบ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
                     ),
                   ],
                 ),

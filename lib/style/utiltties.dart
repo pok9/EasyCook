@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
@@ -54,3 +55,5 @@ final ButtonStyle flatButtonStyle = TextButton.styleFrom(
   ),
   backgroundColor: Colors.blue,
 );
+
+
