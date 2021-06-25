@@ -1,13 +1,17 @@
 import 'package:easy_cook/models/showfood/showfood_model.dart';
-import 'package:easy_cook/pages/showFood&User_page/showProfileUser2.dart';
+
+import 'package:easy_cook/pages/showFood&User_page/xxx_showProfileUser.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 import 'package:http/http.dart' as http;
 import 'package:video_player/video_player.dart';
+
+import 'review/review.dart';
 
 class ShowFood extends StatefulWidget {
   // const test({Key key}) : super(key: key);
@@ -261,7 +265,6 @@ class _ShowFoodState extends State<ShowFood> {
   Widget build(BuildContext context) {
     final List<Widget> ingredient = dataIngredient == null ? [] : _buildList();
     final List<Widget> howto = dataHowto == null ? [] : _buildList2();
-
     return dataFood == null
         ? Container()
         : SliverFab(
@@ -306,59 +309,66 @@ class _ShowFoodState extends State<ShowFood> {
                             child: Column(
                               children: [
                                 Container(
-                                  height: 50,
-                                  width: 500,
-                                  color: Colors.white24,
-                                ),
-                                Text("ชื่อเล่น", ///////////////////////////
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 25,
-                                      color: Colors.black,
-                                      decoration: TextDecoration.none,
-                                    )),
-                                Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ),
-                                Text(
-                                  dataFood
-                                      .recipeName, ////////////////////////////////
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 25,
-                                    color: Colors.black,
-                                    decoration: TextDecoration.none,
+                                    height: 50,
+                                    width: 500,
+                                    color: Colors.white),
+                                Card(
+                                  margin: EdgeInsets
+                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                                  //ปรับขอบการ์ด
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Container(
-                                    width: 300,
-                                    height: 200,
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          new BorderRadius.circular(24.0),
-                                      child: Image(
-                                        fit: BoxFit.contain,
-                                        image: NetworkImage(dataFood
-                                            .image), ///////////////////////
+                                  color: Colors.white,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                                "ชื่อเล่นasdfsad", ///////////////////////////
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                  color: Colors.black,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                )),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        "ส่วนผสม",
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                'Now, the row first asks the logo to lay out, and then asks the icon to lay out. The Icon, like the logo, is happy to take on a reasonable size (also 24 pixels, not coincidentally, since both FlutterLogo and Icon honor the ambient IconTheme). This leaves some room left over, and now the row tells the text exactly how wide to be: the exact width of the remaining space. The text, now happy to comply to a reasonable request, wraps the text within that width, and you end up with a paragraph split over several lines.',
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 15,
+                                                  color: Colors.black,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Divider(
+                                        thickness: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      Text(
+                                        dataFood
+                                            .recipeName, ////////////////////////////////
                                         style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontFamily: 'OpenSans',
@@ -367,107 +377,389 @@ class _ShowFoodState extends State<ShowFood> {
                                           decoration: TextDecoration.none,
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                ListView(
-                                  padding: EdgeInsets.all(0),
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  children: ingredient,
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ),
-                                Container(
-                                  height: 50,
-                                  // color: Colors.white,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          "วิธีทำ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: 'OpenSans',
-                                            fontSize: 25,
-                                            color: Colors.black,
-                                            decoration: TextDecoration.none,
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Container(
+                                          width: 300,
+                                          height: 200,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                new BorderRadius.circular(24.0),
+                                            child: Image(
+                                              fit: BoxFit.contain,
+                                              image: NetworkImage(dataFood
+                                                  .image), ///////////////////////
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 40),
-                                        child: Container(
-                                          child: Row(
+                                      Divider(
+                                        thickness: 1,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      Row(
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceAround,
+                                        // mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Column(
                                             children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  indexHowTo = 0;
-                                                  print(indexHowTo);
-                                                  setState(() {});
-                                                },
-                                                child: Icon(
-                                                  (indexHowTo == 0)
-                                                      ? Icons.contacts
-                                                      : Icons.contacts_outlined,
-                                                  color: Colors.black,
-                                                  size: 40.0,
-                                                  semanticLabel:
-                                                      'Text to announce in accessibility modes',
-                                                ),
+                                              Icon(
+                                                Icons.person,
+                                                color: Colors.grey,
+                                                size: 30.0,
                                               ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  indexHowTo = 1;
-                                                  print(indexHowTo);
-                                                  setState(() {});
-                                                },
-                                                child: Icon(
-                                                  (indexHowTo == 1)
-                                                      ? Icons.contacts
-                                                      : Icons.contacts_outlined,
-                                                  color: Colors.black,
-                                                  size: 40.0,
-                                                  semanticLabel:
-                                                      'Text to announce in accessibility modes',
+                                              Text(
+                                                'มากกว่า 100 คน',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 12,
+                                                  color: Colors.grey.shade600,
+                                                  decoration:
+                                                      TextDecoration.none,
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        ),
+                                          Column(
+                                            children: [
+                                              Icon(
+                                                Icons.watch_later_outlined,
+                                                color: Colors.grey,
+                                                size: 30.0,
+                                              ),
+                                              Text(
+                                                'มากกว่า 2 ชั่วโมง',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 12,
+                                                  color: Colors.grey.shade600,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                color: Colors.grey,
+                                                size: 30.0,
+                                              ),
+                                              Text(
+                                                'เมนูน้ำสุขภาพ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 12,
+                                                  color: Colors.grey.shade600,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      // Divider(
+                                      //   height: 1,
+                                      //   thickness: 1,
+                                      //   color: Colors.black,
+                                      // ),
                                     ],
                                   ),
                                 ),
                                 SizedBox(
                                   height: 5,
                                 ),
-                                (indexHowTo == 0)
-                                    ? ListView(
+                                Card(
+                                  margin: EdgeInsets
+                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                                  //ปรับขอบการ์ด
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                  color: Colors.white,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              "ส่วนผสม",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 25,
+                                                color: Colors.black,
+                                                decoration: TextDecoration.none,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      ListView(
                                         padding: EdgeInsets.all(0),
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
-                                        children: howto,
-                                      )
-                                    : Container(
-                                        height: 550,
+                                        children: ingredient,
                                       ),
+                                      // Divider(
+                                      //   thickness: 1,
+                                      //   color: Colors.grey,
+                                      // ),
+                                    ],
+                                  ),
+                                ),
                                 SizedBox(
-                                  height: 25,
-                                )
+                                  height: 5,
+                                ),
+                                Card(
+                                  margin: EdgeInsets
+                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                                  //ปรับขอบการ์ด
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                  color: Colors.white,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        // color: Colors.white,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              child: Text(
+                                                "วิธีทำ",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 25,
+                                                  color: Colors.black,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 40),
+                                              child: Container(
+                                                child: Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        indexHowTo = 0;
+                                                        print(indexHowTo);
+                                                        setState(() {});
+                                                      },
+                                                      child: Icon(
+                                                        (indexHowTo == 0)
+                                                            ? Icons.contacts
+                                                            : Icons
+                                                                .contacts_outlined,
+                                                        color: Colors.black,
+                                                        size: 40.0,
+                                                        semanticLabel:
+                                                            'Text to announce in accessibility modes',
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        indexHowTo = 1;
+                                                        print(indexHowTo);
+                                                        setState(() {});
+                                                      },
+                                                      child: Icon(
+                                                        (indexHowTo == 1)
+                                                            ? Icons.contacts
+                                                            : Icons
+                                                                .contacts_outlined,
+                                                        color: Colors.black,
+                                                        size: 40.0,
+                                                        semanticLabel:
+                                                            'Text to announce in accessibility modes',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      (indexHowTo == 0)
+                                          ? ListView(
+                                              padding: EdgeInsets.all(0),
+                                              shrinkWrap: true,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              children: howto,
+                                            )
+                                          : Container(
+                                              height: 0,
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Card(
+                                  margin: EdgeInsets
+                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                                  //ปรับขอบการ์ด
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                  color: Colors.white,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "รีวิว",
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RatingBar.builder(
+                                        initialRating: 0,
+                                        minRating: 0.5,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          // color: Colors.amber,
+                                          color: Colors.blue,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          print(rating);
+                                          showDialog(
+                                              context: context,
+                                              builder: (_) {
+                                                return ReviewPage(rating);
+                                              });
+                                        },
+                                      ),
+                                      Divider(
+                                        indent: 60,
+                                        endIndent: 60,
+                                        color: Colors.teal.shade100,
+                                        thickness: 1.0,
+                                      ),
+                                      ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              "https://static.wikia.nocookie.net/characters/images/a/a6/Rick_Sanchez.png/revision/latest?cb=20171118221229"),
+                                        ),
+                                        title: Row(
+                                          children: [
+                                            Text(
+                                              '1Horse',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RatingBarIndicator(
+                                              rating: 2.5,
+                                              itemBuilder: (context, index) =>
+                                                  Icon(
+                                                Icons.star,
+                                                color: Colors.blue,
+                                              ),
+                                              itemCount: 5,
+                                              itemSize: 15.0,
+                                              direction: Axis.horizontal,
+                                            ),
+                                          ],
+                                        ),
+                                        subtitle: Text(
+                                          'Now, the row first asks the logo to lay out, and then asks the icon to lay out. The Icon, like the logo, is happy to take on a reasonable size (also 24 pixels, not coincidentally, since both FlutterLogo and Icon honor the ambient IconTheme). This leaves some room left over, and now the row tells the text exactly how wide to be: the exact width of the remaining space. The text, now happy to comply to a reasonable request, wraps the text within that width, and you end up with a paragraph split over several lines.',
+                                          textAlign: TextAlign.justify,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 12,
+                                            color: Colors.black,
+                                            decoration: TextDecoration.none,
+                                          ),
+                                        ),
+                                        dense: true,
+                                        isThreeLine: true,
+                                        // trailing: Text('Horse'),
+                                      ),
+                                      ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              "https://static.wikia.nocookie.net/characters/images/a/a6/Rick_Sanchez.png/revision/latest?cb=20171118221229"),
+                                        ),
+                                        title: Row(
+                                          children: [
+                                            Text(
+                                              '1Horseqwerw',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RatingBarIndicator(
+                                              rating: 2.5,
+                                              itemBuilder: (context, index) =>
+                                                  Icon(
+                                                Icons.star,
+                                                color: Colors.blue,
+                                              ),
+                                              itemCount: 5,
+                                              itemSize: 15.0,
+                                              direction: Axis.horizontal,
+                                            ),
+                                          ],
+                                        ),
+                                        subtitle: Text(
+                                          'Now, the row first asks the logo to lay out, and then asks the icon to lay out. The Icon, like the logo, is happy to take on a reasonable size (also 24 pixels, not coincidentally, since both FlutterLogo and Icon honor the ambient IconTheme). This leaves some room left over, and now the row tells the text exactly how wide to be: the exact width of the remaining space. The text, now happy to comply to a reasonable request, wraps the text within that width, and you end up with a paragraph split over several lines.',
+                                          textAlign: TextAlign.justify,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 12,
+                                            color: Colors.black,
+                                            decoration: TextDecoration.none,
+                                          ),
+                                        ),
+                                        dense: true,
+                                        // trailing: Text('Horse'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ))))

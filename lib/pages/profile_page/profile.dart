@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
-import 'package:easy_cook/pages/profile_page/edit_profile_page.dart';
+import 'package:easy_cook/pages/profile_page/edit_profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 // import 'package:easy_cook/models/search/searchRecipe_model.dart';

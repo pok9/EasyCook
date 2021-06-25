@@ -1,5 +1,6 @@
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -243,117 +244,123 @@ class _FeedPageState extends State<FeedPage> {
                               children: [
                                 TextButton(
                                     onPressed: () {
-                                      // Navigator.pushNamed(
-                                      //     context, '/login-page');
-                                      Alert(
+                                      showDialog(
                                           context: context,
-                                          title: "เข้าสู่ระบบ",
-                                          content: Column(
-                                            children: <Widget>[
-                                              Form(
-                                                key: _formKey,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    TextFormField(
-                                                      validator: (value) {
-                                                        if (value.isEmpty) {
-                                                          return "กรุณากรอก อีเมล";
-                                                        }
+                                          builder: (_) {
+                                            return LoginPage();
+                                          }).then((value) {
+                                        findUser();
+                                        // Navigator.pop(context);
+                                      });
+                                      // Alert(
+                                      //     context: context,
+                                      //     title: "เข้าสู่ระบบ",
+                                      //     content: Column(
+                                      //       children: <Widget>[
+                                      //         Form(
+                                      //           key: _formKey,
+                                      //           child: Column(
+                                      //             crossAxisAlignment:
+                                      //                 CrossAxisAlignment.start,
+                                      //             children: <Widget>[
+                                      //               TextFormField(
+                                      //                 validator: (value) {
+                                      //                   if (value.isEmpty) {
+                                      //                     return "กรุณากรอก อีเมล";
+                                      //                   }
 
-                                                        return null;
-                                                      },
-                                                      controller: _ctrlEmail,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        icon: Icon(Icons
-                                                            .account_circle),
-                                                        labelText: 'อีเมล',
-                                                      ),
-                                                    ),
-                                                    TextFormField(
-                                                      validator: (value) {
-                                                        if (value.isEmpty) {
-                                                          return 'กรุณากรอก รหัสผ่าน';
-                                                        }
+                                      //                   return null;
+                                      //                 },
+                                      //                 controller: _ctrlEmail,
+                                      //                 decoration:
+                                      //                     InputDecoration(
+                                      //                   icon: Icon(Icons
+                                      //                       .account_circle),
+                                      //                   labelText: 'อีเมล',
+                                      //                 ),
+                                      //               ),
+                                      //               TextFormField(
+                                      //                 validator: (value) {
+                                      //                   if (value.isEmpty) {
+                                      //                     return 'กรุณากรอก รหัสผ่าน';
+                                      //                   }
 
-                                                        return null;
-                                                      },
-                                                      controller: _ctrlPassword,
-                                                      obscureText: true,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        icon: Icon(Icons.lock),
-                                                        labelText: 'รหัสผ่าน',
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 25,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: RoundedLoadingButton(
-                                                  child: Text('เข้าสู่ระบบ',
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
-                                                  controller: _btnController,
-                                                  onPressed: () async {
-                                                    if (_formKey.currentState
-                                                        .validate()) {
-                                                      print(_ctrlEmail.text);
-                                                      print(_ctrlPassword.text);
+                                      //                   return null;
+                                      //                 },
+                                      //                 controller: _ctrlPassword,
+                                      //                 obscureText: true,
+                                      //                 decoration:
+                                      //                     InputDecoration(
+                                      //                   icon: Icon(Icons.lock),
+                                      //                   labelText: 'รหัสผ่าน',
+                                      //                 ),
+                                      //               ),
+                                      //             ],
+                                      //           ),
+                                      //         ),
+                                      //         SizedBox(
+                                      //           height: 25,
+                                      //         ),
+                                      //         Padding(
+                                      //           padding:
+                                      //               const EdgeInsets.all(8.0),
+                                      //           child: RoundedLoadingButton(
+                                      //             child: Text('เข้าสู่ระบบ',
+                                      //                 style: TextStyle(
+                                      //                     color: Colors.white)),
+                                      //             controller: _btnController,
+                                      //             onPressed: () async {
+                                      //               if (_formKey.currentState
+                                      //                   .validate()) {
+                                      //                 print(_ctrlEmail.text);
+                                      //                 print(_ctrlPassword.text);
 
-                                                      await logins(
-                                                          _ctrlEmail.text,
-                                                          _ctrlPassword.text);
+                                      //                 await logins(
+                                      //                     _ctrlEmail.text,
+                                      //                     _ctrlPassword.text);
 
-                                                      print(login.success);
-                                                      print(login.message);
+                                      //                 print(login.success);
+                                      //                 print(login.message);
 
-                                                      if (login.success == 1) {
-                                                        _btnController
-                                                            .success();
-                                                        _ctrlEmail.text = "";
-                                                        _ctrlPassword.text = "";
-                                                        SharedPreferences
-                                                            preferences =
-                                                            await SharedPreferences
-                                                                .getInstance();
-                                                        preferences.setString(
-                                                            "tokens",
-                                                            login.token);
-                                                        findUser();
-                                                        Navigator.pop(context);
-                                                      } else {
-                                                        _btnController.reset();
-                                                      }
-                                                    } else {
-                                                      _btnController.reset();
-                                                      print("noooooooo");
-                                                      print(login.success);
-                                                    }
-                                                  },
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          buttons: [
-                                            DialogButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: Text(
-                                                "Facebook",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          ]).show();
+                                      //                 if (login.success == 1) {
+                                      //                   _btnController
+                                      //                       .success();
+                                      //                   _ctrlEmail.text = "";
+                                      //                   _ctrlPassword.text = "";
+                                      //                   SharedPreferences
+                                      //                       preferences =
+                                      //                       await SharedPreferences
+                                      //                           .getInstance();
+                                      //                   preferences.setString(
+                                      //                       "tokens",
+                                      //                       login.token);
+                                      //                   findUser();
+                                      //                   Navigator.pop(context);
+                                      //                 } else {
+                                      //                   _btnController.reset();
+                                      //                 }
+                                      //               } else {
+                                      //                 _btnController.reset();
+                                      //                 print("noooooooo");
+                                      //                 print(login.success);
+                                      //               }
+                                      //             },
+                                      //           ),
+                                      //         )
+                                      //       ],
+                                      //     ),
+                                      //     buttons: [
+                                      //       DialogButton(
+                                      //         onPressed: () =>
+                                      //             Navigator.pop(context),
+                                      //         child: Text(
+                                      //           "Facebook",
+                                      //           style: TextStyle(
+                                      //               color: Colors.white,
+                                      //               fontSize: 20),
+                                      //         ),
+                                      //       ),
+                                      //     ]).show();
                                     },
                                     child: Text(
                                       'เข้าสู่ระบบ',
@@ -529,7 +536,7 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                   ),
                   Container(
-                      height: 250,
+                      height: 300,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
@@ -557,7 +564,7 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                   ),
                   Container(
-                      height: 250,
+                      height: 300,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
@@ -734,82 +741,77 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
             Container(
-              height: 125,
-              width: 250,
+              height: 160,
+              // width: 250,
               decoration: BoxDecoration(
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://www.fatfeedfun.com/wp-content/uploads/2018/09/easy-food_003790-e1537459041930.jpg"),
+                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
                       fit: BoxFit.cover)),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(3.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Expanded(
+                    child: Text(
+                      "ผัดกะเพราพิเศษใส่ไข่สูตรผีบอก ณ.ขอนแก่นasdasdasdasasdas",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Row(
+                children: [
+                  Text(
+                    "4.2",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-                        child: Text(
-                          "ต้มยำกุ้งสด",
-                          style: TextStyle(color: Colors.black),
-                        ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "4.2",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_half,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_border,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "(12)",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_half,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_border,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
                     ],
                   ),
                   Text(
-                    "\$25",
-                    style: TextStyle(
-                        color: Colors.indigo, fontWeight: FontWeight.bold),
-                  )
+                    "(12)",
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
         shape: RoundedRectangleBorder(
@@ -865,73 +867,76 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
             Container(
-              height: 125,
-              width: 250,
+              height: 160,
+              // width: 250,
               decoration: BoxDecoration(
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
+                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
                       fit: BoxFit.cover)),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(3.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Expanded(
+                    child: Text(
+                      "ผัดกะเพราพิเศษใส่ไข่สูตรผีบอก ณ.ขอนแก่นasdasdasdasasdas",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Row(
+                children: [
+                  Text(
+                    "4.2",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-                        child: Text(
-                          "ต้มยำกุ้งสด",
-                          style: TextStyle(color: Colors.black),
-                        ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "4.2",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_half,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_border,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "(12)",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_half,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_border,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
                     ],
+                  ),
+                  Text(
+                    "(12)",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(
+                    width: 5,
                   ),
                   Text(
                     "\$25",
@@ -940,7 +945,7 @@ class _FeedPageState extends State<FeedPage> {
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
         shape: RoundedRectangleBorder(
@@ -1004,7 +1009,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget _foodCard_3(context) {
     return Container(
       // height: 500,
-      width: 280,
+      width: 250,
       child: Card(
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -1045,73 +1050,75 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
             Container(
-              height: 200,
-              width: 280,
+              height: 210,
               decoration: BoxDecoration(
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://www.thairestaurantphuket.com/blog/wp-content/uploads/2017/07/%E0%B8%97%E0%B8%AD%E0%B8%94%E0%B8%A1%E0%B8%B1%E0%B8%99%E0%B8%81%E0%B8%B8%E0%B9%89%E0%B8%87.jpg"),
+                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
                       fit: BoxFit.cover)),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(3.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Expanded(
+                    child: Text(
+                      "ผัดกะเพราพิเศษใส่ไข่สูตรผีบอก ณ.ขอนแก่นasdasdasdasasdasasdasdasd",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Row(
+                children: [
+                  Text(
+                    "4.2",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-                        child: Text(
-                          "ต้มยำกุ้งสด",
-                          style: TextStyle(color: Colors.black),
-                        ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "4.2",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_half,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_border,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "(12)",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_half,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_border,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
                     ],
+                  ),
+                  Text(
+                    "(12)",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(
+                    width: 5,
                   ),
                   Text(
                     "\$25",
@@ -1120,7 +1127,7 @@ class _FeedPageState extends State<FeedPage> {
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
         shape: RoundedRectangleBorder(
@@ -1234,82 +1241,77 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
             Container(
-              height: 200,
+              height: 310,
               // width: 500,
               decoration: BoxDecoration(
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://www.thairestaurantphuket.com/blog/wp-content/uploads/2017/07/%E0%B8%97%E0%B8%AD%E0%B8%94%E0%B8%A1%E0%B8%B1%E0%B8%99%E0%B8%81%E0%B8%B8%E0%B9%89%E0%B8%87.jpg"),
+                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
                       fit: BoxFit.cover)),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Expanded(
+                    child: Text(
+                      "ผัดกะเพราพิเศษใส่asdasdasdaasasไข่สูตasdasdรผีบอกณขอนแก่นasdasdasdasasdasasdasdasd",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  Text(
+                    "4.2",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-                        child: Text(
-                          "ต้มยำกุ้งสด",
-                          style: TextStyle(color: Colors.black),
-                        ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "4.2",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_half,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                              Icon(
-                                Icons.star_border,
-                                color: Theme.of(context).primaryColor,
-                                size: 16.0,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "(12)",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_half,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
+                      ),
+                      Icon(
+                        Icons.star_border,
+                        color: Theme.of(context).primaryColor,
+                        size: 16.0,
                       ),
                     ],
                   ),
                   Text(
-                    "\$25",
-                    style: TextStyle(
-                        color: Colors.indigo, fontWeight: FontWeight.bold),
-                  )
+                    "(12)",
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
         shape: RoundedRectangleBorder(
@@ -1320,72 +1322,4 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
-
-  // Widget _foodCardSlim_1(context) {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: Container(
-  //       color: Colors.transparent,
-  //       child: Column(
-  //         children: [
-  //           Row(
-  //             children: [
-  //               Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: Container(
-  //                   height: 80,
-  //                   width: 80,
-  //                   decoration: BoxDecoration(
-  //                       borderRadius: BorderRadius.circular(10),
-  //                       image: DecorationImage(
-  //                           image: NetworkImage(
-  //                               "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"),
-  //                           fit: BoxFit.cover)),
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 width: 10,
-  //               ),
-  //               Row(
-  //                 crossAxisAlignment: CrossAxisAlignment.end,
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       Text(
-  //                         "ต้ำยำกุ้ง",
-  //                         style: TextStyle(
-  //                             color: Colors.grey, fontWeight: FontWeight.bold),
-  //                       ),
-  //                       Text(
-  //                         "Italian Recipe for you",
-  //                         style: TextStyle(color: Colors.grey),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                   SizedBox(
-  //                     width: 50,
-  //                   ),
-  //                   Text(
-  //                     "ฟรี",
-  //                     style: TextStyle(
-  //                         color: Colors.indigo, fontWeight: FontWeight.bold),
-  //                   )
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //           Padding(
-  //             padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-  //             child: Divider(
-  //               height: 2,
-  //               color: Colors.grey,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

@@ -1,6 +1,7 @@
 import 'package:easy_cook/pages/addFood_page/xxx_addFood.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
+import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
@@ -140,7 +141,7 @@ class _SlidePageState extends State<SlidePage> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          currenetScreen = Container();
+                          currenetScreen = RecipeArchivePage();
                           currentTab = 3;
                         });
                       },

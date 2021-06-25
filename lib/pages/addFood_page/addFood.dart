@@ -964,7 +964,7 @@ class _testState extends State<test> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: _ctrlExplain,
-                    maxLength: 60,
+                    // maxLength: 60,
                     minLines: 4,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
