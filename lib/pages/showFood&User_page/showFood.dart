@@ -1,4 +1,5 @@
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/xxx_showProfileUser.dart';
@@ -260,6 +261,7 @@ class _ShowFoodState extends State<ShowFood> {
   }
 
   int indexHowTo = 0;
+  List<String> actionDropdown = ['แก้ไขสูตรอาหาร', 'ลบสูตรอาหาร'];
   @override
   Widget build(BuildContext context) {
     final List<Widget> ingredient = dataIngredient == null ? [] : _buildList();
@@ -286,6 +288,34 @@ class _ShowFoodState extends State<ShowFood> {
             slivers: [
               SliverAppBar(
                 title: Text(dataFood.recipeName),
+                actions: [
+                  PopupMenuButton(
+                    child: Center(
+                        child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Icon(Icons.more_horiz_outlined),
+                    )),
+                    onSelected: (value) {
+                      if (value == 0) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditFoodPage()),
+                        );
+                      } else if (value == 1) {
+                        print("ลบสูตรอาหาร");
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return List.generate(2, (index) {
+                        return PopupMenuItem(
+                          value: index,
+                          child: Text(actionDropdown[index]),
+                        );
+                      });
+                    },
+                  ),
+                ],
                 pinned: true,
                 expandedHeight: 256.0,
                 flexibleSpace: FlexibleSpaceBar(
