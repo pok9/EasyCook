@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:easy_cook/models/search/searchRecipe_model.dart';
 
@@ -454,29 +455,175 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     body: new TabBarView(
                       children: <Widget>[
-                        GridView.count(
-                            crossAxisCount: 4,
-                            children: List.generate(6, (index) {
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      child: CircleAvatar(
-                                        radius: 30,
-                                        backgroundColor: Colors.black,
-                                        backgroundImage:
-                                            AssetImage(iconFood[index]),
-                                      ),
-                                    ),
-                                    Text(
-                                      menuFood[index],
-                                      // style: Theme.of(context).textTheme.headline5,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            })),
+                        ListView(
+                          children: [
+                            dividerTextCustom("ส่วนผสม"),
+                            Container(
+                              height: 150,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: GridView.count(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    crossAxisCount: 5,
+                                    children: List.generate(6, (index) {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.black,
+                                                backgroundImage:
+                                                    AssetImage(iconFood[index]),
+                                              ),
+                                            ),
+                                            Text(
+                                              menuFood[index],
+                                              // style: Theme.of(context).textTheme.headline5,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    })),
+                              ),
+                            ),
+                            dividerTextCustom("หมวดหมู่"),
+                            Container(
+                              height: 150,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: GridView.count(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    crossAxisCount: 5,
+                                    children: List.generate(6, (index) {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.black,
+                                                backgroundImage:
+                                                    AssetImage(iconFood[index]),
+                                              ),
+                                            ),
+                                            Text(
+                                              menuFood[index],
+                                              // style: Theme.of(context).textTheme.headline5,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    })),
+                              ),
+                            ),
+                            dividerTextCustom("หมวดหมู่"),
+                            Container(
+                              height: 150,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: GridView.count(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    crossAxisCount: 5,
+                                    children: List.generate(6, (index) {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.black,
+                                                backgroundImage:
+                                                    AssetImage(iconFood[index]),
+                                              ),
+                                            ),
+                                            Text(
+                                              menuFood[index],
+                                              // style: Theme.of(context).textTheme.headline5,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    })),
+                              ),
+                            ),
+                            dividerTextCustom("หมวดหมู่"),
+                            Container(
+                              height: 150,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: GridView.count(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    crossAxisCount: 5,
+                                    children: List.generate(6, (index) {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.black,
+                                                backgroundImage:
+                                                    AssetImage(iconFood[index]),
+                                              ),
+                                            ),
+                                            Text(
+                                              menuFood[index],
+                                              // style: Theme.of(context).textTheme.headline5,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    })),
+                              ),
+                            ),
+                            dividerTextCustom("หมวดหมู่"),
+                            Container(
+                              height: 150,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: GridView.count(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    crossAxisCount: 5,
+                                    children: List.generate(6, (index) {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.black,
+                                                backgroundImage:
+                                                    AssetImage(iconFood[index]),
+                                              ),
+                                            ),
+                                            Text(
+                                              menuFood[index],
+                                              // style: Theme.of(context).textTheme.headline5,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    })),
+                              ),
+                            ),
+                          ],
+                        ),
                         new Column(
                           children: <Widget>[new Text("Cart Page")],
                         )
@@ -484,6 +631,34 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                 ),
+    );
+  }
+
+  Padding dividerTextCustom(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(children: <Widget>[
+        Expanded(
+          child: new Container(
+              margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+              child: Divider(
+                color: Colors.black,
+                height: 36,
+              )),
+        ),
+        Text(
+          text,
+          style: TextStyle(fontSize: 20),
+        ),
+        Expanded(
+          child: new Container(
+              margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+              child: Divider(
+                color: Colors.black,
+                height: 36,
+              )),
+        ),
+      ]),
     );
   }
 }
