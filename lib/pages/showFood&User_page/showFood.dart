@@ -70,10 +70,9 @@ class _ShowFoodState extends State<ShowFood> {
   }
 
   //=================================================================================
-
+  List<List<TextEditingController>> controllers =
+      <List<TextEditingController>>[];
   List<Widget> _buildList() {
-    List<List<TextEditingController>> controllers =
-        <List<TextEditingController>>[];
     int i;
 
     if (0 < dataIngredient.length) {
@@ -266,6 +265,7 @@ class _ShowFoodState extends State<ShowFood> {
   Widget build(BuildContext context) {
     final List<Widget> ingredient = dataIngredient == null ? [] : _buildList();
     final List<Widget> howto = dataHowto == null ? [] : _buildList2();
+
     return dataFood == null
         ? Container()
         : SliverFab(
@@ -300,7 +300,11 @@ class _ShowFoodState extends State<ShowFood> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditFoodPage()),
+                              builder: (context) => EditFoodPage(
+                                  dataFood.recipeName,
+                                  dataFood.image,
+                                  dataIngredient,
+                                  dataHowto)),
                         );
                       } else if (value == 1) {
                         print("ลบสูตรอาหาร");
