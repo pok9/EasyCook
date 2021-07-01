@@ -1,11 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:easy_cook/pages/addFood_page/xxx_addFood.dart';
 import 'package:easy_cook/pages/addFood_page/addFood.dart';
 import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
-import 'package:easy_cook/pages/login_page/xxx_login.dart';
 import 'package:easy_cook/pages/register_page/register.dart';
 import 'package:easy_cook/pages/register_page/register2.dart';
 import 'package:easy_cook/pages/register_page/register3.dart';

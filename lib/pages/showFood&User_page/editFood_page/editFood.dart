@@ -494,13 +494,30 @@ class _EditFoodPageState extends State<EditFoodPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                print("XXX");
-                for (var item in imageHowto) {
-                  print("item = ${item.path}");
-                  print(item.path.substring(0, 4) == "http");
+                print("ชื่อเมนู = " + _ctrlNameFood.text);
+
+                if (_imageFood != null) {
+                  //รูปไม่ถูกเปลี่ยน
+                  print(true);
+                } else {
+                  print(false);
+                }
+
+                //ส่วนผสม
+                for (int i = 0; i < ctl_ingredient_row.length; i++) {
+                  print((i + 1).toString() +
+                      " " +
+                      ctl_ingredient_row[i][0].text +
+                      " " +
+                      ctl_ingredient_row[i][1].text);
+                }
+
+                //วิธีทำ
+                for (int i = 0; i < ctl_howto_row.length; i++) {
+                  print(ctl_howto_row[i].text);
                 }
               },
-              child: Text('โพสต์'),
+              child: Text('แก้ไข'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.grey,
               ),

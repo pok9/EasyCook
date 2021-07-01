@@ -16,8 +16,6 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../addFood_page/xxx_addImage.dart';
-
 class RegisterPage2 extends StatefulWidget {
   RegisterPage2({Key key}) : super(key: key);
 

@@ -2,7 +2,6 @@ import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
 
-import 'package:easy_cook/pages/showFood&User_page/xxx_showProfileUser.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
@@ -70,11 +69,11 @@ class _ShowFoodState extends State<ShowFood> {
   }
 
   //=================================================================================
-  List<List<TextEditingController>> controllers =
-      <List<TextEditingController>>[];
-  List<Widget> _buildList() {
-    int i;
 
+  List<Widget> _buildList() {
+    List<List<TextEditingController>> controllers =
+        <List<TextEditingController>>[];
+    int i;
     if (0 < dataIngredient.length) {
       for (i = 0; i < dataIngredient.length; i++) {
         var ctl = <TextEditingController>[];
@@ -267,7 +266,7 @@ class _ShowFoodState extends State<ShowFood> {
     final List<Widget> howto = dataHowto == null ? [] : _buildList2();
 
     return dataFood == null
-        ? Container()
+        ? Scaffold()
         : SliverFab(
             floatingWidget: Container(
               height: 100,
