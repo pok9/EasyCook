@@ -84,7 +84,7 @@ showdialog(context) {
 class _RegisterPage2State extends State<RegisterPage2> {
   String token = "";
 
-  List<AddImage> addImage = List<AddImage>();
+  List<AddImage> addImage = [];
   @override
   void initState() {
     super.initState();

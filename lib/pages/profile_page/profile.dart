@@ -168,7 +168,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => EditProfilePage()),
+                                  builder: (context) =>
+                                      EditProfilePage(this.data_DataAc)),
                             );
                           },
                           child: Text(

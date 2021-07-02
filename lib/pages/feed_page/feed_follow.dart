@@ -61,7 +61,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+    print("responseFeed_follow = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -79,7 +79,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+    print("response2 = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -109,284 +109,288 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
           title: Text('การติดตาม'),
         ),
       ),
-      drawer: (token != "" && dataUser != null)
-          ? Container(
-              width: deviceSize.width - 45,
-              child: Drawer(
-                child: ListView(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            curve: Curves.linear,
-                            type: PageTransitionType.bottomToTop,
-                            child: ProfilePage(),
+      drawer: Container(
+        width: deviceSize.width - 45,
+        child: Drawer(
+          child: Container(
+            child: (token != "" && dataUser != null)
+                ? ListView(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              curve: Curves.linear,
+                              type: PageTransitionType.bottomToTop,
+                              child: ProfilePage(),
+                            ),
+                          );
+                        },
+                        child: DrawerHeader(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: new NetworkImage(
+                                  "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        );
-                      },
-                      child: DrawerHeader(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: new NetworkImage(
-                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                            fit: BoxFit.cover,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      const Color(0xFF73AEF5),
+                                      const Color(0xFF73AEF5)
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Center(
+                                  child: CircleAvatar(
+                                    radius: 39,
+                                    backgroundColor: Colors.grey,
+                                    backgroundImage:
+                                        NetworkImage(dataUser.profileImage),
+                                  ),
+                                ),
+                              ),
+                              //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                              Text(
+                                datas.data[0].aliasName,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFF73AEF5),
-                                    const Color(0xFF73AEF5)
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 39,
-                                  backgroundColor: Colors.grey,
-                                  backgroundImage:
-                                      NetworkImage(dataUser.profileImage),
-                                ),
-                              ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.folder,
+                          color: Colors.cyan,
+                          size: 30,
+                        ),
+                        title: Text(
+                          'สูตรที่ซื้อ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 23,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          // style: TextStyle(
+                          //     fontWeight: FontWeight.w300,
+                          //     fontSize: 23,
+                          //     color: Colors.black)
+                        ),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        leading: Stack(
+                          children: <Widget>[
+                            new Icon(
+                              Icons.notifications,
+                              color: Colors.cyan,
+                              size: 30,
                             ),
-                            //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                            Text(
-                              datas.data[0].aliasName,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
+                            new Positioned(
+                              right: 0,
+                              child: new Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 13,
+                                  minHeight: 13,
+                                ),
+                                child: new Text(
+                                  '5',
+                                  style: new TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 9,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                            ),
+                            )
                           ],
                         ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.folder,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text(
-                        'สูตรที่ซื้อ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        // style: TextStyle(
-                        //     fontWeight: FontWeight.w300,
-                        //     fontSize: 23,
-                        //     color: Colors.black)
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: Stack(
-                        children: <Widget>[
-                          new Icon(
-                            Icons.notifications,
-                            color: Colors.cyan,
-                            size: 30,
-                          ),
-                          new Positioned(
-                            right: 0,
-                            child: new Container(
-                              padding: EdgeInsets.all(1),
-                              decoration: new BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              constraints: BoxConstraints(
-                                minWidth: 13,
-                                minHeight: 13,
-                              ),
-                              child: new Text(
-                                '5',
-                                style: new TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 9,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      title: Text(
-                        'การแจ้งเตือน',
-                        style: GoogleFonts.kanit(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      // trailing: Container(
-                      //   width: 75,
-                      //   child: MaterialButton(
-                      //     splashColor: Colors.grey[900],
-                      //     color: Colors.red[400],
-                      //     child: Text(
-                      //       '1,000',
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //     shape: StadiumBorder(),
-                      //     onPressed: () {},
-                      //   ),
-                      // ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => NotificationPage()),
-                        );
-                      },
-                    ),
-                    Divider(
-                      thickness: 0.5,
-                      color: Colors.grey,
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.settings,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text(
-                        'ตั้งค่า',
-                        style: GoogleFonts.kanit(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        // style: TextStyle(
-                        //     fontWeight: FontWeight.w300,
-                        //     fontSize: 23,
-                        //     color: Colors.black)
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text(
-                        'ออกจากระบบ',
-                        style: GoogleFonts.kanit(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        // style: TextStyle(
-                        //     fontWeight: FontWeight.w300,
-                        //     fontSize: 23,
-                        //     color: Colors.black)
-                      ),
-                      onTap: () async {
-                        SharedPreferences preferences =
-                            await SharedPreferences.getInstance();
-                        preferences.setString("tokens", "");
-                        // Navigator.pushNamedAndRemoveUntil(context,
-                        //     '/slide-page', (Route<dynamic> route) => false);
-                        findUser();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : Container(
-              width: deviceSize.width - 45,
-              child: Drawer(
-                child: ListView(
-                  children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: DrawerHeader(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: new NetworkImage(
-                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                            fit: BoxFit.cover,
+                        title: Text(
+                          'การแจ้งเตือน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 23,
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return LoginPage();
-                                          }).then((value) {
-                                        findUser();
-                                        // Navigator.pop(context);
-                                      });
-                                    },
-                                    child: Text(
-                                      'เข้าสู่ระบบ',
-                                    ),
-                                    style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            BorderSide(
-                                                width: 2, color: Colors.white)),
-                                        foregroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.white),
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 50)),
-                                        textStyle: MaterialStateProperty.all(
-                                            TextStyle(fontSize: 15)))),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/register-page');
-                                    },
-                                    child: Text(
-                                      'สมัครสมาชิก',
-                                    ),
-                                    style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            BorderSide(
-                                                width: 2, color: Colors.white)),
-                                        foregroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.white),
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 43)),
-                                        textStyle: MaterialStateProperty.all(
-                                            TextStyle(fontSize: 15)))),
-                              ],
+                        // trailing: Container(
+                        //   width: 75,
+                        //   child: MaterialButton(
+                        //     splashColor: Colors.grey[900],
+                        //     color: Colors.red[400],
+                        //     child: Text(
+                        //       '1,000',
+                        //       style: TextStyle(color: Colors.white),
+                        //     ),
+                        //     shape: StadiumBorder(),
+                        //     onPressed: () {},
+                        //   ),
+                        // ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NotificationPage()),
+                          );
+                        },
+                      ),
+                      Divider(
+                        thickness: 0.5,
+                        color: Colors.grey,
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.settings,
+                          color: Colors.cyan,
+                          size: 30,
+                        ),
+                        title: Text(
+                          'ตั้งค่า',
+                          style: GoogleFonts.kanit(
+                            fontSize: 23,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          // style: TextStyle(
+                          //     fontWeight: FontWeight.w300,
+                          //     fontSize: 23,
+                          //     color: Colors.black)
+                        ),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.exit_to_app,
+                          color: Colors.cyan,
+                          size: 30,
+                        ),
+                        title: Text(
+                          'ออกจากระบบ',
+                          style: GoogleFonts.kanit(
+                            fontSize: 23,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          // style: TextStyle(
+                          //     fontWeight: FontWeight.w300,
+                          //     fontSize: 23,
+                          //     color: Colors.black)
+                        ),
+                        onTap: () async {
+                          SharedPreferences preferences =
+                              await SharedPreferences.getInstance();
+                          preferences.setString("tokens", "");
+                          // Navigator.pushNamedAndRemoveUntil(
+                          //     context, '/slide-page', (Route<dynamic> route) => false);
+                          // findUser();
+                          // setState(() {});
+                          this.findUser();
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  )
+                : ListView(
+                    children: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: DrawerHeader(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: new NetworkImage(
+                                  "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                              fit: BoxFit.cover,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                              child: Column(
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Row(),
+                                  TextButton(
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return LoginPage();
+                                            }).then((value) {
+                                          this.findUser();
+                                          // Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Text(
+                                        'เข้าสู่ระบบ',
+                                      ),
+                                      style: ButtonStyle(
+                                          side: MaterialStateProperty.all(
+                                              BorderSide(
+                                                  width: 2,
+                                                  color: Colors.white)),
+                                          foregroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.white),
+                                          padding: MaterialStateProperty.all(
+                                              EdgeInsets.symmetric(
+                                                  vertical: 10,
+                                                  horizontal: 50)),
+                                          textStyle: MaterialStateProperty.all(
+                                              TextStyle(fontSize: 15)))),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, '/register-page');
+                                      },
+                                      child: Text(
+                                        'สมัครสมาชิก',
+                                      ),
+                                      style: ButtonStyle(
+                                          side: MaterialStateProperty.all(
+                                              BorderSide(
+                                                  width: 2,
+                                                  color: Colors.white)),
+                                          foregroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.white),
+                                          padding: MaterialStateProperty.all(
+                                              EdgeInsets.symmetric(
+                                                  vertical: 10,
+                                                  horizontal: 43)),
+                                          textStyle: MaterialStateProperty.all(
+                                              TextStyle(fontSize: 15)))),
                                 ],
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                child: Column(
+                                  children: [
+                                    Row(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                    ],
+                  ),
+          ),
+        ),
+      ),
       body: (token == "")
           ? Container()
           : (newfeed == null)

@@ -235,6 +235,7 @@ class _FeedPageState extends State<FeedPage> {
                         //     color: Colors.black)
                       ),
                       onTap: () async {
+                        print("ออก1");
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
                         preferences.setString("tokens", "");
