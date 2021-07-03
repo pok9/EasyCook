@@ -263,6 +263,7 @@ class _testState extends State<test> {
       i++;
 
       return Padding(
+        key: ValueKey('${displayNumber - 1}'),
         padding: const EdgeInsets.only(left: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -343,6 +344,7 @@ class _testState extends State<test> {
       int displayNumber = i + 1;
       i++;
       return Card(
+        key: ValueKey('${displayNumber - 1}'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),
@@ -668,11 +670,17 @@ class _testState extends State<test> {
   }
 
   bool _validate = false;
+  final List<int> _items = List<int>.generate(50, (int index) => index);
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
+    final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
     var screen = MediaQuery.of(context).size; //ขนาดของหน้าจอ
 
     final List<Widget> ingredient = _buildListingredient();
+    print("ingredient.lrngth = ${ingredient.length}");
+
     final List<Widget> howto = _buildhowto();
 
     // final transformationController = TransformationController();
@@ -1110,11 +1118,27 @@ class _testState extends State<test> {
                     ],
                   ),
                 ),
-                ListView(
-                    padding: EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: ingredient),
+                ReorderableListView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: ingredient,
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (newIndex > oldIndex) {
+                      newIndex = newIndex - 1;
+                    }
+
+                    final dragIngredient_row =
+                        ctl_ingredient_row.removeAt(oldIndex);
+                    setState(() {
+                      ctl_ingredient_row.insert(newIndex, dragIngredient_row);
+                    });
+                  },
+                ),
+                // ListView(
+                //     padding: EdgeInsets.all(0),
+                //     shrinkWrap: true,
+                //     physics: NeverScrollableScrollPhysics(),
+                //     children: ingredient),
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(
@@ -1155,12 +1179,31 @@ class _testState extends State<test> {
                     ],
                   ),
                 ),
-                ListView(
-                  padding: EdgeInsets.all(0),
+                ReorderableListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   children: howto,
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (newIndex > oldIndex) {
+                      newIndex = newIndex - 1;
+                    }
+
+                    final dragHowto_row = ctl_howto_row.removeAt(oldIndex);
+
+                    final dragImageHowto = imageHowto.removeAt(oldIndex);
+
+                    setState(() {
+                      ctl_howto_row.insert(newIndex, dragHowto_row);
+                      imageHowto.insert(newIndex, dragImageHowto);
+                    });
+                  },
                 ),
+                // ListView(
+                //   padding: EdgeInsets.all(0),
+                //   shrinkWrap: true,
+                //   physics: NeverScrollableScrollPhysics(),
+                //   children: howto,
+                // ),
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(

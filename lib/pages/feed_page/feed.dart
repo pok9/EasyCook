@@ -674,7 +674,7 @@ class _FeedPageState extends State<FeedPage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            return _introduce_safe_Card(context);
+                            return _introduce_safe_Card(context, index);
                           })),
 
                   Padding(
@@ -699,9 +699,9 @@ class _FeedPageState extends State<FeedPage> {
                           // scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: 5,
+                          itemCount: 3,
                           itemBuilder: (context, index) {
-                            return _foodCard_latest(context);
+                            return _foodCard_4(context);
                           })),
 
                   // Container(
@@ -1166,7 +1166,7 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Widget _introduce_safe_Card(context) {
+  Widget _introduce_safe_Card(context, index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Container(
@@ -1192,7 +1192,7 @@ class _FeedPageState extends State<FeedPage> {
             Row(
               children: [
                 Text(
-                  "เซฟปก",
+                  "เซฟปก $index",
                   style: TextStyle(fontWeight: FontWeight.normal),
                 )
               ],
@@ -1224,7 +1224,7 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Widget _foodCard_latest(context) {
+  Widget _foodCard_4(context) {
     return Container(
       // height: 500,
       width: 280,
