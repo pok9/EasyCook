@@ -269,13 +269,11 @@ class _testState extends State<test> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Text(
-                "${displayNumber}.",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
+              padding: const EdgeInsets.only(right: 10),
+              child: IconButton(
+                icon: const Icon(Icons.reorder),
+                color: Colors.black,
+                onPressed: () {},
               ),
             ),
             Expanded(
@@ -351,7 +349,7 @@ class _testState extends State<test> {
         // elevation: 5,
         margin: EdgeInsets.all(0),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -359,13 +357,11 @@ class _testState extends State<test> {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Text(
-                      "${displayNumber}.",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      icon: const Icon(Icons.reorder),
+                      color: Colors.black,
+                      onPressed: () {},
                     ),
                   ),
                   Expanded(

@@ -124,18 +124,17 @@ class _EditFoodPageState extends State<EditFoodPage> {
       i++;
 
       return Padding(
+        key: ValueKey('${displayNumber - 1}'),
         padding: const EdgeInsets.only(left: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Text(
-                "${displayNumber}.",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
+              padding: const EdgeInsets.only(right: 10),
+              child: IconButton(
+                icon: const Icon(Icons.reorder),
+                color: Colors.black,
+                onPressed: () {},
               ),
             ),
             Expanded(
@@ -203,6 +202,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
       int displayNumber = i + 1;
       i++;
       return Card(
+        key: ValueKey('${displayNumber - 1}'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),
@@ -217,13 +217,11 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Text(
-                      "${displayNumber}.",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      icon: const Icon(Icons.reorder),
+                      color: Colors.black,
+                      onPressed: () {},
                     ),
                   ),
                   Expanded(
@@ -851,11 +849,27 @@ class _EditFoodPageState extends State<EditFoodPage> {
                     ],
                   ),
                 ),
-                ListView(
-                    padding: EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: ingredient),
+                // ListView(
+                //     padding: EdgeInsets.all(0),
+                //     shrinkWrap: true,
+                //     physics: NeverScrollableScrollPhysics(),
+                //     children: ingredient),
+                ReorderableListView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: ingredient,
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (newIndex > oldIndex) {
+                      newIndex = newIndex - 1;
+                    }
+
+                    final dragIngredient_row =
+                        ctl_ingredient_row.removeAt(oldIndex);
+                    setState(() {
+                      ctl_ingredient_row.insert(newIndex, dragIngredient_row);
+                    });
+                  },
+                ),
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(
@@ -896,12 +910,32 @@ class _EditFoodPageState extends State<EditFoodPage> {
                     ],
                   ),
                 ),
-                ListView(
-                  padding: EdgeInsets.all(0),
+
+                ReorderableListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   children: howto,
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (newIndex > oldIndex) {
+                      newIndex = newIndex - 1;
+                    }
+
+                    final dragHowto_row = ctl_howto_row.removeAt(oldIndex);
+
+                    final dragImageHowto = imageHowto.removeAt(oldIndex);
+
+                    setState(() {
+                      ctl_howto_row.insert(newIndex, dragHowto_row);
+                      imageHowto.insert(newIndex, dragImageHowto);
+                    });
+                  },
                 ),
+                // ListView(
+                //   padding: EdgeInsets.all(0),
+                //   shrinkWrap: true,
+                //   physics: NeverScrollableScrollPhysics(),
+                //   children: howto,
+                // ),
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(
