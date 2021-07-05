@@ -19,18 +19,18 @@ import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-class test extends StatefulWidget {
-  const test({
+class AddFoodPage extends StatefulWidget {
+  const AddFoodPage({
     this.ingredient_row_start = 1,
     this.howto_row_start = 1, //ทดสอบ
   });
   final int ingredient_row_start; //จำนวนแถวส่วนผสมตั้งต้น
   final int howto_row_start; //ทดสอบ
   @override
-  _testState createState() => _testState();
+  _AddFoodPageState createState() => _AddFoodPageState();
 }
 
-class _testState extends State<test> {
+class _AddFoodPageState extends State<AddFoodPage> {
   //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv ==== 1.CreatePostModel(สร้างโพส(success,recipeId )) ==== vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv/
 // CreatePostModel
   var mimeTypeData;
@@ -396,7 +396,8 @@ class _testState extends State<test> {
                                 Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (context) => new test3()),
+                                      builder: (context) =>
+                                          new AddImageOrViderPage()),
                                 ).then((value) {
                                   if (value != null) {
                                     imageHowto[displayNumber - 1] = value.image;
@@ -519,7 +520,7 @@ class _testState extends State<test> {
                                                         context,
                                                         new MaterialPageRoute(
                                                             builder: (context) =>
-                                                                new test3()),
+                                                                new AddImageOrViderPage()),
                                                       ).then((value) {
                                                         if (value != null) {
                                                           setState(() {
@@ -855,7 +856,7 @@ class _testState extends State<test> {
                                 Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (context) => new test2()),
+                                      builder: (context) => new AddImagePage()),
                                 ).then((value) {
                                   if (value != null) {
                                     setState(() {
@@ -918,7 +919,7 @@ class _testState extends State<test> {
                                 Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (context) => new test2()),
+                                      builder: (context) => new AddImagePage()),
                                 ).then((value) {
                                   if (value != null) {
                                     addImage.removeAt(0);

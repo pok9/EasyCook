@@ -115,7 +115,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
           // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
           Navigator.push(
             context,
-            new MaterialPageRoute(builder: (context) => new test2()),
+            new MaterialPageRoute(builder: (context) => new AddImagePage()),
           ).then((value) {
             if (value != null) {
               print(value);
@@ -153,7 +153,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
           // print("length = " + addImage.length.toString());--------------------------------------------------------------------------------------
           Navigator.push(
             context,
-            new MaterialPageRoute(builder: (context) => new test2()),
+            new MaterialPageRoute(builder: (context) => new AddImagePage()),
           ).then((value) {
             if (value != null) {
               print(value);

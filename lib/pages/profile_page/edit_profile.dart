@@ -119,7 +119,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                    builder: (context) => new test2()),
+                                    builder: (context) => new AddImagePage()),
                               ).then((value) {
                                 if (value != null) {
                                   print(value);

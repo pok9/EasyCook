@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class test3 extends StatefulWidget {
+class AddImageOrViderPage extends StatefulWidget {
   // test3({Key? key}) : super(key: key);
 
   @override
-  _test3State createState() => _test3State();
+  _AddImageOrViderPageState createState() => _AddImageOrViderPageState();
 }
 
-class _test3State extends State<test3> {
+class _AddImageOrViderPageState extends State<AddImageOrViderPage> {
   final picker = ImagePicker();
   File imageFile;
 

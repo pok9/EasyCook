@@ -256,7 +256,8 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                 Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (context) => new test3()),
+                                      builder: (context) =>
+                                          new AddImageOrViderPage()),
                                 ).then((value) {
                                   if (value != null) {
                                     imageHowto[displayNumber - 1] = value.image;
@@ -368,7 +369,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                         context,
                                                         new MaterialPageRoute(
                                                             builder: (context) =>
-                                                                new test3()),
+                                                                new AddImageOrViderPage()),
                                                       ).then((value) {
                                                         if (value != null) {
                                                           setState(() {
@@ -578,7 +579,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                               Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                    builder: (context) => new test2()),
+                                    builder: (context) => new AddImagePage()),
                               ).then((value) {
                                 if (value != null) {
                                   setState(() {
@@ -643,7 +644,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                 Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (context) => new test2()),
+                                      builder: (context) => new AddImagePage()),
                                 ).then((value) {
                                   if (value != null) {
                                     if (_imageFood != null) {

@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
         // '/searchRecipeName' : (context) => SearchRecipeName(),
         '/slide-page': (context) => SlidePage(),
         // '/addFood-page': (context) => AddFoodPage(),
-        '/test': (context) => test(),
-        '/test2': (context) => test2(),
+        '/test': (context) => AddFoodPage(),
+        '/test2': (context) => AddImagePage(),
         // '/showfood-page': (context) => ShowFood(),
       },
     );
