@@ -167,21 +167,18 @@ class _ShowFoodState extends State<ShowFood> {
                   width: 5,
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 17),
-                    child: Text(
-                      // (displayNumber + 1).toString() +
-                      //     ". " +
-                      dataHowto[displayNumber].description,
-                      // textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'OpenSans',
-                          fontSize: 17,
-                          color: Colors.black,
-                          decoration: TextDecoration.none),
-                      // style: kHintTextStyle2,
-                    ),
+                  child: Text(
+                    // (displayNumber + 1).toString() +
+                    //     ". " +
+                    dataHowto[displayNumber].description,
+                    // textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'OpenSans',
+                        fontSize: 17,
+                        color: Colors.black,
+                        decoration: TextDecoration.none),
+                    // style: kHintTextStyle2,
                   ),
                 ),
               ],
@@ -249,7 +246,7 @@ class _ShowFoodState extends State<ShowFood> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
-                      aspectRatio: 16 / 9,
+                      aspectRatio: 1,
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.network(
                             dataHowto[displayNumber].pathFile),
@@ -316,11 +313,7 @@ class _ShowFoodState extends State<ShowFood> {
             SizedBox(
               width: 5,
             ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.only(top: 17),
-              child: Text(dataHowto[displayNumber].description),
-            )),
+            Expanded(child: Text(dataHowto[displayNumber].description)),
           ],
         ),
         // subtitle: Text("Group Sub Category"),
@@ -742,6 +735,9 @@ class _ShowFoodState extends State<ShowFood> {
                                             // ),
                                           ],
                                         ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
                                       ),
                                       ListView(
                                         padding: EdgeInsets.all(0),
