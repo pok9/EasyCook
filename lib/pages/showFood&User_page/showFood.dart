@@ -70,7 +70,7 @@ class _ShowFoodState extends State<ShowFood> {
 
   //=================================================================================
 
-  List<Widget> _buildList() {
+  List<Widget> _ingredientList() {
     List<List<TextEditingController>> controllers =
         <List<TextEditingController>>[];
     int i;
@@ -94,20 +94,28 @@ class _ShowFoodState extends State<ShowFood> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              (displayNumber + 1).toString() +
-                  ". " +
-                  dataIngredient[displayNumber].ingredientName +
-                  "\t" +
-                  dataIngredient[displayNumber].amount,
-              style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'OpenSans',
-                  fontSize: 17,
-                  color: Colors.black,
-                  decoration: TextDecoration.none),
-              //
-              // style: kHintTextStyle2,
+            // Container(
+            //   margin: EdgeInsets.all(5.0),
+            //   decoration:
+            //       BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                (displayNumber + 1).toString() +
+                    ". " +
+                    dataIngredient[displayNumber].ingredientName +
+                    "\t" +
+                    dataIngredient[displayNumber].amount,
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'OpenSans',
+                    fontSize: 17,
+                    color: Colors.black,
+                    decoration: TextDecoration.none),
+                //
+                // style: kHintTextStyle2,
+              ),
             ),
             SizedBox(
               height: 5,
@@ -125,7 +133,7 @@ class _ShowFoodState extends State<ShowFood> {
     }).toList(); // แปลงเป็นlist
   }
 
-  List<Widget> _buildList2() {
+  List<Widget> _howtoList1() {
     List<List<TextEditingController>> controllers2 =
         <List<TextEditingController>>[];
     int i;
@@ -149,17 +157,34 @@ class _ShowFoodState extends State<ShowFood> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-            child: Text(
-              (displayNumber + 1).toString() +
-                  ". " +
-                  dataHowto[displayNumber].description,
-              style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'OpenSans',
-                  fontSize: 17,
-                  color: Colors.black,
-                  decoration: TextDecoration.none),
-              // style: kHintTextStyle2,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 10,
+                  child: Text("$i"),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 17),
+                    child: Text(
+                      // (displayNumber + 1).toString() +
+                      //     ". " +
+                      dataHowto[displayNumber].description,
+                      // textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'OpenSans',
+                          fontSize: 17,
+                          color: Colors.black,
+                          decoration: TextDecoration.none),
+                      // style: kHintTextStyle2,
+                    ),
+                  ),
+                ),
+              ],
             ),
             // child: Card(
             //   child: Text(
@@ -224,7 +249,7 @@ class _ShowFoodState extends State<ShowFood> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
-                      aspectRatio: 1,
+                      aspectRatio: 16 / 9,
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.network(
                             dataHowto[displayNumber].pathFile),
@@ -258,12 +283,61 @@ class _ShowFoodState extends State<ShowFood> {
     }).toList(); // แปลงเป็นlist
   }
 
+  List<Widget> _howtoList2() {
+    List<List<TextEditingController>> controllers2 =
+        <List<TextEditingController>>[];
+    int i;
+    if (0 < dataHowto.length) {
+      for (i = 0; i < dataHowto.length; i++) {
+        var ctl = <TextEditingController>[];
+        ctl.add(TextEditingController());
+        // ctl.add(TextEditingController());
+        controllers2.add(ctl);
+      }
+    }
+
+    i = 0;
+
+    return controllers2.map<Widget>((List<TextEditingController> controller) {
+      int displayNumber = i;
+      i++;
+
+      return ListTile(
+        // selected: true,
+        // leading: CircleAvatar(
+        //   child: Text("$i"),
+        // ),
+        title: Row(
+          children: [
+            CircleAvatar(
+              radius: 10,
+              child: Text("$i"),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(top: 17),
+              child: Text(dataHowto[displayNumber].description),
+            )),
+          ],
+        ),
+        // subtitle: Text("Group Sub Category"),
+        // onTap: () {},
+      );
+    }).toList(); // แปลงเป็นlist
+  }
+
   int indexHowTo = 0;
   List<String> actionDropdown = ['แก้ไขสูตรอาหาร', 'ลบสูตรอาหาร'];
+  List<bool> _isSelected = [true, false, false];
   @override
   Widget build(BuildContext context) {
-    final List<Widget> ingredient = dataIngredient == null ? [] : _buildList();
-    final List<Widget> howto = dataHowto == null ? [] : _buildList2();
+    final List<Widget> ingredient =
+        dataIngredient == null ? [] : _ingredientList();
+    final List<Widget> howto1 = dataHowto == null ? [] : _howtoList1();
+    final List<Widget> howto2 = dataHowto == null ? [] : _howtoList2();
 
     return dataFood == null
         ? Scaffold()
@@ -592,66 +666,90 @@ class _ShowFoodState extends State<ShowFood> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 40),
-                                              child: Container(
-                                                child: Row(
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        indexHowTo = 0;
-                                                        print(indexHowTo);
-                                                        setState(() {});
-                                                      },
-                                                      child: Icon(
-                                                        (indexHowTo == 0)
-                                                            ? Icons.contacts
-                                                            : Icons
-                                                                .contacts_outlined,
-                                                        color: Colors.black,
-                                                        size: 40.0,
-                                                        semanticLabel:
-                                                            'Text to announce in accessibility modes',
-                                                      ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        indexHowTo = 1;
-                                                        print(indexHowTo);
-                                                        setState(() {});
-                                                      },
-                                                      child: Icon(
-                                                        (indexHowTo == 1)
-                                                            ? Icons.contacts
-                                                            : Icons
-                                                                .contacts_outlined,
-                                                        color: Colors.black,
-                                                        size: 40.0,
-                                                        semanticLabel:
-                                                            'Text to announce in accessibility modes',
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: ToggleButtons(
+                                                children: <Widget>[
+                                                  Icon(Icons.image),
+                                                  Icon(Icons.list),
+                                                  Icon(Icons.list_alt),
+                                                ],
+                                                onPressed: (int index) {
+                                                  setState(() {
+                                                    _isSelected[0] = false;
+                                                    _isSelected[1] = false;
+                                                    _isSelected[2] = false;
+                                                    _isSelected[index] =
+                                                        !_isSelected[index];
+
+                                                    indexHowTo = index;
+                                                  });
+                                                },
+                                                isSelected: _isSelected,
+                                                borderColor: Colors.grey,
+                                                color: Colors.grey,
+                                                selectedColor: Colors.white,
+                                                fillColor: Colors.blue,
+                                                selectedBorderColor:
+                                                    Colors.grey,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
                                               ),
-                                            ),
+                                            )
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(
+                                            //       right: 40),
+                                            //   child: Container(
+                                            //     child: Row(
+                                            //       children: [
+                                            //         GestureDetector(
+                                            //           onTap: () {
+                                            //             indexHowTo = 0;
+                                            //             print(indexHowTo);
+                                            //             setState(() {});
+                                            //           },
+                                            //           child: Icon(
+                                            //             (indexHowTo == 0)
+                                            //                 ? Icons.contacts
+                                            //                 : Icons
+                                            //                     .contacts_outlined,
+                                            //             color: Colors.black,
+                                            //             size: 40.0,
+                                            //             semanticLabel:
+                                            //                 'Text to announce in accessibility modes',
+                                            //           ),
+                                            //         ),
+                                            //         GestureDetector(
+                                            //           onTap: () {
+                                            //             indexHowTo = 1;
+                                            //             print(indexHowTo);
+                                            //             setState(() {});
+                                            //           },
+                                            //           child: Icon(
+                                            //             (indexHowTo == 1)
+                                            //                 ? Icons.contacts
+                                            //                 : Icons
+                                            //                     .contacts_outlined,
+                                            //             color: Colors.black,
+                                            //             size: 40.0,
+                                            //             semanticLabel:
+                                            //                 'Text to announce in accessibility modes',
+                                            //           ),
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      (indexHowTo == 0)
-                                          ? ListView(
-                                              padding: EdgeInsets.all(0),
-                                              shrinkWrap: true,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              children: howto,
-                                            )
-                                          : Container(
-                                              height: 0,
-                                            ),
+                                      ListView(
+                                        padding: EdgeInsets.all(0),
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        children:
+                                            (indexHowTo == 0) ? howto1 : howto2,
+                                      )
                                     ],
                                   ),
                                 ),

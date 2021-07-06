@@ -924,6 +924,8 @@ class _FeedPageState extends State<FeedPage> {
             Padding(
               padding: const EdgeInsets.all(3.0),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "4.2",

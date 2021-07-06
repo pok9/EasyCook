@@ -4,6 +4,7 @@ import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:easy_cook/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

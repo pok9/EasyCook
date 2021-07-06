@@ -29,7 +29,7 @@ class _VideoItemsState extends State<VideoItems> {
     _chewieController = ChewieController(
         videoPlayerController: widget.videoPlayerController,
         // aspectRatio: 30 / 15,
-        aspectRatio: 1,
+        aspectRatio: 16 / 9,
         autoInitialize: true,
         autoPlay: widget.autoplay,
         looping: widget.looping,
@@ -47,7 +47,8 @@ class _VideoItemsState extends State<VideoItems> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    widget.videoPlayerController.dispose();
+    // widget.videoPlayerController.pause();
+    // widget.videoPlayerController.dispose();
     _chewieController.dispose();
   }
 
