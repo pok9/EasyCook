@@ -73,11 +73,16 @@ class _SlidePageState extends State<SlidePage> {
                               currentTab == 0
                                   ? Icons.home
                                   : Icons.home_outlined,
-                              color: Colors.white,
+                              color: currentTab == 0
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
                               size: 25),
                           Text('หน้าแรก',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11))
+                              style: TextStyle(
+                                  color: currentTab == 0
+                                      ? Colors.white
+                                      : Colors.grey.shade300,
+                                  fontSize: 11))
                         ],
                       ),
                     ),
@@ -97,12 +102,17 @@ class _SlidePageState extends State<SlidePage> {
                         children: [
                           Icon(
                             currentTab == 1 ? Icons.search_sharp : Icons.search,
-                            color: Colors.white,
+                            color: currentTab == 1
+                                ? Colors.white
+                                : Colors.grey.shade300,
                             size: currentTab == 1 ? 27 : 25,
                           ),
                           Text('ค้นหา',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11))
+                              style: TextStyle(
+                                  color: currentTab == 1
+                                      ? Colors.white
+                                      : Colors.grey.shade300,
+                                  fontSize: 11))
                         ],
                       ),
                     ),
@@ -129,11 +139,16 @@ class _SlidePageState extends State<SlidePage> {
                               currentTab == 2
                                   ? Icons.fastfood
                                   : Icons.fastfood_outlined,
-                              color: Colors.white,
+                              color: currentTab == 2
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
                               size: 25),
                           Text('การติดตาม',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11))
+                              style: TextStyle(
+                                  color: currentTab == 2
+                                      ? Colors.white
+                                      : Colors.grey.shade300,
+                                  fontSize: 11))
                         ],
                       ),
                     ),
@@ -152,11 +167,16 @@ class _SlidePageState extends State<SlidePage> {
                               currentTab == 3
                                   ? Icons.folder
                                   : Icons.folder_open_outlined,
-                              color: Colors.white,
+                              color: currentTab == 3
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
                               size: 25),
                           Text('คลังสูตร',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11))
+                              style: TextStyle(
+                                  color: currentTab == 3
+                                      ? Colors.white
+                                      : Colors.grey.shade300,
+                                  fontSize: 11))
                         ],
                       ),
                     ),

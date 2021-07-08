@@ -459,14 +459,14 @@ class _SearchPageState extends State<SearchPage> {
                           children: [
                             dividerTextCustom("ส่วนผสม"),
                             Container(
-                              height: 150,
+                              height: 75,
                               child: Padding(
                                 padding: const EdgeInsets.all(0.0),
                                 child: GridView.count(
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     crossAxisCount: 5,
-                                    children: List.generate(6, (index) {
+                                    children: List.generate(5, (index) {
                                       return Center(
                                         child: Column(
                                           mainAxisAlignment:
@@ -525,14 +525,14 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             dividerTextCustom("หมวดหมู่"),
                             Container(
-                              height: 150,
+                              height: 75,
                               child: Padding(
                                 padding: const EdgeInsets.all(0.0),
                                 child: GridView.count(
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     crossAxisCount: 5,
-                                    children: List.generate(6, (index) {
+                                    children: List.generate(1, (index) {
                                       return Center(
                                         child: Column(
                                           mainAxisAlignment:

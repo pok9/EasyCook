@@ -12,6 +12,7 @@ class _RecipeArchivePageState extends State<RecipeArchivePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+      drawer: Drawer(),
       body: SafeArea(
         minimum: EdgeInsets.zero,
         child: ListView(
@@ -24,8 +25,8 @@ class _RecipeArchivePageState extends State<RecipeArchivePage> {
                     "ล่าสุด",
                     style: TextStyle(
                         color: Colors.black87,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
@@ -43,7 +44,7 @@ class _RecipeArchivePageState extends State<RecipeArchivePage> {
             ),
             ListTile(
               leading: Icon(
-                Icons.folder_open,
+                Icons.restore_outlined,
                 color: Colors.black,
                 size: 30,
               ),
@@ -56,33 +57,7 @@ class _RecipeArchivePageState extends State<RecipeArchivePage> {
             ),
             ListTile(
               leading: Icon(
-                Icons.folder_open,
-                color: Colors.black,
-                size: 30,
-              ),
-              title: Text('สูตรของคุณ',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Colors.black)),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.folder_open,
-                color: Colors.black,
-                size: 30,
-              ),
-              title: Text('ประวัติการเข้าชม',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Colors.black)),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.folder_open,
+                Icons.food_bank_outlined,
                 color: Colors.black,
                 size: 30,
               ),

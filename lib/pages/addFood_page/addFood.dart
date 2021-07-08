@@ -447,166 +447,165 @@ class _AddFoodPageState extends State<AddFoodPage> {
               ),
               (imageHowto[displayNumber - 1].toString() == File('').toString())
                   ? Container()
-                  : Container(
-                      height: 350,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              // flex: 3,
-                              child: (imageHowto[displayNumber - 1]
-                                          .toString() ==
-                                      File('').toString())
-                                  ? Container()
-                                  : (lookupMimeType(
-                                              imageHowto[displayNumber - 1]
-                                                  .path)[0] ==
-                                          "i")
-                                      ? Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 20, 0, 0),
-                                          child: Container(
-                                              constraints:
-                                                  new BoxConstraints.expand(
-                                                height: 350.0,
+                  : Row(
+                      children: [
+                        Expanded(
+                            // flex: 3,
+                            child: (imageHowto[displayNumber - 1].toString() ==
+                                    File('').toString())
+                                ? Container()
+                                : (lookupMimeType(imageHowto[displayNumber - 1]
+                                            .path)[0] ==
+                                        "i")
+                                    ? Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 20, 0, 0),
+                                        child: Container(
+                                            constraints:
+                                                new BoxConstraints.expand(
+                                              height: 350.0,
+                                            ),
+                                            alignment: Alignment.bottomRight,
+                                            padding: new EdgeInsets.only(
+                                                right: 10, bottom: 8.0),
+                                            decoration: new BoxDecoration(
+                                              image: new DecorationImage(
+                                                image: FileImage(imageHowto[
+                                                    displayNumber - 1]),
+                                                fit: BoxFit.cover,
                                               ),
-                                              alignment: Alignment.bottomRight,
-                                              padding: new EdgeInsets.only(
-                                                  right: 10, bottom: 8.0),
-                                              decoration: new BoxDecoration(
-                                                image: new DecorationImage(
-                                                  image: FileImage(imageHowto[
-                                                      displayNumber - 1]),
-                                                  fit: BoxFit.cover,
+                                            ),
+                                            child: ToggleButtons(
+                                              color: Colors.black
+                                                  .withOpacity(0.60),
+                                              selectedColor: Colors.black,
+                                              selectedBorderColor: Colors.grey,
+                                              // fillColor: Color(0xFF6200EE).withOpacity(0.08),
+                                              splashColor: Colors.blue,
+                                              hoverColor: Color(0xFF6200EE)
+                                                  .withOpacity(0.04),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              constraints: BoxConstraints(
+                                                  minHeight: 30.0),
+                                              children: <Widget>[
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.camera_alt,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 1,
+                                                    ),
+                                                    Text("แก้ไข")
+                                                  ],
                                                 ),
-                                              ),
-                                              child: ToggleButtons(
-                                                color: Colors.black
-                                                    .withOpacity(0.60),
-                                                selectedColor: Colors.black,
-                                                selectedBorderColor:
-                                                    Colors.grey,
-                                                // fillColor: Color(0xFF6200EE).withOpacity(0.08),
-                                                splashColor: Colors.blue,
-                                                hoverColor: Color(0xFF6200EE)
-                                                    .withOpacity(0.04),
-                                                borderRadius:
-                                                    BorderRadius.circular(20.0),
-                                                constraints: BoxConstraints(
-                                                    minHeight: 30.0),
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.camera_alt,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 1,
-                                                      ),
-                                                      Text("แก้ไข")
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.delete),
-                                                      Text("ลบ")
-                                                    ],
-                                                  ),
-                                                ],
-                                                isSelected: [true, true],
-                                                onPressed: (int index) {
-                                                  setState(() {
-                                                    if (index == 0) {
-                                                      Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                new AddImageOrViderPage()),
-                                                      ).then((value) {
-                                                        if (value != null) {
-                                                          setState(() {
-                                                            imageHowto[
-                                                                displayNumber -
-                                                                    1] = value
-                                                                .image;
-                                                          });
-                                                        }
-                                                      });
-                                                    } else if (index == 1) {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              title: const Text(
-                                                                  'ยืนยัน'),
-                                                              content: const Text(
-                                                                  'คุณต้องการลบรูปนี้ ?'),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          context,
-                                                                          'Cancel'),
-                                                                  child:
-                                                                      const Text(
-                                                                    'ยกเลิก',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .red),
-                                                                  ),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    setState(
-                                                                        () {
-                                                                      print(
-                                                                          imageHowto);
-                                                                      imageHowto[
-                                                                          displayNumber -
-                                                                              1] = File(
-                                                                          '');
-
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    });
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    'ตกลง',
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          });
-                                                    }
-                                                  });
-                                                },
-                                              )),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 10, 0, 0),
-                                          child: Align(
-                                            alignment: Alignment.topCenter,
-                                            child: AspectRatio(
-                                              aspectRatio: 1,
-                                              child: Container(
-                                                child: VideoItems(
-                                                  videoPlayerController:
-                                                      VideoPlayerController
-                                                          .file(imageHowto[
+                                                Row(
+                                                  children: [
+                                                    Icon(Icons.delete),
+                                                    Text("ลบ")
+                                                  ],
+                                                ),
+                                              ],
+                                              isSelected: [true, true],
+                                              onPressed: (int index) {
+                                                setState(() {
+                                                  if (index == 0) {
+                                                    Navigator.push(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              new AddImageOrViderPage()),
+                                                    ).then((value) {
+                                                      if (value != null) {
+                                                        setState(() {
+                                                          imageHowto[
                                                               displayNumber -
-                                                                  1]),
-                                                  looping: false,
-                                                  autoplay: false,
-                                                ),
+                                                                  1] = value
+                                                              .image;
+                                                        });
+                                                      }
+                                                    });
+                                                  } else if (index == 1) {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            title: const Text(
+                                                                'ยืนยัน'),
+                                                            content: const Text(
+                                                                'คุณต้องการลบรูปนี้ ?'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context,
+                                                                        'Cancel'),
+                                                                child:
+                                                                    const Text(
+                                                                  'ยกเลิก',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .red),
+                                                                ),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    print(
+                                                                        imageHowto);
+                                                                    imageHowto[
+                                                                        displayNumber -
+                                                                            1] = File(
+                                                                        '');
+
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  });
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  'ตกลง',
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        });
+                                                  }
+                                                });
+                                              },
+                                            )),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 10, 0, 0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: AspectRatio(
+                                            aspectRatio: 16 / 9,
+                                            child: Container(
+                                              //     child: VideoPlayerScreen(
+                                              //       videoPlayerController:
+                                              //           VideoPlayerController.file(
+                                              //               imageHowto[
+                                              //                   displayNumber - 1]),
+                                              //       looping: false,
+                                              //       autoplay: false,
+                                              //     ),
+                                              child: VideoItems(
+                                                videoPlayerController:
+                                                    VideoPlayerController.file(
+                                                        imageHowto[
+                                                            displayNumber - 1]),
+                                                looping: false,
+                                                autoplay: false,
                                               ),
                                             ),
                                           ),
-                                        )),
-                        ],
-                      ),
+                                        ),
+                                      )),
+                      ],
                     ),
               Divider(
                 color: Colors.black,
@@ -846,7 +845,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         semanticContainer: true,
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: Container(
-                            color: Colors.grey,
+                            color: Colors.grey.shade500,
                             height: 300,
                             width: screen.width,
                             child: TextButton.icon(
@@ -881,6 +880,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           height: 350.0,
                         ),
                         alignment: Alignment.bottomRight,
+                        margin: EdgeInsets.fromLTRB(1, 0, 1, 0),
                         padding: new EdgeInsets.only(right: 10, bottom: 8.0),
                         decoration: new BoxDecoration(
                           image: new DecorationImage(

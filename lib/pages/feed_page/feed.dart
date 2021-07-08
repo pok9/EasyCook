@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
@@ -19,9 +23,25 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
+  PageController pageController = PageController();
+  int pageCount = 3;
   @override
   void initState() {
     super.initState();
+    Timer.periodic(Duration(seconds: 3), (timer) {
+      if (!pageController.hasClients) {
+        return;
+      }
+      if (pageController.page >= pageCount - 1) {
+        pageController.animateToPage(0,
+            duration: Duration(milliseconds: 1000),
+            curve: Curves.fastLinearToSlowEaseIn);
+      } else {
+        pageController.nextPage(
+            duration: Duration(milliseconds: 1000),
+            curve: Curves.fastLinearToSlowEaseIn);
+      }
+    });
     findUser();
   }
 
@@ -500,49 +520,134 @@ class _FeedPageState extends State<FeedPage> {
             ),
       body: SafeArea(
         minimum: EdgeInsets.zero,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+        child: Container(
           child: ListView(
             children: [
+              LimitedBox(
+                maxHeight: 250,
+                child: Stack(
+                  children: [
+                    PageView(
+                      controller: pageController,
+                      children: [
+                        AdsSlideCard(
+                          slideImage:
+                              "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/screen-shot-2019-03-07-at-2-49-39-pm-1551988331.png?crop=1.00xw:0.881xh;0,0.0240xh&resize=480:*",
+                        ),
+                        AdsSlideCard(
+                          slideImage:
+                              "https://mpics.mgronline.com/pics/Images/564000001183201.JPEG",
+                        ),
+                        AdsSlideCard(
+                          slideImage:
+                              "https://themomentum.co/wp-content/uploads/2020/06/TheMO-nana-komatsu-CoverWeb.png",
+                        )
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 18.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Center(
+                        child: SlideIndicator(
+                          pageController: pageController,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.count(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  crossAxisCount: 4,
+                  children: [
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/357/357002.png",
+                      name: "test1",
+                    ),
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/357/357013.png",
+                      name: "test1",
+                    ),
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/357/357001.png",
+                      name: "test1",
+                    ),
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/357/357010.png",
+                      name: "test1",
+                    ),
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/356/356991.png",
+                      name: "test1",
+                    ),
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/356/356998.png",
+                      name: "test1",
+                    ),
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/356/356989.png",
+                      name: "test1",
+                    ),
+                    MenuFeature(
+                      iconAsset:
+                          "https://image.flaticon.com/icons/png/128/356/356988.png",
+                      name: "test1",
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.grey[400],
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Thrending Now",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: LimitedBox(
+                  maxHeight: 220,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      TrendingCard(),
+                      TrendingCard(),
+                      TrendingCard(),
+                      TrendingCard(),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.grey[400],
+                height: 8,
+              ),
+              PromoteShopCard(
+                image:
+                    "https://13z1r62pqpkq29c3gw48di6l-wpengine.netdna-ssl.com/wp-content/uploads/2021/05/IMG_3701.jpg",
+              ),
+              PromoteShopCard(
+                image:
+                    "https://i2.wp.com/dudeplace.co/wp-content/uploads/2019/10/Screen-Shot-2019-10-08-at-2.48.53-PM.png?fit=1000%2C602&ssl=1",
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 3.0, bottom: 10),
-                  //   child: Text(
-                  //     "Easy Cook",
-                  //     style:
-                  //         TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
-                  // Container(
-                  //     height: 50,
-                  //     decoration: BoxDecoration(
-                  //         color: Colors.white,
-                  //         borderRadius: BorderRadius.circular(30),
-                  //         border: Border.all(color: Colors.grey)),
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: TextField(
-                  //         decoration: InputDecoration(
-                  //             hintText: "Find a food or Restaur",
-                  //             prefixIcon: Icon(
-                  //               Icons.search,
-                  //               color: Colors.indigo,
-                  //             ),
-                  //             suffixIcon: Icon(
-                  //               Icons.add_road_rounded,
-                  //               color: Colors.grey,
-                  //             ),
-                  //             focusedBorder: InputBorder.none,
-                  //             enabledBorder: InputBorder.none,
-                  //             errorBorder: InputBorder.none,
-                  //             disabledBorder: InputBorder.none),
-                  //       ),
-                  //     )),
-                  // SizedBox(
-                  //   height: 25,
-                  // ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
@@ -1348,6 +1453,140 @@ class _FeedPageState extends State<FeedPage> {
         ),
         elevation: 5,
         margin: EdgeInsets.all(10),
+      ),
+    );
+  }
+}
+
+class SlideIndicator extends AnimatedWidget {
+  final PageController pageController;
+  SlideIndicator({this.pageController}) : super(listenable: pageController);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List<Widget>.generate(3, buildIndicator),
+    );
+  }
+
+  Widget buildIndicator(int index) {
+    print("build $index ");
+
+    double select = max(
+        0.0,
+        1.0 -
+            ((pageController.page ?? pageController.initialPage) - index)
+                .abs());
+    double decrease = 10 * select;
+    return Container(
+      width: 30,
+      child: Center(
+        child: Container(
+          width: 20 - decrease,
+          height: 4,
+          decoration: BoxDecoration(
+              color: decrease == 10.0 ? Colors.blue : Colors.black,
+              borderRadius: BorderRadius.circular(10)),
+        ),
+      ),
+    );
+  }
+}
+
+class AdsSlideCard extends StatelessWidget {
+  final String slideImage;
+  AdsSlideCard({this.slideImage});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Container(
+          height: 200,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              slideImage,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MenuFeature extends StatelessWidget {
+  final String iconAsset;
+  final String name;
+  MenuFeature({this.iconAsset, this.name});
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: Image.network(iconAsset),
+            ),
+            Text(
+              name,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TrendingCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Container(
+        height: 200,
+        width: 250,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/d/dd/Ariana_Grande_Grammys_Red_Carpet_2020.png",
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PromoteShopCard extends StatelessWidget {
+  final String image;
+  PromoteShopCard({this.image});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width -
+            MediaQuery.of(context).size.width / 3,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(
+            image,
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }

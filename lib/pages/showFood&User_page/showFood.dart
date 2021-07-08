@@ -333,7 +333,22 @@ class _ShowFoodState extends State<ShowFood> {
     final List<Widget> howto2 = dataHowto == null ? [] : _howtoList2();
 
     return dataFood == null
-        ? Scaffold()
+        ? Material(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // Text(
+                //   "Initialization",
+                //   style: TextStyle(
+                //     fontSize: 32,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                SizedBox(height: 20),
+                CircularProgressIndicator()
+              ],
+            ),
+          )
         : SliverFab(
             floatingWidget: Container(
               height: 100,

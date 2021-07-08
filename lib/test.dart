@@ -1,57 +1,120 @@
-import 'package:easy_cook/pages/video_items.dart';
-import 'package:flutter/material.dart';
-import 'package:inview_notifier_list/inview_notifier_list.dart';
-import 'package:video_player/video_player.dart';
+// import 'dart:async';
 
-class test extends StatefulWidget {
-  // test({Key? key}) : super(key: key);
+// import 'package:chewie/chewie.dart';
+// import 'package:flutter/material.dart';
+// import 'package:video_player/video_player.dart';
 
-  @override
-  _testState createState() => _testState();
-}
+// void main() => runApp(VideoPlayerApp());
 
-class _testState extends State<test> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: InViewNotifierList(
-      isInViewPortCondition:
-          (double deltaTop, double deltaBottom, double vpHeight) {
-        return deltaTop < (0.5 * vpHeight) && deltaBottom > (0.5 * vpHeight);
-      },
-      itemCount: 10,
-      builder: (BuildContext context, int index) {
-        return InViewNotifierWidget(
-          id: '$index',
-          builder: (BuildContext context, bool isInView, Widget child) {
-            return Column(
-              children: [
-                Text(isInView ? '$isInView' : '$index $isInView'),
-                Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: VideoItems(
-                          videoPlayerController: VideoPlayerController.asset(
-                              'assets/images/testVideo.mp4'),
-                          looping: false,
-                          autoplay: false,
-                        ),
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 5,
-                    margin: EdgeInsets.only()),
-              ],
-            );
-          },
-        );
-      },
-    ));
-  }
-}
+// class VideoPlayerApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Video Player Demo',
+//       home: VideoPlayerScreen(),
+//     );
+//   }
+// }
+
+// class VideoPlayerScreen extends StatefulWidget {
+//   // VideoPlayerScreen({Key? key}) : super(key: key);
+
+//   @override
+//   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+// }
+
+// class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+//   ChewieController _chewieController;
+//   VideoPlayerController _controller;
+//   Future<void> _initializeVideoPlayerFuture;
+
+//   @override
+//   void initState() {
+//     // Create and store the VideoPlayerController. The VideoPlayerController
+//     // offers several different constructors to play videos from assets, files,
+//     // or the internet.
+//     _controller = VideoPlayerController.asset(
+//       'assets/images/testVideo.mp4',
+//     );
+//     _chewieController = ChewieController(
+//         videoPlayerController: _controller,
+//         // aspectRatio: 30 / 15,
+//         aspectRatio: 16 / 9,
+//         autoInitialize: true,
+//         autoPlay: false,
+//         looping: false,
+//         errorBuilder: (context, errorMessage) {
+//           return Center(
+//             child: Text(
+//               errorMessage,
+//               style: TextStyle(color: Colors.red),
+//             ),
+//           );
+//         });
+//     // Initialize the controller and store the Future for later use.
+//     _initializeVideoPlayerFuture = _controller.initialize();
+
+//     // Use the controller to loop the video.
+//     _controller.setLooping(true);
+
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     // Ensure disposing of the VideoPlayerController to free up resources.
+//     _controller.dispose();
+
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Butterfly Video'),
+//       ),
+//       // Use a FutureBuilder to display a loading spinner while waiting for the
+//       // VideoPlayerController to finish initializing.
+//       body: FutureBuilder(
+//         future: _initializeVideoPlayerFuture,
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.done) {
+//             // If the VideoPlayerController has finished initialization, use
+//             // the data it provides to limit the aspect ratio of the video.
+//             return AspectRatio(
+//               aspectRatio: _controller.value.aspectRatio,
+//               // Use the VideoPlayer widget to display the video.
+//               child: Chewie(
+//                 controller: _chewieController,
+//               ),
+//             );
+//           } else {
+//             // If the VideoPlayerController is still initializing, show a
+//             // loading spinner.
+//             return Center(child: CircularProgressIndicator());
+//           }
+//         },
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//           // Wrap the play or pause in a call to `setState`. This ensures the
+//           // correct icon is shown.
+//           setState(() {
+//             // If the video is playing, pause it.
+//             if (_controller.value.isPlaying) {
+//               _controller.pause();
+//             } else {
+//               // If the video is paused, play it.
+//               _controller.play();
+//             }
+//           });
+//         },
+//         // Display the correct icon depending on the state of the player.
+//         child: Icon(
+//           _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+//         ),
+//       ),
+//     );
+//   }
+// }
