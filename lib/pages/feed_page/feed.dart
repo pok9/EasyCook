@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/style/utiltties.dart';
@@ -108,7 +109,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color(0xFFf3f5f9),
+      backgroundColor: Colors.white70,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(
@@ -172,20 +173,55 @@ class _FeedPageState extends State<FeedPage> {
                                 color: Colors.white,
                               ),
                             ),
+                            Text(
+                              datas.data[0].nameSurname,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white70,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
                     ListTile(
                       leading: Icon(
-                        Icons.folder,
-                        color: Colors.cyan,
-                        size: 30,
+                        Icons.account_box_outlined,
+                        color: Colors.blue,
+                        size: 25,
+                      ),
+                      title: Text(
+                        'บัญชีของฉัน',
+                        style: GoogleFonts.kanit(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.w300,
+                        //     fontSize: 23,
+                        //     color: Colors.black)
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            curve: Curves.linear,
+                            type: PageTransitionType.bottomToTop,
+                            child: ProfilePage(),
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.folder_open_outlined,
+                        color: Colors.blue,
+                        size: 25,
                       ),
                       title: Text(
                         'สูตรที่ซื้อ',
                         style: GoogleFonts.kanit(
-                          fontSize: 23,
+                          fontSize: 17,
                           fontWeight: FontWeight.w300,
                         ),
                         // style: TextStyle(
@@ -196,23 +232,51 @@ class _FeedPageState extends State<FeedPage> {
                       onTap: () {},
                     ),
                     ListTile(
-                      leading: Icon(
-                        Icons.notifications,
-                        color: Colors.cyan,
-                        size: 30,
+                      leading: Stack(
+                        children: <Widget>[
+                          new Icon(
+                            Icons.notifications_none_outlined,
+                            color: Colors.blue,
+                            size: 25,
+                          ),
+                          new Positioned(
+                            right: 0,
+                            child: new Container(
+                              padding: EdgeInsets.all(1),
+                              decoration: new BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 13,
+                                minHeight: 13,
+                              ),
+                              child: new Text(
+                                '5',
+                                style: new TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 9,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       title: Text(
                         'การแจ้งเตือน',
                         style: GoogleFonts.kanit(
-                          fontSize: 23,
+                          fontSize: 17,
                           fontWeight: FontWeight.w300,
                         ),
-                        // style: TextStyle(
-                        //     fontWeight: FontWeight.w300,
-                        //     fontSize: 23,
-                        //     color: Colors.black)
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NotificationPage()),
+                        );
+                      },
                     ),
                     Divider(
                       thickness: 0.5,
@@ -221,13 +285,13 @@ class _FeedPageState extends State<FeedPage> {
                     ListTile(
                       leading: Icon(
                         Icons.settings,
-                        color: Colors.cyan,
-                        size: 30,
+                        color: Colors.blue,
+                        size: 25,
                       ),
                       title: Text(
                         'ตั้งค่า',
                         style: GoogleFonts.kanit(
-                          fontSize: 23,
+                          fontSize: 17,
                           fontWeight: FontWeight.w300,
                         ),
                         // style: TextStyle(
@@ -240,13 +304,13 @@ class _FeedPageState extends State<FeedPage> {
                     ListTile(
                       leading: Icon(
                         Icons.exit_to_app,
-                        color: Colors.cyan,
-                        size: 30,
+                        color: Colors.blue,
+                        size: 25,
                       ),
                       title: Text(
                         'ออกจากระบบ',
                         style: GoogleFonts.kanit(
-                          fontSize: 23,
+                          fontSize: 17,
                           fontWeight: FontWeight.w300,
                         ),
                         // style: TextStyle(
@@ -255,13 +319,15 @@ class _FeedPageState extends State<FeedPage> {
                         //     color: Colors.black)
                       ),
                       onTap: () async {
-                        print("ออก1");
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
                         preferences.setString("tokens", "");
-                        // Navigator.pushNamedAndRemoveUntil(context,
-                        //     '/slide-page', (Route<dynamic> route) => false);
-                        findUser();
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //     context, '/slide-page', (Route<dynamic> route) => false);
+                        // findUser();
+                        // setState(() {});
+                        this.findUser();
+                        Navigator.pop(context);
                       },
                     ),
                   ],
@@ -458,62 +524,6 @@ class _FeedPageState extends State<FeedPage> {
                         ),
                       ),
                     ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.folder,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('สูตรที่ซื้อ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.notifications,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('การแจ้งเตือน',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
-                    ),
-                    Divider(
-                      thickness: 0.5,
-                      color: Colors.grey,
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.settings,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('ตั้งค่า',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.cyan,
-                        size: 30,
-                      ),
-                      title: Text('ออกจากระบบ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 23,
-                              color: Colors.black)),
-                      onTap: () {},
-                    ),
                   ],
                 ),
               ),
@@ -532,15 +542,15 @@ class _FeedPageState extends State<FeedPage> {
                       children: [
                         AdsSlideCard(
                           slideImage:
-                              "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/screen-shot-2019-03-07-at-2-49-39-pm-1551988331.png?crop=1.00xw:0.881xh;0,0.0240xh&resize=480:*",
+                              "https://cdn.1112.com/1112/public/images/mobileapp/categories/pizza.png",
                         ),
                         AdsSlideCard(
                           slideImage:
-                              "https://mpics.mgronline.com/pics/Images/564000001183201.JPEG",
+                              "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg",
                         ),
                         AdsSlideCard(
                           slideImage:
-                              "https://themomentum.co/wp-content/uploads/2020/06/TheMO-nana-komatsu-CoverWeb.png",
+                              "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/f9f93df5-dfe0-4c78-98ff-a05380282039.jpg",
                         )
                       ],
                     ),
@@ -566,88 +576,51 @@ class _FeedPageState extends State<FeedPage> {
                   children: [
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/357/357002.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/128/5019/5019495.png",
+                      name: "test",
                     ),
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/357/357013.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/128/5019/5019428.png",
+                      name: "test",
                     ),
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/357/357001.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/128/5019/5019512.png",
+                      name: "test",
                     ),
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/357/357010.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/128/5019/5019453.png",
+                      name: "test",
                     ),
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/356/356991.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/128/5019/5019437.png",
+                      name: "test",
                     ),
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/356/356998.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/512/5019/5019349.png",
+                      name: "test",
                     ),
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/356/356989.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/128/5019/5019501.png",
+                      name: "test",
                     ),
                     MenuFeature(
                       iconAsset:
-                          "https://image.flaticon.com/icons/png/128/356/356988.png",
-                      name: "test1",
+                          "https://image.flaticon.com/icons/png/128/5018/5018006.png",
+                      name: "test",
                     ),
                   ],
                 ),
               ),
-              Container(
-                color: Colors.grey[400],
-                height: 8,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Thrending Now",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: LimitedBox(
-                  maxHeight: 220,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      TrendingCard(),
-                      TrendingCard(),
-                      TrendingCard(),
-                      TrendingCard(),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                color: Colors.grey[400],
-                height: 8,
-              ),
-              PromoteShopCard(
-                image:
-                    "https://13z1r62pqpkq29c3gw48di6l-wpengine.netdna-ssl.com/wp-content/uploads/2021/05/IMG_3701.jpg",
-              ),
-              PromoteShopCard(
-                image:
-                    "https://i2.wp.com/dudeplace.co/wp-content/uploads/2019/10/Screen-Shot-2019-10-08-at-2.48.53-PM.png?fit=1000%2C602&ssl=1",
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  DividerCutom(),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
@@ -659,11 +632,6 @@ class _FeedPageState extends State<FeedPage> {
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
                       ],
                     ),
                   ),
@@ -675,14 +643,14 @@ class _FeedPageState extends State<FeedPage> {
                           itemBuilder: (context, index) {
                             return _foodCard_1(context);
                           })),
-
+                  DividerCutom(),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "สูตรอาหารยอดนิยม",
+                          "สูตรอาหารยอดนิยม2",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -703,7 +671,7 @@ class _FeedPageState extends State<FeedPage> {
                           itemBuilder: (context, index) {
                             return _foodCard_2(context);
                           })),
-
+                  DividerCutom(),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
@@ -724,7 +692,7 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                   ),
                   ingredients(),
-
+                  DividerCutom(),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
@@ -752,7 +720,7 @@ class _FeedPageState extends State<FeedPage> {
                           itemBuilder: (context, index) {
                             return _foodCard_3(context);
                           })),
-
+                  DividerCutom(),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
@@ -781,7 +749,7 @@ class _FeedPageState extends State<FeedPage> {
                           itemBuilder: (context, index) {
                             return _introduce_safe_Card(context, index);
                           })),
-
+                  DividerCutom(),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, top: 15, bottom: 15),
@@ -825,6 +793,16 @@ class _FeedPageState extends State<FeedPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Padding DividerCutom() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: Container(
+        color: Colors.grey[300],
+        height: 8,
       ),
     );
   }
@@ -1470,7 +1448,7 @@ class SlideIndicator extends AnimatedWidget {
   }
 
   Widget buildIndicator(int index) {
-    print("build $index ");
+    // print("build $index ");
 
     double select = max(
         0.0,
@@ -1478,6 +1456,8 @@ class SlideIndicator extends AnimatedWidget {
             ((pageController.page ?? pageController.initialPage) - index)
                 .abs());
     double decrease = 10 * select;
+
+    // print("decrease = ${decrease}");
     return Container(
       width: 30,
       child: Center(
@@ -1485,7 +1465,7 @@ class SlideIndicator extends AnimatedWidget {
           width: 20 - decrease,
           height: 4,
           decoration: BoxDecoration(
-              color: decrease == 10.0 ? Colors.blue : Colors.black,
+              color: decrease > 1.0 ? Colors.blue : Colors.black,
               borderRadius: BorderRadius.circular(10)),
         ),
       ),
@@ -1542,26 +1522,6 @@ class MenuFeature extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class TrendingCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Container(
-        height: 200,
-        width: 250,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.network(
-            "https://upload.wikimedia.org/wikipedia/commons/d/dd/Ariana_Grande_Grammys_Red_Carpet_2020.png",
-            fit: BoxFit.cover,
-          ),
         ),
       ),
     );

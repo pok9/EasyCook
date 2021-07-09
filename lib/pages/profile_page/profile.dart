@@ -736,10 +736,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                       SizedBox(
                                         height: 10,
                                       ),
-                                      Divider(
-                                        thickness: 1,
-                                        color: Colors.grey,
+                                      Container(
+                                        color: Colors.grey[400],
+                                        height: 8,
                                       ),
+                                      // Divider(
+                                      //   thickness: 1,
+                                      //   color: Colors.grey,
+                                      // ),
                                     ],
                                   ),
                           ),

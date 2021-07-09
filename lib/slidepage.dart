@@ -31,6 +31,7 @@ class _SlidePageState extends State<SlidePage> {
     bool keyboardIsOpened =
         MediaQuery.of(context).viewInsets.bottom != 0.0; //ทำให้ floating หาย
     return Scaffold(
+      extendBody: true,
       body: PageStorage(bucket: bucket, child: currenetScreen),
       floatingActionButton: Opacity(
         opacity: keyboardIsOpened ? 0 : 1,
@@ -38,7 +39,7 @@ class _SlidePageState extends State<SlidePage> {
           child: Icon(Icons.add),
           onPressed: () {
             // Navigator.pushNamed(context, '/addFood-page');
-            Navigator.pushNamed(context, '/test');
+            Navigator.pushNamed(context, '/AddFoodPage');
             // Navigator.pushNamed(context, '/test2');
           },
         ),

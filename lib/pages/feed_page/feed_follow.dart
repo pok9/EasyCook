@@ -167,20 +167,55 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                   color: Colors.white,
                                 ),
                               ),
+                              Text(
+                                datas.data[0].nameSurname,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white70,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
                       ListTile(
                         leading: Icon(
-                          Icons.folder,
-                          color: Colors.cyan,
-                          size: 30,
+                          Icons.account_box_outlined,
+                          color: Colors.blue,
+                          size: 25,
+                        ),
+                        title: Text(
+                          'บัญชีของฉัน',
+                          style: GoogleFonts.kanit(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          // style: TextStyle(
+                          //     fontWeight: FontWeight.w300,
+                          //     fontSize: 23,
+                          //     color: Colors.black)
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              curve: Curves.linear,
+                              type: PageTransitionType.bottomToTop,
+                              child: ProfilePage(),
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.folder_open_outlined,
+                          color: Colors.blue,
+                          size: 25,
                         ),
                         title: Text(
                           'สูตรที่ซื้อ',
                           style: GoogleFonts.kanit(
-                            fontSize: 23,
+                            fontSize: 17,
                             fontWeight: FontWeight.w300,
                           ),
                           // style: TextStyle(
@@ -194,9 +229,9 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                         leading: Stack(
                           children: <Widget>[
                             new Icon(
-                              Icons.notifications,
-                              color: Colors.cyan,
-                              size: 30,
+                              Icons.notifications_none_outlined,
+                              color: Colors.blue,
+                              size: 25,
                             ),
                             new Positioned(
                               right: 0,
@@ -225,23 +260,10 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                         title: Text(
                           'การแจ้งเตือน',
                           style: GoogleFonts.kanit(
-                            fontSize: 23,
+                            fontSize: 17,
                             fontWeight: FontWeight.w300,
                           ),
                         ),
-                        // trailing: Container(
-                        //   width: 75,
-                        //   child: MaterialButton(
-                        //     splashColor: Colors.grey[900],
-                        //     color: Colors.red[400],
-                        //     child: Text(
-                        //       '1,000',
-                        //       style: TextStyle(color: Colors.white),
-                        //     ),
-                        //     shape: StadiumBorder(),
-                        //     onPressed: () {},
-                        //   ),
-                        // ),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -257,13 +279,13 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                       ListTile(
                         leading: Icon(
                           Icons.settings,
-                          color: Colors.cyan,
-                          size: 30,
+                          color: Colors.blue,
+                          size: 25,
                         ),
                         title: Text(
                           'ตั้งค่า',
                           style: GoogleFonts.kanit(
-                            fontSize: 23,
+                            fontSize: 17,
                             fontWeight: FontWeight.w300,
                           ),
                           // style: TextStyle(
@@ -276,13 +298,13 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                       ListTile(
                         leading: Icon(
                           Icons.exit_to_app,
-                          color: Colors.cyan,
-                          size: 30,
+                          color: Colors.blue,
+                          size: 25,
                         ),
                         title: Text(
                           'ออกจากระบบ',
                           style: GoogleFonts.kanit(
-                            fontSize: 23,
+                            fontSize: 17,
                             fontWeight: FontWeight.w300,
                           ),
                           // style: TextStyle(
@@ -546,14 +568,18 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                                         )
                                       ],
                                     ),
-                                  )
+                                  ),
+                                  Container(
+                                    color: Colors.grey[400],
+                                    height: 8,
+                                  ),
                                 ],
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0.0),
                               ),
-                              elevation: 5,
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10)),
+                              // elevation: 5,
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
                         )),
     );
   }

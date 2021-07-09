@@ -131,11 +131,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
-              child: IconButton(
-                icon: const Icon(Icons.reorder),
-                color: Colors.black,
-                onPressed: () {},
-              ),
+              child: Icon(Icons.import_export_outlined),
             ),
             Expanded(
               child: TextField(
@@ -218,11 +214,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: IconButton(
-                      icon: const Icon(Icons.reorder),
-                      color: Colors.black,
-                      onPressed: () {},
-                    ),
+                    child: Icon(Icons.import_export_outlined),
                   ),
                   Expanded(
                     flex: 5,
