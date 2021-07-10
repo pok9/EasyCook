@@ -70,7 +70,7 @@ class _AddImageOrViderPageState extends State<AddImageOrViderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('เพิ่มรูป'),
+        title: Text('เพิ่มรูป & วิดีโอ'),
         // actions: [
         //   IconButton(
         //     icon: Icon(Icons.add),
@@ -78,115 +78,87 @@ class _AddImageOrViderPageState extends State<AddImageOrViderPage> {
         //   ),
         // ],
       ),
-      body: Column(
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FlatButton(
-              onPressed: pickCropImage,
-              minWidth: 200,
-              color: Color(0xffc69f50),
-              child: Text(
-                'Pick&Crop',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              )),
-          GestureDetector(
-            onTap: captureImage,
-            child: Container(
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  'ถ่ายรูปภาพ ',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: ElevatedButton(
+                      onPressed: pickCropImage,
+                      child: Text(
+                        'รูปภาพในมือถือ',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
                 ),
               ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () async {
-              FilePickerResult result =
-                  await FilePicker.platform.pickFiles(type: FileType.video);
+              // FlatButton(
+              //     onPressed: pickCropImage,
+              //     minWidth: 200,
+              //     color: Color(0xffc69f50),
+              //     child: Text(
+              //       'Pick&Crop',
+              //       style: TextStyle(color: Colors.white, fontSize: 20),
+              //     )),
 
-              if (result != null) {
-                PlatformFile file = result.files.first;
-
-                AddImage addImage = new AddImage(File(file.path));
-                Navigator.pop(context, addImage);
-                // print(file.name);
-                // print(file.bytes);
-                // print(file.size);
-                // print(file.extension);
-                // print(file.path);
-              } else {
-                // User canceled the picker
-              }
-
-              // pickedFile =
-              //     await _picker.getVideo(source: ImageSource.gallery);
-              // // img = await ImagePicker().getImage(
-              // //     source: ImageSource.gallery);
-              // img = File(pickedFile.path);
-              // // String bit = base64Encode(img.readAsBytesSync());
-              // // image.text = bit;
-
-              // print(img);
-              // AddImage addImage = new AddImage(
-              //   img,
-              //   "video"
-              // );
-              // Navigator.pop(context, addImage);
-              // setState(() {});
-            },
-            child: Container(
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  'เพิ่ม วิดีโอ จากคลัง',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: ElevatedButton(
+                      onPressed: captureImage,
+                      child: Text(
+                        'ถ่ายรูปภาพ',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
                 ),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          GestureDetector(
-            onTap: () async {
-              var image = await picker.getVideo(source: ImageSource.camera);
 
-              AddImage addImage = new AddImage(File(image.path));
-              Navigator.pop(context, addImage);
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        FilePickerResult result = await FilePicker.platform
+                            .pickFiles(type: FileType.video);
 
-              // pickedFile =
-              //     await _picker.getVideo(source: ImageSource.camera);
+                        if (result != null) {
+                          PlatformFile file = result.files.first;
 
-              // img = File(pickedFile.path);
-
-              // print(img);
-              // // print("pickedFile = "+pickedFile.);
-              // AddImage addImage = new AddImage(
-              //   img,
-              //   "video"
-              // );
-              // Navigator.pop(context, addImage);
-              // setState(() {});
-            },
-            child: Container(
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  'ถ่ายวิดีโอ ',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                          AddImage addImage = new AddImage(File(file.path));
+                          Navigator.pop(context, addImage);
+                        } else {}
+                      },
+                      child: Text(
+                        'เพิ่ม วิดีโอ จากคลัง',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
                 ),
               ),
-            ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        var image =
+                            await picker.getVideo(source: ImageSource.camera);
+
+                        AddImage addImage = new AddImage(File(image.path));
+                        Navigator.pop(context, addImage);
+                      },
+                      child: Text(
+                        'ถ่ายวิดีโอ',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -71,39 +71,67 @@ class _AddImagePageState extends State<AddImagePage> {
     return Scaffold(
       backgroundColor: Color(0xffe5ded6),
       appBar: AppBar(
-        backgroundColor: Color(0xffc69f50),
-        centerTitle: true,
+        // backgroundColor: Color(0xffc69f50),
+        // centerTitle: true,
         title: Text(
-          'Pick & Crop Image',
+          'เพิ่มรูป',
         ),
       ),
-      body: Column(
-        children: [
-          // imageFile == null ? Container() : Image.file(imageFile),
-          FlatButton(
-              onPressed: pickCropImage,
-              minWidth: 200,
-              color: Color(0xffc69f50),
-              child: Text(
-                'Pick&Crop',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              )),
-          GestureDetector(
-            onTap: captureImage,
-            child: Container(
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  'ถ่ายรูปภาพ ',
-                  style: TextStyle(
-                    color: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  // imageFile == null ? Container() : Image.file(imageFile),
+                  // FlatButton(
+                  //     onPressed: pickCropImage,
+                  //     minWidth: 200,
+                  //     color: Color(0xffc69f50),
+                  //     child: Text(
+                  //       'Pick&Crop',
+                  //       style: TextStyle(color: Colors.white, fontSize: 20),
+                  //     )),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 50,
+                    child: ElevatedButton(
+                        onPressed: pickCropImage,
+                        child: Text(
+                          'รูปภาพในมือถือ',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        )),
                   ),
-                ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 50,
+                    child: ElevatedButton(
+                        onPressed: captureImage,
+                        child: Text(
+                          'ถ่ายรูปภาพ',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        )),
+                  ),
+                  // GestureDetector(
+                  //   onTap: captureImage,
+                  //   child: Container(
+                  //     color: Colors.blue,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(16),
+                  //       child: Text(
+                  //         'ถ่ายรูปภาพ ',
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

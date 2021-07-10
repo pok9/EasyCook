@@ -8,6 +8,7 @@ import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -273,7 +274,7 @@ class _SearchPageState extends State<SearchPage> {
                           : (dataRecipe == null)
                               ? Container()
                               : Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: GestureDetector(
                                     onTap: () {
                                       print("index = " + index.toString());
@@ -289,7 +290,7 @@ class _SearchPageState extends State<SearchPage> {
                                       child: FittedBox(
                                         child: Material(
                                           color: Colors.white,
-                                          elevation: 14.0,
+                                          elevation: 5.0,
                                           borderRadius:
                                               BorderRadius.circular(24.0),
                                           shadowColor: Color(0x802196F3),
@@ -675,58 +676,88 @@ Widget myDetailsContainer3(List<Datum> data, int index) {
           style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
         )),
       ),
-      Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Container(
-            child: Row(
-          children: <Widget>[
-            Container(
-                child: Text(
-              dataRecipe[index].score.toString(),
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
+      Row(
+        children: [
+          Container(
+              child: Text(
+            dataRecipe[index].score.toString(),
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 18.0,
             ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
+          )),
+          RatingBarIndicator(
+            rating: dataRecipe[index].score.toDouble(),
+            itemBuilder: (context, index) => Icon(
+              Icons.star,
+              color: Colors.blue,
             ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
+            itemCount: 5,
+            itemSize: 15,
+            direction: Axis.horizontal,
+          ),
+          Container(
+              child: Text(
+            "(50)",
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 18.0,
             ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-                child: Text(
-              "(50)",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-          ],
-        )),
+          )),
+        ],
       ),
+      // Padding(
+      //   padding: const EdgeInsets.only(left: 8.0),
+      //   child: Container(
+      //       child: Row(
+      //     children: <Widget>[
+      //       Container(
+      //           child: Text(
+      //         dataRecipe[index].score.toString(),
+      //         style: TextStyle(
+      //           color: Colors.black54,
+      //           fontSize: 18.0,
+      //         ),
+      //       )),
+      //       Container(
+      //         child: Icon(
+      //           FontAwesomeIcons.solidStar,
+      //           color: Colors.amber,
+      //           size: 15.0,
+      //         ),
+      //       ),
+      //       Container(
+      //         child: Icon(
+      //           FontAwesomeIcons.solidStar,
+      //           color: Colors.amber,
+      //           size: 15.0,
+      //         ),
+      //       ),
+      //       Container(
+      //         child: Icon(
+      //           FontAwesomeIcons.solidStar,
+      //           color: Colors.amber,
+      //           size: 15.0,
+      //         ),
+      //       ),
+      //       Container(
+      //         child: Icon(
+      //           FontAwesomeIcons.solidStarHalf,
+      //           color: Colors.amber,
+      //           size: 15.0,
+      //         ),
+      //       ),
+      //       Container(
+      //           child: Text(
+      //         "(50)",
+      //         style: TextStyle(
+      //           color: Colors.black54,
+      //           fontSize: 18.0,
+      //         ),
+      //       )),
+      //     ],
+      //   )),
+      // ),
       SizedBox(
         height: 50,
       ),
@@ -744,9 +775,18 @@ Widget myDetailsContainer3(List<Datum> data, int index) {
           new SizedBox(
             width: 10.0,
           ),
-          new Text(
-            dataRecipe[index].aliasName,
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              new Text(
+                dataRecipe[index].aliasName,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              new Text(
+                dataRecipe[index].nameSurname,
+                style: TextStyle(fontWeight: FontWeight.normal),
+              ),
+            ],
           )
         ],
       ),

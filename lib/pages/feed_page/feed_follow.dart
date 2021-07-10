@@ -316,10 +316,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
                           SharedPreferences preferences =
                               await SharedPreferences.getInstance();
                           preferences.setString("tokens", "");
-                          // Navigator.pushNamedAndRemoveUntil(
-                          //     context, '/slide-page', (Route<dynamic> route) => false);
-                          // findUser();
-                          // setState(() {});
+
                           this.findUser();
                           Navigator.pop(context);
                         },

@@ -7,15 +7,33 @@ import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SlidePage extends StatefulWidget {
-  SlidePage({Key key}) : super(key: key);
+  SlidePage();
+  // SlidePage({Key key}) : super(key: key);
 
   @override
   _SlidePageState createState() => _SlidePageState();
 }
 
 class _SlidePageState extends State<SlidePage> {
+  @override
+  void initState() {
+    super.initState();
+    // findUser();
+    print("slidePage ======");
+  }
+
+  // String token = ""; //โทเคน
+  // Future<Null> findUser() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  //   setState(() {
+  //     token = preferences.getString("tokens");
+  //   });
+  // }
+
   int currentTab = 0;
   final List screens = [
     FeedPage(),
@@ -33,17 +51,19 @@ class _SlidePageState extends State<SlidePage> {
     return Scaffold(
       extendBody: true,
       body: PageStorage(bucket: bucket, child: currenetScreen),
-      floatingActionButton: Opacity(
-        opacity: keyboardIsOpened ? 0 : 1,
-        child: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            // Navigator.pushNamed(context, '/addFood-page');
-            Navigator.pushNamed(context, '/AddFoodPage');
-            // Navigator.pushNamed(context, '/test2');
-          },
-        ),
-      ),
+      floatingActionButton: (false)
+          ? null
+          : Opacity(
+              opacity: keyboardIsOpened ? 0 : 1,
+              child: FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () {
+                  // Navigator.pushNamed(context, '/addFood-page');
+                  Navigator.pushNamed(context, '/AddFoodPage');
+                  // Navigator.pushNamed(context, '/test2');
+                },
+              ),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Colors.blue,
@@ -52,7 +72,9 @@ class _SlidePageState extends State<SlidePage> {
         child: Container(
           height: 50,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: (false)
+                ? MainAxisAlignment.spaceAround
+                : MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
