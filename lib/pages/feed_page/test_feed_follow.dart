@@ -111,6 +111,7 @@ class _test_FeedState extends State<test_FeedFollowPage> {
       ),
       drawer: Container(
         width: deviceSize.width - 45,
+       
         child: Drawer(
           child: Container(
             child: (token != "" && dataUser != null)
@@ -327,18 +328,19 @@ class _test_FeedState extends State<test_FeedFollowPage> {
                     children: [
                       GestureDetector(
                         onTap: () {},
-                        child: DrawerHeader(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: new NetworkImage(
-                                  "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                              fit: BoxFit.cover,
+                        child: Container(
+                          height: 210,
+                          child: DrawerHeader(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: new NetworkImage(
+                                    "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   TextButton(
@@ -391,17 +393,18 @@ class _test_FeedState extends State<test_FeedFollowPage> {
                                                   horizontal: 43)),
                                           textStyle: MaterialStateProperty.all(
                                               TextStyle(fontSize: 15)))),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: TextButton(onPressed: (){}, child: Text('ลืมรหัสผ่าน',style: TextStyle(fontSize: 14,color: Colors.white),)),
+                                                  ),
+                                                ],
+                                              )
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                                child: Column(
-                                  children: [
-                                    Row(),
-                                  ],
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

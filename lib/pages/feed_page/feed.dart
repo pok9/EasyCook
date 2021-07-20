@@ -341,186 +341,78 @@ class _FeedPageState extends State<FeedPage> {
                   children: [
                     GestureDetector(
                       onTap: () {},
-                      child: DrawerHeader(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: new NetworkImage(
-                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                            fit: BoxFit.cover,
+                      child: Container(
+                        height: 210,
+                        child: DrawerHeader(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: new NetworkImage(
+                                  "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return LoginPage();
-                                          }).then((value) {
-                                        findUser();
-                                        // Navigator.pop(context);
-                                      });
-                                      // Alert(
-                                      //     context: context,
-                                      //     title: "เข้าสู่ระบบ",
-                                      //     content: Column(
-                                      //       children: <Widget>[
-                                      //         Form(
-                                      //           key: _formKey,
-                                      //           child: Column(
-                                      //             crossAxisAlignment:
-                                      //                 CrossAxisAlignment.start,
-                                      //             children: <Widget>[
-                                      //               TextFormField(
-                                      //                 validator: (value) {
-                                      //                   if (value.isEmpty) {
-                                      //                     return "กรุณากรอก อีเมล";
-                                      //                   }
-
-                                      //                   return null;
-                                      //                 },
-                                      //                 controller: _ctrlEmail,
-                                      //                 decoration:
-                                      //                     InputDecoration(
-                                      //                   icon: Icon(Icons
-                                      //                       .account_circle),
-                                      //                   labelText: 'อีเมล',
-                                      //                 ),
-                                      //               ),
-                                      //               TextFormField(
-                                      //                 validator: (value) {
-                                      //                   if (value.isEmpty) {
-                                      //                     return 'กรุณากรอก รหัสผ่าน';
-                                      //                   }
-
-                                      //                   return null;
-                                      //                 },
-                                      //                 controller: _ctrlPassword,
-                                      //                 obscureText: true,
-                                      //                 decoration:
-                                      //                     InputDecoration(
-                                      //                   icon: Icon(Icons.lock),
-                                      //                   labelText: 'รหัสผ่าน',
-                                      //                 ),
-                                      //               ),
-                                      //             ],
-                                      //           ),
-                                      //         ),
-                                      //         SizedBox(
-                                      //           height: 25,
-                                      //         ),
-                                      //         Padding(
-                                      //           padding:
-                                      //               const EdgeInsets.all(8.0),
-                                      //           child: RoundedLoadingButton(
-                                      //             child: Text('เข้าสู่ระบบ',
-                                      //                 style: TextStyle(
-                                      //                     color: Colors.white)),
-                                      //             controller: _btnController,
-                                      //             onPressed: () async {
-                                      //               if (_formKey.currentState
-                                      //                   .validate()) {
-                                      //                 print(_ctrlEmail.text);
-                                      //                 print(_ctrlPassword.text);
-
-                                      //                 await logins(
-                                      //                     _ctrlEmail.text,
-                                      //                     _ctrlPassword.text);
-
-                                      //                 print(login.success);
-                                      //                 print(login.message);
-
-                                      //                 if (login.success == 1) {
-                                      //                   _btnController
-                                      //                       .success();
-                                      //                   _ctrlEmail.text = "";
-                                      //                   _ctrlPassword.text = "";
-                                      //                   SharedPreferences
-                                      //                       preferences =
-                                      //                       await SharedPreferences
-                                      //                           .getInstance();
-                                      //                   preferences.setString(
-                                      //                       "tokens",
-                                      //                       login.token);
-                                      //                   findUser();
-                                      //                   Navigator.pop(context);
-                                      //                 } else {
-                                      //                   _btnController.reset();
-                                      //                 }
-                                      //               } else {
-                                      //                 _btnController.reset();
-                                      //                 print("noooooooo");
-                                      //                 print(login.success);
-                                      //               }
-                                      //             },
-                                      //           ),
-                                      //         )
-                                      //       ],
-                                      //     ),
-                                      //     buttons: [
-                                      //       DialogButton(
-                                      //         onPressed: () =>
-                                      //             Navigator.pop(context),
-                                      //         child: Text(
-                                      //           "Facebook",
-                                      //           style: TextStyle(
-                                      //               color: Colors.white,
-                                      //               fontSize: 20),
-                                      //         ),
-                                      //       ),
-                                      //     ]).show();
-                                    },
-                                    child: Text(
-                                      'เข้าสู่ระบบ',
-                                    ),
-                                    style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            BorderSide(
-                                                width: 2, color: Colors.white)),
-                                        foregroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.white),
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 50)),
-                                        textStyle: MaterialStateProperty.all(
-                                            TextStyle(fontSize: 15)))),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/register-page');
-                                    },
-                                    child: Text(
-                                      'สมัครสมาชิก',
-                                    ),
-                                    style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            BorderSide(
-                                                width: 2, color: Colors.white)),
-                                        foregroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.white),
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 43)),
-                                        textStyle: MaterialStateProperty.all(
-                                            TextStyle(fontSize: 15)))),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                              child: Column(
-                                children: [
-                                  Row(),
-                                ],
-                              ),
-                            ),
-                          ],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) {
+                                          return LoginPage();
+                                        }).then((value) {
+                                      findUser();
+                                      // Navigator.pop(context);
+                                    });
+                                   
+                                  },
+                                  child: Text(
+                                    'เข้าสู่ระบบ',
+                                  ),
+                                  style: ButtonStyle(
+                                      side: MaterialStateProperty.all(
+                                          BorderSide(
+                                              width: 2, color: Colors.white)),
+                                      foregroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.white),
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 50)),
+                                      textStyle: MaterialStateProperty.all(
+                                          TextStyle(fontSize: 15)))),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, '/register-page');
+                                  },
+                                  child: Text(
+                                    'สมัครสมาชิก',
+                                  ),
+                                  style: ButtonStyle(
+                                      side: MaterialStateProperty.all(
+                                          BorderSide(
+                                              width: 2, color: Colors.white)),
+                                      foregroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.white),
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 43)),
+                                      textStyle: MaterialStateProperty.all(
+                                          TextStyle(fontSize: 15)))),
+                                           Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: TextButton(onPressed: (){}, child: Text('ลืมรหัสผ่าน',style: TextStyle(fontSize: 14,color: Colors.white),)),
+                                                  ),
+                                                ],
+                                              )
+                            ],
+                            
+                          ),
                         ),
                       ),
                     ),
