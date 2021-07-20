@@ -9,6 +9,7 @@ import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
 
 import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:easy_cook/pages/addFood_page/addImageOrVideo.dart';
+import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 // CreatePostModel
   var mimeTypeData;
   Future<CreatePostModel> createPosts(
-      String tokens, File image, String recipe_name, String price) async {
+      String tokens, File image, String recipe_name, String price,String suitable_for,String take_time,String food_category,String description) async {
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/createPost";
 
     mimeTypeData =
@@ -50,6 +51,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
     imageUploadRequest.fields['token'] = tokens;
     imageUploadRequest.fields['recipe_name'] = recipe_name;
     imageUploadRequest.fields['price'] = price;
+    imageUploadRequest.fields['suitable_for'] = suitable_for;
+    imageUploadRequest.fields['take_time'] = take_time;
+    imageUploadRequest.fields['food_category'] = food_category;
+    imageUploadRequest.fields['description'] = description;
 
     print("error0000000");
     var streamedResponse = await imageUploadRequest.send();
@@ -190,6 +195,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
+      print("token => "+this.token);
     });
   }
   //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
@@ -721,7 +727,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
                   //createPost
                   final CreatePostModel postsData = await createPosts(token,
-                      addImage[0].image, _ctrlNameFood.text, _ctrlPrice.text);
+                      addImage[0].image, _ctrlNameFood.text, _ctrlPrice.text,valueChoosePeople,valueChooseTime,valueChooseFood,_ctrlExplain.text);
 
                   // print(postsData.success);
                   // print(postsData.recipeId);
@@ -774,6 +780,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       path_file,
                       type_file,
                       token);
+
+                      print("postsData.success = ${postsData.success} ingredientsData.success = ${ingredientsData.success} howtoData.success = ${howtoData.success}");
 
                   if (postsData.success == 1 &&
                       ingredientsData.success == 1 &&
@@ -1219,6 +1227,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     // TODO: implement initState
     super.initState();
     findUser();
+    
     ingredient_row = widget.ingredient_row_start;
     howto_row = widget.howto_row_start;
   }

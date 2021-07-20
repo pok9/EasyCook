@@ -679,7 +679,7 @@ class _FeedPageState extends State<FeedPage> {
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 200,
-                      mainAxisExtent: 281,
+                      mainAxisExtent: 262,
                       // childAspectRatio: (deviceSize.width/deviceSize.height),
                       // crossAxisSpacing: 0,
                       // mainAxisSpacing: 0
@@ -750,8 +750,8 @@ class _FeedPageState extends State<FeedPage> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "ผัดกะเพราหมูสับไข้ดาวไม่สุกพิเศษwefwefwefascascascsa",
-                                      maxLines: 2,
+                                      "ผัดกะเพราหมูสับไข่ดาวไม่สุกพิเศษwefwefwefascascascsa",
+                                      maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: TextStyle(color: Colors.black),
@@ -760,6 +760,9 @@ class _FeedPageState extends State<FeedPage> {
                                 ],
                               ),
                             ),
+
+                            // SizedBox(height: 19,),
+                            
                             Container(
                               height: 164,
                               // width: 500,

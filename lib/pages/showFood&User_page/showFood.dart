@@ -461,7 +461,7 @@ class _ShowFoodState extends State<ShowFood> {
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                'Now, the row first asks the logo to lay out, and then asks the icon to lay out. The Icon, like the logo, is happy to take on a reasonable size (also 24 pixels, not coincidentally, since both FlutterLogo and Icon honor the ambient IconTheme). This leaves some room left over, and now the row tells the text exactly how wide to be: the exact width of the remaining space. The text, now happy to comply to a reasonable request, wraps the text within that width, and you end up with a paragraph split over several lines.',
+                                                dataFood.description,
                                                 textAlign: TextAlign.justify,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
@@ -526,7 +526,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                 size: 30.0,
                                               ),
                                               Text(
-                                                'มากกว่า 100 คน',
+                                                dataFood.suitableFor,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontFamily: 'OpenSans',
@@ -546,7 +546,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                 size: 30.0,
                                               ),
                                               Text(
-                                                'มากกว่า 2 ชั่วโมง',
+                                                dataFood.takeTime,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontFamily: 'OpenSans',
@@ -566,7 +566,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                 size: 30.0,
                                               ),
                                               Text(
-                                                'เมนูน้ำสุขภาพ',
+                                                dataFood.foodCategory,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontFamily: 'OpenSans',
