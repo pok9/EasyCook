@@ -4,6 +4,7 @@ import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login_page/login.dart';
+import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
@@ -224,7 +225,13 @@ class _test_FeedState extends State<test_FeedFollowPage> {
                           //     fontSize: 23,
                           //     color: Colors.black)
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PurchasedRecipes()),
+                          );
+                        },
                       ),
                       ListTile(
                         leading: Stack(
