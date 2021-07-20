@@ -4,6 +4,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/search_page/category/category.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -464,31 +465,22 @@ class _SearchPageState extends State<SearchPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(0.0),
                                 child: GridView.count(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    crossAxisCount: 5,
-                                    children: List.generate(5, (index) {
-                                      return Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            GestureDetector(
-                                              child: CircleAvatar(
-                                                radius: 20,
-                                                backgroundColor: Colors.black,
-                                                backgroundImage:
-                                                    AssetImage(iconFood[index]),
-                                              ),
-                                            ),
-                                            Text(
-                                              menuFood[index],
-                                              // style: Theme.of(context).textTheme.headline5,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    })),
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  crossAxisCount: 5,
+                                  children: [
+                                    MenuFeature(
+                                      iconAsset:
+                                          "https://image.flaticon.com/icons/png/128/5019/5019495.png",
+                                      name: "เมนูน้ำ",
+                                    ),
+                                    MenuFeature(
+                                      iconAsset:
+                                          "https://image.flaticon.com/icons/png/128/5019/5019495.png",
+                                      name: "เมนูสุขภาพ",
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             dividerTextCustom("หมวดหมู่"),
@@ -792,4 +784,44 @@ Widget myDetailsContainer3(List<Datum> data, int index) {
       ),
     ],
   );
+}
+
+class MenuFeature extends StatelessWidget {
+  final String iconAsset;
+  final String name;
+  MenuFeature({this.iconAsset, this.name});
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        print(name);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Category(
+                    categoryName: name,
+                  )),
+        );
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: Image.network(iconAsset),
+            ),
+            Text(
+              name,
+              // style: TextStyle(fontSize: 16, ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
