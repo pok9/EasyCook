@@ -109,7 +109,8 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white70,
+      // backgroundColor: Colors.white70,
+      backgroundColor: Color(0xFFf3f5f9),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(
@@ -364,7 +365,6 @@ class _FeedPageState extends State<FeedPage> {
                                       findUser();
                                       // Navigator.pop(context);
                                     });
-                                   
                                   },
                                   child: Text(
                                     'เข้าสู่ระบบ',
@@ -401,17 +401,23 @@ class _FeedPageState extends State<FeedPage> {
                                               vertical: 10, horizontal: 43)),
                                       textStyle: MaterialStateProperty.all(
                                           TextStyle(fontSize: 15)))),
-                                           Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: TextButton(onPressed: (){}, child: Text('ลืมรหัสผ่าน',style: TextStyle(fontSize: 14,color: Colors.white),)),
-                                                  ),
-                                                ],
-                                              )
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextButton(
+                                        onPressed: () {},
+                                        child: Text(
+                                          'ลืมรหัสผ่าน',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white),
+                                        )),
+                                  ),
+                                ],
+                              )
                             ],
-                            
                           ),
                         ),
                       ),
@@ -656,25 +662,119 @@ class _FeedPageState extends State<FeedPage> {
                   ),
                 ),
 
-                Container(
-                    // height: 580,
-                    child: ListView.builder(
-                        // scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return _foodCard_4(context);
-                        })),
-
                 // Container(
-                //     height: 330,
+                //     // height: 580,
                 //     child: ListView.builder(
-                //         scrollDirection: Axis.vertical,
-                //         itemCount: 5,
+                //         // scrollDirection: Axis.vertical,
+                //         shrinkWrap: true,
+                //         physics: NeverScrollableScrollPhysics(),
+                //         itemCount: 3,
                 //         itemBuilder: (context, index) {
-                //           return _foodCardSlim_1(context);
+                //           return _foodCard_4(context);
                 //         })),
+
+                GridView.builder(
+                    // scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      mainAxisExtent: 281,
+                      // childAspectRatio: (deviceSize.width/deviceSize.height),
+                      // crossAxisSpacing: 0,
+                      // mainAxisSpacing: 0
+                    ),
+                    itemCount: 5,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      new Container(
+                                        height: 30.0,
+                                        width: 30.0,
+                                        decoration: new BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: new DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: new NetworkImage(
+                                                    "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"))),
+                                      ),
+                                      new SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 8, 0, 8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            new Text(
+                                              "test",
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            ),
+                                            new Text(
+                                              "1 นาทีที่แล้ว",
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  IconButton(
+                                      icon: Icon(Icons.more_vert),
+                                      onPressed: () {
+                                        // print("more_vert" + index.toString());
+                                      })
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(4, 0, 0, 4),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "ผัดกะเพราหมูสับไข้ดาวไม่สุกพิเศษwefwefwefascascascsa",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 164,
+                              // width: 500,
+                              decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(50),
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
+                                      fit: BoxFit.cover)),
+                            ),
+                          ],
+                        ),
+                      
+                      );
+                    }),
               ],
             ),
             SizedBox(
@@ -1194,132 +1294,6 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _foodCard_4(context) {
-    return Container(
-      // height: 500,
-      width: 280,
-      child: Card(
-        semanticContainer: true,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      new Container(
-                        height: 30.0,
-                        width: 30.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    "https://placeimg.com/640/480/any"))),
-                      ),
-                      new SizedBox(
-                        width: 10.0,
-                      ),
-                      new Text(
-                        "เซฟปก",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.more_vert),
-                      onPressed: () {
-                        // print("more_vert" + index.toString());
-                      })
-                ],
-              ),
-            ),
-            Container(
-              height: 310,
-              // width: 500,
-              decoration: BoxDecoration(
-                  // borderRadius: BorderRadius.circular(50),
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
-                      fit: BoxFit.cover)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      "ผัดกะเพราพิเศษใส่asdasdasdaasasไข่สูตasdasdรผีบอกณขอนแก่นasdasdasdasasdasasdasdasd",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                children: [
-                  Text(
-                    "4.2",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        color: Theme.of(context).primaryColor,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Theme.of(context).primaryColor,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Theme.of(context).primaryColor,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star_half,
-                        color: Theme.of(context).primaryColor,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star_border,
-                        color: Theme.of(context).primaryColor,
-                        size: 16.0,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "(12)",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        elevation: 5,
-        margin: EdgeInsets.all(10),
       ),
     );
   }
