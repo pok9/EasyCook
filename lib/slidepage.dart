@@ -1,5 +1,6 @@
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
+import 'package:easy_cook/pages/feed_page/test_feed_follow.dart';
 import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -151,7 +152,7 @@ class _SlidePageState extends State<SlidePage> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          currenetScreen = FeedFollowPage();
+                          currenetScreen = test_FeedFollowPage();
                           currentTab = 2;
                         });
                       },

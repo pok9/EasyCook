@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/register2-page': (context) => RegisterPage2(),
         '/register3-page': (context) => RegisterPage3(),
         // '/login-page': (context) => LoginPage(),
-        '/feedFollow-page': (context) => FeedFollowPage(),
+        // '/feedFollow-page': (context) => FeedFollowPage(),
         '/search-page': (context) => SearchPage(),
         // '/searchRecipeName' : (context) => SearchRecipeName(),
         // '/slide-page': (context) => SlidePage(),
