@@ -421,14 +421,17 @@ class _test_FeedState extends State<test_FeedFollowPage> {
                     CircularProgressIndicator()
                   ],
                 ))
-                :ListView.builder(
-                        // scrollDirection: Axis.vertical,
-                        // shrinkWrap: true,
-                        // physics: NeverScrollableScrollPhysics(),
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return _feedCard(context);
-                        })
+                :RefreshIndicator(
+                  onRefresh: findUser,
+                  child: ListView.builder(
+                          // scrollDirection: Axis.vertical,
+                          // shrinkWrap: true,
+                          // physics: NeverScrollableScrollPhysics(),
+                          itemCount: newfeed.feeds.length,
+                          itemBuilder: (context, index) {
+                            return _feedCard(context,newfeed.feeds[index].profileImage,newfeed.feeds[index].aliasName,newfeed.feeds[index].image,newfeed.feeds[index].recipeName);
+                          }),
+                )
               // : ListView.builder(
               //     itemCount: newfeed.feeds.length,
               //     itemBuilder: (context, index) => index < 0
@@ -588,10 +591,8 @@ class _test_FeedState extends State<test_FeedFollowPage> {
               //           )),
     );
   }
-}
 
-
-Widget _feedCard(context) {
+  Widget _feedCard(context,imageProfile,nameProfile,imageFood,nameFood) {
     return Container(
       // height: 500,
       width: 280,
@@ -615,7 +616,7 @@ Widget _feedCard(context) {
                             image: new DecorationImage(
                                 fit: BoxFit.fill,
                                 image: new NetworkImage(
-                                    "https://placeimg.com/640/480/any"))),
+                                    imageProfile))),
                       ),
                       new SizedBox(
                         width: 10.0,
@@ -626,7 +627,7 @@ Widget _feedCard(context) {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             new Text(
-                              "เซฟปก",
+                              nameProfile,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             new Text(
@@ -653,7 +654,7 @@ Widget _feedCard(context) {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "ผัดกะเพราพิasdfnasjdfnjkssadjn",
+                    nameFood,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.left,
@@ -746,6 +747,8 @@ Widget _feedCard(context) {
             //     ],
             //   ),
             // ),
+
+            
             Container(
               height: 310,
               // width: 500,
@@ -753,7 +756,7 @@ Widget _feedCard(context) {
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
+                          imageFood),
                       fit: BoxFit.cover)),
             ),
             
@@ -768,3 +771,8 @@ Widget _feedCard(context) {
       ),
     );
   }
+
+
+}
+
+
