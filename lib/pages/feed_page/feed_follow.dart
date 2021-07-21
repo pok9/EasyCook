@@ -17,7 +17,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:easy_cook/models/feed/newFeedsProfile_model.dart';
+
 import 'package:flutter/cupertino.dart';
 
 class FeedFollowPage extends StatefulWidget {

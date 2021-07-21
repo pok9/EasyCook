@@ -800,6 +800,7 @@ class MenuFeature extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => Category(
                     categoryName: name,
+                    categoryFoodImage: "https://www.mama.co.th/imgadmins/img_product_cate/big/cate_big_20180409150840.jpg",
                   )),
         );
       },
