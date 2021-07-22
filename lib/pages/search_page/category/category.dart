@@ -1,4 +1,6 @@
 import 'package:easy_cook/models/category/category_model.dart';
+import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
+import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -85,12 +87,21 @@ class _CategoryState extends State<Category> {
                               child: Card(
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ShowFood(
-                                              categoryFood[index].rid)),
-                                    );
+                                    if (categoryFood[index].price == 0) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ShowFood(
+                                                categoryFood[index].rid)),
+                                      );
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecipePurchasePage(rigCtgy: categoryFood[index].rid,imageFoodCtgy: categoryFood[index].image,)),
+                                      );
+                                    }
                                   },
                                   child: Container(
                                     height: 200,
@@ -239,9 +250,12 @@ class _CategoryState extends State<Category> {
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(8.0),
-                                                  child: Image.network(
-                                                    categoryFood[index].image,
-                                                    fit: BoxFit.cover,
+                                                  child: Hero(
+                                                    tag: categoryFood[index].rid,
+                                                    child: Image.network(
+                                                      categoryFood[index].image,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
