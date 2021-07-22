@@ -5,7 +5,8 @@ import 'dart:ui';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
-import 'package:easy_cook/pages/login_page/login.dart';
+import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
+
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';

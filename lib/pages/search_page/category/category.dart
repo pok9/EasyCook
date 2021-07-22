@@ -88,9 +88,8 @@ class _CategoryState extends State<Category> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ShowFood(categoryFood[
-                                                                          index]
-                                                                      .rid)),
+                                          builder: (context) => ShowFood(
+                                              categoryFood[index].rid)),
                                     );
                                   },
                                   child: Container(
