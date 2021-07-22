@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:easy_cook/pages/profile_page/edit_profile.dart';
+import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 // import 'package:easy_cook/models/search/searchRecipe_model.dart';
@@ -117,15 +118,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  double get randHeight => Random().nextInt(100).toDouble();
   List<Widget> _bodyUp;
   List<Widget> _randomHeightWidgets(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _bodyUp ??= List.generate(1, (index) {
-      // final height = randHeight.clamp(
-      //   500.0,
-      //   MediaQuery.of(context).size.width, // simply using MediaQuery to demonstrate usage of context
-      // );
       return Container(
           // color: Colors.primaries[index],
           height: 400,
@@ -193,74 +189,103 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Container(
                                 width: 110,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'โพสต์',
-                                      style: TextStyle(
-                                          color: Colors.white70, fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      data_RecipePost.length.toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                child: InkWell(
+                                  onTap: () {
+                                    print("โพสต์");
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'โพสต์',
+                                        style: TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 12),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        data_RecipePost.length.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               Container(
                                 width: 110,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'ติดตาม',
-                                      style: TextStyle(
-                                          color: Colors.white70, fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      data_MyPost.countFollower.toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ShowFollowerAndFollowing(index: 0,data_DataAc: this.data_DataAc,)),
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'ติดตาม',
+                                        style: TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 12),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        data_MyPost.countFollower.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               Container(
                                 width: 110,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'กำลังติดตาม',
-                                      style: TextStyle(
-                                          color: Colors.white70, fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      data_MyPost.countFollowing.toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                child: InkWell(
+                                  onTap: () {
+                                    print("กำลังตืดตาม");
+                                     Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ShowFollowerAndFollowing(index: 1,data_DataAc: this.data_DataAc,)),
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'กำลังติดตาม',
+                                        style: TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 12),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        data_MyPost.countFollowing.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

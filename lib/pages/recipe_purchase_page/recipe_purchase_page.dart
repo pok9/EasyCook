@@ -19,9 +19,9 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: Text('Test'),
+        title: Text(this.widget.categoryFood.recipeName),
       ),
       body: Column(
         children: [

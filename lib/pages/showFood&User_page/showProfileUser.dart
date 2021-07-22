@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:easy_cook/models/checkFollower/checkFollower_model.dart';
+
+import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
@@ -91,7 +92,7 @@ class _ProfileUserState extends State<ProfileUser> {
   }
 
   //เช็คว่าเราติดตามไปแล้วหรือยัง
-  CheckFolloweer checkFollowers;
+  CheckFollower checkFollowers;
   Future<Null> checkFollower() async {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjFollow/checkFollower/" +
@@ -103,7 +104,7 @@ class _ProfileUserState extends State<ProfileUser> {
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
-        checkFollowers = checkFolloweerFromJson(responseString);
+        checkFollowers = checkFollowerFromJson(responseString);
         setState(() {
           print("checkkkkk222 = " + checkFollowers.checkFollower.toString());
         });

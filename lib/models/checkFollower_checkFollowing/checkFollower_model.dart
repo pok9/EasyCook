@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final checkFolloweer = checkFolloweerFromJson(jsonString);
+//     final checkFollower = checkFollowerFromJson(jsonString);
 
 import 'dart:convert';
 
-CheckFolloweer checkFolloweerFromJson(String str) => CheckFolloweer.fromJson(json.decode(str));
+CheckFollower checkFollowerFromJson(String str) => CheckFollower.fromJson(json.decode(str));
 
-String checkFolloweerToJson(CheckFolloweer data) => json.encode(data.toJson());
+String checkFollowerToJson(CheckFollower data) => json.encode(data.toJson());
 
-class CheckFolloweer {
-    CheckFolloweer({
+class CheckFollower {
+    CheckFollower({
         this.count,
         this.checkFollower,
         this.user,
@@ -19,7 +19,7 @@ class CheckFolloweer {
     int checkFollower;
     List<User> user;
 
-    factory CheckFolloweer.fromJson(Map<String, dynamic> json) => CheckFolloweer(
+    factory CheckFollower.fromJson(Map<String, dynamic> json) => CheckFollower(
         count: json["count"],
         checkFollower: json["checkFollower"],
         user: List<User>.from(json["user"].map((x) => User.fromJson(x))),

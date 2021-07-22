@@ -355,7 +355,7 @@ class _ShowFoodState extends State<ShowFood> {
               width: 100,
               child: ClipOval(
                 child: Image.network(
-                  "https://i.pinimg.com/originals/b7/bd/14/b7bd145d8d7202b93f90d52f921721c3.jpg", //////////////////////////////////
+                  dataFood.profileImage, //////////////////////////////////
                   fit: BoxFit.fill,
                 ),
               ),
@@ -443,7 +443,7 @@ class _ShowFoodState extends State<ShowFood> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                                "ชื่อเล่นasdfsad", ///////////////////////////
+                                                dataFood.aliasName, ///////////////////////////
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontFamily: 'OpenSans',

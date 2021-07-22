@@ -12,6 +12,9 @@ class ShowFoods {
     ShowFoods({
         this.rid,
         this.userId,
+        this.nameSurname,
+        this.aliasName,
+        this.profileImage,
         this.recipeName,
         this.image,
         this.date,
@@ -28,6 +31,9 @@ class ShowFoods {
 
     int rid;
     int userId;
+    String nameSurname;
+    String aliasName;
+    String profileImage;
     String recipeName;
     String image;
     DateTime date;
@@ -44,6 +50,9 @@ class ShowFoods {
     factory ShowFoods.fromJson(Map<String, dynamic> json) => ShowFoods(
         rid: json["rid"],
         userId: json["user_ID"],
+        nameSurname: json["name_surname"],
+        aliasName: json["alias_name"],
+        profileImage: json["profile_image"],
         recipeName: json["recipe_name"],
         image: json["image"],
         date: DateTime.parse(json["date"]),
@@ -61,6 +70,9 @@ class ShowFoods {
     Map<String, dynamic> toJson() => {
         "rid": rid,
         "user_ID": userId,
+        "name_surname": nameSurname,
+        "alias_name": aliasName,
+        "profile_image": profileImage,
         "recipe_name": recipeName,
         "image": image,
         "date": date.toIso8601String(),
