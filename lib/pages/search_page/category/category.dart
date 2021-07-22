@@ -99,7 +99,7 @@ class _CategoryState extends State<Category> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                RecipePurchasePage(rigCtgy: categoryFood[index].rid,imageFoodCtgy: categoryFood[index].image,)),
+                                                RecipePurchasePage(categoryFood: categoryFood[index],)),
                                       );
                                     }
                                   },
