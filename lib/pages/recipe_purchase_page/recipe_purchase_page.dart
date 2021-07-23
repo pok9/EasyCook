@@ -118,9 +118,17 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                       ],
                     ),
                   ),
-                  Text(
-                    "wqiriqwriqjwirjqwrjqwr q89wrh89qwh8r9hq8w9rh89 8q",
-                    style: TextStyle(height: 1.5),
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            this.widget.categoryFood.description,
+                            style: TextStyle(height: 1.5),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: size.height * 0.1,

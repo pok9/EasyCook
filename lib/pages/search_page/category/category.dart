@@ -99,13 +99,15 @@ class _CategoryState extends State<Category> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                RecipePurchasePage(categoryFood: categoryFood[index],)),
+                                                RecipePurchasePage(
+                                                  categoryFood:
+                                                      categoryFood[index],
+                                                )),
                                       );
                                     }
                                   },
                                   child: Container(
                                     height: 200,
-                                    color: Colors.amber,
                                     child: Column(
                                       children: [
                                         Row(
@@ -118,6 +120,7 @@ class _CategoryState extends State<Category> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
+                                                  
                                                   children: [
                                                     Padding(
                                                       padding: const EdgeInsets
@@ -187,8 +190,9 @@ class _CategoryState extends State<Category> {
                                                               const EdgeInsets
                                                                   .all(4.0),
                                                           child: Text(
-                                                            'มาม่ารสไก่เผ็ดเกาหลี, ไส้กรอก, หมูบด, ไข่ไก่, ซอสภูเขาทอง, น้ำสะอาดใช้ลอกเส้นมาม่า',
-                                                            maxLines: 6,
+                                                            categoryFood[index]
+                                                                .description,
+                                                            maxLines: 4,
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -251,7 +255,8 @@ class _CategoryState extends State<Category> {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Hero(
-                                                    tag: categoryFood[index].rid,
+                                                    tag:
+                                                        categoryFood[index].rid,
                                                     child: Image.network(
                                                       categoryFood[index].image,
                                                       fit: BoxFit.cover,

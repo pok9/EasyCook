@@ -17,6 +17,7 @@ class CategoryModel {
         this.profileImage,
         this.recipeName,
         this.foodCategory,
+        this.description,
         this.image,
         this.price,
         this.score,
@@ -29,6 +30,7 @@ class CategoryModel {
     String profileImage;
     String recipeName;
     String foodCategory;
+    String description;
     String image;
     int price;
     int score;
@@ -41,6 +43,7 @@ class CategoryModel {
         profileImage: json["profile_image"],
         recipeName: json["recipe_name"],
         foodCategory: json["food_category"],
+        description: json["description"],
         image: json["image"],
         price: json["price"],
         score: json["score"],
@@ -54,6 +57,7 @@ class CategoryModel {
         "profile_image": profileImage,
         "recipe_name": recipeName,
         "food_category": foodCategory,
+        "description": description,
         "image": image,
         "price": price,
         "score": score,

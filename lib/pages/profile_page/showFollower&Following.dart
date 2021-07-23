@@ -1,6 +1,8 @@
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollowing_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,8 +32,32 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
+      getFollower();
       getFollowing();
     });
+  }
+
+  CheckFollower checkFollower;
+  Future<Null> getFollower() async {
+    print("ddddddd");
+    print("uid = ${this.widget.data_DataAc.userId}");
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjFollow/checkFollower/${this.widget.data_DataAc.userId}";
+
+    print("apiUrl = ${apiUrl}");
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        checkFollower = checkFollowerFromJson(responseString);
+      });
+    } else {
+      return null;
+    }
   }
 
   CheckFollowing checkFollowing;
@@ -64,14 +90,14 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
       initialIndex: this.widget.index,
       child: Scaffold(
         appBar: AppBar(
-          
           bottom: TabBar(
             tabs: [
               Tab(
-                text: 'ติดตาม',
+                text: 'ติดตาม ${checkFollower == null ? "" : checkFollower.count.toString() + " คน"}',
               ),
               Tab(
-                text: 'กำลังติดตาม',
+                text:
+                    'กำลังติดตาม ${checkFollowing == null ? "" : checkFollowing.count.toString() + " บัญชี"}',
               ),
             ],
           ),
@@ -79,31 +105,46 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
         ),
         body: TabBarView(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4, 20, 0, 0),
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {},
-                    child: ListTile(
-                      title: Text("ชื่อเล่น"),
-                      subtitle: Text("ชื่อจริง"),
-                      leading: Container(
-                        height: 60.0,
-                        width: 60.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    "https://thestandard.co/wp-content/uploads/2021/05/one-piece-thai-version-by-cartoon-club-stop-broadcasting-due-to-copyright.jpg"))),
-                      ),
+            (checkFollower == null)
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                      CircularProgressIndicator()
+                    ],
+                  )
+                : Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 20, 0, 0),
+                    child: ListView.builder(
+                      itemCount: checkFollower.count,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfileUser(
+                                  checkFollower.user[index].userId,
+                                );
+                              }));
+                          },
+                          child: ListTile(
+                            title: Text(checkFollower.user[index].aliasName),
+                            subtitle: Text(checkFollower.user[index].nameSurname),
+                            leading: Container(
+                              height: 50.0,
+                              width: 50.0,
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: new NetworkImage(
+                                          checkFollower.user[index].profileImage))),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
             (checkFollowing == null)
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -118,19 +159,27 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                       itemCount: checkFollowing.count,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfileUser(
+                                  checkFollowing.user[index].userId,
+                                );
+                              }));
+                          },
                           child: ListTile(
                             title: Text(checkFollowing.user[index].aliasName),
-                            subtitle: Text(checkFollowing.user[index].nameSurname),
+                            subtitle:
+                                Text(checkFollowing.user[index].nameSurname),
                             leading: Container(
-                              height: 60.0,
-                              width: 60.0,
+                              height: 50.0,
+                              width: 50.0,
                               decoration: new BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: new DecorationImage(
                                       fit: BoxFit.fill,
-                                      image: new NetworkImage(
-                                          checkFollowing.user[index].profileImage))),
+                                      image: new NetworkImage(checkFollowing
+                                          .user[index].profileImage))),
                             ),
                             trailing: OutlinedButton(
                               onPressed: () {},
