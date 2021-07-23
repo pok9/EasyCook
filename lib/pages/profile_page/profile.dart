@@ -225,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ShowFollowerAndFollowing(index: 0,data_DataAc: this.data_DataAc,)),
+                                              ShowFollowerAndFollowing(index: 0,id: this.data_DataAc.userId,name: this.data_DataAc.aliasName,)),
                                     );
                                   },
                                   child: Column(
@@ -261,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ShowFollowerAndFollowing(index: 1,data_DataAc: this.data_DataAc,)),
+                                              ShowFollowerAndFollowing(index: 1,id: this.data_DataAc.userId,name: this.data_DataAc.aliasName,)),
                                     );
                                   },
                                   child: Column(

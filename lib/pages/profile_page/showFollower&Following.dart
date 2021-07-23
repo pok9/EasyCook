@@ -1,6 +1,7 @@
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollowing_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowFollowerAndFollowing extends StatefulWidget {
   int index;
-  DataAc data_DataAc;
+  int id;
+  String name;
 
-  ShowFollowerAndFollowing({this.index, this.data_DataAc});
+  ShowFollowerAndFollowing({this.index, this.id, this.name});
 
   @override
   _ShowFollowerAndFollowingState createState() =>
@@ -32,17 +34,37 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
+      getMyAccounts();
       getFollower();
       getFollowing();
     });
   }
 
+  MyAccount data_MyAccount;
+  DataAc data_DataAc;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        data_MyAccount = myAccountFromJson(responseString);
+        data_DataAc = data_MyAccount.data[0];
+        // print(data_DataAc.userId);
+      });
+    } else {
+      return null;
+    }
+  }
+
   CheckFollower checkFollower;
   Future<Null> getFollower() async {
-    print("ddddddd");
-    print("uid = ${this.widget.data_DataAc.userId}");
     final String apiUrl =
-        "http://apifood.comsciproject.com/pjFollow/checkFollower/${this.widget.data_DataAc.userId}";
+        "http://apifood.comsciproject.com/pjFollow/checkFollower/${this.widget.id}";
 
     print("apiUrl = ${apiUrl}");
 
@@ -62,10 +84,8 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
 
   CheckFollowing checkFollowing;
   Future<Null> getFollowing() async {
-    print("ddddddd");
-    print("uid = ${this.widget.data_DataAc.userId}");
     final String apiUrl =
-        "http://apifood.comsciproject.com/pjFollow/checkFollowing/${this.widget.data_DataAc.userId}";
+        "http://apifood.comsciproject.com/pjFollow/checkFollowing/${this.widget.id}";
 
     print("apiUrl = ${apiUrl}");
 
@@ -93,7 +113,8 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
           bottom: TabBar(
             tabs: [
               Tab(
-                text: 'ติดตาม ${checkFollower == null ? "" : checkFollower.count.toString() + " คน"}',
+                text:
+                    'ติดตาม ${checkFollower == null ? "" : checkFollower.count.toString() + " คน"}',
               ),
               Tab(
                 text:
@@ -101,7 +122,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
               ),
             ],
           ),
-          title: Text(this.widget.data_DataAc.aliasName),
+          title: Text(this.widget.name),
         ),
         body: TabBarView(
           children: [
@@ -120,16 +141,25 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(context,
+                            if (checkFollower.user[index].userId ==
+                                data_DataAc.userId) {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfilePage();
+                              }));
+                            } else {
+                              Navigator.push(context,
                                   CupertinoPageRoute(builder: (context) {
                                 return ProfileUser(
                                   checkFollower.user[index].userId,
                                 );
                               }));
+                            }
                           },
                           child: ListTile(
                             title: Text(checkFollower.user[index].aliasName),
-                            subtitle: Text(checkFollower.user[index].nameSurname),
+                            subtitle:
+                                Text(checkFollower.user[index].nameSurname),
                             leading: Container(
                               height: 50.0,
                               width: 50.0,
@@ -137,8 +167,8 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                                   shape: BoxShape.circle,
                                   image: new DecorationImage(
                                       fit: BoxFit.fill,
-                                      image: new NetworkImage(
-                                          checkFollower.user[index].profileImage))),
+                                      image: new NetworkImage(checkFollower
+                                          .user[index].profileImage))),
                             ),
                           ),
                         );
@@ -160,12 +190,20 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(context,
+                            if (checkFollowing.user[index].userId ==
+                                data_DataAc.userId) {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfilePage();
+                              }));
+                            } else {
+                              Navigator.push(context,
                                   CupertinoPageRoute(builder: (context) {
                                 return ProfileUser(
                                   checkFollowing.user[index].userId,
                                 );
                               }));
+                            }
                           },
                           child: ListTile(
                             title: Text(checkFollowing.user[index].aliasName),
