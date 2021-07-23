@@ -6,7 +6,6 @@ import 'package:easy_cook/pages/login&register_page/register_page/register2.dart
 import 'package:easy_cook/pages/login&register_page/register_page/register3.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
-import 'package:easy_cook/pages/feed_page/xxx_feed_follow.dart';
 
 import 'package:easy_cook/pages/search_page/search.dart';
 // import 'package:easy_cook/slidepage.dart';

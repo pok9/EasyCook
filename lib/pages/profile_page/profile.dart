@@ -21,7 +21,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String token = ""; //โทเคน
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+  Future<Null> refreshList() async {
+    refreshKey.currentState?.show(atTop: false);
+    await Future.delayed(Duration(seconds: 2));
+
+    setState(() {
+      new ProfilePage();
+    });
+
+    return null;
+  }
 
   @override
   void initState() {
@@ -29,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     findUser();
   }
 
+  String token = ""; //โทเคน
   //ดึง token
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -90,31 +101,6 @@ class _ProfilePageState extends State<ProfilePage> {
       return null;
     }
   }
-
-  //   //ข้อมูลสูตรอาหาร
-  //   List<Datum> dataRecipe;
-  // //ข้อมูลอาหารที่กดเพื่อจะส่งไปหน้า showFood
-  // Future<Null> getDataSendPost(int rid) async {
-  //   print("rid = "+rid.toString());
-  //   dataRecipe = [];
-  //   final String apiUrl =
-  //       "http://apifood.comsciproject.com/pjPost/getPost/" + rid.toString();
-
-  //   final response = await http
-  //       .get(Uri.parse(apiUrl));
-  //   print("response = " + response.statusCode.toString());
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       final String responseString = response.body;
-  //       // searchRecipeNameFromJson
-  //       // dataRecipe = searchRecipeNameFromJson(responseString).data;
-  //       // searchRecipeNameFromJson(responseString);
-  //       // print(123123123123);
-  //     });
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -225,7 +211,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ShowFollowerAndFollowing(index: 0,id: this.data_DataAc.userId,name: this.data_DataAc.aliasName,)),
+                                              ShowFollowerAndFollowing(
+                                                index: 0,
+                                                id: this.data_DataAc.userId,
+                                                name:
+                                                    this.data_DataAc.aliasName,
+                                              )),
                                     );
                                   },
                                   child: Column(
@@ -257,11 +248,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: InkWell(
                                   onTap: () {
                                     print("กำลังตืดตาม");
-                                     Navigator.push(
+                                    Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ShowFollowerAndFollowing(index: 1,id: this.data_DataAc.userId,name: this.data_DataAc.aliasName,)),
+                                              ShowFollowerAndFollowing(
+                                                index: 1,
+                                                id: this.data_DataAc.userId,
+                                                name:
+                                                    this.data_DataAc.aliasName,
+                                              )),
                                     );
                                   },
                                   child: Column(
@@ -336,18 +332,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
-                      // RaisedButton(
-                      //   onPressed: () {},
-                      //   elevation: 0,
-                      //   padding: EdgeInsets.all(12),
-                      //   child: Text(
-                      //     "+",
-                      //     style:
-                      //         TextStyle(color: Color(0xff1B1D28), fontSize: 22),
-                      //   ),
-                      //   shape: CircleBorder(),
-                      //   color: Color(0xffFFAC30),
-                      // ),
                       Column(
                         children: [
                           ConstrainedBox(
@@ -389,16 +373,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-
-              // Container(
-              //   constraints: BoxConstraints.expand(height: 50),
-              //   child: TabBar(tabs: [
-              //     Tab(text: "Home"),
-              //     Tab(text: "Articles"),
-              //     Tab(text: "User"),
-              //   ]),
-              // ),
-              // createChildren()
             ],
           ));
     });
@@ -430,7 +404,7 @@ class _ProfilePageState extends State<ProfilePage> {
           : DefaultTabController(
               length: 2,
               child: NestedScrollView(
-                // allows you to build a list of elements that would be scrolled away till the body reached the top
+               
                 headerSliverBuilder: (context, _) {
                   return [
                     SliverList(
@@ -463,6 +437,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: TabBarView(
                         children: [
                           ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
                             itemCount: data_RecipePost
                                 .length, /////////////////////////////////////////////////////////////////
                             itemBuilder: (context, index) => index < 0
@@ -525,7 +501,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ],
                                         ),
                                       ),
-
+              
                                       //2nd row
                                       Stack(
                                         children: [
@@ -539,13 +515,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 return ShowFood(
                                                     data_RecipePost[index].rid);
                                               }));
-                                              // print(data_RecipePost[index].rid);
-                                              //  getDataSendPost(data_RecipePost[index].rid);
-                                              // Navigator.push(context,////////////////////////////////////////////////
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) {
-                                              //   return ShowFood(newfeed.feeds[index]);
-                                              // }));
                                             },
                                             child: Padding(
                                               padding:
@@ -678,86 +647,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           )
                                         ],
                                       ),
-
-                                      // //3rd row
-                                      // Padding(
-                                      //   padding: const EdgeInsets.fromLTRB(
-                                      //       16.0, 12.0, 16.0, 12.0),
-                                      //   child: Row(
-                                      //     mainAxisAlignment:
-                                      //         MainAxisAlignment.spaceBetween,
-                                      //     children: [
-                                      //       new Row(
-                                      //         mainAxisAlignment:
-                                      //             MainAxisAlignment
-                                      //                 .spaceBetween,
-                                      //         children: [
-                                      //           Icon(
-                                      //             Icons.favorite_border,
-                                      //             color: Colors.black,
-                                      //           ),
-                                      //           new SizedBox(
-                                      //             width: 16.0,
-                                      //           ),
-                                      //           Icon(Icons.chat_bubble_outline,
-                                      //               color: Colors.black),
-                                      //           new SizedBox(
-                                      //             width: 16.0,
-                                      //           ),
-                                      //           Icon(Icons.share,
-                                      //               color: Colors.black),
-                                      //         ],
-                                      //       ),
-                                      //       Icon(Icons.bookmark_border,
-                                      //           color: Colors.black),
-                                      //     ],
-                                      //   ),
-                                      // ),
-                                      // //5th row
-                                      // Padding(
-                                      //   padding: const EdgeInsets.fromLTRB(
-                                      //       16.0, 0, 16.0, 16.0),
-                                      //   child: Row(
-                                      //     mainAxisAlignment:
-                                      //         MainAxisAlignment.start,
-                                      //     children: [
-                                      //       new Container(
-                                      //         height: 40.0,
-                                      //         width: 40.0,
-                                      //         decoration: new BoxDecoration(
-                                      //             shape: BoxShape.circle,
-                                      //             image: new DecorationImage(
-                                      //                 fit: BoxFit.fill,
-                                      //                 image: new NetworkImage(
-                                      //                     "https://i.pravatar.cc/300"))), ///////////////////////////////////////
-                                      //       ),
-                                      //       new SizedBox(
-                                      //         width: 10.0,
-                                      //       ),
-                                      //       Expanded(
-                                      //         child: new TextField(
-                                      //           keyboardType:
-                                      //               TextInputType.multiline,
-                                      //           maxLines: null,
-                                      //           decoration: new InputDecoration(
-                                      //             border: InputBorder.none,
-                                      //             hintText: "เพิ่ม คอมเมนต์...",
-                                      //           ),
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
-
-                                      // //6th row
-                                      // Padding(
-                                      //   padding: const EdgeInsets.symmetric(
-                                      //       horizontal: 16.0),
-                                      //   child: Text(
-                                      //     "1 วันที่แล้ว",
-                                      //     style: TextStyle(color: Colors.grey),
-                                      //   ),
-                                      // ),
+              
                                       SizedBox(
                                         height: 10,
                                       ),
@@ -765,10 +655,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                         color: Colors.grey[400],
                                         height: 8,
                                       ),
-                                      // Divider(
-                                      //   thickness: 1,
-                                      //   color: Colors.grey,
-                                      // ),
                                     ],
                                   ),
                           ),

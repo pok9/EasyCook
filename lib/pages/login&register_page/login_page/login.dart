@@ -3,7 +3,7 @@
 // import 'dart:io';
 
 import 'package:easy_cook/models/login/login_model.dart';
-import 'package:easy_cook/pages/feed_page/xxx_feed_follow.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_state_button/progress_button.dart';

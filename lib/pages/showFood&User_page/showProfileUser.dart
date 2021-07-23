@@ -139,181 +139,6 @@ class _ProfileUserState extends State<ProfileUser> {
 
   //===========================================================================
 
-  // // double get randHeight => Random().nextInt(100).toDouble();
-  // List<Widget> _bodyUp;
-  // List<Widget> _randomHeightWidgets(BuildContext context) {
-  //   // print(1234556);
-  //   Size size = MediaQuery.of(context).size;
-  //   _bodyUp ??= List.generate(1, (index) {
-  //     // final height = randHeight.clamp(
-  //     //   500.0,
-  //     //   MediaQuery.of(context).size.width, // simply using MediaQuery to demonstrate usage of context
-  //     // );
-  //     //
-
-  //     return Container(
-  //         // color: Colors.primaries[index],
-  //         height: 233,
-  //         child: Column(
-  //           children: [
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.stretch,
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: [
-  //                 Container(
-  //                   height: size.height * 0.30,
-  //                   decoration: BoxDecoration(
-  //                     image: DecorationImage(
-  //                         image: NetworkImage(
-  //                             "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-  //                         fit: BoxFit.cover),
-  //                   ),
-  //                   child: Column(
-  //                     children: [
-  //                       // SizedBox(
-  //                       //   height: 36,
-  //                       // ),
-  //                       SizedBox(
-  //                         height: 10,
-  //                       ),
-
-  //                       CircleAvatar(
-  //                         radius: 48,
-  //                         backgroundImage: NetworkImage(
-  //                             data_PostUser.profileImage), //////////////////
-  //                       ),
-  //                       SizedBox(
-  //                         height: 5,
-  //                       ),
-  //                       (checkFollowers.checkFollower == 0)
-  //                           ? MaterialButton(
-  //                               splashColor: Colors.grey,
-  //                               color: Colors.red[400],
-  //                               onPressed: () {
-  //                                 print("ติดตาม");
-  //                                 manageFollow(
-  //                                     "fol", this.data_PostUser.userId);
-  //                                 // _ProfileUserState(this.reqUid);
-  //                               },
-  //                               child: Text(
-  //                                 'ติดตาม',
-  //                                 style: TextStyle(color: Colors.white),
-  //                               ),
-  //                               shape: StadiumBorder(),
-  //                             )
-  //                           : MaterialButton(
-  //                               splashColor: Colors.grey,
-  //                               color: Colors.grey,
-  //                               onPressed: () {
-  //                                 print("ยกเลิกติดตาม");
-  //                                 manageFollow(
-  //                                     "unfol", this.data_PostUser.userId);
-  //                               },
-  //                               child: Text(
-  //                                 'กำลังติดตาม',
-  //                                 style: TextStyle(color: Colors.white),
-  //                               ),
-  //                               shape: StadiumBorder(),
-  //                             ),
-  //                       SizedBox(
-  //                         height: 4,
-  //                       ),
-  //                       SizedBox(
-  //                         height: 4,
-  //                       ),
-  //                       Expanded(child: Container()),
-  //                       Container(
-  //                         height: 64,
-  //                         color: Colors.black.withOpacity(0.4),
-  //                         child: Row(
-  //                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //                           children: [
-  //                             Container(
-  //                               width: 110,
-  //                               child: Column(
-  //                                 mainAxisAlignment: MainAxisAlignment.center,
-  //                                 children: [
-  //                                   Text(
-  //                                     'โพสต์',
-  //                                     style: TextStyle(
-  //                                         color: Colors.white70, fontSize: 12),
-  //                                   ),
-  //                                   SizedBox(
-  //                                     height: 4,
-  //                                   ),
-  //                                   Text(
-  //                                     data_PostUser.countPost.toString(),
-  //                                     style: TextStyle(
-  //                                       color: Colors.white,
-  //                                       fontSize: 20,
-  //                                       fontWeight: FontWeight.bold,
-  //                                     ),
-  //                                   ),
-  //                                 ],
-  //                               ),
-  //                             ),
-  //                             Container(
-  //                               width: 110,
-  //                               child: Column(
-  //                                 mainAxisAlignment: MainAxisAlignment.center,
-  //                                 children: [
-  //                                   Text(
-  //                                     'ติดตาม',
-  //                                     style: TextStyle(
-  //                                         color: Colors.white70, fontSize: 12),
-  //                                   ),
-  //                                   SizedBox(
-  //                                     height: 4,
-  //                                   ),
-  //                                   Text(
-  //                                     data_PostUser.countFollower.toString(),
-  //                                     style: TextStyle(
-  //                                       color: Colors.white,
-  //                                       fontSize: 20,
-  //                                       fontWeight: FontWeight.bold,
-  //                                     ),
-  //                                   ),
-  //                                 ],
-  //                               ),
-  //                             ),
-  //                             Container(
-  //                               width: 110,
-  //                               child: Column(
-  //                                 mainAxisAlignment: MainAxisAlignment.center,
-  //                                 children: [
-  //                                   Text(
-  //                                     'กำลังติดตาม',
-  //                                     style: TextStyle(
-  //                                         color: Colors.white70, fontSize: 12),
-  //                                   ),
-  //                                   SizedBox(
-  //                                     height: 4,
-  //                                   ),
-  //                                   Text(
-  //                                     data_PostUser.countFollowing.toString(),
-  //                                     style: TextStyle(
-  //                                       color: Colors.white,
-  //                                       fontSize: 20,
-  //                                       fontWeight: FontWeight.bold,
-  //                                     ),
-  //                                   ),
-  //                                 ],
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ));
-  //   });
-
-  //   return _bodyUp;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -370,7 +195,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                           SizedBox(
                                             height: 10,
                                           ),
-
+          
                                           CircleAvatar(
                                             radius: 48,
                                             backgroundImage: NetworkImage(
@@ -581,7 +406,7 @@ class _ProfileUserState extends State<ProfileUser> {
                     ),
                   ];
                 },
-
+          
                 // You tab view goes here
                 body: Column(
                   children: <Widget>[
@@ -665,7 +490,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                           ],
                                         ),
                                       ),
-
+          
                                       //2nd row
                                       Stack(
                                         children: [
