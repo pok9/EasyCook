@@ -1,4 +1,5 @@
 import 'package:easy_cook/models/category/category_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +20,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         title: Text(this.widget.categoryFood.recipeName),
       ),
@@ -142,7 +143,18 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            barrierColor: Colors.black26,
+                            context: context,
+                            builder: (context) {
+                              return CustomAlertDialog(
+                                title: "ซื้อสูตรอาหาร",
+                                description: "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
+                              );
+                            },
+                          );
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Row(
@@ -174,6 +186,196 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
           )
         ],
       ),
+    );
+  }
+}
+
+class CustomAlertDialog extends StatefulWidget {
+  const CustomAlertDialog({
+    this.title,
+    this.description,
+  });
+
+  final String title, description;
+
+  @override
+  _CustomAlertDialogState createState() => _CustomAlertDialogState();
+}
+
+class _CustomAlertDialogState extends State<CustomAlertDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      elevation: 0,
+      backgroundColor: Color(0xffffffff),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 15),
+          Text(
+            "${widget.title}",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          Text("${widget.description}"),
+          SizedBox(height: 20),
+          Divider(
+            height: 1,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: InkWell(
+              highlightColor: Colors.grey[200],
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => CustomDialog(
+                          title: "ซื้อสำเร็จ",
+                          description:
+                              "คุณได้ทำการซื้อสูตรอาหารนี้แล้ว เข้าไปดูสูตรอาหารได้ที่ \"สูตรที่ซื้อ\"",
+                        ));
+              },
+              child: Center(
+                child: Text(
+                  "ยืนยัน",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Divider(
+            height: 1,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: InkWell(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15.0),
+                bottomRight: Radius.circular(15.0),
+              ),
+              highlightColor: Colors.grey[200],
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Center(
+                child: Text(
+                  "ยกเลิก",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title, description, buttonText;
+  final Image image;
+
+  CustomDialog({this.title, this.description, this.buttonText, this.image});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 22.0, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text(
+                description,
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.lightGreen,
+                        
+                        ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "เข้าใจแล้ว",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 16,
+          right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.blueAccent,
+            radius: 50,
+            backgroundImage: NetworkImage(
+                'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif'),
+          ),
+        )
+      ],
     );
   }
 }

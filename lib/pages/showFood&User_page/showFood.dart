@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
+import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
@@ -39,7 +43,29 @@ class _ShowFoodState extends State<ShowFood> {
 
     setState(() {
       token = preferences.getString("tokens");
+      getMyAccounts();
     });
+  }
+
+  //user
+  MyAccount datas;
+  DataAc dataUser;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        datas = myAccountFromJson(responseString);
+        dataUser = datas.data[0];
+      });
+    } else {
+      return null;
+    }
   }
 
   //ข้อมูลสูตรอาหารที่ค้นหา
@@ -48,7 +74,6 @@ class _ShowFoodState extends State<ShowFood> {
   List<Ingredient> dataIngredient;
   //ข้อมูลวัตถุดิบ
   List<Howto> dataHowto;
-
   //ดึงข้อมูลสูตรอาหารที่ค้นหา
   Future<Null> getPost() async {
     final String apiUrl =
@@ -370,36 +395,53 @@ class _ShowFoodState extends State<ShowFood> {
               SliverAppBar(
                 title: Text(dataFood.recipeName),
                 actions: [
-                  PopupMenuButton(
-                    child: Center(
-                        child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Icon(Icons.more_horiz_outlined),
-                    )),
-                    onSelected: (value) {
-                      if (value == 0) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditFoodPage(
-                                  dataFood.recipeName,
-                                  dataFood.image,
-                                  dataIngredient,
-                                  dataHowto)),
-                        );
-                      } else if (value == 1) {
-                        print("ลบสูตรอาหาร");
-                      }
-                    },
-                    itemBuilder: (context) {
-                      return List.generate(2, (index) {
-                        return PopupMenuItem(
-                          value: index,
-                          child: Text(actionDropdown[index]),
-                        );
-                      });
-                    },
-                  ),
+                  (dataUser == null || dataFood == null)
+                      ? Container()
+                      : (dataUser.userId != dataFood.userId)
+                          ? Container()
+                          : PopupMenuButton(
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Icon(Icons.more_horiz_outlined),
+                              )),
+                              onSelected: (value) {
+                                if (value == 0) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditFoodPage(
+                                            dataFood.recipeName,
+                                            dataFood.image,
+                                            dataIngredient,
+                                            dataHowto)),
+                                  );
+                                } else if (value == 1) {
+                                  print("ลบสูตรอาหาร");
+                                  showDialog(
+                                    barrierColor: Colors.black26,
+                                    context: context,
+                                    builder: (context) {
+                                      return CustomAlertDialog(
+                                        title: "ลบสูตรอาหาร",
+                                        description:
+                                            "คุณแน่ใจใช่ไหมที่จะลบสูตรอาหารนี้",
+                                        token: this.token,
+                                        recipe_ID: this.req_rid,
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              itemBuilder: (context) {
+                                return List.generate(2, (index) {
+                                  return PopupMenuItem(
+                                    value: index,
+                                    child: Text(actionDropdown[index]),
+                                  );
+                                });
+                              },
+                            ),
                 ],
                 pinned: true,
                 expandedHeight: 256.0,
@@ -443,7 +485,8 @@ class _ShowFoodState extends State<ShowFood> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                                dataFood.aliasName, ///////////////////////////
+                                                dataFood
+                                                    .aliasName, ///////////////////////////
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontFamily: 'OpenSans',
@@ -903,10 +946,228 @@ class _ShowFoodState extends State<ShowFood> {
                                 ),
                               ],
                             ),
-                          )
-                          ))
-                          )
+                          ))))
             ],
           );
+  }
+}
+
+class CustomAlertDialog extends StatefulWidget {
+  const CustomAlertDialog(
+      {this.title, this.description, this.token, this.recipe_ID});
+
+  final String title, description, token;
+  final int recipe_ID;
+
+  @override
+  _CustomAlertDialogState createState() => _CustomAlertDialogState();
+}
+
+class _CustomAlertDialogState extends State<CustomAlertDialog> {
+  Future<DeleteRecipeModel> deleteMyFood(String token, int recipe_ID) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/deleteRecipe";
+    var data = {
+      "recipe_ID": recipe_ID,
+    };
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print("addIngredients======" + (response.statusCode.toString()));
+    // print("addIngredients======"+(response));
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return deleteRecipeModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      elevation: 0,
+      backgroundColor: Color(0xffffffff),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 15),
+          Text(
+            "${widget.title}",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          Text("${widget.description}"),
+          SizedBox(height: 20),
+          Divider(
+            height: 1,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: InkWell(
+              highlightColor: Colors.grey[200],
+              onTap: () async {
+                DeleteRecipeModel deleteData = await deleteMyFood(
+                    this.widget.token, this.widget.recipe_ID);
+                // print(deleteData.success);
+                // print(deleteData.message);
+                // Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+
+                if (deleteData.success == 1) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            title: "ลบสูตรอาหารสำเร็จ",
+                            description: "คุณได้ทำการลบสูตรอาหารนี้แล้ว",
+                            image:
+                                "https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif",
+                          ));
+                  await new Future.delayed(const Duration(seconds: 3));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            title: "ลบสูตรอาหารไม่สำเร็จ",
+                            description: " ",
+                            image:
+                                "https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g",
+                          ));
+                  await new Future.delayed(const Duration(seconds: 3));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Center(
+                child: Text(
+                  "ยืนยัน",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Divider(
+            height: 1,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: InkWell(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15.0),
+                bottomRight: Radius.circular(15.0),
+              ),
+              highlightColor: Colors.grey[200],
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Center(
+                child: Text(
+                  "ยกเลิก",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title, description;
+  final String image;
+
+  CustomDialog({this.title, this.description, this.image});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 22.0, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text(
+                description,
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 16,
+          right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.blueAccent,
+            radius: 50,
+            backgroundImage: NetworkImage(this.image),
+          ),
+        )
+      ],
+    );
   }
 }

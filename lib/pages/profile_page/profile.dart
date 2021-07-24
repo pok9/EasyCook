@@ -404,7 +404,6 @@ class _ProfilePageState extends State<ProfilePage> {
           : DefaultTabController(
               length: 2,
               child: NestedScrollView(
-               
                 headerSliverBuilder: (context, _) {
                   return [
                     SliverList(
@@ -501,7 +500,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ],
                                         ),
                                       ),
-              
+
                                       //2nd row
                                       Stack(
                                         children: [
@@ -514,7 +513,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       builder: (context) {
                                                 return ShowFood(
                                                     data_RecipePost[index].rid);
-                                              }));
+                                              })).then((value) => findUser());
+                                             
                                             },
                                             child: Padding(
                                               padding:
@@ -547,12 +547,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                               onTap: () {
                                                 print("down $index");
                                                 Navigator.push(context,
-                                                    CupertinoPageRoute(
-                                                        builder: (context) {
-                                                  return ShowFood(
-                                                      data_RecipePost[index]
-                                                          .rid);
-                                                }));
+                                                  CupertinoPageRoute(
+                                                      builder: (context) {
+                                                return ShowFood(
+                                                    data_RecipePost[index].rid);
+                                              })).then((value) => findUser());
                                               },
                                               child: Container(
                                                 height: 60.0,
@@ -647,7 +646,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           )
                                         ],
                                       ),
-              
+
                                       SizedBox(
                                         height: 10,
                                       ),
