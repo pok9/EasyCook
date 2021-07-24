@@ -37,7 +37,11 @@ class _CategoryState extends State<Category> {
       setState(() {
         final String responseString = response.body;
 
-        categoryFood = categoryModelFromJson(responseString);
+        if (responseString.contains("message")) {
+          categoryFood = [];
+        } else {
+          categoryFood = categoryModelFromJson(responseString);
+        }
       });
     } else {
       return null;
@@ -120,7 +124,6 @@ class _CategoryState extends State<Category> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
-                                                  
                                                   children: [
                                                     Padding(
                                                       padding: const EdgeInsets
@@ -272,8 +275,7 @@ class _CategoryState extends State<Category> {
                                   ),
                                 ),
                               ),
-                            )
-                            )))
+                            ))))
               ],
             ),
           );

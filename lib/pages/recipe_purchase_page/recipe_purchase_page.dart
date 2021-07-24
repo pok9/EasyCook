@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:easy_cook/models/buyFood/buyFood.dart';
 import 'package:easy_cook/models/category/category_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RecipePurchasePage extends StatefulWidget {
   // const RecipePurchasePage({ Key? key }) : super(key: key);
@@ -17,12 +22,29 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
   var numberFormat = NumberFormat("#,###");
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findUser();
+  }
+
+  String token = ""; //โทเคน
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: Text(this.widget.categoryFood.recipeName),
+        title: Text(this.widget.categoryFood.recipeName +
+            this.widget.categoryFood.rid.toString()),
       ),
       body: Column(
         children: [
@@ -150,7 +172,10 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                             builder: (context) {
                               return CustomAlertDialog(
                                 title: "ซื้อสูตรอาหาร",
-                                description: "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
+                                description:
+                                    "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
+                                token: this.token,
+                                rid: this.widget.categoryFood.rid,
                               );
                             },
                           );
@@ -191,18 +216,44 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
 }
 
 class CustomAlertDialog extends StatefulWidget {
-  const CustomAlertDialog({
-    this.title,
-    this.description,
-  });
+  const CustomAlertDialog({this.title, this.description, this.token, this.rid});
 
-  final String title, description;
+  final String title, description, token;
+  final int rid;
 
   @override
   _CustomAlertDialogState createState() => _CustomAlertDialogState();
 }
 
 class _CustomAlertDialogState extends State<CustomAlertDialog> {
+  Future<BuyFood> buyFood(String token, int recipe_ID) async {
+    print('press');
+    print(token);
+    print(recipe_ID);
+
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/buy";
+    var data = {
+      "rid": recipe_ID,
+    };
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print("addIngredients======" + (response.statusCode.toString()));
+    // print("addIngredients======"+(response));
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return buyFoodFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -233,14 +284,51 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
             height: 50,
             child: InkWell(
               highlightColor: Colors.grey[200],
-              onTap: () {
+              onTap: () async {
+                Navigator.pop(context);
+
                 showDialog(
-                    context: context,
-                    builder: (context) => CustomDialog(
-                          title: "ซื้อสำเร็จ",
-                          description:
-                              "คุณได้ทำการซื้อสูตรอาหารนี้แล้ว เข้าไปดูสูตรอาหารได้ที่ \"สูตรที่ซื้อ\"",
-                        ));
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("กรุณารอสักครู่...   "),
+                        CircularProgressIndicator()
+                      ],
+                    ));
+                  },
+                );
+
+                BuyFood dataBuyFood =
+                    await buyFood(this.widget.token, this.widget.rid);
+
+                Navigator.pop(context);
+                print(dataBuyFood.success);
+                if (dataBuyFood.success == 1) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            title: "ซื้อสำเร็จ",
+                            description:
+                                "คุณได้ทำการซื้อสูตรอาหารนี้แล้ว เข้าไปดูสูตรอาหารได้ที่ \"สูตรที่ซื้อ\"",
+                            image:
+                                'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                            colors: Colors.lightGreen,
+                          ));
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            title: "ซื้อไม่สำเร็จ",
+                            description: dataBuyFood.message,
+                            image:
+                                'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                              colors: Colors.redAccent,
+                          ));
+                }
               },
               child: Center(
                 child: Text(
@@ -287,10 +375,10 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
 }
 
 class CustomDialog extends StatelessWidget {
-  final String title, description, buttonText;
-  final Image image;
+  final String title, description, buttonText, image;
+  final Color colors;
 
-  CustomDialog({this.title, this.description, this.buttonText, this.image});
+  CustomDialog({this.title, this.description, this.buttonText, this.image,this.colors});
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -348,9 +436,8 @@ class CustomDialog extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.lightGreen,
-                        
-                        ),
+                      primary: colors,
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -371,8 +458,7 @@ class CustomDialog extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.blueAccent,
             radius: 50,
-            backgroundImage: NetworkImage(
-                'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif'),
+            backgroundImage: NetworkImage(this.image),
           ),
         )
       ],
