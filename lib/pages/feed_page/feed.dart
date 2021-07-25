@@ -8,6 +8,7 @@ import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
 import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -232,7 +233,13 @@ class _FeedPageState extends State<FeedPage> {
                         //     fontSize: 23,
                         //     color: Colors.black)
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PurchasedRecipes()),
+                          );
+                      },
                     ),
                     ListTile(
                       leading: Stack(

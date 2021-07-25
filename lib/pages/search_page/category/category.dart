@@ -1,9 +1,12 @@
 import 'package:easy_cook/models/category/category_model.dart';
+import 'package:easy_cook/models/myBuy/mybuy.dart';
+import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
 import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,7 +25,70 @@ class _CategoryState extends State<Category> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    findUser();
     getCategoryFood();
+  }
+
+  String token = ""; //โทเคน
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+
+      if (token != "") {
+        getMyAccounts();
+        getMybuy();
+      }
+    });
+  }
+
+  //user
+  MyAccount datas;
+  DataAc dataUser;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responseFeed_follow = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        datas = myAccountFromJson(responseString);
+        dataUser = datas.data[0];
+      });
+    } else {
+      return null;
+    }
+  }
+
+  List<Mybuy> dataMybuy;
+  List<String> checkBuy = [];
+  Future<Null> getMybuy() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responseFeed_follow = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        dataMybuy = mybuyFromJson(responseString);
+        for (var item in dataMybuy) {
+          print(item.recipeId);
+          checkBuy.add(item.recipeId.toString());
+        }
+        print("checkBuy.indexOf() = ${checkBuy.indexOf("181") > 0}");
+        print("checkBuy.length = ${checkBuy.length}");
+        print(checkBuy);
+        // print("set=====");
+      });
+    } else {
+      return null;
+    }
   }
 
   List<CategoryModel> categoryFood;
@@ -52,7 +118,10 @@ class _CategoryState extends State<Category> {
 
   @override
   Widget build(BuildContext context) {
-    return (categoryFood == null)
+    return (this.widget.categoryName == "" ||
+            this.widget.categoryFoodImage == "" ||
+            categoryFood == null ||
+            datas == null)
         ? Material(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +160,9 @@ class _CategoryState extends State<Category> {
                               child: Card(
                                 child: InkWell(
                                   onTap: () {
-                                    if (categoryFood[index].price == 0) {
+                                    if (categoryFood[index].price == 0 ||
+                                        categoryFood[index].userId ==
+                                            dataUser.userId) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -158,22 +229,46 @@ class _CategoryState extends State<Category> {
                                                                       .price ==
                                                                   0)
                                                               ? Container()
-                                                              : Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Expanded(
-                                                                          child: Text(
-                                                                              "\฿${numberFormat.format(categoryFood[index].price)}",
-                                                                              maxLines: 1,
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                              textAlign: TextAlign.left,
-                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.red)))
-                                                                    ],
-                                                                  ),
-                                                                )
+                                                              : (categoryFood[index]
+                                                                          .userId ==
+                                                                      dataUser
+                                                                          .userId)
+                                                                  ? Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          top:
+                                                                              5),
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Expanded(
+                                                                              child: Text("สูตรของเรา", maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blue)))
+                                                                        ],
+                                                                      ),
+                                                                    )
+                                                                  : (checkBuy.indexOf(
+                                                                              categoryFood[index].rid.toString()) >=
+                                                                          0)
+                                                                      ? Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(top: 5),
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Expanded(child: Text("ซื้อสูตรนี้ไปแล้ว", maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.greenAccent)))
+                                                                            ],
+                                                                          ),
+                                                                        )
+                                                                      : Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(top: 5),
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Expanded(child: Text("\฿${numberFormat.format(categoryFood[index].price)}", maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.red)))
+                                                                            ],
+                                                                          ),
+                                                                        )
                                                         ],
                                                       ),
                                                     ),

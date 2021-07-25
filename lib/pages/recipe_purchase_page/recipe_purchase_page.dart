@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/buyFood/buyFood.dart';
 import 'package:easy_cook/models/category/category_model.dart';
+import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -317,6 +319,8 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                             image:
                                 'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
                             colors: Colors.lightGreen,
+                            index: 1,
+                            rid: this.widget.rid,
                           ));
                 } else {
                   showDialog(
@@ -326,7 +330,8 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                             description: dataBuyFood.message,
                             image:
                                 'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
-                              colors: Colors.redAccent,
+                            colors: Colors.redAccent,
+                            index: 0,
                           ));
                 }
               },
@@ -377,8 +382,17 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
 class CustomDialog extends StatelessWidget {
   final String title, description, buttonText, image;
   final Color colors;
+  final int index;
+  final int rid;
 
-  CustomDialog({this.title, this.description, this.buttonText, this.image,this.colors});
+  CustomDialog(
+      {this.title,
+      this.description,
+      this.buttonText,
+      this.image,
+      this.colors,
+      this.index,
+      this.rid});
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -440,6 +454,25 @@ class CustomDialog extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pop(context);
+                      if (index == 1) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PurchasedRecipes()),
+                        );
+                        Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ShowFood(
+                                              this.rid
+                                            )),
+                                      );
+                        
+                      }else{
+                        Navigator.pop(context);
+                      }
                     },
                     child: Text(
                       "เข้าใจแล้ว",

@@ -28,10 +28,8 @@ class FeedFollowPage extends StatefulWidget {
   _FeedFollowPageState createState() => _FeedFollowPageState();
 }
 
-String token = ""; //โทเคน
-//user
-MyAccount datas;
-DataAc dataUser;
+
+
 
 //NewfeedsProfile
 NewfeedsFollow newfeed;
@@ -44,7 +42,7 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
 
     findUser();
   }
-
+  String token = ""; //โทเคน
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -58,6 +56,9 @@ class _FeedFollowPageState extends State<FeedFollowPage> {
     });
   }
 
+  //user
+MyAccount datas;
+DataAc dataUser;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
