@@ -91,7 +91,7 @@ class _ScrollProfilePageState extends State
   buildSliverAppBar() {
     return SliverAppBar(
       // title: buildHeader(),
-      title: Text('testasdf'),
+      title: Text(data_DataAc.aliasName),
       // centerTitle: true,
       pinned: true,
       floating: false,

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
+import 'package:easy_cook/models/feed/recommendRecipe/recommendRecipe.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
@@ -61,6 +62,7 @@ class _FeedPageState extends State<FeedPage> {
       if (token != "") {
         getMyAccounts();
         getNewFeedsFollow();
+        getRecommendRecipe();
       }
     });
   }
@@ -87,7 +89,7 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   NewFeedsFollow newFeedsFollow;
-  Future<Null> getNewFeedsFollow() async {
+  Future<Null> getNewFeedsFollow() async {//ฟิดที่เรากดติดตาม
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/newfeeds";
 
     final response = await http
@@ -98,6 +100,25 @@ class _FeedPageState extends State<FeedPage> {
         final String responseString = response.body;
 
         newFeedsFollow = newFeedsFollowFromJson(responseString);
+      });
+    } else {
+      return null;
+    }
+  }
+
+
+  List<RecommendRecipe> dataRecommendRecipe;
+  Future<Null> getRecommendRecipe() async {//ฟิดที่เรากดติดตาม
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/recommendRecipe";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        dataRecommendRecipe = recommendRecipeFromJson(responseString);
       });
     } else {
       return null;
@@ -666,7 +687,7 @@ class _FeedPageState extends State<FeedPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "สูตรอาหารยอดนิยม",
+                                  "แนะนำสูตรอาหาร",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
@@ -681,13 +702,13 @@ class _FeedPageState extends State<FeedPage> {
                               ],
                             ),
                           ),
-                          Container(
+                          (dataRecommendRecipe == null) ? Container(height: 325,) :Container(
                               height: 325,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: 5,
+                                  itemCount: dataRecommendRecipe.length,
                                   itemBuilder: (context, index) {
-                                    return _foodCard_3(context);
+                                    return _foodCard_3(context,dataRecommendRecipe[index]);
                                   })),
                           DividerCutom(),
                           Padding(
@@ -1368,7 +1389,7 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Widget _foodCard_3(context) {
+  Widget _foodCard_3(context,RecommendRecipe dataRecommendRecipe) {
     return Container(
       // height: 500,
       width: 250,
@@ -1392,13 +1413,13 @@ class _FeedPageState extends State<FeedPage> {
                             image: new DecorationImage(
                                 fit: BoxFit.fill,
                                 image: new NetworkImage(
-                                    "https://placeimg.com/640/480/any"))),
+                                    dataRecommendRecipe.profileImage))),
                       ),
                       new SizedBox(
                         width: 10.0,
                       ),
                       new Text(
-                        "เซฟปก",
+                        dataRecommendRecipe.aliasName,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ],
@@ -1417,7 +1438,7 @@ class _FeedPageState extends State<FeedPage> {
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
+                          dataRecommendRecipe.image),
                       fit: BoxFit.cover)),
             ),
             Padding(
@@ -1428,7 +1449,7 @@ class _FeedPageState extends State<FeedPage> {
                 children: [
                   Expanded(
                     child: Text(
-                      "ผัดกะเพราพิเศษใส่ไข่สูตรผีบอก ณ.ขอนแก่นasdasdasdasasdasasdasdasd",
+                      dataRecommendRecipe.recipeName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.justify,
@@ -1441,12 +1462,16 @@ class _FeedPageState extends State<FeedPage> {
             Padding(
               padding: const EdgeInsets.all(3.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "4.2",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  Row(
+                  Container(
+                    child: Row(
+                      children: [
+                        Text(
+                          "4.2",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        Row(
                     children: [
                       Icon(
                         Icons.star,
@@ -1479,9 +1504,11 @@ class _FeedPageState extends State<FeedPage> {
                     "(12)",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  SizedBox(
-                    width: 5,
+                      ],
+                    ),
                   ),
+                  
+                
                   Text(
                     "\$25",
                     style: TextStyle(
