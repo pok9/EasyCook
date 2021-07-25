@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
+import 'package:easy_cook/pages/profile_page/xxx_profile.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/style/utiltties.dart';
@@ -58,6 +60,7 @@ class _FeedPageState extends State<FeedPage> {
 
       if (token != "") {
         getMyAccounts();
+        getNewFeedsFollow();
       }
     });
   }
@@ -77,6 +80,24 @@ class _FeedPageState extends State<FeedPage> {
 
         datas = myAccountFromJson(responseString);
         dataUser = datas.data[0];
+      });
+    } else {
+      return null;
+    }
+  }
+
+  NewFeedsFollow newFeedsFollow;
+  Future<Null> getNewFeedsFollow() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/newfeeds";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        newFeedsFollow = newFeedsFollowFromJson(responseString);
       });
     } else {
       return null;
@@ -235,10 +256,10 @@ class _FeedPageState extends State<FeedPage> {
                       ),
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PurchasedRecipes()),
-                          );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PurchasedRecipes()),
+                        );
                       },
                     ),
                     ListTile(
@@ -437,364 +458,589 @@ class _FeedPageState extends State<FeedPage> {
             ),
       body: RefreshIndicator(
         onRefresh: findUser,
-        child: Container(
-          child: ListView(
-            children: [
-              LimitedBox(
-                maxHeight: 250,
-                child: Stack(
-                  children: [
-                    PageView(
-                      controller: pageController,
-                      children: [
-                        AdsSlideCard(
-                          slideImage:
-                              "https://cdn.1112.com/1112/public/images/mobileapp/categories/pizza.png",
-                        ),
-                        AdsSlideCard(
-                          slideImage:
-                              "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg",
-                        ),
-                        AdsSlideCard(
-                          slideImage:
-                              "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/f9f93df5-dfe0-4c78-98ff-a05380282039.jpg",
-                        )
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 18.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Center(
-                        child: SlideIndicator(
-                          pageController: pageController,
-                        ),
+        child: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: new PreferredSize(
+              preferredSize: Size.fromHeight(40),
+              child: new Container(
+                color: Colors.white70,
+                child: new SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      new Expanded(child: new Container()),
+                      new TabBar(
+                        tabs: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: new Text(
+                              "หน้าแรก",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          new Text(
+                            "การติดตาม",
+                            style: TextStyle(color: Colors.black),
+                          )
+                        ],
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.count(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisCount: 4,
-                  children: [
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019495.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019428.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019512.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019453.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019437.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/512/5019/5019349.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019501.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5018/5018006.png",
-                      name: "test",
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหารยอดนิยม1",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            body: TabBarView(
+              children: [
+                Container(
+                  child: ListView(
+                    children: [
+                      LimitedBox(
+                        maxHeight: 250,
+                        child: Stack(
+                          children: [
+                            PageView(
+                              controller: pageController,
+                              children: [
+                                AdsSlideCard(
+                                  slideImage:
+                                      "https://cdn.1112.com/1112/public/images/mobileapp/categories/pizza.png",
+                                ),
+                                AdsSlideCard(
+                                  slideImage:
+                                      "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg",
+                                ),
+                                AdsSlideCard(
+                                  slideImage:
+                                      "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/f9f93df5-dfe0-4c78-98ff-a05380282039.jpg",
+                                )
+                              ],
+                            ),
+                            Positioned(
+                              bottom: 18.0,
+                              left: 0.0,
+                              right: 0.0,
+                              child: Center(
+                                child: SlideIndicator(
+                                  pageController: pageController,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      ],
-                    ),
-                  ),
-                  Container(
-                      height: 300,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return _foodCard_1(context);
-                          })),
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหารยอดนิยม2",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      height: 300,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return _foodCard_2(context);
-                          })),
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "วัตถุดิบแนะนำยอดนิยม",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
-                      ],
-                    ),
-                  ),
-                  ingredients(),
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหารยอดนิยม",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      height: 325,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return _foodCard_3(context);
-                          })),
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "แนะนำเซฟ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
-                      ],
-                    ),
-                  ),
-      
-                  Container(
-                      height: 135,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return _introduce_safe_Card(context, index);
-                          })),
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8, right: 8, top: 15, bottom: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรล่าสุด",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      ],
-                    ),
-                  ),
-      
-                  // Container(
-                  //     // height: 580,
-                  //     child: ListView.builder(
-                  //         // scrollDirection: Axis.vertical,
-                  //         shrinkWrap: true,
-                  //         physics: NeverScrollableScrollPhysics(),
-                  //         itemCount: 3,
-                  //         itemBuilder: (context, index) {
-                  //           return _foodCard_4(context);
-                  //         })),
-      
-                  GridView.builder(
-                      // scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 200,
-                        mainAxisExtent: 262,
-                        // childAspectRatio: (deviceSize.width/deviceSize.height),
-                        // crossAxisSpacing: 0,
-                        // mainAxisSpacing: 0
                       ),
-                      itemCount: 5,
-                      itemBuilder: (BuildContext ctx, index) {
-                        return Card(
-                          semanticContainer: true,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          crossAxisCount: 4,
+                          children: [
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/128/5019/5019495.png",
+                              name: "test",
+                            ),
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/128/5019/5019428.png",
+                              name: "test",
+                            ),
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/128/5019/5019512.png",
+                              name: "test",
+                            ),
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/128/5019/5019453.png",
+                              name: "test",
+                            ),
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/128/5019/5019437.png",
+                              name: "test",
+                            ),
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/512/5019/5019349.png",
+                              name: "test",
+                            ),
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/128/5019/5019501.png",
+                              name: "test",
+                            ),
+                            MenuFeature(
+                              iconAsset:
+                                  "https://image.flaticon.com/icons/png/128/5018/5018006.png",
+                              name: "test",
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DividerCutom(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "สูตรอาหารยอดนิยม1",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: Colors.indigo)
+                              ],
+                            ),
+                          ),
+                          Container(
+                              height: 300,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    return _foodCard_1(context);
+                                  })),
+                          DividerCutom(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "สูตรอาหารยอดนิยม2",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: Colors.indigo)
+                                // Text(
+                                //   "ดูทั้งหมด",
+                                //   style: TextStyle(
+                                //       fontSize: 20, fontWeight: FontWeight.normal),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              height: 300,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    return _foodCard_2(context);
+                                  })),
+                          DividerCutom(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "วัตถุดิบแนะนำยอดนิยม",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: Colors.indigo)
+                                // Text(
+                                //   "ดูทั้งหมด",
+                                //   style: TextStyle(
+                                //       fontSize: 20, fontWeight: FontWeight.normal),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          ingredients(),
+                          DividerCutom(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "สูตรอาหารยอดนิยม",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: Colors.indigo)
+                                // Text(
+                                //   "ดูทั้งหมด",
+                                //   style: TextStyle(
+                                //       fontSize: 20, fontWeight: FontWeight.normal),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              height: 325,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    return _foodCard_3(context);
+                                  })),
+                          DividerCutom(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "แนะนำเซฟ",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: Colors.indigo)
+                                // Text(
+                                //   "ดูทั้งหมด",
+                                //   style: TextStyle(
+                                //       fontSize: 20, fontWeight: FontWeight.normal),
+                                // ),
+                              ],
+                            ),
+                          ),
+
+                          Container(
+                              height: 135,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    return _introduce_safe_Card(context, index);
+                                  })),
+                          DividerCutom(),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "สูตรล่าสุด",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: Colors.indigo)
+                              ],
+                            ),
+                          ),
+
+                          // Container(
+                          //     // height: 580,
+                          //     child: ListView.builder(
+                          //         // scrollDirection: Axis.vertical,
+                          //         shrinkWrap: true,
+                          //         physics: NeverScrollableScrollPhysics(),
+                          //         itemCount: 3,
+                          //         itemBuilder: (context, index) {
+                          //           return _foodCard_4(context);
+                          //         })),
+
+                          GridView.builder(
+                              // scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                mainAxisExtent: 262,
+                                // childAspectRatio: (deviceSize.width/deviceSize.height),
+                                // crossAxisSpacing: 0,
+                                // mainAxisSpacing: 0
+                              ),
+                              itemCount: 5,
+                              itemBuilder: (BuildContext ctx, index) {
+                                return Card(
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                new Container(
+                                                  height: 30.0,
+                                                  width: 30.0,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(
+                                                              "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"))),
+                                                ),
+                                                new SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 8, 0, 8),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      new Text(
+                                                        "test",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      new Text(
+                                                        "1 นาทีที่แล้ว",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            IconButton(
+                                                icon: Icon(Icons.more_vert),
+                                                onPressed: () {
+                                                  // print("more_vert" + index.toString());
+                                                })
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 0, 0, 4),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                "ผัดกะเพราหมูสับไข่ดาวไม่สุกพิเศษwefwefwefascascascsa",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      // SizedBox(height: 19,),
+
+                                      Container(
+                                        height: 164,
+                                        // width: 500,
+                                        decoration: BoxDecoration(
+                                            // borderRadius: BorderRadius.circular(50),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
+                                                fit: BoxFit.cover)),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                ),
+                (newFeedsFollow == null)
+                    ? Container()
+                    : ListView.builder(
+                        itemCount: newFeedsFollow.feed.length,
+                        itemBuilder: (context, index) => index < 0
+                            ? new SizedBox(
+                                child: AlertDialog(
+                                    content: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Row(
+                                    Text("กรุณารอสักครู่...   "),
+                                    CircularProgressIndicator()
+                                  ],
+                                )),
+                              )
+                            : Container(
+                                // height: 500,
+                                width: 280,
+                                child: Card(
+                                    semanticContainer: true,
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    child: Column(
                                       children: [
-                                        new Container(
-                                          height: 30.0,
-                                          width: 30.0,
-                                          decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: new NetworkImage(
-                                                      "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"))),
-                                        ),
-                                        new SizedBox(
-                                          width: 10.0,
-                                        ),
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
-                                              0, 8, 0, 8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                              8, 0, 0, 0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              new Text(
-                                                "test",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Row(
+                                                children: [
+                                                  new Container(
+                                                    height: 30.0,
+                                                    width: 30.0,
+                                                    decoration: new BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        image: new DecorationImage(
+                                                            fit: BoxFit.fill,
+                                                            image: new NetworkImage(
+                                                                newFeedsFollow
+                                                                    .feed[index]
+                                                                    .profileImage))),
+                                                  ),
+                                                  new SizedBox(
+                                                    width: 10.0,
+                                                  ),
+                                                  new Text(
+                                                    newFeedsFollow
+                                                        .feed[index].aliasName,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                ],
                                               ),
-                                              new Text(
-                                                "1 นาทีที่แล้ว",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
+                                              IconButton(
+                                                  icon: Icon(Icons.more_vert),
+                                                  onPressed: () {
+                                                    // print("more_vert" + index.toString());
+                                                  })
                                             ],
                                           ),
-                                        )
+                                        ),
+                                        Container(
+                                          height: 350,
+                                          // width: 500,
+                                          decoration: BoxDecoration(
+                                              // borderRadius: BorderRadius.circular(50),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      newFeedsFollow
+                                                          .feed[index].image),
+                                                  fit: BoxFit.contain)),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    newFeedsFollow
+                                                        .feed[index].recipeName,
+                                                    style: TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "4.2",
+                                                        style: TextStyle(
+                                                            color: Colors.grey),
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.star,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            size: 16.0,
+                                                          ),
+                                                          Icon(
+                                                            Icons.star,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            size: 16.0,
+                                                          ),
+                                                          Icon(
+                                                            Icons.star,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            size: 16.0,
+                                                          ),
+                                                          Icon(
+                                                            Icons.star_half,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            size: 16.0,
+                                                          ),
+                                                          Icon(
+                                                            Icons.star_border,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            size: 16.0,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Text(
+                                                        "(12)",
+                                                        style: TextStyle(
+                                                            color: Colors.grey),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                "\$25",
+                                                style: TextStyle(
+                                                    color: Colors.indigo,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          color: Colors.grey[400],
+                                          height: 8,
+                                        ),
                                       ],
                                     ),
-                                    IconButton(
-                                        icon: Icon(Icons.more_vert),
-                                        onPressed: () {
-                                          // print("more_vert" + index.toString());
-                                        })
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(4, 0, 0, 4),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "ผัดกะเพราหมูสับไข่ดาวไม่สุกพิเศษwefwefwefascascascsa",
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(color: Colors.black),
-                                      ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0.0),
                                     ),
-                                  ],
-                                ),
-                              ),
-      
-                              // SizedBox(height: 19,),
-                              
-                              Container(
-                                height: 164,
-                                // width: 500,
-                                decoration: BoxDecoration(
-                                    // borderRadius: BorderRadius.circular(50),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
-                                        fit: BoxFit.cover)),
-                              ),
-                            ],
-                          ),
-                        
-                        );
-                      }),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-            ],
+                                    // elevation: 5,
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
+                              ))
+              ],
+            ),
           ),
         ),
       ),

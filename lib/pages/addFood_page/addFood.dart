@@ -246,6 +246,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   //########################################################################################################/
 
+  List<List<double>> data =
+      <List<double>>[];
+  
+
   //*******************************************************************************************************/
   int ingredient_row = 0; //จำนวนแถวส่วนผสม
   List<List<TextEditingController>> ctl_ingredient_row =
@@ -257,6 +261,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
         ctl.add(TextEditingController());
+
+        
+        
+
         ctl_ingredient_row.add(ctl);
       }
     }

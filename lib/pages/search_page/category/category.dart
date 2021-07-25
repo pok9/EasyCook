@@ -162,7 +162,9 @@ class _CategoryState extends State<Category> {
                                   onTap: () {
                                     if (categoryFood[index].price == 0 ||
                                         categoryFood[index].userId ==
-                                            dataUser.userId) {
+                                            dataUser.userId || checkBuy.indexOf(
+                                                                              categoryFood[index].rid.toString()) >=
+                                                                          0) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

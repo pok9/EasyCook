@@ -1,30 +1,30 @@
 // To parse this JSON data, do
 //
-//     final newfeedsProfile = newfeedsProfileFromJson(jsonString);
+//     final newFeedsFollow = newFeedsFollowFromJson(jsonString);
 
 import 'dart:convert';
 
-NewfeedsFollow newfeedsFollowFromJson(String str) => NewfeedsFollow.fromJson(json.decode(str));
+NewFeedsFollow newFeedsFollowFromJson(String str) => NewFeedsFollow.fromJson(json.decode(str));
 
-String newfeedsFollowToJson(NewfeedsFollow data) => json.encode(data.toJson());
+String newFeedsFollowToJson(NewFeedsFollow data) => json.encode(data.toJson());
 
-class NewfeedsFollow {
-    NewfeedsFollow({
+class NewFeedsFollow {
+    NewFeedsFollow({
         this.success,
-        this.feeds,
+        this.feed,
     });
 
     int success;
-    List<Feed> feeds;
+    List<Feed> feed;
 
-    factory NewfeedsFollow.fromJson(Map<String, dynamic> json) => NewfeedsFollow(
+    factory NewFeedsFollow.fromJson(Map<String, dynamic> json) => NewFeedsFollow(
         success: json["success"],
-        feeds: List<Feed>.from(json["feeds"].map((x) => Feed.fromJson(x))),
+        feed: List<Feed>.from(json["feed"].map((x) => Feed.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
-        "feeds": List<dynamic>.from(feeds.map((x) => x.toJson())),
+        "feed": List<dynamic>.from(feed.map((x) => x.toJson())),
     };
 }
 
