@@ -67,6 +67,7 @@ class _CategoryState extends State<Category> {
   List<Mybuy> dataMybuy;
   List<String> checkBuy = [];
   Future<Null> getMybuy() async {
+    checkBuy = [];
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
 
     final response = await http
