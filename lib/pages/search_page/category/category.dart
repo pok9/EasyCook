@@ -178,8 +178,7 @@ class _CategoryState extends State<Category> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 RecipePurchasePage(
-                                                  categoryFood:
-                                                      categoryFood[index],
+                                                  req_rid: categoryFood[index].rid,
                                                 )),
                                       );
                                     }

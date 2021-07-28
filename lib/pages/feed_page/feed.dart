@@ -9,6 +9,7 @@ import 'package:easy_cook/models/feed/recommendRecipe/recommendRecipe.dart';
 import 'package:easy_cook/models/feed/recommendUser/recommendUser.dart';
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/login/login_model.dart';
+import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
@@ -16,11 +17,14 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/xxx_profile.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
+import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -73,6 +77,7 @@ class _FeedPageState extends State<FeedPage> {
         getMyAccounts();
         getNewFeedsFollow();
         getRecommendRecipe();
+        
       }
     });
   }
@@ -94,6 +99,34 @@ class _FeedPageState extends State<FeedPage> {
         dataUser = datas.data[0];
         print(dataUser.userId);
         checkFollowings();
+      });
+    } else {
+      return null;
+    }
+  }
+
+  List<Mybuy> dataMybuy;
+  List<String> checkBuy = [];
+  Future<Null> getMybuy() async {
+    checkBuy = [];
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responseFeed_follow = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        dataMybuy = mybuyFromJson(responseString);
+        for (var item in dataMybuy) {
+          print(item.recipeId);
+          checkBuy.add(item.recipeId.toString());
+        }
+        print("checkBuy.indexOf() = ${checkBuy.indexOf("181") > 0}");
+        print("checkBuy.length = ${checkBuy.length}");
+        print(checkBuy);
+        // print("set=====");
       });
     } else {
       return null;
@@ -157,9 +190,11 @@ class _FeedPageState extends State<FeedPage> {
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
+        print("555555555555555555555555555555555555555555555");
         final String responseString = response.body;
 
         dataRecommendRecipe = recommendRecipeFromJson(responseString);
+        getMybuy();
       });
     } else {
       return null;
@@ -254,7 +289,7 @@ class _FeedPageState extends State<FeedPage> {
     var deviceSize = MediaQuery.of(context).size;
 
     print("okkkkkkk");
-
+    print("6666666666666666666666666666666666666666");
     return Scaffold(
       // backgroundColor: Colors.white70,
       backgroundColor: Color(0xFFf3f5f9),
@@ -806,10 +841,10 @@ class _FeedPageState extends State<FeedPage> {
                           ),
                           (dataRecommendRecipe == null)
                               ? Container(
-                                  height: 325,
+                                  height: 329,
                                 )
                               : Container(
-                                  height: 325,
+                                  height: 329,
                                   child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemCount: dataRecommendRecipe.length,
@@ -1518,134 +1553,147 @@ class _FeedPageState extends State<FeedPage> {
     return Container(
       // height: 500,
       width: 250,
-      child: Card(
-        semanticContainer: true,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      new Container(
-                        height: 30.0,
-                        width: 30.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    dataRecommendRecipe.profileImage))),
-                      ),
-                      new SizedBox(
-                        width: 10.0,
-                      ),
-                      new Text(
-                        dataRecommendRecipe.aliasName,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.more_vert),
-                      onPressed: () {
-                        // print("more_vert" + index.toString());
-                      })
-                ],
-              ),
-            ),
-            Container(
-              height: 210,
-              decoration: BoxDecoration(
-                  // borderRadius: BorderRadius.circular(50),
-                  image: DecorationImage(
-                      image: NetworkImage(dataRecommendRecipe.image),
-                      fit: BoxFit.cover)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      dataRecommendRecipe.recipeName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Row(
+      child: InkWell(
+        onTap: () {
+          print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+          print("dataUser.userId = ${dataUser.userId}");
+          if (dataRecommendRecipe.price == 0 ||
+              dataRecommendRecipe.userId == dataUser.userId ||
+              checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+            );
+          } else {
+            print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+            print("dataUser.userId = ${dataUser.userId}");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecipePurchasePage(
+                        req_rid: dataRecommendRecipe.rid,
+                      )),
+            ).then((value) => getRecommendRecipe());
+          }
+        },
+        child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Text(
-                          "4.2",
-                          style: TextStyle(color: Colors.grey),
+                        new Container(
+                          height: 30.0,
+                          width: 30.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      dataRecommendRecipe.profileImage))),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Theme.of(context).primaryColor,
-                              size: 16.0,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Theme.of(context).primaryColor,
-                              size: 16.0,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Theme.of(context).primaryColor,
-                              size: 16.0,
-                            ),
-                            Icon(
-                              Icons.star_half,
-                              color: Theme.of(context).primaryColor,
-                              size: 16.0,
-                            ),
-                            Icon(
-                              Icons.star_border,
-                              color: Theme.of(context).primaryColor,
-                              size: 16.0,
-                            ),
-                          ],
+                        new SizedBox(
+                          width: 10.0,
                         ),
-                        Text(
-                          "(12)",
-                          style: TextStyle(color: Colors.grey),
-                        ),
+                        new Text(
+                          dataRecommendRecipe.aliasName,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
                       ],
                     ),
-                  ),
-                  Text(
-                    "\$25",
-                    style: TextStyle(
-                        color: Colors.indigo, fontWeight: FontWeight.bold),
-                  )
-                ],
+                    IconButton(
+                        icon: Icon(Icons.more_vert),
+                        onPressed: () {
+                          // print("more_vert" + index.toString());
+                        })
+                  ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                height: 210,
+                decoration: BoxDecoration(
+                    // borderRadius: BorderRadius.circular(50),
+                    image: DecorationImage(
+                        image: NetworkImage(dataRecommendRecipe.image),
+                        fit: BoxFit.cover)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        dataRecommendRecipe.recipeName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      child: Row(
+                        children: [
+                          Text(
+                            "4.2",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          RatingBarIndicator(
+                            rating: 3,
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.blue,
+                            ),
+                            itemCount: 5,
+                            itemSize: 16,
+                          ),
+                          Text(
+                            "(12)",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      (dataRecommendRecipe.userId == dataUser.userId)
+                          ? ""
+                          : (checkBuy.indexOf(
+                                      dataRecommendRecipe.rid.toString()) >=
+                                  0)
+                              ? "ซื้อแล้ว"
+                              : (dataRecommendRecipe.price == 0)
+                                  ? "ฟรี "
+                                  : "\฿${dataRecommendRecipe.price}",
+                      style: TextStyle(
+                          color: Colors.indigo, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 5,
+          margin: EdgeInsets.all(10),
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        elevation: 5,
-        margin: EdgeInsets.all(10),
       ),
     );
   }
@@ -1657,10 +1705,9 @@ class _FeedPageState extends State<FeedPage> {
       child: GestureDetector(
         onTap: () {
           if ((dataUser.userId == dataRecommendUser.userId)) {
-            Navigator.push(context,
-                                  CupertinoPageRoute(builder: (context) {
-                                return ProfilePage();
-                              }));
+            Navigator.push(context, CupertinoPageRoute(builder: (context) {
+              return ProfilePage();
+            }));
           } else {
             Navigator.push(
               context,

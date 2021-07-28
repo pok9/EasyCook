@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/buyFood/buyFood.dart';
 import 'package:easy_cook/models/category/category_model.dart';
+import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
@@ -13,8 +14,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class RecipePurchasePage extends StatefulWidget {
   // const RecipePurchasePage({ Key? key }) : super(key: key);
-  CategoryModel categoryFood;
-  RecipePurchasePage({this.categoryFood});
+  // CategoryModel categoryFood;
+  // RecipePurchasePage({this.categoryFood});
+
+  int req_rid;
+  RecipePurchasePage({this.req_rid});
 
   @override
   _RecipePurchasePageState createState() => _RecipePurchasePageState();
@@ -28,6 +32,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
     // TODO: implement initState
     super.initState();
     findUser();
+    getPost();
   }
 
   String token = ""; //โทเคน
@@ -39,181 +44,202 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
     });
   }
 
+  //ข้อมูลสูตรอาหารที่ค้นหา
+  ShowFoods dataFood;
+  //ดึงข้อมูลสูตรอาหารที่ค้นหา
+  Future<Null> getPost() async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/getPost/${this.widget.req_rid}";
+    // print("xxlToken = " + token);
+    final response = await http.get(Uri.parse(apiUrl));
+    print("getPostresponse = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+        dataFood = showFoodsFromJson(responseString);
+      });
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: AppBar(
-        title: Text(this.widget.categoryFood.recipeName +
-            this.widget.categoryFood.rid.toString()),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 1),
-            child: Hero(
-              tag: this.widget.categoryFood.rid,
-              child: Image.network(
-                this.widget.categoryFood.image,
-                height: size.height * 0.27,
-                fit: BoxFit.fill,
-                width: double.infinity,
-              ),
+    return (dataFood == null)
+        ? Scaffold()
+        : Scaffold(
+            backgroundColor: Colors.grey,
+            appBar: AppBar(
+              title: Text(dataFood.recipeName),
             ),
-          ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.all(20),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  )),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 1),
+                  child: Hero(
+                    tag: dataFood.rid,
+                    child: Image.network(
+                      dataFood.image,
+                      height: size.height * 0.27,
+                      fit: BoxFit.fill,
+                      width: double.infinity,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        )),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    dataFood.recipeName,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      RatingBarIndicator(
+                                        rating: 3,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.blue,
+                                        ),
+                                        itemCount: 5,
+                                        itemSize: 20.5,
+                                        direction: Axis.horizontal,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text("24 reviews")
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(dataFood.profileImage),
+                                        radius: 15,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          dataFood.aliasName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              )),
+                              Text(
+                                "\฿${numberFormat.format(dataFood.price)}",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
                           children: [
-                            Text(
-                              this.widget.categoryFood.recipeName,
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
+                            Column(
                               children: [
-                                RatingBarIndicator(
-                                  rating: 3,
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.star,
-                                    color: Colors.blue,
-                                  ),
-                                  itemCount: 5,
-                                  itemSize: 20.5,
-                                  direction: Axis.horizontal,
+                                Text(
+                                  dataFood.description,
+                                  style: TextStyle(height: 1.5),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text("24 reviews")
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      this.widget.categoryFood.profileImage),
-                                  radius: 15,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    this.widget.categoryFood.aliasName,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                  ),
-                                )
                               ],
                             ),
                           ],
-                        )),
-                        Text(
-                          "\฿${numberFormat.format(this.widget.categoryFood.price)}",
-                          style: TextStyle(
+                        ),
+                        SizedBox(
+                          height: size.height * 0.1,
+                        ),
+                        Container(
+                          // padding: EdgeInsets.all(20),
+                          width: size.width * 0.8,
+                          decoration: BoxDecoration(
                               color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                  barrierColor: Colors.black26,
+                                  context: context,
+                                  builder: (context) {
+                                    return CustomAlertDialog(
+                                      title: "ซื้อสูตรอาหาร",
+                                      description:
+                                          "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
+                                      token: this.token,
+                                      rid: dataFood.rid,
+                                    );
+                                  },
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.food_bank,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'ซื้อสูตรอาหาร',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            this.widget.categoryFood.description,
-                            style: TextStyle(height: 1.5),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.1,
-                  ),
-                  Container(
-                    // padding: EdgeInsets.all(20),
-                    width: size.width * 0.8,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          showDialog(
-                            barrierColor: Colors.black26,
-                            context: context,
-                            builder: (context) {
-                              return CustomAlertDialog(
-                                title: "ซื้อสูตรอาหาร",
-                                description:
-                                    "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
-                                token: this.token,
-                                rid: this.widget.categoryFood.rid,
-                              );
-                            },
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.food_bank,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'ซื้อสูตรอาหาร',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
-    );
+          );
   }
 }
 
@@ -456,21 +482,7 @@ class CustomDialog extends StatelessWidget {
                       Navigator.pop(context);
                       if (index == 1) {
                         Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PurchasedRecipes()),
-                        );
-                        Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ShowFood(
-                                              this.rid
-                                            )),
-                                      );
-                        
-                      }else{
+                      } else {
                         Navigator.pop(context);
                       }
                     },

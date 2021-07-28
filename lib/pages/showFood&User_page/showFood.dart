@@ -1035,7 +1035,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                             image:
                                 "https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif",
                           ));
-                  await new Future.delayed(const Duration(seconds: 3));
+                  await new Future.delayed(const Duration(milliseconds: 1600));
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
