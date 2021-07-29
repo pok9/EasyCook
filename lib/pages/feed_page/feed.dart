@@ -47,6 +47,9 @@ class _FeedPageState extends State<FeedPage> {
   void initState() {
     super.initState();
     findUser();
+    getRecommendRecipe();
+    getRecommendUser();
+    getNewfeedsglobal();
     Timer.periodic(Duration(seconds: 3), (timer) {
       if (!pageController.hasClients) {
         return;
@@ -72,12 +75,8 @@ class _FeedPageState extends State<FeedPage> {
       print("token = ${token}");
 
       if (token != "") {
-        getRecommendUser();
-        getNewfeedsglobal();
-
         getMyAccounts();
         getNewFeedsFollow();
-        getRecommendRecipe();
       }
     });
   }
@@ -194,7 +193,9 @@ class _FeedPageState extends State<FeedPage> {
         final String responseString = response.body;
 
         dataRecommendRecipe = recommendRecipeFromJson(responseString);
-        getMybuy();
+        if (token != "") {
+          getMybuy();
+        }
       });
     } else {
       return null;
@@ -1617,26 +1618,44 @@ class _FeedPageState extends State<FeedPage> {
       width: 250,
       child: InkWell(
         onTap: () {
-          print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-          print("dataUser.userId = ${dataUser.userId}");
-          if (dataRecommendRecipe.price == 0 ||
-              dataRecommendRecipe.userId == dataUser.userId ||
-              checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            );
+          if (dataUser != null) {
+            if (dataRecommendRecipe.price == 0 ||
+                dataRecommendRecipe.userId == dataUser.userId ||
+                checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+              );
+            } else {
+              // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+              // print("dataUser.userId = ${dataUser.userId}");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RecipePurchasePage(
+                          req_rid: dataRecommendRecipe.rid,
+                        )),
+              ).then((value) => getRecommendRecipe());
+            }
           } else {
-            print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-            print("dataUser.userId = ${dataUser.userId}");
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RecipePurchasePage(
-                        req_rid: dataRecommendRecipe.rid,
-                      )),
-            ).then((value) => getRecommendRecipe());
+            if (dataRecommendRecipe.price == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+              );
+            } else {
+              // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+              // print("dataUser.userId = ${dataUser.userId}");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RecipePurchasePage(
+                          req_rid: dataRecommendRecipe.rid,
+                        )),
+              ).then((value) => getRecommendRecipe());
+            }
           }
         },
         child: Card(
@@ -1732,19 +1751,28 @@ class _FeedPageState extends State<FeedPage> {
                         ],
                       ),
                     ),
-                    Text(
-                      (dataRecommendRecipe.userId == dataUser.userId)
-                          ? ""
-                          : (checkBuy.indexOf(
-                                      dataRecommendRecipe.rid.toString()) >=
-                                  0)
-                              ? "ซื้อแล้ว"
-                              : (dataRecommendRecipe.price == 0)
-                                  ? "ฟรี "
-                                  : "\฿${dataRecommendRecipe.price}",
-                      style: TextStyle(
-                          color: Colors.indigo, fontWeight: FontWeight.bold),
-                    )
+                    (dataUser == null)
+                        ? Text(
+                            (dataRecommendRecipe.price == 0)
+                                ? "ฟรี "
+                                : "\฿${dataRecommendRecipe.price}",
+                            style: TextStyle(
+                                color: Colors.indigo,
+                                fontWeight: FontWeight.bold))
+                        : Text(
+                            (dataRecommendRecipe.userId == dataUser.userId)
+                                ? ""
+                                : (checkBuy.indexOf(dataRecommendRecipe.rid
+                                            .toString()) >=
+                                        0)
+                                    ? "ซื้อแล้ว"
+                                    : (dataRecommendRecipe.price == 0)
+                                        ? "ฟรี "
+                                        : "\฿${dataRecommendRecipe.price}",
+                            style: TextStyle(
+                                color: Colors.indigo,
+                                fontWeight: FontWeight.bold),
+                          )
                   ],
                 ),
               ),
@@ -1766,7 +1794,13 @@ class _FeedPageState extends State<FeedPage> {
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: GestureDetector(
         onTap: () {
-          if ((dataUser.userId == dataRecommendUser.userId)) {
+          if (dataUser == null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProfileUser(dataRecommendUser.userId)),
+            );
+          } else if ((dataUser.userId == dataRecommendUser.userId)) {
             Navigator.push(context, CupertinoPageRoute(builder: (context) {
               return ProfilePage();
             }));
@@ -1812,70 +1846,104 @@ class _FeedPageState extends State<FeedPage> {
                   )
                 ],
               ),
-              (dataUser.userId == dataRecommendUser.userId)
-                  ? Container(
-                      height: 25,
-                    )
-                  : (checkFollowing
-                              .indexOf(dataRecommendUser.userId.toString()) >=
-                          0)
-                      ? Row(
-                          children: [
-                            Container(
-                              width: 90,
-                              height: 25,
-                              child: MaterialButton(
-                                splashColor: Colors.grey,
-                                color: Colors.white,
-                                onPressed: () {
-                                  print("ติดตาม");
-                                  manageFollow(
-                                      "unfol", dataRecommendUser.userId);
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 2),
-                                  child: Text(
-                                    '- เลิกติดตาม',
-                                    style: TextStyle(
-                                        color: Colors.red, fontSize: 11),
-                                  ),
-                                ),
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        width: 1, color: Colors.red)),
+              (dataUser == null)
+                  ? Row(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 25,
+                          child: MaterialButton(
+                            splashColor: Colors.grey,
+                            color: Colors.white,
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return LoginPage();
+                                  }).then((value) {
+                                findUser();
+                                // Navigator.pop(context);
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
+                              child: Text(
+                                '+ ติดตาม',
+                                style:
+                                    TextStyle(color: Colors.blue, fontSize: 11),
                               ),
                             ),
-                          ],
-                        )
-                      : Row(
-                          children: [
-                            Container(
-                              width: 90,
-                              height: 25,
-                              child: MaterialButton(
-                                splashColor: Colors.grey,
-                                color: Colors.white,
-                                onPressed: () {
-                                  print("ติดตาม");
-                                  manageFollow("fol", dataRecommendUser.userId);
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 2),
-                                  child: Text(
-                                    '+ ติดตาม',
-                                    style: TextStyle(
-                                        color: Colors.blue, fontSize: 11),
-                                  ),
-                                ),
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        width: 1, color: Colors.blue)),
-                              ),
-                            ),
-                          ],
+                            shape: StadiumBorder(
+                                side: BorderSide(width: 1, color: Colors.blue)),
+                          ),
                         ),
+                      ],
+                    )
+                  : (dataUser.userId == dataRecommendUser.userId)
+                      ? Container(
+                          height: 25,
+                        )
+                      : (checkFollowing.indexOf(
+                                  dataRecommendUser.userId.toString()) >=
+                              0)
+                          ? Row(
+                              children: [
+                                Container(
+                                  width: 90,
+                                  height: 25,
+                                  child: MaterialButton(
+                                    splashColor: Colors.grey,
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      print("ติดตาม");
+                                      manageFollow(
+                                          "unfol", dataRecommendUser.userId);
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 2),
+                                      child: Text(
+                                        '- เลิกติดตาม',
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 11),
+                                      ),
+                                    ),
+                                    shape: StadiumBorder(
+                                        side: BorderSide(
+                                            width: 1, color: Colors.red)),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                Container(
+                                  width: 90,
+                                  height: 25,
+                                  child: MaterialButton(
+                                    splashColor: Colors.grey,
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      print("ติดตาม");
+                                      manageFollow(
+                                          "fol", dataRecommendUser.userId);
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 2),
+                                      child: Text(
+                                        '+ ติดตาม',
+                                        style: TextStyle(
+                                            color: Colors.blue, fontSize: 11),
+                                      ),
+                                    ),
+                                    shape: StadiumBorder(
+                                        side: BorderSide(
+                                            width: 1, color: Colors.blue)),
+                                  ),
+                                ),
+                              ],
+                            ),
             ],
           ),
         ),
@@ -2016,7 +2084,7 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ));
   }
- 
+
   Container _textBottomNavigationMenu(context) {
     return Container(
 
@@ -2048,8 +2116,8 @@ class _FeedPageState extends State<FeedPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 50,
-                    width: 50,
+                      height: 50,
+                      width: 50,
                       child: Image.network(
                           "https://i.pinimg.com/originals/19/38/cd/1938cdac9a1b4bea2df9e31d20273cee.png"))
                 ],

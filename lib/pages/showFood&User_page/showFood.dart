@@ -43,7 +43,9 @@ class _ShowFoodState extends State<ShowFood> {
 
     setState(() {
       token = preferences.getString("tokens");
-      getMyAccounts();
+      if (token != "") {
+        getMyAccounts();
+      }
     });
   }
 

@@ -2,6 +2,7 @@ import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed2.dart';
 
 import 'package:easy_cook/pages/feed_page/feed_follow.dart';
+import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -27,14 +28,13 @@ class _SlidePageState extends State<SlidePage> {
     print("slidePage ======");
   }
 
-  // String token = ""; //โทเคน
-  // Future<Null> findUser() async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  Future<String> findUser() async {
+    String token = ""; //โทเคน
+    SharedPreferences preferences = await SharedPreferences.getInstance();
 
-  //   setState(() {
-  //     token = preferences.getString("tokens");
-  //   });
-  // }
+    token = preferences.getString("tokens");
+    return token;
+  }
 
   int currentTab = 0;
   final List screens = [
@@ -59,10 +59,27 @@ class _SlidePageState extends State<SlidePage> {
               opacity: keyboardIsOpened ? 0 : 1,
               child: FloatingActionButton(
                 child: Icon(Icons.add),
-                onPressed: () {
-                  // Navigator.pushNamed(context, '/addFood-page');
-                  Navigator.pushNamed(context, '/AddFoodPage');
-                  // Navigator.pushNamed(context, '/test2');
+                onPressed: () async {
+                  String token = await findUser();
+                  if (token != "") {
+                    Navigator.pushNamed(context, '/AddFoodPage');
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return LoginPage();
+                        }).then((value) {
+                 
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => SlidePage(),
+                        ),
+                        (route) => false,
+                      );
+                      // Navigator.pop(context);
+                    });
+                  }
                 },
               ),
             ),
