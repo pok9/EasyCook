@@ -1895,9 +1895,20 @@ class _FeedPageState extends State<FeedPage> {
                                     splashColor: Colors.grey,
                                     color: Colors.white,
                                     onPressed: () {
-                                      print("ติดตาม");
-                                      manageFollow(
-                                          "unfol", dataRecommendUser.userId);
+                                      print("เลิกติดตาม");
+                                      if (token == "") {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return LoginPage();
+                                            }).then((value) {
+                                          findUser();
+                                          // Navigator.pop(context);
+                                        });
+                                      } else {
+                                        manageFollow(
+                                            "unfol", dataRecommendUser.userId);
+                                      }
                                     },
                                     child: Padding(
                                       padding:
@@ -1924,9 +1935,22 @@ class _FeedPageState extends State<FeedPage> {
                                     splashColor: Colors.grey,
                                     color: Colors.white,
                                     onPressed: () {
-                                      print("ติดตาม");
-                                      manageFollow(
-                                          "fol", dataRecommendUser.userId);
+                                      print("ติดตาม123");
+                                      if (token == "") {
+                                       
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return LoginPage();
+                                            }).then((value) {
+                                          findUser();
+                                          // Navigator.pop(context);
+                                        });
+                                      } else {
+                                        
+                                        manageFollow(
+                                            "fol", dataRecommendUser.userId);
+                                      }
                                     },
                                     child: Padding(
                                       padding:
