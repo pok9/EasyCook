@@ -288,8 +288,11 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
 
+    final MediaQueryData mediaQueryData = MediaQuery.of(context);
     print("okkkkkkk");
+    print(mediaQueryData.viewInsets);
     print("6666666666666666666666666666666666666666");
+
     return Scaffold(
       // backgroundColor: Colors.white70,
       backgroundColor: Color(0xFFf3f5f9),
@@ -534,7 +537,7 @@ class _FeedPageState extends State<FeedPage> {
                         // findUser();
                         // setState(() {});
                         this.findUser();
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
                       },
                     ),
                   ],
@@ -613,7 +616,9 @@ class _FeedPageState extends State<FeedPage> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _tripEditModalBottomSheet(context);
+                                        },
                                         child: Text(
                                           'ลืมรหัสผ่าน',
                                           style: TextStyle(
@@ -1876,6 +1881,197 @@ class _FeedPageState extends State<FeedPage> {
         ),
       ),
     );
+  }
+
+  void _tripEditModalBottomSheet(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _buildBottomNavigationMenu(context),
+              ),
+            ));
+  }
+
+  Container _buildBottomNavigationMenu(context) {
+    return Container(
+
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "ลืมรหัสผ่านเหรอ",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.blue,
+                        size: 25,
+                      ))
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      'ยืนยันอีเมลของคุณแล้วเราจะส่งลิงก์ไปให้เพื่อตั้งรหัสผ่านใหม่',
+                      style: TextStyle(fontSize: 15),
+                    ))
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    labelText: 'อีเมล',
+                    // hintText: 'อีเมล'ย,
+                  ),
+                  autofocus: false,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  // padding: EdgeInsets.all(20),
+
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        _textBottomSheet(context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.restart_alt_outlined,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'รีเซ็ตรหัสผ่าน',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  void _textBottomSheet(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _textBottomNavigationMenu(context),
+              ),
+            ));
+  }
+ 
+  Container _textBottomNavigationMenu(context) {
+    return Container(
+
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.blue,
+                        size: 25,
+                      ))
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                      child: Image.network(
+                          "https://i.pinimg.com/originals/19/38/cd/1938cdac9a1b4bea2df9e31d20273cee.png"))
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      'ทางเราได้ทำการส่งอีเมลรีเซ็ตรหัสผ่านไปให้คุณเรียบร้อยแล้ว',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                      textAlign: TextAlign.center,
+                    ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
 

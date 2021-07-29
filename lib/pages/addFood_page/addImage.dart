@@ -17,7 +17,7 @@ class _AddImagePageState extends State<AddImagePage> {
   // ImagePicker picker;
   final picker = ImagePicker();
   File imageFile;
-  pickCropImage() async {
+   pickCropImage() async {
     FilePickerResult result =
         await FilePicker.platform.pickFiles(type: FileType.image);
 

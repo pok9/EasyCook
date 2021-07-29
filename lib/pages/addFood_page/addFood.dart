@@ -36,7 +36,14 @@ class _AddFoodPageState extends State<AddFoodPage> {
 // CreatePostModel
   var mimeTypeData;
   Future<CreatePostModel> createPosts(
-      String tokens, File image, String recipe_name, String price,String suitable_for,String take_time,String food_category,String description) async {
+      String tokens,
+      File image,
+      String recipe_name,
+      String price,
+      String suitable_for,
+      String take_time,
+      String food_category,
+      String description) async {
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/createPost";
 
     mimeTypeData =
@@ -195,7 +202,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
-      print("token => "+this.token);
+      print("token => " + this.token);
     });
   }
   //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
@@ -246,9 +253,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   //########################################################################################################/
 
-  List<List<double>> data =
-      <List<double>>[];
-  
+  List<List<double>> data = <List<double>>[];
 
   //*******************************************************************************************************/
   int ingredient_row = 0; //จำนวนแถวส่วนผสม
@@ -261,9 +266,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
         ctl.add(TextEditingController());
-
-        
-        
 
         ctl_ingredient_row.add(ctl);
       }
@@ -734,8 +736,15 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   print("ราคา" + _ctrlPrice.text);
 
                   //createPost
-                  final CreatePostModel postsData = await createPosts(token,
-                      addImage[0].image, _ctrlNameFood.text, _ctrlPrice.text,valueChoosePeople,valueChooseTime,valueChooseFood,_ctrlExplain.text);
+                  final CreatePostModel postsData = await createPosts(
+                      token,
+                      addImage[0].image,
+                      _ctrlNameFood.text,
+                      _ctrlPrice.text,
+                      valueChoosePeople,
+                      valueChooseTime,
+                      valueChooseFood,
+                      _ctrlExplain.text);
 
                   // print(postsData.success);
                   // print(postsData.recipeId);
@@ -789,7 +798,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       type_file,
                       token);
 
-                      print("postsData.success = ${postsData.success} ingredientsData.success = ${ingredientsData.success} howtoData.success = ${howtoData.success}");
+                  print(
+                      "postsData.success = ${postsData.success} ingredientsData.success = ${ingredientsData.success} howtoData.success = ${howtoData.success}");
 
                   if (postsData.success == 1 &&
                       ingredientsData.success == 1 &&
@@ -871,6 +881,32 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                     });
                                   }
                                 });
+
+                                // showModalBottomSheet(
+                                //     context: context,
+                                //     builder: (context) {
+                                //       return Container(
+                                //         height:
+                                //             MediaQuery.of(context).size.height *
+                                //                 .15,
+                                //         child: Column(
+                                //           children: [
+                                //             ListTile(
+                                //               leading: Icon(
+                                //                   Icons.insert_photo_rounded),
+                                //               title: Text('รูปภาพในมือถือ'),
+                                //               onTap: () {},
+                                //             ),
+                                //             ListTile(
+                                //               leading: Icon(
+                                //                   Icons.photo_camera_rounded),
+                                //               title: Text('ถ่ายรูปภาพ'),
+                                //               onTap: () {},
+                                //             )
+                                //           ],
+                                //         ),
+                                //       );
+                                //     });
                               },
                               style: ButtonStyle(
                                 foregroundColor:
@@ -1235,7 +1271,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     // TODO: implement initState
     super.initState();
     findUser();
-    
+
     ingredient_row = widget.ingredient_row_start;
     howto_row = widget.howto_row_start;
   }
