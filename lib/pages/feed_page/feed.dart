@@ -900,15 +900,20 @@ class _FeedPageState extends State<FeedPage> {
                               ],
                             ),
                           ),
-                          Container(
-                              height: 300,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: dataRecommendRecipe.length,
-                                  itemBuilder: (context, index) {
-                                    return _foodCard_3_1(
-                                        context, dataRecommendRecipe[index]);
-                                  })),
+
+                          (dataRecommendRecipe == null)
+                              ? Container(
+                                  height: 329,
+                                )
+                              : Container(
+                                  height: 300,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: dataRecommendRecipe.length,
+                                      itemBuilder: (context, index) {
+                                        return _foodCard_3_1(context,
+                                            dataRecommendRecipe[index]);
+                                      })),
                           DividerCutom(),
 
                           Padding(
@@ -1825,76 +1830,190 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Widget _foodCard_3_1(context, RecommendRecipe dataRecommendRecipe) {
-    return Container(
-      width: 250,
-      child: Stack(
-        children: [
-          Container(
-            // height: 500,
-            height: 300,
-            width: 250,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusDirectional.circular(20)),
-              clipBehavior: Clip.antiAlias,
-              child: Image.network(
-                dataRecommendRecipe.image,
-                fit: BoxFit.cover,
+    return InkWell(
+      onTap: () {
+        if (dataUser != null) {
+          if (dataRecommendRecipe.price == 0 ||
+              dataRecommendRecipe.userId == dataUser.userId ||
+              checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+            );
+          } else {
+            // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+            // print("dataUser.userId = ${dataUser.userId}");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecipePurchasePage(
+                        req_rid: dataRecommendRecipe.rid,
+                      )),
+            ).then((value) => getRecommendRecipe());
+          }
+        } else {
+          if (dataRecommendRecipe.price == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+            );
+          } else {
+            // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+            // print("dataUser.userId = ${dataUser.userId}");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecipePurchasePage(
+                        req_rid: dataRecommendRecipe.rid,
+                      )),
+            ).then((value) => getRecommendRecipe());
+          }
+        }
+      },
+      child: Container(
+        width: 230,
+        child: Stack(
+          children: [
+            Container(
+              // height: 500,
+              height: 300,
+              width: 230,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.circular(20)),
+                clipBehavior: Clip.antiAlias,
+                child: Image.network(
+                  dataRecommendRecipe.image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Text(
-                //       "testasdjasjdknkjaskdnjkasndkj",
-                //       style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),
-                //     ),
-                Row(
-                  
-                  children: [
-                    Expanded(
-                      child: Text(
-                        dataRecommendRecipe.recipeName,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white,fontSize: 25),
-                      ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Colors.blue,
+                    size: 20,
+                  ),
+                  SizedBox(
+                    width: 1,
+                  ),
+                  Text(
+                    '5.0',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Text(
+                    '(4)',
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                  ],
-                ),
-                SizedBox(height: 5,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    new Container(
-                      height: 30.0,
-                      width: 30.0,
-                      decoration: new BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: new DecorationImage(
-                              fit: BoxFit.fill,
-                              image: new NetworkImage(
-                                  dataRecommendRecipe.profileImage))),
-                    ),
-                    new SizedBox(
-                      width: 10.0,
-                    ),
-                    new Text(
-                      dataRecommendRecipe.aliasName,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    )
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                      height: 30,
+                      width: 30,
+                      child: (dataUser == null)
+                          ? Image.network(
+                              "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                          : (checkBuy.indexOf(
+                                      dataRecommendRecipe.rid.toString()) >=
+                                  0)
+                              ? Image.network(
+                                  "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                              : (dataRecommendRecipe.userId ==
+                                          dataUser.userId ||
+                                      (dataRecommendRecipe.price == 0))
+                                  ? Container()
+                                  : Image.network(
+                                      "https://image.flaticon.com/icons/png/512/1177/1177428.png"))
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Text(
+                  //       "testasdjasjdknkjaskdnjkasndkj",
+                  //       style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),
+                  //     ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          dataRecommendRecipe.recipeName,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            // margin: EdgeInsets.all(100.0),
+                            height: 32.0,
+                            width: 32.0,
+                            decoration: BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                          ),
+                          Positioned(
+                            top: 1,
+                            right: 1,
+                            child: new Container(
+                              height: 30.0,
+                              width: 30.0,
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: new NetworkImage(
+                                          dataRecommendRecipe.profileImage))),
+                            ),
+                          ),
+                        ],
+                      ),
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                      new Text(
+                        dataRecommendRecipe.aliasName,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
