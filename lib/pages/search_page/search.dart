@@ -67,7 +67,9 @@ class _SearchPageState extends State<SearchPage> {
 
     setState(() {
       token = preferences.getString("tokens");
-      getMyAccounts();
+      if (token != "") {
+        getMyAccounts();
+      }
     });
   }
 
@@ -83,12 +85,8 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {
         final String responseString = response.body;
 
-        // dataRecipe = searchRecipeNameFromJson(responseString).data;
         dataRecipe = searchRecipeNameFromJson(responseString).data;
-        // dataRecipe = searchRecipeNameFromJson(responseString).data;
-        // print(dataRecipe[0].recipeName);
-        // datas = myAccountFromJson(responseString);
-        // dataUser = datas.data[0];
+       
       });
     } else {
       // flag = true;
@@ -341,13 +339,21 @@ class _SearchPageState extends State<SearchPage> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            print("test = " + index.toString());
-                            print(dataUser[index].userId);
-                            print(dataUser[index].aliasName);
-                            print(dataUser[index].nameSurname);
-                            print(dataUser[index].profileImage);
+                            // print("test = " + index.toString());
+                            // print(dataUser[index].userId);
+                            // print(dataUser[index].aliasName);
+                            // print(dataUser[index].nameSurname);
+                            // print(dataUser[index].profileImage);
 
-                            if (dataAcUser.userId == dataUser[index].userId) {
+                            if (token == "") {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfileUser(
+                                  dataUser[index].userId,
+                                );
+                              }));
+                            } else if (dataAcUser.userId ==
+                                dataUser[index].userId) {
                               Navigator.push(context,
                                   CupertinoPageRoute(builder: (context) {
                                 return ProfilePage();
@@ -699,66 +705,14 @@ Widget myDetailsContainer3(List<Datum> data, int index) {
           )),
         ],
       ),
-      // Padding(
-      //   padding: const EdgeInsets.only(left: 8.0),
-      //   child: Container(
-      //       child: Row(
-      //     children: <Widget>[
-      //       Container(
-      //           child: Text(
-      //         dataRecipe[index].score.toString(),
-      //         style: TextStyle(
-      //           color: Colors.black54,
-      //           fontSize: 18.0,
-      //         ),
-      //       )),
-      //       Container(
-      //         child: Icon(
-      //           FontAwesomeIcons.solidStar,
-      //           color: Colors.amber,
-      //           size: 15.0,
-      //         ),
-      //       ),
-      //       Container(
-      //         child: Icon(
-      //           FontAwesomeIcons.solidStar,
-      //           color: Colors.amber,
-      //           size: 15.0,
-      //         ),
-      //       ),
-      //       Container(
-      //         child: Icon(
-      //           FontAwesomeIcons.solidStar,
-      //           color: Colors.amber,
-      //           size: 15.0,
-      //         ),
-      //       ),
-      //       Container(
-      //         child: Icon(
-      //           FontAwesomeIcons.solidStarHalf,
-      //           color: Colors.amber,
-      //           size: 15.0,
-      //         ),
-      //       ),
-      //       Container(
-      //           child: Text(
-      //         "(50)",
-      //         style: TextStyle(
-      //           color: Colors.black54,
-      //           fontSize: 18.0,
-      //         ),
-      //       )),
-      //     ],
-      //   )),
-      // ),
       SizedBox(
         height: 50,
       ),
       Row(
         children: [
           new Container(
-            height: 70.0,
-            width: 70.0,
+            height: 50.0,
+            width: 50.0,
             decoration: new BoxDecoration(
                 shape: BoxShape.circle,
                 image: new DecorationImage(
@@ -801,7 +755,8 @@ class MenuFeature extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => Category(
                     categoryName: name,
-                    categoryFoodImage: "https://www.mama.co.th/imgadmins/img_product_cate/big/cate_big_20180409150840.jpg",
+                    categoryFoodImage:
+                        "https://www.mama.co.th/imgadmins/img_product_cate/big/cate_big_20180409150840.jpg",
                   )),
         );
       },

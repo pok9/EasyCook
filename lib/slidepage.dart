@@ -69,14 +69,16 @@ class _SlidePageState extends State<SlidePage> {
                         builder: (_) {
                           return LoginPage();
                         }).then((value) {
-                 
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => SlidePage(),
-                        ),
-                        (route) => false,
-                      );
+                      if (value != null) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SlidePage(),
+                          ),
+                          (route) => false,
+                        );
+                      }
+
                       // Navigator.pop(context);
                     });
                   }

@@ -23,6 +23,8 @@ import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/style/utiltties.dart';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -883,6 +885,38 @@ class _FeedPageState extends State<FeedPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
+                                  "แนะนำสูตรอาหาร2 ทดสอบ",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: Colors.indigo)
+                                // Text(
+                                //   "ดูทั้งหมด",
+                                //   style: TextStyle(
+                                //       fontSize: 20, fontWeight: FontWeight.normal),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              height: 300,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: dataRecommendRecipe.length,
+                                  itemBuilder: (context, index) {
+                                    return _foodCard_3_1(
+                                        context, dataRecommendRecipe[index]);
+                                  })),
+                          DividerCutom(),
+
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
                                   "แนะนำเซฟ",
                                   style: TextStyle(
                                       fontSize: 20,
@@ -1134,156 +1168,158 @@ class _FeedPageState extends State<FeedPage> {
                               // height: 500,
                               width: 280,
                               child: Card(
-                                  semanticContainer: true,
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            8, 0, 0, 0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                new Container(
-                                                  height: 30.0,
-                                                  width: 30.0,
-                                                  decoration: new BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      image: new DecorationImage(
-                                                          fit: BoxFit.fill,
-                                                          image: new NetworkImage(
-                                                              newFeedsFollow
-                                                                  .feed[index]
-                                                                  .profileImage))),
-                                                ),
-                                                new SizedBox(
-                                                  width: 10.0,
-                                                ),
-                                                new Text(
-                                                  newFeedsFollow
-                                                      .feed[index].aliasName,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
-                                            ),
-                                            IconButton(
-                                                icon: Icon(Icons.more_vert),
-                                                onPressed: () {
-                                                  // print("more_vert" + index.toString());
-                                                })
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 350,
-                                        // width: 500,
-                                        decoration: BoxDecoration(
-                                            // borderRadius: BorderRadius.circular(50),
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    newFeedsFollow
-                                                        .feed[index].image),
-                                                fit: BoxFit.contain)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  newFeedsFollow
-                                                      .feed[index].recipeName,
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                Row(
+                                semanticContainer: true,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              new Container(
+                                                height: 30.0,
+                                                width: 30.0,
+                                                decoration: new BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: new DecorationImage(
+                                                        fit: BoxFit.fill,
+                                                        image: new NetworkImage(
+                                                            newFeedsFollow
+                                                                .feed[index]
+                                                                .profileImage))),
+                                              ),
+                                              new SizedBox(
+                                                width: 10.0,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 8, 0, 8),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      "4.2",
+                                                    new Text(
+                                                      newFeedsFollow.feed[index]
+                                                          .aliasName,
                                                       style: TextStyle(
-                                                          color: Colors.grey),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-                                                    Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.star,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star_half,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star_border,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Text(
-                                                      "(12)",
+                                                    new Text(
+                                                      newFeedsFollow
+                                                          .feed[index].date
+                                                          .toString(),
                                                       style: TextStyle(
-                                                          color: Colors.grey),
+                                                          fontWeight: FontWeight
+                                                              .normal),
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
-                                            Text(
-                                              "\$25",
-                                              style: TextStyle(
-                                                  color: Colors.indigo,
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          ],
-                                        ),
+                                              )
+                                            ],
+                                          ),
+                                          IconButton(
+                                              icon: Icon(Icons.more_vert),
+                                              onPressed: () {
+                                                // print("more_vert" + index.toString());
+                                              })
+                                        ],
                                       ),
-                                      Container(
-                                        color: Colors.grey[400],
-                                        height: 8,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            newFeedsFollow
+                                                .feed[index].recipeName,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "4.2",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 10),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 12.0,
+                                              ),
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 12.0,
+                                              ),
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 12.0,
+                                              ),
+                                              Icon(
+                                                Icons.star_half,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 12.0,
+                                              ),
+                                              Icon(
+                                                Icons.star_border,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 12.0,
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            "(12)",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 10),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0.0),
-                                  ),
-                                  // elevation: 5,
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
-                            ))
+                                    ),
+                                    Container(
+                                      height: 310,
+                                      // width: 500,
+                                      decoration: BoxDecoration(
+                                          // borderRadius: BorderRadius.circular(50),
+                                          image: DecorationImage(
+                                              image: NetworkImage(newFeedsFollow
+                                                  .feed[index].image),
+                                              fit: BoxFit.cover)),
+                                    ),
+                                  ],
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                elevation: 5,
+                                margin: EdgeInsets.all(10),
+                              ),
+                            ),
+                    )
             ],
           ),
         ),
@@ -1788,6 +1824,81 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  Widget _foodCard_3_1(context, RecommendRecipe dataRecommendRecipe) {
+    return Container(
+      width: 250,
+      child: Stack(
+        children: [
+          Container(
+            // height: 500,
+            height: 300,
+            width: 250,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.circular(20)),
+              clipBehavior: Clip.antiAlias,
+              child: Image.network(
+                dataRecommendRecipe.image,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text(
+                //       "testasdjasjdknkjaskdnjkasndkj",
+                //       style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),
+                //     ),
+                Row(
+                  
+                  children: [
+                    Expanded(
+                      child: Text(
+                        dataRecommendRecipe.recipeName,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white,fontSize: 25),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 5,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    new Container(
+                      height: 30.0,
+                      width: 30.0,
+                      decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: new DecorationImage(
+                              fit: BoxFit.fill,
+                              image: new NetworkImage(
+                                  dataRecommendRecipe.profileImage))),
+                    ),
+                    new SizedBox(
+                      width: 10.0,
+                    ),
+                    new Text(
+                      dataRecommendRecipe.aliasName,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _introduce_safe_Card(
       context, RecommendUser dataRecommendUser, List<String> checkFollowing) {
     return Padding(
@@ -1937,7 +2048,6 @@ class _FeedPageState extends State<FeedPage> {
                                     onPressed: () {
                                       print("ติดตาม123");
                                       if (token == "") {
-                                       
                                         showDialog(
                                             context: context,
                                             builder: (_) {
@@ -1947,7 +2057,6 @@ class _FeedPageState extends State<FeedPage> {
                                           // Navigator.pop(context);
                                         });
                                       } else {
-                                        
                                         manageFollow(
                                             "fol", dataRecommendUser.userId);
                                       }
@@ -2060,7 +2169,7 @@ class _FeedPageState extends State<FeedPage> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
                         Navigator.pop(context);
                         _textBottomSheet(context);
                       },
