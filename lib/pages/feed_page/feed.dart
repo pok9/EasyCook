@@ -291,9 +291,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
 
-    final MediaQueryData mediaQueryData = MediaQuery.of(context);
-    print("okkkkkkk");
-    print(mediaQueryData.viewInsets);
+    
     print("6666666666666666666666666666666666666666");
 
     return Scaffold(
@@ -991,23 +989,24 @@ class _FeedPageState extends State<FeedPage> {
                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
+                                    // maxCrossAxisExtent: 200,
                                     mainAxisExtent: 290,
-                                    // childAspectRatio: (deviceSize.width/deviceSize.height),
-                                    // crossAxisSpacing: 0,
-                                    // mainAxisSpacing: 0
+
+                                    
+                                    maxCrossAxisExtent: (deviceSize.width > 400) ? 250 : 200,
                                   ),
                                   itemCount: dataNewfeedsglobal.length,
                                   itemBuilder: (BuildContext ctx, index) {
                                     return InkWell(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ShowFood(
-                                                  dataNewfeedsglobal[index]
-                                                      .rid)),
-                                        );
+                                        print(deviceSize.width);
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //       builder: (context) => ShowFood(
+                                        //           dataNewfeedsglobal[index]
+                                        //               .rid)),
+                                        // );
                                       },
                                       child: Card(
                                         semanticContainer: true,

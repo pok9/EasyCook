@@ -675,6 +675,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   bool _validate = false;
   final List<int> _items = List<int>.generate(50, (int index) => index);
+
+  bool clearNameFood = true;
+  bool clearDesciptionFood = true;
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -829,35 +832,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
             color: Colors.white,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    maxLength: 30,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 20),
-                    controller: _ctrlNameFood,
-                    decoration: InputDecoration(
-                      errorText: _validate ? 'โปรดใส่ชื่อเมนู' : null,
-                      filled: true,
-                      fillColor: Color(0xFFFAFAFA),
-                      border: OutlineInputBorder(),
-                      hintText: "ชื่อเมนู",
-                      hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
-                    ),
-                    onChanged: (value) {
-                      if (value.length > 0) {
-                        setState(() {
-                          _validate = false;
-                        });
-                      }
-                    },
-                  ),
-                ),
                 (addImage.length == 0)
                     ? Card(
                         semanticContainer: true,
@@ -881,32 +855,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                     });
                                   }
                                 });
-
-                                // showModalBottomSheet(
-                                //     context: context,
-                                //     builder: (context) {
-                                //       return Container(
-                                //         height:
-                                //             MediaQuery.of(context).size.height *
-                                //                 .15,
-                                //         child: Column(
-                                //           children: [
-                                //             ListTile(
-                                //               leading: Icon(
-                                //                   Icons.insert_photo_rounded),
-                                //               title: Text('รูปภาพในมือถือ'),
-                                //               onTap: () {},
-                                //             ),
-                                //             ListTile(
-                                //               leading: Icon(
-                                //                   Icons.photo_camera_rounded),
-                                //               title: Text('ถ่ายรูปภาพ'),
-                                //               onTap: () {},
-                                //             )
-                                //           ],
-                                //         ),
-                                //       );
-                                //     });
                               },
                               style: ButtonStyle(
                                 foregroundColor:
@@ -917,7 +865,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0),
                         ),
-                        margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
                       )
                     : Container(
                         constraints: new BoxConstraints.expand(
@@ -1010,6 +958,82 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         )),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "ชื่อสูตรอาหาร",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: TextFormField(
+                    maxLength: 30,
+                    style: TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20),
+                    controller: _ctrlNameFood,
+                    decoration: InputDecoration(
+                      suffixIcon: (clearNameFood)
+                          ? null
+                          : IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _ctrlNameFood.text = "";
+                                  clearNameFood = true;
+                                });
+                              },
+                              icon: Icon(Icons.clear),
+                            ),
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10),
+                      errorText: _validate ? 'โปรดใส่ชื่อเมนู' : null,
+                      filled: true,
+                      fillColor: Color(0xfff3f3f4),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: "ชื่อเมนู",
+                      hintStyle: TextStyle(
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.grey),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.length > 0) {
+                          clearNameFood = false;
+                          _validate = false;
+                        } else {
+                          clearNameFood = true;
+                        }
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "คำอธิบาย",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                   child: TextFormField(
                     controller: _ctrlExplain,
                     // maxLength: 60,
@@ -1017,15 +1041,42 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration: InputDecoration(
+                      suffixIcon: (clearDesciptionFood)
+                      
+                          ? null
+                          : Padding(
+                            padding: const EdgeInsets.only(bottom: 50),
+                            child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _ctrlExplain.text = "";
+                                    clearDesciptionFood = true;
+                                  });
+                                },
+                                icon: Icon(Icons.clear),
+                              ),
+                          ),
                       filled: true,
-                      fillColor: Color(0xFFFAFAFA),
-                      border: OutlineInputBorder(),
-                      hintText: "อธิบายสูตรอาหาร",
+                      fillColor: Color(0xfff3f3f4),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: "บอกเราเกี่ยวกับสูตรอาหารนี้",
                       hintStyle: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                           color: Colors.grey),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.length > 0) {
+                          clearDesciptionFood = false;
+                        } else {
+                          clearDesciptionFood = true;
+                        }
+                      });
+                    },
                   ),
                 ),
                 Padding(
