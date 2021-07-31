@@ -280,7 +280,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
       return Padding(
         key: ValueKey('${displayNumber - 1}'),
-        padding: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 10, bottom: 1),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -296,9 +296,24 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       'Left:' + ctl_ingredient_row[displayNumber - 1][0].text);
                 },
                 decoration: InputDecoration(
+                  contentPadding:
+                      new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+                  filled: true,
+                  fillColor: Colors.grey[100],
                   hintText: "ส่วนผสมที่ $displayNumber",
+                  hintStyle: TextStyle(
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
+            ),
+            SizedBox(
+              width: 1,
             ),
             Expanded(
               child: TextField(
@@ -308,7 +323,19 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       'Right:' + ctl_ingredient_row[displayNumber - 1][1].text);
                 },
                 decoration: InputDecoration(
+                  contentPadding:
+                      new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+                  filled: true,
+                  fillColor: Color(0xfff3f3f4),
                   hintText: "จำนวนที่ $displayNumber",
+                  hintStyle: TextStyle(
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    borderSide: BorderSide.none,
+                  ),
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
@@ -374,22 +401,31 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   ),
                   Expanded(
                     flex: 5,
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      minLines: 1,
-                      maxLines: 5,
-                      controller: controller2,
-                      onChanged: (text) {
-                        print(text + "${displayNumber}.");
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        minLines: 1,
+                        maxLines: 5,
+                        controller: controller2,
+                        onChanged: (text) {
+                          print(text + "${displayNumber}.");
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 10),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: "วิธีทำที่ $displayNumber",
+                          hintStyle: TextStyle(
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.grey),
                         ),
-                        hintText: "วิธีทำที่ $displayNumber",
                       ),
                     ),
                   ),
@@ -397,49 +433,36 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           File('').toString())
                       ? Expanded(
                           flex: 2,
-                          child: IconButton(
-                              iconSize: 100,
-                              icon: Image.asset('assets/images/dot.png'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) =>
-                                          new AddImageOrViderPage()),
-                                ).then((value) {
-                                  if (value != null) {
-                                    imageHowto[displayNumber - 1] = value.image;
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Container(
+                              height: 75,
+                              color: Colors.grey.shade200,
+                              child: IconButton(
+                                  iconSize: 30,
+                                  icon: Icon(Icons.add,color: Colors.grey.shade700,),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) =>
+                                              new AddImageOrViderPage()),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        imageHowto[displayNumber - 1] = value.image;
 
-                                    setState(() {});
-                                  }
-                                });
-                              }))
+                                        setState(() {});
+                                      }
+                                    });
+                                  }),
+                            ),
+                          ))
                       : Container(),
                   IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
                       print("${displayNumber}");
-                      // if (lookupMimeType(
-                      //         imageHowto[displayNumber - 1].path)[0] !=
-                      //     "i") {
-                      //   // VideoPlayerController.file(image2[displayNumber - 1])
-                      //   //     .setVolume(0);
-
-                      //   // image2[displayNumber - 1] = null;
-                      //   print("มันคือ วิดีโอออออออ11111111");
-
-                      //   // print(VideoPlayerController.file(
-                      //   //         image2[displayNumber - 1])
-                      //   //     .value
-                      //   //     .isPlaying);
-                      //   // print(VideoPlayerController.file(
-                      //   //         image2[displayNumber - 1])
-                      //   //     .play());
-                      //   // print(displayNumber - 1);
-
-                      //   print("มันคือ วิดีโอออออออ222222");
-                      //   setState(() {});
-                      // }
+                      
                       howto_row--;
                       ctl_howto_row.remove(controller2);
                       imageHowto.remove(imageHowto[displayNumber - 1]);
@@ -1019,7 +1042,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                   child: Row(
                     children: [
                       Text(
@@ -1042,11 +1065,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     maxLines: null,
                     decoration: InputDecoration(
                       suffixIcon: (clearDesciptionFood)
-                      
                           ? null
                           : Padding(
-                            padding: const EdgeInsets.only(bottom: 50),
-                            child: IconButton(
+                              padding: const EdgeInsets.only(bottom: 50),
+                              child: IconButton(
                                 onPressed: () {
                                   setState(() {
                                     _ctrlExplain.text = "";
@@ -1055,7 +1077,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                 },
                                 icon: Icon(Icons.clear),
                               ),
-                          ),
+                            ),
                       filled: true,
                       fillColor: Color(0xfff3f3f4),
                       border: OutlineInputBorder(
