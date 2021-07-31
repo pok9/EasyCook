@@ -1017,7 +1017,7 @@ class _FeedPageState extends State<FeedPage> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(4.0),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment

@@ -13,10 +13,10 @@ class SearchRecipeName {
         this.data,
     });
 
-    List<Datum> data;
+    List<DataRecipe> data;
 
     factory SearchRecipeName.fromJson(Map<String, dynamic> json) => SearchRecipeName(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<DataRecipe>.from(json["data"].map((x) => DataRecipe.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -24,8 +24,8 @@ class SearchRecipeName {
     };
 }
 
-class Datum {
-    Datum({
+class DataRecipe {
+    DataRecipe({
         this.rid,
         this.recipeName,
         this.image,
@@ -45,7 +45,7 @@ class Datum {
     String profileImage;
     int score;
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory DataRecipe.fromJson(Map<String, dynamic> json) => DataRecipe(
         rid: json["rid"],
         recipeName: json["recipe_name"],
         image: json["image"],

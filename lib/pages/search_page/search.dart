@@ -1,11 +1,13 @@
 // import 'dart:html';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/search/searchIngred_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/profile_page/xxx_profile.dart';
 import 'package:easy_cook/pages/search_page/category/category.dart';
+import 'package:easy_cook/pages/search_page/searchIngredient/searchIngredient_page.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,14 +26,8 @@ class SearchPage extends StatefulWidget {
 
 String token = ""; //โทเคน
 
-//ข้อมูลสูตรอาหาร
-List<Datum> dataRecipe;
-
 //ข้อมูลผู้ใช้
 List<DataUser> dataUser;
-
-//ข้อมูลตัวเอง
-DataAc dataAcUser;
 
 bool body = true;
 bool textFocus = false;
@@ -44,6 +40,8 @@ class _SearchPageState extends State<SearchPage> {
     // print("ttttt = "+token);
   }
 
+  //ข้อมูลตัวเอง
+  DataAc dataAcUser;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
@@ -73,6 +71,8 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
+  //ข้อมูลสูตรอาหาร
+  List<DataRecipe> dataRecipe;
   Future<Null> getSearchRecipeNames(String recipName) async {
     dataRecipe = [];
     final String apiUrl =
@@ -86,7 +86,6 @@ class _SearchPageState extends State<SearchPage> {
         final String responseString = response.body;
 
         dataRecipe = searchRecipeNameFromJson(responseString).data;
-       
       });
     } else {
       // flag = true;
@@ -108,6 +107,34 @@ class _SearchPageState extends State<SearchPage> {
 
         // dataRecipe = searchRecipeNameFromJson(responseString).data;
         dataUser = searchUserNameFromJson(responseString).data;
+      });
+    } else {
+      // flag = true;
+      return null;
+    }
+  }
+
+  List<DataIngredient> dataIngredient;
+  Set<String> dataIngredientName = Set();
+  Future<Null> getSearchIngredient(String ingredient) async {
+    dataIngredient = [];
+    dataIngredientName = Set();
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/searchIngredient/" +
+            ingredient;
+
+    print("token = " + token);
+    final response = await http.get(Uri.parse(apiUrl));
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+        print("pok test");
+        // dataRecipe = searchRecipeNameFromJson(responseString).data;
+        dataIngredient = searchIngredModelFromJson(responseString).data;
+        for (int i = 0; i < dataIngredient.length; i++) {
+          dataIngredientName.add(dataIngredient[i].ingredientName);
+        }
       });
     } else {
       // flag = true;
@@ -190,6 +217,7 @@ class _SearchPageState extends State<SearchPage> {
                         }
                         getSearchRecipeNames(text);
                         getSearchUserNames(text);
+                        getSearchIngredient(text);
                       });
                     },
                     controller: _controller,
@@ -266,7 +294,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 body: TabBarView(children: [
                   ListView.builder(
-                      itemCount: dataRecipe.length,
+                      itemCount: (dataRecipe == null) ? 0 : dataRecipe.length,
                       itemBuilder: (context, index) => (index < 0)
                           ? new SizedBox(
                               child: Container(),
@@ -335,7 +363,7 @@ class _SearchPageState extends State<SearchPage> {
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: ListView.builder(
-                      itemCount: dataUser.length,
+                      itemCount: (dataUser == null) ? 0 : dataUser.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -385,9 +413,28 @@ class _SearchPageState extends State<SearchPage> {
                       },
                     ),
                   ),
-
-                  // Icon(Icons.movie),
-                  Icon(Icons.games),
+                  (dataIngredientName == null)
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          itemCount: dataIngredientName == null
+                              ? 0
+                              : dataIngredientName.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchIngredient(
+                                            nameIngredient: dataIngredientName
+                                                .elementAt(index),
+                                          )),
+                                );
+                              },
+                              title: Text(dataIngredientName.elementAt(index)),
+                            );
+                          },
+                        )
                 ]),
               ))
           : (body == false)
@@ -661,84 +708,84 @@ class _SearchPageState extends State<SearchPage> {
       ]),
     );
   }
-}
 
-Widget myDetailsContainer3(List<Datum> data, int index) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Container(
-            child: Text(
-          dataRecipe[index].recipeName,
-          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-        )),
-      ),
-      Row(
-        children: [
-          Container(
+  Widget myDetailsContainer3(List<DataRecipe> data, int index) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container(
               child: Text(
-            dataRecipe[index].score.toString(),
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-            ),
+            dataRecipe[index].recipeName,
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
           )),
-          RatingBarIndicator(
-            rating: dataRecipe[index].score.toDouble(),
-            itemBuilder: (context, index) => Icon(
-              Icons.star,
-              color: Colors.blue,
-            ),
-            itemCount: 5,
-            itemSize: 15,
-            direction: Axis.horizontal,
-          ),
-          Container(
-              child: Text(
-            "(50)",
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-            ),
-          )),
-        ],
-      ),
-      SizedBox(
-        height: 50,
-      ),
-      Row(
-        children: [
-          new Container(
-            height: 50.0,
-            width: 50.0,
-            decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                image: new DecorationImage(
-                    fit: BoxFit.fill,
-                    image: new NetworkImage(dataRecipe[index].profileImage))),
-          ),
-          new SizedBox(
-            width: 10.0,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              new Text(
-                dataRecipe[index].aliasName,
-                style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Row(
+          children: [
+            Container(
+                child: Text(
+              dataRecipe[index].score.toString(),
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
               ),
-              new Text(
-                dataRecipe[index].nameSurname,
-                style: TextStyle(fontWeight: FontWeight.normal),
+            )),
+            RatingBarIndicator(
+              rating: dataRecipe[index].score.toDouble(),
+              itemBuilder: (context, index) => Icon(
+                Icons.star,
+                color: Colors.blue,
               ),
-            ],
-          )
-        ],
-      ),
-    ],
-  );
+              itemCount: 5,
+              itemSize: 15,
+              direction: Axis.horizontal,
+            ),
+            Container(
+                child: Text(
+              "(50)",
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
+              ),
+            )),
+          ],
+        ),
+        SizedBox(
+          height: 50,
+        ),
+        Row(
+          children: [
+            new Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      image: new NetworkImage(dataRecipe[index].profileImage))),
+            ),
+            new SizedBox(
+              width: 10.0,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                new Text(
+                  dataRecipe[index].aliasName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                new Text(
+                  dataRecipe[index].nameSurname,
+                  style: TextStyle(fontWeight: FontWeight.normal),
+                ),
+              ],
+            )
+          ],
+        ),
+      ],
+    );
+  }
 }
 
 class MenuFeature extends StatelessWidget {
