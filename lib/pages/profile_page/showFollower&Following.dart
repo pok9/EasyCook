@@ -220,15 +220,27 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                                       image: new NetworkImage(checkFollowing
                                           .user[index].profileImage))),
                             ),
-                            trailing: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('กำลังติดตาม'),
-                              style: OutlinedButton.styleFrom(
-                                primary: Colors.blue,
-                                backgroundColor: Colors.white,
-                                side: BorderSide(width: 0, color: Colors.blue),
-                              ),
-                            ),
+                            trailing: (index % 2 == 0)
+                                ? OutlinedButton(
+                                    onPressed: () {},
+                                    child: Text('กำลังติดตาม'),
+                                    style: OutlinedButton.styleFrom(
+                                      primary: Colors.black,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(
+                                          width: 0, color: Colors.grey),
+                                    ),
+                                  )
+                                : OutlinedButton(
+                                    onPressed: () {},
+                                    child: Text('     ติดตาม     '),
+                                    style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      backgroundColor: Colors.blue,
+                                      side: BorderSide(
+                                          width: 0, color: Colors.blue),
+                                    ),
+                                  ),
                           ),
                         );
                       },

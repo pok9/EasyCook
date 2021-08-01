@@ -1676,7 +1676,7 @@ class _FeedPageState extends State<FeedPage> {
                     builder: (context) => RecipePurchasePage(
                           req_rid: dataRecommendRecipe.rid,
                         )),
-              ).then((value) => getRecommendRecipe());
+              ).then((value) => getMybuy());
             }
           } else {
             if (dataRecommendRecipe.price == 0) {
@@ -1694,7 +1694,7 @@ class _FeedPageState extends State<FeedPage> {
                     builder: (context) => RecipePurchasePage(
                           req_rid: dataRecommendRecipe.rid,
                         )),
-              ).then((value) => getRecommendRecipe());
+              ).then((value) => getMybuy());
             }
           }
         },
@@ -1849,7 +1849,7 @@ class _FeedPageState extends State<FeedPage> {
                   builder: (context) => RecipePurchasePage(
                         req_rid: dataRecommendRecipe.rid,
                       )),
-            ).then((value) => getRecommendRecipe());
+            ).then((value) => getMybuy());
           }
         } else {
           if (dataRecommendRecipe.price == 0) {
@@ -1867,7 +1867,7 @@ class _FeedPageState extends State<FeedPage> {
                   builder: (context) => RecipePurchasePage(
                         req_rid: dataRecommendRecipe.rid,
                       )),
-            ).then((value) => getRecommendRecipe());
+            ).then((value) => getMybuy());
           }
         }
       },

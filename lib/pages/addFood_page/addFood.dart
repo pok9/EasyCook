@@ -300,7 +300,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
                   filled: true,
                   fillColor: Colors.grey[100],
-                  hintText: "ส่วนผสมที่ $displayNumber",
+                  hintText: "ส่วนผสม",
                   hintStyle: TextStyle(
                           fontSize: 16,
                           // fontWeight: FontWeight.bold,
@@ -327,7 +327,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
                   filled: true,
                   fillColor: Color(0xfff3f3f4),
-                  hintText: "จำนวนที่ $displayNumber",
+                  hintText: "จำนวน",
                   hintStyle: TextStyle(
                           fontSize: 16,
                           // fontWeight: FontWeight.bold,
@@ -420,7 +420,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             borderRadius: BorderRadius.circular(0),
                             borderSide: BorderSide.none,
                           ),
-                          hintText: "วิธีทำที่ $displayNumber",
+                          hintText: "วิธีทำ",
                           hintStyle: TextStyle(
                           fontSize: 16,
                           // fontWeight: FontWeight.bold,
@@ -1226,7 +1226,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         "ส่วนผสม",
                         style: TextStyle(
                             color: Colors.black87,
-                            fontSize: 20,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -1287,7 +1287,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         "วิธีทำ",
                         style: TextStyle(
                             color: Colors.black87,
-                            fontSize: 20,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold),
                       ),
                     ],
