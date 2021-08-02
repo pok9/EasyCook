@@ -1,5 +1,6 @@
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollowing_model.dart';
+import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/profile_page/xxx_profile.dart';
@@ -84,7 +85,9 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
   }
 
   CheckFollowing checkFollowing;
+  List<String> checkFollowingList = [];
   Future<Null> getFollowing() async {
+    checkFollowingList = [];
     final String apiUrl =
         "http://apifood.comsciproject.com/pjFollow/checkFollowing/${this.widget.id}";
 
@@ -98,6 +101,62 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
         final String responseString = response.body;
 
         checkFollowing = checkFollowingFromJson(responseString);
+
+        for (var item in checkFollowing.user) {
+          checkFollowingList.add(item.userId.toString());
+        }
+        print(checkFollowingList);
+        getFollowerUser();
+      });
+    } else {
+      return null;
+    }
+  }
+
+  CheckFollower checkFollowerUser;
+  List<int> checkFollowerList;
+  Future<Null> getFollowerUser() async {
+    //เช็คว่า User ติดตามเราไหม
+    checkFollowerList = [];
+    for (int i = 0; i < checkFollowingList.length; i++) {
+      final String apiUrl =
+          "http://apifood.comsciproject.com/pjFollow/checkFollower/${checkFollowingList[i]}";
+
+      print("apiUrl = ${apiUrl}");
+
+      final response = await http
+          .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+      print("response = " + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        setState(() {
+          final String responseString = response.body;
+
+          checkFollowerUser = checkFollowerFromJson(responseString);
+          checkFollowerList.add(checkFollowerUser.checkFollower);
+        });
+      } else {
+        return null;
+      }
+    }
+  }
+
+  //จัดการติดตามหรือยกเลิกติดตาม
+  Future<Null> manageFollow(String state, int following_ID) async {
+    // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjFollow/ManageFollow";
+    final response = await http.post(Uri.parse(apiUrl),
+        body: {"state": state, "following_ID": following_ID.toString()},
+        headers: {"Authorization": "Bearer $token"});
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      ManageFollow aa = manageFollowFromJson(responseString);
+      print(aa.success);
+      setState(() {
+        // getFollowerUser();
+        // this.initState();
       });
     } else {
       return null;
@@ -176,7 +235,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                       },
                     ),
                   ),
-            (checkFollowing == null)
+            (checkFollowing == null || checkFollowerList == null)
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -203,45 +262,56 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                                 return ProfileUser(
                                   checkFollowing.user[index].userId,
                                 );
-                              }));
+                              })).then((value) => getFollowerUser());
                             }
                           },
                           child: ListTile(
-                            title: Text(checkFollowing.user[index].aliasName),
-                            subtitle:
-                                Text(checkFollowing.user[index].nameSurname),
-                            leading: Container(
-                              height: 50.0,
-                              width: 50.0,
-                              decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: new NetworkImage(checkFollowing
-                                          .user[index].profileImage))),
-                            ),
-                            trailing: (index % 2 == 0)
-                                ? OutlinedButton(
-                                    onPressed: () {},
-                                    child: Text('กำลังติดตาม'),
-                                    style: OutlinedButton.styleFrom(
-                                      primary: Colors.black,
-                                      backgroundColor: Colors.white,
-                                      side: BorderSide(
-                                          width: 0, color: Colors.grey),
-                                    ),
-                                  )
-                                : OutlinedButton(
-                                    onPressed: () {},
-                                    child: Text('     ติดตาม     '),
-                                    style: OutlinedButton.styleFrom(
-                                      primary: Colors.white,
-                                      backgroundColor: Colors.blue,
-                                      side: BorderSide(
-                                          width: 0, color: Colors.blue),
-                                    ),
-                                  ),
-                          ),
+                              title: Text(checkFollowing.user[index].aliasName),
+                              subtitle:
+                                  Text(checkFollowing.user[index].nameSurname),
+                              leading: Container(
+                                height: 50.0,
+                                width: 50.0,
+                                decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: new NetworkImage(checkFollowing
+                                            .user[index].profileImage))),
+                              ),
+                              trailing: (checkFollowerList.length !=
+                                          checkFollowingList.length ||
+                                      checkFollowerList[index] == 1)
+                                  ? OutlinedButton(
+                                      onPressed: () {
+                                        checkFollowerList[index] = 0;
+                                        print("ยกเลิกติดตาม");
+                                        manageFollow("unfol",
+                                            checkFollowing.user[index].userId);
+                                      },
+                                      child: Text('กำลังติดตาม'),
+                                      style: OutlinedButton.styleFrom(
+                                        primary: Colors.black,
+                                        backgroundColor: Colors.white,
+                                        side: BorderSide(
+                                            width: 0, color: Colors.grey),
+                                      ),
+                                    )
+                                  : OutlinedButton(
+                                      onPressed: () {
+                                        print("ติดตาม");
+                                        checkFollowerList[index] = 1;
+                                        manageFollow("fol",
+                                            checkFollowing.user[index].userId);
+                                      },
+                                      child: Text('     ติดตาม     '),
+                                      style: OutlinedButton.styleFrom(
+                                        primary: Colors.white,
+                                        backgroundColor: Colors.blue,
+                                        side: BorderSide(
+                                            width: 0, color: Colors.blue),
+                                      ),
+                                    )),
                         );
                       },
                     ),
