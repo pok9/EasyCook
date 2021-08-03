@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/showFood&User_page/commentFood.dart/commentFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
 
@@ -827,14 +828,17 @@ class _ShowFoodState extends State<ShowFood> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              "รีวิว",
+                                              "ให้คะแนน & แสดงความคิดเห็น",
                                               style: TextStyle(
-                                                  color: Colors.black87,
+                                                  color: Colors.black,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
                                       ),
                                       RatingBar.builder(
                                         initialRating: 0,
@@ -851,11 +855,11 @@ class _ShowFoodState extends State<ShowFood> {
                                         ),
                                         onRatingUpdate: (rating) {
                                           print(rating);
-                                          showDialog(
-                                              context: context,
-                                              builder: (_) {
-                                                return ReviewPage(rating);
-                                              });
+                                          // showDialog(
+                                          //     context: context,
+                                          //     builder: (_) {
+                                          //       return ReviewPage(rating);
+                                          //     });
                                         },
                                       ),
                                       Divider(
@@ -864,85 +868,89 @@ class _ShowFoodState extends State<ShowFood> {
                                         color: Colors.teal.shade100,
                                         thickness: 1.0,
                                       ),
-                                      ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              "https://static.wikia.nocookie.net/characters/images/a/a6/Rick_Sanchez.png/revision/latest?cb=20171118221229"),
-                                        ),
-                                        title: Row(
-                                          children: [
-                                            Text(
-                                              '1Horse',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            RatingBarIndicator(
-                                              rating: 2.5,
-                                              itemBuilder: (context, index) =>
-                                                  Icon(
-                                                Icons.star,
-                                                color: Colors.blue,
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: 3,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              isThreeLine: true,
+                                              leading: CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    "https://static.wikia.nocookie.net/characters/images/a/a6/Rick_Sanchez.png/revision/latest?cb=20171118221229"),
                                               ),
-                                              itemCount: 5,
-                                              itemSize: 15.0,
-                                              direction: Axis.horizontal,
+                                              title: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 10, 0, 0),
+                                                child: Text(
+                                                  '1Horseqwerw',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              subtitle: Text(
+                                                '05-11-20\n\nthe logo to lay out, and then asest, wraps the text within that width, and you end up with a paragraph split over several lines.',
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                ),
+                                              ),
+                                              dense: true,
+                                              // trailing: Text('Horse'),
+                                            );
+                                          }),
+
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            26, 5, 26, 5),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            // shape: MaterialStateProperty.all<
+                                            //     RoundedRectangleBorder>(
+                                            //   RoundedRectangleBorder(
+                                            //     borderRadius:
+                                            //         BorderRadius.circular(40),
+                                            //   ),
+                                            // ),
+                                            side: BorderSide(width:2, color:Colors.blue),
+                                            primary: Colors.white, 
+                                            shape: RoundedRectangleBorder(
+                                                //to set border radius to button
+                                                borderRadius:
+                                                    BorderRadius.circular(30)),
+                                          ),
+                                          onPressed: () {
+                                             Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CommentFood())).then(
+                                                      (value) => () {});
+                                          },
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 50,
+                                            child: Row(
+                                              children: [
+                                                Center(
+                                                    child: Text(
+                                                        'แสดงความคิดเห็น...',style: TextStyle(color: Colors.black54,fontSize: 16),)),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        subtitle: Text(
-                                          'Now, the row first asks the logo to lay out, and then asks the icon to lay out. The Icon, like the logo, is happy to take on a reasonable size (also 24 pixels, not coincidentally, since both FlutterLogo and Icon honor the ambient IconTheme). This leaves some room left over, and now the row tells the text exactly how wide to be: the exact width of the remaining space. The text, now happy to comply to a reasonable request, wraps the text within that width, and you end up with a paragraph split over several lines.',
-                                          textAlign: TextAlign.justify,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: 'OpenSans',
-                                            fontSize: 12,
-                                            color: Colors.black,
-                                            decoration: TextDecoration.none,
                                           ),
                                         ),
-                                        dense: true,
-                                        isThreeLine: true,
-                                        // trailing: Text('Horse'),
                                       ),
-                                      ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              "https://static.wikia.nocookie.net/characters/images/a/a6/Rick_Sanchez.png/revision/latest?cb=20171118221229"),
-                                        ),
-                                        title: Row(
-                                          children: [
-                                            Text(
-                                              '1Horseqwerw',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            RatingBarIndicator(
-                                              rating: 2.5,
-                                              itemBuilder: (context, index) =>
-                                                  Icon(
-                                                Icons.star,
-                                                color: Colors.blue,
-                                              ),
-                                              itemCount: 5,
-                                              itemSize: 15.0,
-                                              direction: Axis.horizontal,
-                                            ),
-                                          ],
-                                        ),
-                                        subtitle: Text(
-                                          'Now, the row first asks the logo to lay out, and then asks the icon to lay out. The Icon, like the logo, is happy to take on a reasonable size (also 24 pixels, not coincidentally, since both FlutterLogo and Icon honor the ambient IconTheme). This leaves some room left over, and now the row tells the text exactly how wide to be: the exact width of the remaining space. The text, now happy to comply to a reasonable request, wraps the text within that width, and you end up with a paragraph split over several lines.',
-                                          textAlign: TextAlign.justify,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: 'OpenSans',
-                                            fontSize: 12,
-                                            color: Colors.black,
-                                            decoration: TextDecoration.none,
-                                          ),
-                                        ),
-                                        dense: true,
-                                        // trailing: Text('Horse'),
-                                      ),
+                                      
                                     ],
                                   ),
                                 ),

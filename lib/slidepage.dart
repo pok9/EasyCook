@@ -1,8 +1,9 @@
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed2.dart';
 
-import 'package:easy_cook/pages/feed_page/feed_follow.dart';
+import 'package:easy_cook/pages/feed_page/xxx_feed_follow.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -92,143 +93,132 @@ class _SlidePageState extends State<SlidePage> {
         notchMargin: 10,
         child: Container(
           height: 50,
-          child: Row(
-            mainAxisAlignment: (false)
-                ? MainAxisAlignment.spaceAround
-                : MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        setState(() {
-                          currenetScreen = FeedPage();
-                          currentTab = 0;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              currentTab == 0
-                                  ? Icons.home
-                                  : Icons.home_outlined,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: Row(
+              // mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      currenetScreen = FeedPage();
+                      currentTab = 0;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                          currentTab == 0
+                              ? Icons.home
+                              : Icons.home_outlined,
+                          color: currentTab == 0
+                              ? Colors.white
+                              : Colors.grey.shade300,
+                          size: 25),
+                      Text('หน้าแรก',
+                          style: TextStyle(
                               color: currentTab == 0
                                   ? Colors.white
                                   : Colors.grey.shade300,
-                              size: 25),
-                          Text('หน้าแรก',
-                              style: TextStyle(
-                                  color: currentTab == 0
-                                      ? Colors.white
-                                      : Colors.grey.shade300,
-                                  fontSize: 11))
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        setState(() {
-                          currenetScreen = SearchPage();
-                          currentTab = 1;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            currentTab == 1 ? Icons.search_sharp : Icons.search,
-                            color: currentTab == 1
-                                ? Colors.white
-                                : Colors.grey.shade300,
-                            size: currentTab == 1 ? 27 : 25,
-                          ),
-                          Text('ค้นหา',
-                              style: TextStyle(
-                                  color: currentTab == 1
-                                      ? Colors.white
-                                      : Colors.grey.shade300,
-                                  fontSize: 11))
-                        ],
-                      ),
-                    ),
-                  ],
+                              fontSize: 11))
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        setState(() {
-                          // currenetScreen = FeedFollowPage();
-                          currenetScreen = Feed2Page();
-                          currentTab = 2;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              currentTab == 2
-                                  ? Icons.fastfood
-                                  : Icons.fastfood_outlined,
-                              color: currentTab == 2
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      currenetScreen = SearchPage();
+                      currentTab = 1;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        currentTab == 1 ? Icons.search_sharp : Icons.search,
+                        color: currentTab == 1
+                            ? Colors.white
+                            : Colors.grey.shade300,
+                        size: currentTab == 1 ? 27 : 25,
+                      ),
+                      Text('ค้นหา',
+                          style: TextStyle(
+                              color: currentTab == 1
                                   ? Colors.white
                                   : Colors.grey.shade300,
-                              size: 25),
-                          Text('การติดตาม',
-                              style: TextStyle(
-                                  color: currentTab == 2
-                                      ? Colors.white
-                                      : Colors.grey.shade300,
-                                  fontSize: 11))
-                        ],
-                      ),
+                              fontSize: 11))
+                    ],
+                  ),
+                ),
+                // Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50),
+                  child: MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        // currenetScreen = FeedFollowPage();
+                        currenetScreen = Feed2Page();
+                        currentTab = 2;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                            currentTab == 2
+                                ? Icons.all_inclusive
+                                : Icons.all_inclusive_outlined,
+                            color: currentTab == 2
+                                ? Colors.white
+                                : Colors.grey.shade300,
+                            size: 25),
+                        Text('สูตรล่าสุด',
+                            style: TextStyle(
+                                color: currentTab == 2
+                                    ? Colors.white
+                                    : Colors.grey.shade300,
+                                fontSize: 11))
+                      ],
                     ),
-                    MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        setState(() {
-                          currenetScreen = RecipeArchivePage();
-                          currentTab = 3;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                              currentTab == 3
-                                  ? Icons.folder
-                                  : Icons.folder_open_outlined,
+                  ),
+                ),
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      currenetScreen = ProfilePage();
+                      currentTab = 3;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                          currentTab == 3
+                              ? Icons.account_box
+                              : Icons.account_box_outlined,
+                          color: currentTab == 3
+                              ? Colors.white
+                              : Colors.grey.shade300,
+                          size: 25),
+                      Text('บัญชี',
+                          style: TextStyle(
                               color: currentTab == 3
                                   ? Colors.white
                                   : Colors.grey.shade300,
-                              size: 25),
-                          Text('คลังสูตร',
-                              style: TextStyle(
-                                  color: currentTab == 3
-                                      ? Colors.white
-                                      : Colors.grey.shade300,
-                                  fontSize: 11))
-                        ],
-                      ),
-                    ),
-                  ],
+                              fontSize: 11))
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

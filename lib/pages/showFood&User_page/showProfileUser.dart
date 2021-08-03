@@ -217,7 +217,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                           (checkFollowers == null)
                                               ? MaterialButton(
                                                   splashColor: Colors.grey,
-                                                  color: Colors.red[400],
+                                                  color: Colors.blue[400],
                                                   onPressed: () {
                                                     print("login");
                                                     showDialog(
@@ -240,7 +240,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                       0)
                                                   ? MaterialButton(
                                                       splashColor: Colors.grey,
-                                                      color: Colors.red[400],
+                                                      color: Colors.blue[400],
                                                       onPressed: () {
                                                         print("ติดตาม");
                                                         manageFollow(

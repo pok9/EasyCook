@@ -1,11 +1,17 @@
 // import 'dart:html';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
+import 'package:easy_cook/models/profile/editProfile/editName_model.dart';
+import 'package:easy_cook/models/profile/editProfile/editProfile_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 
 import 'package:flutter/material.dart';
-
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import '../addFood_page/addImage.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -38,6 +44,74 @@ class _EditProfilePageState extends State<EditProfilePage> {
   List<AddImage> addImageProfile = [];
 
   @override
+  void initState() {
+    super.initState();
+
+    findUser();
+  }
+
+  String token = ""; //โทเคน
+  //ดึง token
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString("tokens");
+    });
+  }
+
+  Future<EditProfile> editProfile(File image) async {
+    // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjUsers/uploadProfile";
+
+    var mimeTypeData =
+        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+    final images = await http.MultipartFile.fromPath(
+        'profile_image', image.path,
+        contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(images);
+    imageUploadRequest.fields['token'] = token;
+
+    var streamedResponse = await imageUploadRequest.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return editProfileFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  Future<EditName> editName(String name_surname, String alias_name) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjUsers/editProfileName";
+
+    var data = {"name_surname": name_surname, "alias_name": alias_name};
+    print(data);
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print("respon = ${response.statusCode}");
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      print("responseString = ${responseString}");
+
+      return editNameFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -62,9 +136,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
         title: Text('แก้ไขโปรไฟล์'),
         actions: [
           IconButton(
-            onPressed: () {
-              print(ctrl_name1.text);
-              print(ctrl_name2.text);
+            onPressed: () async {
+              if (_data_DataAc.aliasName != ctrl_name1.text ||
+                  _data_DataAc.nameSurname != ctrl_name2.text ||
+                  _imageProfile == "") {
+                if (_imageProfile == "") {
+                  EditProfile editProfiles =
+                      await editProfile(addImageProfile[0].image);
+                }
+
+                if (_data_DataAc.aliasName != ctrl_name1.text ||
+                    _data_DataAc.nameSurname != ctrl_name2.text) {
+                  EditName editNames =
+                      await editName(ctrl_name2.text, ctrl_name1.text);
+                }
+
+                Navigator.pop(context);
+              } else {
+                Navigator.pop(context);
+              }
             },
             icon: Icon(
               Icons.done,

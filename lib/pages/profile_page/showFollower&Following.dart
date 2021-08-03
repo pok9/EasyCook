@@ -3,7 +3,7 @@ import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollowing_mod
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
-import 'package:easy_cook/pages/profile_page/xxx_profile.dart';
+
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

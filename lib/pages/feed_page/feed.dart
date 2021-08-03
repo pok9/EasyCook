@@ -15,7 +15,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
-import 'package:easy_cook/pages/profile_page/xxx_profile.dart';
+
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';

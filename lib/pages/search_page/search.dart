@@ -5,7 +5,7 @@ import 'package:easy_cook/models/search/searchIngred_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
-import 'package:easy_cook/pages/profile_page/xxx_profile.dart';
+
 import 'package:easy_cook/pages/search_page/category/category.dart';
 import 'package:easy_cook/pages/search_page/searchIngredient/searchIngredient_page.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';

@@ -182,7 +182,7 @@ class _ScrollProfilePageState extends State
                               MaterialPageRoute(
                                   builder: (context) =>
                                       EditProfilePage(this.data_DataAc)),
-                            );
+                            ).then((value) => findUser());
                           },
                           child: Text(
                             'แก้ไขโปรไฟล์',
