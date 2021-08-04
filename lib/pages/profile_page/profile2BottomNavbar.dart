@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage2BottomNavbar extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ScrollProfilePageState();
+    return _ScrollProfilePage2BottomNavbarState();
   }
 }
 
-class _ScrollProfilePageState extends State
+class _ScrollProfilePage2BottomNavbarState extends State
     with SingleTickerProviderStateMixin {
   TabController tabController;
   @override
@@ -31,7 +31,7 @@ class _ScrollProfilePageState extends State
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
-      print("ProfilePage_token = " + token);
+      print("ProfilePage2BottomNavbar_token = " + token);
       getMyAccounts();
       // getMyAccounts();
       // print("dataUser = " + dataUser.toString());
@@ -90,20 +90,60 @@ class _ScrollProfilePageState extends State
 
   buildSliverAppBar() {
     return SliverAppBar(
-      // title: buildHeader(),
       title: Text(data_DataAc.aliasName),
-      // centerTitle: true,
       pinned: true,
       floating: false,
       snap: false,
       elevation: 0.0,
-      expandedHeight: 500,
+      expandedHeight: 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(),
       ),
+      leading: IconButton(
+        icon: Icon(Icons.menu),
+        tooltip: 'Menu',
+        onPressed: () {},
+      ),
       bottom: buildFlexibleTooBarWidget(),
     );
+    // return SliverAppBar(
+    //         snap: false,
+    //         pinned: true,
+    //         floating: false,
+    //         flexibleSpace: FlexibleSpaceBar(
+    //             centerTitle: true,
+    //             title: Text("sss",
+    //                 style: TextStyle(
+    //                   color: Colors.white,
+    //                   fontSize: 16.0,
+    //                 ) //TextStyle
+    //                 ), //Text
+    //             background: Image.network(
+    //               "https://i.ibb.co/QpWGK5j/Geeksfor-Geeks.png",
+    //               fit: BoxFit.cover,
+    //             ) //Images.network
+    //             ), //FlexibleSpaceBar
+    //         expandedHeight: 230,
+    //         backgroundColor: Colors.greenAccent[400],
+    //         leading: IconButton(
+    //           icon: Icon(Icons.menu),
+    //           tooltip: 'Menu',
+    //           onPressed: () {},
+    //         ), //IconButton
+    //         actions: <Widget>[
+    //           IconButton(
+    //             icon: Icon(Icons.comment),
+    //             tooltip: 'Comment Icon',
+    //             onPressed: () {},
+    //           ), //IconButton
+    //           IconButton(
+    //             icon: Icon(Icons.settings),
+    //             tooltip: 'Setting Icon',
+    //             onPressed: () {},
+    //           ), //IconButton
+    //         ], //<Widget>[]
+    //       );
   }
 
   Widget buildFlexibleTooBarWidget() {
@@ -149,7 +189,7 @@ class _ScrollProfilePageState extends State
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: 330,
+                  height: 390,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
@@ -160,17 +200,27 @@ class _ScrollProfilePageState extends State
                     padding: const EdgeInsets.only(top: 100),
                     child: Column(
                       children: [
-                        // SizedBox(
-                        //   height: 36,
-                        // ),
-
                         CircleAvatar(
                           radius: 48,
                           backgroundImage:
                               NetworkImage(data_DataAc.profileImage),
                         ),
                         SizedBox(
-                          height: 5,
+                          height: 10,
+                        ),
+                        Text(
+                          data_DataAc.aliasName,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 3,
+                        ),
+                         Text(
+                          data_DataAc.nameSurname,
+                          style: TextStyle(color: Colors.white60, fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 7,
                         ),
                         MaterialButton(
                           splashColor: Colors.white,

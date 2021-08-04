@@ -6,6 +6,7 @@ import 'package:easy_cook/pages/feed_page/feed2.dart';
 import 'package:easy_cook/pages/feed_page/xxx_feed_follow.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/profile_page/profile2BottomNavbar.dart';
 import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
 import 'package:easy_cook/pages/search_page/xxx_search.dart';
 import 'package:easy_cook/pages/search_page/search1.dart';
@@ -220,7 +221,7 @@ class _SlidePageState extends State<SlidePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currenetScreen = ProfilePage();
+                        currenetScreen = ProfilePage2BottomNavbar();
                         currentTab = 4;
                       });
                     },
@@ -390,21 +391,48 @@ class _SlidePageState extends State<SlidePage> {
                   minWidth: 40,
                   onPressed: () {
                     setState(() {
-                      currenetScreen = ProfilePage();
+                      currenetScreen = ProfilePage2BottomNavbar();
                       currentTab = 3;
                     });
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                          currentTab == 3
-                              ? Icons.account_box
-                              : Icons.account_box_outlined,
-                          color: currentTab == 3
-                              ? Colors.white
-                              : Colors.grey.shade300,
-                          size: 25),
+                      (dataUser == null)
+                          ? Icon(
+                              currentTab == 3
+                                  ? Icons.account_box
+                                  : Icons.account_box_outlined,
+                              color: currentTab == 3
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              size: 25)
+                          : currentTab == 3
+                              ? Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle),
+                                      height: 26,
+                                      width: 26,
+                                    ),
+                                    Positioned(
+                                      top: 1,
+                                      right: 1,
+                                      child: CircleAvatar(
+                                        radius: 12,
+                                        backgroundImage:
+                                            NetworkImage(dataUser.profileImage),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : CircleAvatar(
+                                  radius: 12,
+                                  backgroundImage:
+                                      NetworkImage(dataUser.profileImage),
+                                ),
                       Text('บัญชี',
                           style: TextStyle(
                               color: currentTab == 3
