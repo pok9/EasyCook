@@ -18,7 +18,7 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';
-import 'package:easy_cook/pages/search_page/search.dart';
+import 'package:easy_cook/pages/search_page/xxx_search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/slidepage.dart';
@@ -117,19 +117,18 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("responseFeed_follow = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      final String responseString = response.body;
 
-        dataMybuy = mybuyFromJson(responseString);
-        for (var item in dataMybuy) {
-          print(item.recipeId);
-          checkBuy.add(item.recipeId.toString());
-        }
-        print("checkBuy.indexOf() = ${checkBuy.indexOf("181") > 0}");
-        print("checkBuy.length = ${checkBuy.length}");
-        print(checkBuy);
-        // print("set=====");
-      });
+      dataMybuy = mybuyFromJson(responseString);
+      for (var item in dataMybuy) {
+        print(item.recipeId);
+        checkBuy.add(item.recipeId.toString());
+      }
+      print("checkBuy.indexOf() = ${checkBuy.indexOf("181") > 0}");
+      print("checkBuy.length = ${checkBuy.length}");
+      print(checkBuy);
+      // print("set=====");
+      setState(() {});
     } else {
       return null;
     }

@@ -6,7 +6,8 @@ import 'package:easy_cook/pages/feed_page/xxx_feed_follow.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
-import 'package:easy_cook/pages/search_page/search.dart';
+import 'package:easy_cook/pages/search_page/xxx_search.dart';
+import 'package:easy_cook/pages/search_page/search1.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/test.dart';
@@ -133,7 +134,7 @@ class _SlidePageState extends State<SlidePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currenetScreen = SearchPage();
+                        currenetScreen = SearchPage1();
                         currentTab = 1;
                       });
                     },
@@ -300,7 +301,7 @@ class _SlidePageState extends State<SlidePage> {
                   minWidth: 40,
                   onPressed: () {
                     setState(() {
-                      currenetScreen = SearchPage();
+                      currenetScreen = SearchPage1();
                       currentTab = 1;
                     });
                   },

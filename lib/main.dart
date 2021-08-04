@@ -7,7 +7,7 @@ import 'package:easy_cook/pages/login&register_page/register_page/register3.dart
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 
-import 'package:easy_cook/pages/search_page/search.dart';
+import 'package:easy_cook/pages/search_page/xxx_search.dart';
 // import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         '/register3-page': (context) => RegisterPage3(),
         // '/login-page': (context) => LoginPage(),
         // '/feedFollow-page': (context) => FeedFollowPage(),
-        '/search-page': (context) => SearchPage(),
+        // '/search-page': (context) => SearchPage(),
         // '/searchRecipeName' : (context) => SearchRecipeName(),
         '/slide-page': (context) => SlidePage(),
         // '/addFood-page': (context) => AddFoodPage(),
