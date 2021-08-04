@@ -237,8 +237,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(
                 height: 30,
               ),
-              buildTextField("ชื่อนามแฝง", "เซฟปก", false, ctrl_name1),
-              buildTextField("ชื่อ-นามสุกล", "เซฟปก", false, ctrl_name2),
+              buildTextField("ชื่อนามแฝง", _data_DataAc.aliasName, false, ctrl_name1),
+              buildTextField("ชื่อ-นามสุกล", _data_DataAc.nameSurname, false, ctrl_name2),
             ],
           ),
         ),
@@ -352,24 +352,7 @@ class CustomDialog extends StatelessWidget {
                   ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment.bottomRight,
-              //   child: FlatButton(
-              //     onPressed: () {
-              //       Navigator.pop(context);
-              //     },
-              //     child: Text("ไม่ใช่"),
-              //   ),
-              // ),
-              // Align(
-              //   alignment: Alignment.bottomRight,
-              //   child: FlatButton(
-              //     onPressed: () {
-              //       Navigator.pop(context);
-              //     },
-              //     child: Text("ใช่"),
-              //   ),
-              // )
+              
             ],
           ),
         ),

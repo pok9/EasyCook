@@ -179,8 +179,8 @@ class _ProfileUserState extends State<ProfileUser> {
                     SliverList(
                       delegate: SliverChildListDelegate([
                         Container(
-                            // color: Colors.primaries[index],
-                            height: 233,
+                            // color: Colors.amber,
+                            height: 314,
                             child: Column(
                               children: [
                                 Column(
@@ -189,227 +189,148 @@ class _ProfileUserState extends State<ProfileUser> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: deviceSize.height * 0.30,
+                                      height: deviceSize.height * 0.4,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: NetworkImage(
                                                 "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                                             fit: BoxFit.cover),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          // SizedBox(
-                                          //   height: 36,
-                                          // ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Column(
+                                          children: [
+                                            // SizedBox(
+                                            //   height: 36,
+                                            // ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
 
-                                          CircleAvatar(
-                                            radius: 48,
-                                            backgroundImage: NetworkImage(
-                                                data_PostUser
-                                                    .profileImage), //////////////////
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          (checkFollowers == null)
-                                              ? MaterialButton(
-                                                  splashColor: Colors.grey,
-                                                  color: Colors.blue[400],
-                                                  onPressed: () {
-                                                    print("login");
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (_) {
-                                                          return LoginPage();
-                                                        }).then((value) {
-                                                      findUser();
-                                                      // Navigator.pop(context);
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    'ติดตาม',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  shape: StadiumBorder(),
-                                                )
-                                              : (checkFollowers.checkFollower ==
-                                                      0)
-                                                  ? MaterialButton(
-                                                      splashColor: Colors.grey,
-                                                      color: Colors.blue[400],
-                                                      onPressed: () {
-                                                        print("ติดตาม");
-                                                        manageFollow(
-                                                            "fol",
-                                                            this
-                                                                .data_PostUser
-                                                                .userId);
-                                                        // _ProfileUserState(this.reqUid);
-                                                      },
-                                                      child: Text(
-                                                        'ติดตาม',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      shape: StadiumBorder(),
-                                                    )
-                                                  : MaterialButton(
-                                                      splashColor: Colors.grey,
-                                                      color: Colors.grey,
-                                                      onPressed: () {
-                                                        print("ยกเลิกติดตาม");
-                                                        manageFollow(
-                                                            "unfol",
-                                                            this
-                                                                .data_PostUser
-                                                                .userId);
-                                                      },
-                                                      child: Text(
-                                                        'กำลังติดตาม',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      shape: StadiumBorder(),
-                                                    ),
-                                          SizedBox(
-                                            height: 4,
-                                          ),
-                                          SizedBox(
-                                            height: 4,
-                                          ),
-                                          Expanded(child: Container()),
-                                          Container(
-                                            height: 64,
-                                            color:
-                                                Colors.black.withOpacity(0.4),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Container(
-                                                  width: 110,
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        'โพสต์',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white70,
-                                                            fontSize: 12),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 4,
-                                                      ),
-                                                      Text(
-                                                        data_PostUser.countPost
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 110,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      print("ติดตาม");
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ShowFollowerAndFollowing(
-                                                                  index: 0,
-                                                                  id: this
-                                                                      .data_PostUser
-                                                                      .userId,
-                                                                  name: this
-                                                                      .data_PostUser
-                                                                      .aliasName,
-                                                                )),
-                                                      );
+                                            CircleAvatar(
+                                              radius: 48,
+                                              backgroundImage: NetworkImage(
+                                                  data_PostUser
+                                                      .profileImage), //////////////////
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              data_PostUser.aliasName,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            Text(
+                                              data_PostUser.nameSurname,
+                                              style: TextStyle(
+                                                  color: Colors.white60,
+                                                  fontSize: 15),
+                                            ),
+                                            SizedBox(
+                                              height: 7,
+                                            ),
+                                            (checkFollowers == null)
+                                                ? MaterialButton(
+                                                    splashColor: Colors.grey,
+                                                    color: Colors.blue[400],
+                                                    onPressed: () {
+                                                      print("login");
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (_) {
+                                                            return LoginPage();
+                                                          }).then((value) {
+                                                        findUser();
+                                                        // Navigator.pop(context);
+                                                      });
                                                     },
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
+                                                    child: Text(
+                                                      'ติดตาม',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    shape: StadiumBorder(),
+                                                  )
+                                                : (checkFollowers.checkFollower ==
+                                                        0)
+                                                    ? MaterialButton(
+                                                        splashColor: Colors.grey,
+                                                        color: Colors.blue[400],
+                                                        onPressed: () {
+                                                          print("ติดตาม");
+                                                          manageFollow(
+                                                              "fol",
+                                                              this
+                                                                  .data_PostUser
+                                                                  .userId);
+                                                          // _ProfileUserState(this.reqUid);
+                                                        },
+                                                        child: Text(
                                                           'ติดตาม',
                                                           style: TextStyle(
-                                                              color: Colors
-                                                                  .white70,
-                                                              fontSize: 12),
+                                                              color:
+                                                                  Colors.white),
                                                         ),
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-                                                        Text(
-                                                          data_PostUser
-                                                              .countFollower
-                                                              .toString(),
+                                                        shape: StadiumBorder(),
+                                                      )
+                                                    : MaterialButton(
+                                                        splashColor: Colors.grey,
+                                                        color: Colors.grey,
+                                                        onPressed: () {
+                                                          print("ยกเลิกติดตาม");
+                                                          manageFollow(
+                                                              "unfol",
+                                                              this
+                                                                  .data_PostUser
+                                                                  .userId);
+                                                        },
+                                                        child: Text(
+                                                          'กำลังติดตาม',
                                                           style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
+                                                              color:
+                                                                  Colors.white),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 110,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      print("กำลังติดตาม");
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ShowFollowerAndFollowing(
-                                                                  index: 1,
-                                                                  id: this
-                                                                      .data_PostUser
-                                                                      .userId,
-                                                                  name: this
-                                                                      .data_PostUser
-                                                                      .aliasName,
-                                                                )),
-                                                      );
-                                                    },
+                                                        shape: StadiumBorder(),
+                                                      ),
+                                            SizedBox(
+                                              height: 4,
+                                            ),
+                                            SizedBox(
+                                              height: 4,
+                                            ),
+                                            Expanded(child: Container()),
+                                            Container(
+                                              height: 64,
+                                              color:
+                                                  Colors.black.withOpacity(0.4),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Container(
+                                                    width: 110,
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
                                                         Text(
-                                                          'กำลังติดตาม',
+                                                          'โพสต์',
                                                           style: TextStyle(
-                                                              color: Colors
-                                                                  .white70,
+                                                              color:
+                                                                  Colors.white70,
                                                               fontSize: 12),
                                                         ),
                                                         SizedBox(
                                                           height: 4,
                                                         ),
                                                         Text(
-                                                          data_PostUser
-                                                              .countFollowing
+                                                          data_PostUser.countPost
                                                               .toString(),
                                                           style: TextStyle(
                                                             color: Colors.white,
@@ -421,11 +342,111 @@ class _ProfileUserState extends State<ProfileUser> {
                                                       ],
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                  Container(
+                                                    width: 110,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        print("ติดตาม");
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ShowFollowerAndFollowing(
+                                                                    index: 0,
+                                                                    id: this
+                                                                        .data_PostUser
+                                                                        .userId,
+                                                                    name: this
+                                                                        .data_PostUser
+                                                                        .aliasName,
+                                                                  )),
+                                                        );
+                                                      },
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            'ติดตาม',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white70,
+                                                                fontSize: 12),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 4,
+                                                          ),
+                                                          Text(
+                                                            data_PostUser
+                                                                .countFollower
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 110,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        print("กำลังติดตาม");
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ShowFollowerAndFollowing(
+                                                                    index: 1,
+                                                                    id: this
+                                                                        .data_PostUser
+                                                                        .userId,
+                                                                    name: this
+                                                                        .data_PostUser
+                                                                        .aliasName,
+                                                                  )),
+                                                        );
+                                                      },
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            'กำลังติดตาม',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white70,
+                                                                fontSize: 12),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 4,
+                                                          ),
+                                                          Text(
+                                                            data_PostUser
+                                                                .countFollowing
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],

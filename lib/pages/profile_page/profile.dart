@@ -97,7 +97,7 @@ class _ScrollProfilePageState extends State
       floating: false,
       snap: false,
       elevation: 0.0,
-      expandedHeight: 500,
+      expandedHeight: 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(),
@@ -149,13 +149,14 @@ class _ScrollProfilePageState extends State
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: 330,
+                  height: 390,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
                             "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                         fit: BoxFit.cover),
                   ),
+                  
                   child: Padding(
                     padding: const EdgeInsets.only(top: 100),
                     child: Column(
@@ -169,8 +170,22 @@ class _ScrollProfilePageState extends State
                           backgroundImage:
                               NetworkImage(data_DataAc.profileImage),
                         ),
+                       SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          data_DataAc.aliasName,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
                         SizedBox(
-                          height: 5,
+                          height: 3,
+                        ),
+                         Text(
+                          data_DataAc.nameSurname,
+                          style: TextStyle(color: Colors.white60, fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 7,
                         ),
                         MaterialButton(
                           splashColor: Colors.white,
