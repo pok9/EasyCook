@@ -12,7 +12,6 @@ class Feed2Page extends StatefulWidget {
 }
 
 class _Feed2PageState extends State<Feed2Page> {
-
   ScrollController _scrollController = ScrollController();
   int _currentMax;
 
@@ -20,7 +19,6 @@ class _Feed2PageState extends State<Feed2Page> {
   void initState() {
     // TODO: implement initState
     super.initState();
-  
 
     getNewfeedsglobal();
     _scrollController.addListener(() {
@@ -40,9 +38,9 @@ class _Feed2PageState extends State<Feed2Page> {
     _currentMax = dummyListDataNewfeedsglobal.length;
 
     if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal.length) >=
-        10) {
+        4) {
       for (int i = dummyListDataNewfeedsglobal.length;
-          i < _currentMax + 10;
+          i < _currentMax + 4;
           i++) {
         dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
       }
@@ -123,10 +121,15 @@ class _Feed2PageState extends State<Feed2Page> {
                         maxCrossAxisExtent:
                             (deviceSize.width > 400) ? 250 : 200,
                       ),
-                      itemCount: dummyListDataNewfeedsglobal.length + 1,
+                      itemCount:
+                          ((dummyListDataNewfeedsglobal.length + 1) % 2 != 0)
+                              ? dummyListDataNewfeedsglobal.length
+                              : dummyListDataNewfeedsglobal.length + 1,
                       itemBuilder: (BuildContext ctx, index) {
-                        if(index == dataNewfeedsglobal.length){
-                          return Center(child: Container(),);
+                        if (index == dataNewfeedsglobal.length) {
+                          return Center(
+                            child: Container(),
+                          );
                         }
                         if (index == dummyListDataNewfeedsglobal.length) {
                           return Row(

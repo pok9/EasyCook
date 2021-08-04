@@ -52,7 +52,6 @@ class _FeedPageState extends State<FeedPage> {
     getRecommendRecipe();
     getRecommendUser();
 
-
     Timer.periodic(Duration(seconds: 3), (timer) {
       if (!pageController.hasClients) {
         return;
@@ -223,8 +222,6 @@ class _FeedPageState extends State<FeedPage> {
       return null;
     }
   }
-
- 
 
   LoginModel login;
   Future<Null> logins(String email, String password) async {
@@ -557,7 +554,6 @@ class _FeedPageState extends State<FeedPage> {
                                           return LoginPage();
                                         }).then((value) {
                                       findUser();
-                                      // Navigator.pop(context);
                                     });
                                   },
                                   child: Text(
@@ -936,10 +932,6 @@ class _FeedPageState extends State<FeedPage> {
                                             checkFollowing);
                                       })),
                           // DividerCutom(),
-                         
-
-                         
-                          
                         ],
                       ),
                       SizedBox(
