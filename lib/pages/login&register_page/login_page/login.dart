@@ -3,6 +3,7 @@
 // import 'dart:io';
 
 import 'package:easy_cook/models/login/login_model.dart';
+import 'package:easy_cook/slidepage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -196,7 +197,13 @@ class _LoginPageState extends State<LoginPage> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setString("tokens", login.token);
         stateOnlyText = ButtonState.success;
-        Navigator.pop(context);
+        // Navigator.pop(context);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => SlidePage(),
+            ),
+            (route) => false);
       } else {
         // if (_formKey.currentState.validate()) {}
         stateOnlyText = ButtonState.fail;

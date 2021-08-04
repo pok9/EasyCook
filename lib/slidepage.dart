@@ -1,3 +1,4 @@
+import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed2.dart';
 
@@ -12,6 +13,7 @@ import 'package:easy_cook/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class SlidePage extends StatefulWidget {
   SlidePage();
@@ -25,16 +27,42 @@ class _SlidePageState extends State<SlidePage> {
   @override
   void initState() {
     super.initState();
-    // findUser();
+    findUser();
     print("slidePage ======");
   }
 
-  Future<String> findUser() async {
-    String token = ""; //โทเคน
+  String token = ""; //โทเคน
+  Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    token = preferences.getString("tokens");
-    return token;
+    setState(() {
+      token = preferences.getString("tokens");
+      if (token != "") {
+        getMyAccounts();
+      }
+    });
+  }
+
+  //user
+  MyAccount datas;
+  DataAc dataUser;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        datas = myAccountFromJson(responseString);
+        dataUser = datas.data[0];
+        print(dataUser.userId);
+      });
+    } else {
+      return null;
+    }
   }
 
   int currentTab = 0;
@@ -49,8 +77,151 @@ class _SlidePageState extends State<SlidePage> {
   Widget build(BuildContext context) {
     // resizeToAvoidBottomPadding:
     // false;
+
     bool keyboardIsOpened =
         MediaQuery.of(context).viewInsets.bottom != 0.0; //ทำให้ floating หาย
+    return (dataUser == null || token == "")
+        ? bottomNvigationUser(keyboardIsOpened, context)
+        : (dataUser.userStatus == 1)
+            ? bottomNvigationUser(keyboardIsOpened, context)
+            : bottomNvigationAdmin();
+  }
+
+  Scaffold bottomNvigationAdmin() => Scaffold(
+        extendBody: true,
+        body: PageStorage(bucket: bucket, child: currenetScreen),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.blue,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: Container(
+            height: 50,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: Row(
+                // mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currenetScreen = FeedPage();
+                        currentTab = 0;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(currentTab == 0 ? Icons.home : Icons.home_outlined,
+                            color: currentTab == 0
+                                ? Colors.white
+                                : Colors.grey.shade300,
+                            size: 25),
+                        Text('หน้าแรก',
+                            style: TextStyle(
+                                color: currentTab == 0
+                                    ? Colors.white
+                                    : Colors.grey.shade300,
+                                fontSize: 11))
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currenetScreen = SearchPage();
+                        currentTab = 1;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          currentTab == 1 ? Icons.search_sharp : Icons.search,
+                          color: currentTab == 1
+                              ? Colors.white
+                              : Colors.grey.shade300,
+                          size: currentTab == 1 ? 27 : 25,
+                        ),
+                        Text('ค้นหา',
+                            style: TextStyle(
+                                color: currentTab == 1
+                                    ? Colors.white
+                                    : Colors.grey.shade300,
+                                fontSize: 11))
+                      ],
+                    ),
+                  ),
+                  // Spacer(),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        // currenetScreen = FeedFollowPage();
+                        currenetScreen = Feed2Page();
+                        currentTab = 2;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                            currentTab == 2
+                                ? Icons.all_inclusive
+                                : Icons.all_inclusive_outlined,
+                            color: currentTab == 2
+                                ? Colors.white
+                                : Colors.grey.shade300,
+                            size: 25),
+                        Text('สูตรล่าสุด',
+                            style: TextStyle(
+                                color: currentTab == 2
+                                    ? Colors.white
+                                    : Colors.grey.shade300,
+                                fontSize: 11))
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currenetScreen = ProfilePage();
+                        currentTab = 3;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                            currentTab == 3
+                                ? Icons.account_box
+                                : Icons.account_box_outlined,
+                            color: currentTab == 3
+                                ? Colors.white
+                                : Colors.grey.shade300,
+                            size: 25),
+                        Text('บัญชี',
+                            style: TextStyle(
+                                color: currentTab == 3
+                                    ? Colors.white
+                                    : Colors.grey.shade300,
+                                fontSize: 11))
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+  Scaffold bottomNvigationUser(bool keyboardIsOpened, BuildContext context) {
     return Scaffold(
       extendBody: true,
       body: PageStorage(bucket: bucket, child: currenetScreen),
@@ -60,8 +231,7 @@ class _SlidePageState extends State<SlidePage> {
               opacity: keyboardIsOpened ? 0 : 1,
               child: FloatingActionButton(
                 child: Icon(Icons.add),
-                onPressed: () async {
-                  String token = await findUser();
+                onPressed: () {
                   if (token != "") {
                     Navigator.pushNamed(context, '/AddFoodPage');
                   } else {
@@ -112,10 +282,7 @@ class _SlidePageState extends State<SlidePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                          currentTab == 0
-                              ? Icons.home
-                              : Icons.home_outlined,
+                      Icon(currentTab == 0 ? Icons.home : Icons.home_outlined,
                           color: currentTab == 0
                               ? Colors.white
                               : Colors.grey.shade300,

@@ -213,7 +213,7 @@ class _SearchPageState extends State<SearchPage> {
                       setState(() {
                         if (text == "") {
                           body = true;
-                          // Navigator.pop(context);
+                          
                         }
                         getSearchRecipeNames(text);
                         getSearchUserNames(text);
@@ -435,6 +435,7 @@ class _SearchPageState extends State<SearchPage> {
                             );
                           },
                         )
+                  // Icon(Icons.ac_unit),
                 ]),
               ))
           : (body == false)

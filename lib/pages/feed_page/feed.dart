@@ -21,6 +21,7 @@ import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/search_page/search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -514,12 +515,13 @@ class _FeedPageState extends State<FeedPage> {
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
                         preferences.setString("tokens", "");
-                        // Navigator.pushNamedAndRemoveUntil(
-                        //     context, '/slide-page', (Route<dynamic> route) => false);
-                        // findUser();
-                        // setState(() {});
-                        this.findUser();
-                        // Navigator.pop(context);
+
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => SlidePage(),
+                            ),
+                            (route) => false);
                       },
                     ),
                   ],
@@ -553,7 +555,7 @@ class _FeedPageState extends State<FeedPage> {
                                         builder: (_) {
                                           return LoginPage();
                                         }).then((value) {
-                                      findUser();
+                                      // findUser();
                                     });
                                   },
                                   child: Text(
