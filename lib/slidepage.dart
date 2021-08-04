@@ -1,4 +1,5 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/admin/manage_members.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed2.dart';
 
@@ -148,7 +149,7 @@ class _SlidePageState extends State<SlidePage> {
                               : Colors.grey.shade300,
                           size: currentTab == 1 ? 27 : 25,
                         ),
-                        Text('ค้นหา',
+                        Text(' ค้นหา ',
                             style: TextStyle(
                                 color: currentTab == 1
                                     ? Colors.white
@@ -157,7 +158,6 @@ class _SlidePageState extends State<SlidePage> {
                       ],
                     ),
                   ),
-                  // Spacer(),
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
@@ -191,7 +191,8 @@ class _SlidePageState extends State<SlidePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currenetScreen = ProfilePage();
+                        // currenetScreen = FeedFollowPage();
+                        currenetScreen = ManageMembers();
                         currentTab = 3;
                       });
                     },
@@ -200,15 +201,43 @@ class _SlidePageState extends State<SlidePage> {
                       children: [
                         Icon(
                             currentTab == 3
+                                ? Icons.cancel
+                                : Icons.cancel_outlined,
+                            color: currentTab == 3
+                                ? Colors.white
+                                : Colors.grey.shade300,
+                            size: 25),
+                        Text('จัดการสมาชิก',
+                            style: TextStyle(
+                                color: currentTab == 3
+                                    ? Colors.white
+                                    : Colors.grey.shade300,
+                                fontSize: 11))
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currenetScreen = ProfilePage();
+                        currentTab = 4;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                            currentTab == 4
                                 ? Icons.account_box
                                 : Icons.account_box_outlined,
-                            color: currentTab == 3
+                            color: currentTab == 4
                                 ? Colors.white
                                 : Colors.grey.shade300,
                             size: 25),
                         Text('บัญชี',
                             style: TextStyle(
-                                color: currentTab == 3
+                                color: currentTab == 4
                                     ? Colors.white
                                     : Colors.grey.shade300,
                                 fontSize: 11))

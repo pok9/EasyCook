@@ -302,9 +302,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   fillColor: Colors.grey[100],
                   hintText: "ส่วนผสม",
                   hintStyle: TextStyle(
-                          fontSize: 16,
-                          // fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                      fontSize: 16,
+                      // fontWeight: FontWeight.bold,
+                      color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide.none,
@@ -329,9 +329,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   fillColor: Color(0xfff3f3f4),
                   hintText: "จำนวน",
                   hintStyle: TextStyle(
-                          fontSize: 16,
-                          // fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                      fontSize: 16,
+                      // fontWeight: FontWeight.bold,
+                      color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide.none,
@@ -422,9 +422,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           ),
                           hintText: "วิธีทำ",
                           hintStyle: TextStyle(
-                          fontSize: 16,
-                          // fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.grey),
                         ),
                       ),
                     ),
@@ -440,7 +440,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               color: Colors.grey.shade200,
                               child: IconButton(
                                   iconSize: 30,
-                                  icon: Icon(Icons.add,color: Colors.grey.shade700,),
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Colors.grey.shade700,
+                                  ),
                                   onPressed: () {
                                     Navigator.push(
                                       context,
@@ -449,7 +452,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                               new AddImageOrViderPage()),
                                     ).then((value) {
                                       if (value != null) {
-                                        imageHowto[displayNumber - 1] = value.image;
+                                        imageHowto[displayNumber - 1] =
+                                            value.image;
 
                                         setState(() {});
                                       }
@@ -462,7 +466,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     icon: Icon(Icons.clear),
                     onPressed: () {
                       print("${displayNumber}");
-                      
+
                       howto_row--;
                       ctl_howto_row.remove(controller2);
                       imageHowto.remove(imageHowto[displayNumber - 1]);
