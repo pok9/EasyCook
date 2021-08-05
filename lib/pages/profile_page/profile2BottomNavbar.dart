@@ -1,8 +1,10 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
+import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/edit_profile.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,8 +33,11 @@ class _ScrollProfilePage2BottomNavbarState extends State
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
-      print("ProfilePage2BottomNavbar_token = " + token);
-      getMyAccounts();
+      if (token != "") {
+        print("ProfilePage2BottomNavbar_token = " + token);
+        getMyAccounts();
+      }
+
       // getMyAccounts();
       // print("dataUser = " + dataUser.toString());
     });
@@ -95,7 +100,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
       floating: false,
       snap: false,
       elevation: 0.0,
-      expandedHeight: 550,
+      expandedHeight: (data_DataAc.userStatus == 0) ? 403 : 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(),
@@ -107,7 +112,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
       ),
       bottom: buildFlexibleTooBarWidget(),
     );
-    
   }
 
   Widget buildFlexibleTooBarWidget() {
@@ -179,7 +183,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         SizedBox(
                           height: 3,
                         ),
-                         Text(
+                        Text(
                           data_DataAc.nameSurname,
                           style: TextStyle(color: Colors.white60, fontSize: 15),
                         ),
@@ -196,7 +200,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
                               MaterialPageRoute(
                                   builder: (context) =>
                                       EditProfilePage(this.data_DataAc)),
-                            ).then((value) => findUser());
+                            ).then((value) {
+                              this.findUser();
+                            });
                           },
                           child: Text(
                             'แก้ไขโปรไฟล์',
@@ -338,127 +344,98 @@ class _ScrollProfilePage2BottomNavbarState extends State
                 ),
               ],
             ),
-            Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 18, right: 18, top: 18, bottom: 18),
-                child: Container(
-                  // height: 150,
-                  padding:
-                      EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
-                        fit: BoxFit.cover),
-                  ),
+            (data_DataAc.userStatus == 0)
+                ? Container()
+                : Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 18, right: 18, top: 18, bottom: 18),
+                      child: Container(
+                        // height: 150,
+                        padding: EdgeInsets.only(
+                            left: 18, right: 18, top: 22, bottom: 22),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
+                              fit: BoxFit.cover),
+                        ),
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "กระเป๋าหลัก(\u0E3F)",
-                            style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.white.withOpacity(.7),
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Text(
-                            data_DataAc.balance
-                                .toString(), //"data_DataAc.balance.toString()"
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          ConstrainedBox(
-                            constraints:
-                                BoxConstraints.tightFor(width: 100, height: 35),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.white),
-                              child: Text(
-                                'เติมเงิน',
-                                style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "กระเป๋าหลัก(\u0E3F)",
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.white.withOpacity(.7),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  data_DataAc.balance
+                                      .toString(), //"data_DataAc.balance.toString()"
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          ConstrainedBox(
-                            constraints:
-                                BoxConstraints.tightFor(width: 100, height: 35),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.white),
-                              child: Text(
-                                'ถอนเงิน',
-                                style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () {},
+                            Column(
+                              children: [
+                                ConstrainedBox(
+                                  constraints: BoxConstraints.tightFor(
+                                      width: 100, height: 35),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.white),
+                                    child: Text(
+                                      'เติมเงิน',
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints.tightFor(
+                                      width: 100, height: 35),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.white),
+                                    child: Text(
+                                      'ถอนเงิน',
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
           ],
         )),
       ],
     );
   }
-
-  // buildHeader() {
-  //   return Container(
-  //     width: double.infinity,
-  //     padding: EdgeInsets.only(left: 10),
-  //     height: 38,
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       border: Border.all(color: Colors.white),
-  //       borderRadius: BorderRadius.circular(30),
-  //     ),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Icon(
-  //           Icons.search_rounded,
-  //           size: 18,
-  //         ),
-  //         SizedBox(
-  //           width: 4,
-  //         ),
-  //         Text(
-  //           "search for",
-  //           style: TextStyle(
-  //             fontSize: 14,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -485,18 +462,21 @@ class _ScrollProfilePage2BottomNavbarState extends State
           this.findUser();
           return Future.value(true);
         },
-        child: data_DataAc == null || data_MyPost == null
-            ? Container(
-                child: AlertDialog(
-                    content: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("กรุณารอสักครู่...   "),
-                    CircularProgressIndicator()
-                  ],
-                )),
-              )
-            : buildNestedScrollView(),
+
+        child: (token == "")
+            ? LoginPage(close: 1,)
+            : data_DataAc == null || data_MyPost == null
+                ? Container(
+                    child: AlertDialog(
+                        content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("กรุณารอสักครู่222...   "),
+                        CircularProgressIndicator()
+                      ],
+                    )),
+                  )
+                : buildNestedScrollView(),
       ),
     );
   }
@@ -535,7 +515,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                       content: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("กรุณารอสักครู่...   "),
+                      Text("กรุณารอสักครู่1111...   "),
                       CircularProgressIndicator()
                     ],
                   )),

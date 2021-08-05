@@ -97,7 +97,7 @@ class _ScrollProfilePageState extends State
       floating: false,
       snap: false,
       elevation: 0.0,
-      expandedHeight: 550,
+      expandedHeight: (data_DataAc.userStatus == 0) ? 403 : 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(),
@@ -156,7 +156,6 @@ class _ScrollProfilePageState extends State
                             "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                         fit: BoxFit.cover),
                   ),
-                  
                   child: Padding(
                     padding: const EdgeInsets.only(top: 100),
                     child: Column(
@@ -170,7 +169,7 @@ class _ScrollProfilePageState extends State
                           backgroundImage:
                               NetworkImage(data_DataAc.profileImage),
                         ),
-                       SizedBox(
+                        SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -180,7 +179,7 @@ class _ScrollProfilePageState extends State
                         SizedBox(
                           height: 3,
                         ),
-                         Text(
+                        Text(
                           data_DataAc.nameSurname,
                           style: TextStyle(color: Colors.white60, fontSize: 15),
                         ),
@@ -339,91 +338,93 @@ class _ScrollProfilePageState extends State
                 ),
               ],
             ),
-            Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 18, right: 18, top: 18, bottom: 18),
-                child: Container(
-                  // height: 150,
-                  padding:
-                      EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
-                        fit: BoxFit.cover),
-                  ),
+            (data_DataAc.userStatus == 0)
+                ? Container()
+                : Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 18, right: 18, top: 18, bottom: 18),
+                      child: Container(
+                        // height: 150,
+                        padding: EdgeInsets.only(
+                            left: 18, right: 18, top: 22, bottom: 22),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
+                              fit: BoxFit.cover),
+                        ),
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "กระเป๋าหลัก(\u0E3F)",
-                            style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.white.withOpacity(.7),
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Text(
-                            data_DataAc.balance
-                                .toString(), //"data_DataAc.balance.toString()"
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          ConstrainedBox(
-                            constraints:
-                                BoxConstraints.tightFor(width: 100, height: 35),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.white),
-                              child: Text(
-                                'เติมเงิน',
-                                style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "กระเป๋าหลัก(\u0E3F)",
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.white.withOpacity(.7),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  data_DataAc.balance
+                                      .toString(), //"data_DataAc.balance.toString()"
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          ConstrainedBox(
-                            constraints:
-                                BoxConstraints.tightFor(width: 100, height: 35),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.white),
-                              child: Text(
-                                'ถอนเงิน',
-                                style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () {},
+                            Column(
+                              children: [
+                                ConstrainedBox(
+                                  constraints: BoxConstraints.tightFor(
+                                      width: 100, height: 35),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.white),
+                                    child: Text(
+                                      'เติมเงิน',
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints.tightFor(
+                                      width: 100, height: 35),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.white),
+                                    child: Text(
+                                      'ถอนเงิน',
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
           ],
         )),
       ],
@@ -487,17 +488,17 @@ class _ScrollProfilePageState extends State
           return Future.value(true);
         },
         child: data_DataAc == null || data_MyPost == null
-            ? Container(
-                child: AlertDialog(
-                    content: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("กรุณารอสักครู่...   "),
-                    CircularProgressIndicator()
-                  ],
-                )),
-              )
-            : buildNestedScrollView(),
+                ? Container(
+                    child: AlertDialog(
+                        content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("กรุณารอสักครู่...   "),
+                        CircularProgressIndicator()
+                      ],
+                    )),
+                  )
+                : buildNestedScrollView(),
       ),
     );
   }

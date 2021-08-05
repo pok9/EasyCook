@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SlidePage extends StatefulWidget {
-  SlidePage();
+
   // SlidePage({Key key}) : super(key: key);
 
   @override
@@ -67,6 +67,7 @@ class _SlidePageState extends State<SlidePage> {
       return null;
     }
   }
+  
 
   int currentTab = 0;
   final List screens = [
@@ -75,7 +76,7 @@ class _SlidePageState extends State<SlidePage> {
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currenetScreen = FeedPage();
-
+  
   @override
   Widget build(BuildContext context) {
     // resizeToAvoidBottomPadding:
@@ -228,14 +229,41 @@ class _SlidePageState extends State<SlidePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                            currentTab == 4
-                                ? Icons.account_box
-                                : Icons.account_box_outlined,
-                            color: currentTab == 4
-                                ? Colors.white
-                                : Colors.grey.shade300,
-                            size: 25),
+                        (dataUser == null)
+                          ? Icon(
+                              currentTab == 3
+                                  ? Icons.account_box
+                                  : Icons.account_box_outlined,
+                              color: currentTab == 3
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              size: 25)
+                          : currentTab == 3
+                              ? Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle),
+                                      height: 26,
+                                      width: 26,
+                                    ),
+                                    Positioned(
+                                      top: 1,
+                                      right: 1,
+                                      child: CircleAvatar(
+                                        radius: 12,
+                                        backgroundImage:
+                                            NetworkImage(dataUser.profileImage),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : CircleAvatar(
+                                  radius: 12,
+                                  backgroundImage:
+                                      NetworkImage(dataUser.profileImage),
+                                ),
                         Text('บัญชี',
                             style: TextStyle(
                                 color: currentTab == 4

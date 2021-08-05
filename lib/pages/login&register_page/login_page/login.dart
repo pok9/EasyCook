@@ -14,6 +14,10 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
+
+  int close;
+  LoginPage({this.close});
+
   @override
   _LoginPageState createState() => new _LoginPageState();
 }
@@ -103,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
       content: Column(
         mainAxisSize: MainAxisSize.min, //autoSize
         children: [
-          _getCloseButton(context),
+          (this.widget.close == null) ? _getCloseButton(context) : Container(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
