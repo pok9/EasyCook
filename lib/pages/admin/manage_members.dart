@@ -1,7 +1,15 @@
+import 'dart:convert';
+
+import 'package:easy_cook/models/admin/manage_members_model.dart';
+import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageMembers extends StatefulWidget {
   // const ManageMembers({ Key? key }) : super(key: key);
@@ -11,15 +19,57 @@ class ManageMembers extends StatefulWidget {
 }
 
 class _ManageMembersState extends State<ManageMembers> {
+  @override
+  void initState() {
+    super.initState();
+    findUser();
+  }
+
+  String token = ""; //โทเคน
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+
+      if (token != "") {
+        getMyAccounts();
+      }
+    });
+  }
+
+  //user
+  MyAccount datas;
+  DataAc dataMyAccount;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        datas = myAccountFromJson(responseString);
+        dataMyAccount = datas.data[0];
+      });
+    } else {
+      return null;
+    }
+  }
+
   //ข้อมูลผู้ใช้
   List<DataUser> dataUser;
   Future<Null> getSearchUserNames(String userName) async {
+    print("55556656565656565656565656665656");
     dataUser = [];
     final String apiUrl =
         "http://apifood.comsciproject.com/pjUsers/searchUser/" + userName;
 
     final response = await http.get(Uri.parse(apiUrl));
 
+    
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -32,6 +82,8 @@ class _ManageMembersState extends State<ManageMembers> {
       return null;
     }
   }
+
+  String searchUser = "";
 
   @override
   Widget build(BuildContext context) {
@@ -67,85 +119,113 @@ class _ManageMembersState extends State<ManageMembers> {
             ),
           ),
           body: TabBarView(children: [
-            Container(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      onChanged: (text) {
-                        if (text != "") {
-                          getSearchUserNames(text);
-                        } else {
-                          setState(() {
-                            dataUser = [];
-                          });
-                        }
-                      },
-                      decoration: InputDecoration(
-                          labelText: "ค้นหา",
-                          hintText: "ค้นหา",
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25.0)))),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: (dataUser == null) ? 0 : dataUser.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          onTap: () {},
-                          title: Text(dataUser[index].aliasName),
-                          subtitle: Text(dataUser[index].nameSurname),
-                          leading: Container(
-                            height: 40.0,
-                            width: 40.0,
-                            decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: new DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: new NetworkImage(
-                                        dataUser[index].profileImage))),
+            (dataMyAccount == null)
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            onChanged: (text) {
+                              if (text != "") {
+                                getSearchUserNames(text);
+                                searchUser = text;
+                              } else {
+                                setState(() {
+                                  dataUser = [];
+                                });
+                              }
+                            },
+                            decoration: InputDecoration(
+                                labelText: "ค้นหา",
+                                hintText: "ค้นหา",
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(25.0)))),
                           ),
-                          trailing: OutlinedButton(
-                            onPressed: () {
-                              showDialog(
-                                barrierColor: Colors.black26,
-                                context: context,
-                                builder: (context) {
-                                  return CustomAlertDialog(
-                                    title: "จัดการสมาชิก",
-                                    description:
-                                        "คุณแน่ใจใช่ไหมที่จะจัดการสมาชิกนี้",
-                                    token: "this.token",
-                                    uid: 1,
-                                    image: dataUser[index].profileImage,
-                                    aliasName: dataUser[index].aliasName,
-                                    nameSurname: dataUser[index].nameSurname,
-                                  );
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: (dataUser == null) ? 0 : dataUser.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () {
+                                  if (dataMyAccount.userId ==
+                                      dataUser[index].userId) {
+                                    Navigator.push(context,
+                                        CupertinoPageRoute(builder: (context) {
+                                      return ProfilePage();
+                                    }));
+                                  } else {
+                                    Navigator.push(context,
+                                        CupertinoPageRoute(builder: (context) {
+                                      return ProfileUser(
+                                        dataUser[index].userId,
+                                      );
+                                    }));
+                                  }
                                 },
+                                title: Text(dataUser[index].aliasName),
+                                subtitle: Text(dataUser[index].nameSurname),
+                                leading: Container(
+                                  height: 40.0,
+                                  width: 40.0,
+                                  decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: new DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: new NetworkImage(
+                                              dataUser[index].profileImage))),
+                                ),
+                                trailing: (dataMyAccount.userId ==
+                                        dataUser[index].userId)
+                                    ? null
+                                    : OutlinedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            barrierColor: Colors.black26,
+                                            context: context,
+                                            builder: (context) {
+                                              return CustomAlertDialog(
+                                                title: "จัดการสมาชิก",
+                                                description:
+                                                    "คุณแน่ใจใช่ไหมที่จะจัดการสมาชิกนี้",
+                                                token: token,
+                                                uid: dataUser[index].userId,
+                                                image: dataUser[index]
+                                                    .profileImage,
+                                                aliasName:
+                                                    dataUser[index].aliasName,
+                                                nameSurname:
+                                                    dataUser[index].nameSurname,
+                                                    getSearchUserNames: getSearchUserNames(searchUser),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Text(
+                                          'Ban',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        style: OutlinedButton.styleFrom(
+                                          primary: Colors.black,
+                                          backgroundColor: Colors.red,
+                                          side: BorderSide(
+                                              width: 0, color: Colors.grey),
+                                        ),
+                                      ),
                               );
                             },
-                            child: Text(
-                              'Ban',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              primary: Colors.black,
-                              backgroundColor: Colors.red,
-                              side: BorderSide(width: 0, color: Colors.grey),
-                            ),
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
+                  )
           ]),
         ),
       ),
@@ -161,43 +241,41 @@ class CustomAlertDialog extends StatefulWidget {
       this.uid,
       this.image,
       this.aliasName,
-      this.nameSurname});
+      this.nameSurname,
+      this.getSearchUserNames});
 
   final String title, description, token, image, aliasName, nameSurname;
   final int uid;
 
+  final Future<Null> getSearchUserNames;
   @override
   _CustomAlertDialogState createState() => _CustomAlertDialogState();
 }
 
 class _CustomAlertDialogState extends State<CustomAlertDialog> {
-  // Future<BuyFood> buyFood(String token, int recipe_ID) async {
-  //   print('press');
-  //   print(token);
-  //   print(recipe_ID);
+  Future<ManageMembersModel> ManageMembers(String uid, String token) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/banUser";
 
-  //   final String apiUrl = "http://apifood.comsciproject.com/pjPost/buy";
-  //   var data = {
-  //     "rid": recipe_ID,
-  //   };
+    var data = {
+      "user_ID": uid,
+    };
 
-  //   final response = await http.post(Uri.parse(apiUrl),
-  //       body: jsonEncode(data),
-  //       headers: {
-  //         "Authorization": "Bearer $token",
-  //         "Content-Type": "application/json"
-  //       });
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
 
-  //   print("addIngredients======" + (response.statusCode.toString()));
-  //   // print("addIngredients======"+(response));
-  //   if (response.statusCode == 200) {
-  //     final String responseString = response.body;
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
 
-  //     return buyFoodFromJson(responseString);
-  //   } else {
-  //     return null;
-  //   }
-  // }
+      return manageMembersModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,55 +324,34 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
             child: InkWell(
               highlightColor: Colors.grey[200],
               onTap: () async {
-                // Navigator.pop(context);
+                Navigator.pop(context);
 
-                // showDialog(
-                //   context: context,
-                //   barrierDismissible: false,
-                //   builder: (BuildContext context) {
-                //     return AlertDialog(
-                //         content: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         Text("กรุณารอสักครู่...   "),
-                //         CircularProgressIndicator()
-                //       ],
-                //     ));
-                //   },
-                // );
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("กรุณารอสักครู่...   "),
+                        CircularProgressIndicator()
+                      ],
+                    ));
+                  },
+                );
 
-                // BuyFood dataBuyFood =
-                //     await buyFood(this.widget.token, this.widget.rid);
+                ManageMembersModel manageMembersModel = await ManageMembers(
+                    this.widget.uid.toString(), this.widget.token);
 
-                // Navigator.pop(context);
-                // print(dataBuyFood.success);
-                // if (dataBuyFood.success == 1) {
-                //   showDialog(
-                //       context: context,
-                //       builder: (context) => CustomDialog(
-                //             title: "ซื้อสำเร็จ",
-                //             description:
-                //                 "คุณได้ทำการซื้อสูตรอาหารนี้แล้ว เข้าไปดูสูตรอาหารได้ที่ \"สูตรที่ซื้อ\"",
-                //             image:
-                //                 'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
-                //             colors: Colors.lightGreen,
-                //             index: 1,
-                //             rid: this.widget.rid,
-                //           ));
-                // } else {
-                //   showDialog(
-                //       context: context,
-                //       builder: (context) => CustomDialog(
-                //             title: "ซื้อไม่สำเร็จ",
-                //             description: dataBuyFood.message,
-                //             image:
-                //                 'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
-                //             colors: Colors.redAccent,
-                //             index: 0,
-                //           ));
-                // }
+                Navigator.pop(context);
 
-                if (false) {
+                print(this.widget.uid);
+
+                if (manageMembersModel.success == 1) {
+                  print("1111111112");
+                  this.widget.getSearchUserNames;
+                  print("222222222223");
                   showDialog(
                       context: context,
                       builder: (context) => CustomDialog(
@@ -438,9 +495,11 @@ class CustomDialog extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                       if (index == 1) {
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+                        print("1111111111111111");
                       } else {
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+                        print("222222222222222");
                       }
                     },
                     child: Text(
