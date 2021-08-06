@@ -28,8 +28,12 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
               centerTitle: true,
               title: Text("ลบบัญชี"),
             ),
-            body: Center(
-              child: Text('s'),
+            body: Column(
+              children: [
+                Text('ลบบัญชีผู้ใช้ของคุณ'),
+                Text(
+                    'คุณช่วยแชร์ให้เราหน่อยได้ไหมว่าอะไรที่ไม่ทำงาน? เรากำลังแก้ไขข้อบกพร่องทันทีที่เราตรวจพบ หากมีสิ่งใดเล็ดลอดนิ้วออกไป เรายินดีอย่างยิ่งที่ได้ทราบและแก้ไข')
+              ],
             )));
   }
 }

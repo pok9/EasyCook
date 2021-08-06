@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/showfood/commentFood_model.dart/commentPost_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
+import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommentFood extends StatefulWidget {
   String recipe_ID;
-
-  CommentFood({this.recipe_ID});
+  bool autoFocus;
+  CommentFood({this.recipe_ID, this.autoFocus});
 
   @override
   _CommentFoodState createState() => _CommentFoodState();
@@ -139,8 +140,23 @@ class _CommentFoodState extends State<CommentFood> {
               children: [
                 Expanded(
                     child: TextFormField(
+                  onTap: () {
+                    if (token == "") {
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return LoginPage();
+                          }).then((value) {
+                        if (value != null) {
+                          this.findUser();
+                        }
+
+                        // Navigator.pop(context);
+                      });
+                    }
+                  },
                   controller: commentController,
-                  autofocus: true,
+                  autofocus: this.widget.autoFocus,
                   minLines: 1,
                   maxLines: 5,
                   decoration: InputDecoration(
@@ -152,14 +168,30 @@ class _CommentFoodState extends State<CommentFood> {
                 )),
                 TextButton(
                     onPressed: () async {
-                      print("โพส");
-                      print(commentController.text);
-                      CommentPostModel commentPostModel = await CommentPost(
-                          this.widget.recipe_ID, commentController.text, token);
+                      if (token == "") {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return LoginPage();
+                            }).then((value) {
+                          if (value != null) {
+                            this.findUser();
+                          }
 
-                      if (commentPostModel.success == 1) {
-                        getCommentPosts();
-                        commentController.text = "";
+                          // Navigator.pop(context);
+                        });
+                      } else {
+                        print("โพส");
+                        print(commentController.text);
+                        CommentPostModel commentPostModel = await CommentPost(
+                            this.widget.recipe_ID,
+                            commentController.text,
+                            token);
+
+                        if (commentPostModel.success == 1) {
+                          getCommentPosts();
+                          commentController.text = "";
+                        }
                       }
                     },
                     child: Text("โพสต์"))

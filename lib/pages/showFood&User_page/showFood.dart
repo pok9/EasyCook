@@ -82,8 +82,7 @@ class _ShowFoodState extends State<ShowFood> {
   }
 
   //ให้คะแนนสูตรอาหาร
-  Future<ScoreFoodInputModel> scoreFoodInput(
-       double score, String token) async {
+  Future<ScoreFoodInputModel> scoreFoodInput(double score, String token) async {
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/score";
 
     var data = {
@@ -108,7 +107,7 @@ class _ShowFoodState extends State<ShowFood> {
     }
   }
 
- //แสดงคะแนนที่เรารีวิว
+  //แสดงคะแนนที่เรารีวิว
   GetScoreFoodModel dataGetScoreFood;
   Future<Null> getcoreFood() async {
     final String apiUrl =
@@ -936,11 +935,12 @@ class _ShowFoodState extends State<ShowFood> {
                                           color: Colors.blue,
                                         ),
                                         onRatingUpdate: (rating) async {
-                                        
-                                         ScoreFoodInputModel scoreFoodInputModel = await scoreFoodInput(rating, token);
+                                          ScoreFoodInputModel
+                                              scoreFoodInputModel =
+                                              await scoreFoodInput(
+                                                  rating, token);
 
-                                         print(scoreFoodInputModel.success);
-                                          
+                                          print(scoreFoodInputModel.success);
                                         },
                                       ),
                                       Divider(
@@ -949,53 +949,90 @@ class _ShowFoodState extends State<ShowFood> {
                                         color: Colors.teal.shade100,
                                         thickness: 1.0,
                                       ),
-                                      ListView.builder(
-                                          padding: EdgeInsets.only(top: 0),
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: (dataGetCommentPost ==
-                                                  null)
-                                              ? 0
-                                              : dataGetCommentPost.length > 3
-                                                  ? 3
-                                                  : dataGetCommentPost.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              isThreeLine: true,
-                                              leading: CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    dataGetCommentPost[index]
-                                                        .profileImage),
-                                              ),
-                                              title: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        0, 10, 0, 0),
-                                                child: Text(
-                                                  dataGetCommentPost[index]
-                                                      .aliasName,
-                                                  style: TextStyle(
+                                      Column(
+                                        children: [
+                                          (dataGetCommentPost == null)
+                                              ? Container()
+                                              : (dataGetCommentPost.length == 0)
+                                                  ? Container()
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8),
+                                                      child: Row(
+                                                        children: [
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                            CommentFood(
+                                                                              autoFocus: false,
+                                                                              recipe_ID: this.widget.req_rid.toString(),
+                                                                            ))).then(
+                                                                    (value) => this
+                                                                        .getCommentPosts());
+                                                              },
+                                                              child: Text(
+                                                                  "ดูความเห็นทั้งหมด")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                          ListView.builder(
+                                              padding: EdgeInsets.only(top: 0),
+                                              shrinkWrap: true,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              itemCount: (dataGetCommentPost ==
+                                                      null)
+                                                  ? 0
+                                                  : dataGetCommentPost.length >
+                                                          3
+                                                      ? 3
+                                                      : dataGetCommentPost
+                                                          .length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  isThreeLine: true,
+                                                  leading: CircleAvatar(
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                            dataGetCommentPost[
+                                                                    index]
+                                                                .profileImage),
+                                                  ),
+                                                  title: Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(0, 10, 0, 0),
+                                                    child: Text(
+                                                      dataGetCommentPost[index]
+                                                          .aliasName,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  subtitle: Text(
+                                                    '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                                                    textAlign:
+                                                        TextAlign.justify,
+                                                    style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              subtitle: Text(
-                                                '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                                                textAlign: TextAlign.justify,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                ),
-                                              ),
-                                              dense: true,
-                                              // trailing: Text('Horse'),
-                                            );
-                                          }),
+                                                          FontWeight.normal,
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 12,
+                                                      color: Colors.black,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                    ),
+                                                  ),
+                                                  dense: true,
+                                                  // trailing: Text('Horse'),
+                                                );
+                                              }),
+                                        ],
+                                      ),
                                       Padding(
                                         padding: const EdgeInsets.all(5),
                                         child: Row(
@@ -1046,6 +1083,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               CommentFood(
+                                                                autoFocus: true,
                                                                 recipe_ID: this
                                                                     .widget
                                                                     .req_rid
