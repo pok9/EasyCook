@@ -2,12 +2,16 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
+
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/showFood&User_page/commentFood.dart/commentFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
+import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -34,7 +38,27 @@ class _ShowFoodState extends State<ShowFood> {
   void initState() {
     super.initState();
     findUser();
+    getCommentPosts();
     getPost();
+  }
+
+  List<GetCommentPostModel> dataGetCommentPost;
+  Future<Null> getCommentPosts() async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/getComment/" +
+            req_rid.toString();
+
+    final response = await http.get(Uri.parse(apiUrl));
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        dataGetCommentPost = getCommentPostModelFromJson(responseString);
+      });
+    } else {
+      return null;
+    }
   }
 
   String token = ""; //โทเคน
@@ -44,15 +68,17 @@ class _ShowFoodState extends State<ShowFood> {
 
     setState(() {
       token = preferences.getString("tokens");
+      
       if (token != "") {
         getMyAccounts();
       }
     });
   }
 
+
   //user
   MyAccount datas;
-  DataAc dataUser;
+  DataAc dataMyAccont;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
@@ -64,7 +90,7 @@ class _ShowFoodState extends State<ShowFood> {
         final String responseString = response.body;
 
         datas = myAccountFromJson(responseString);
-        dataUser = datas.data[0];
+        dataMyAccont = datas.data[0];
       });
     } else {
       return null;
@@ -396,11 +422,11 @@ class _ShowFoodState extends State<ShowFood> {
             floatingPosition: FloatingPosition(top: -20, left: 150),
             slivers: [
               SliverAppBar(
-                title: Text(dataFood.recipeName),
+                title: Text(dataFood.recipeName + this.req_rid.toString()),
                 actions: [
-                  (dataUser == null || dataFood == null)
+                  (dataMyAccont == null || dataFood == null)
                       ? Container()
-                      : (dataUser.userId != dataFood.userId)
+                      : (dataMyAccont.userId != dataFood.userId)
                           ? Container()
                           : PopupMenuButton(
                               child: Center(
@@ -872,27 +898,27 @@ class _ShowFoodState extends State<ShowFood> {
                                           shrinkWrap: true,
                                           physics:
                                               NeverScrollableScrollPhysics(),
-                                          itemCount: 3,
+                                          itemCount: (dataGetCommentPost == null) ? 0 : dataGetCommentPost.length > 3 ? 3 : dataGetCommentPost.length ,
                                           itemBuilder: (context, index) {
                                             return ListTile(
                                               isThreeLine: true,
                                               leading: CircleAvatar(
                                                 backgroundImage: NetworkImage(
-                                                    "https://static.wikia.nocookie.net/characters/images/a/a6/Rick_Sanchez.png/revision/latest?cb=20171118221229"),
+                                                    dataGetCommentPost[index].profileImage),
                                               ),
                                               title: Padding(
                                                 padding:
                                                     const EdgeInsets.fromLTRB(
                                                         0, 10, 0, 0),
                                                 child: Text(
-                                                  '1Horseqwerw',
+                                                  dataGetCommentPost[index].aliasName,
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
                                               ),
                                               subtitle: Text(
-                                                '05-11-20\n\nthe logo to lay out, and then asest, wraps the text within that width, and you end up with a paragraph split over several lines.',
+                                                '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
                                                 textAlign: TextAlign.justify,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.normal,
@@ -907,50 +933,82 @@ class _ShowFoodState extends State<ShowFood> {
                                               // trailing: Text('Horse'),
                                             );
                                           }),
-
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            26, 5, 26, 5),
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            // shape: MaterialStateProperty.all<
-                                            //     RoundedRectangleBorder>(
-                                            //   RoundedRectangleBorder(
-                                            //     borderRadius:
-                                            //         BorderRadius.circular(40),
-                                            //   ),
-                                            // ),
-                                            side: BorderSide(width:2, color:Colors.blue),
-                                            primary: Colors.white, 
-                                            shape: RoundedRectangleBorder(
-                                                //to set border radius to button
-                                                borderRadius:
-                                                    BorderRadius.circular(30)),
-                                          ),
-                                          onPressed: () {
-                                             Navigator.push(
+                                            0, 5, 5, 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            (dataMyAccont == null)
+                                                ? CircleAvatar(
+                                                    child: Icon(Icons
+                                                        .account_box_outlined),
+                                                  )
+                                                : CircleAvatar(
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                            dataMyAccont
+                                                                .profileImage),
+                                                  ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                side: BorderSide(
+                                                    width: 2,
+                                                    color: Colors.blue),
+                                                primary: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30)),
+                                              ),
+                                              onPressed: () {
+                                                if (dataMyAccont == null) {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return LoginPage();
+                                                      }).then((value) {
+                                                    if (value != null) {
+                                                      this.findUser();
+                                                    }
+
+                                                    // Navigator.pop(context);
+                                                  });
+                                                } else {
+                                                  Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              CommentFood())).then(
-                                                      (value) => () {});
-                                          },
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 50,
-                                            child: Row(
-                                              children: [
-                                                Center(
-                                                    child: Text(
-                                                        'แสดงความคิดเห็น...',style: TextStyle(color: Colors.black54,fontSize: 16),)),
-                                              ],
+                                                              CommentFood(recipe_ID: this.widget.req_rid.toString(),))).then(
+                                                      (value) => this.getCommentPosts());
+                                                }
+                                              },
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    100,
+                                                height: 50,
+                                                child: Row(
+                                                  children: [
+                                                    Center(
+                                                        child: Text(
+                                                      'แสดงความคิดเห็น...',
+                                                      style: TextStyle(
+                                                          color: Colors.black54,
+                                                          fontSize: 16),
+                                                    )),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ),
-                                      
                                     ],
                                   ),
                                 ),

@@ -56,13 +56,13 @@ class _SlidePageState extends State<SlidePage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
+      // setState(() {
         final String responseString = response.body;
 
         datas = myAccountFromJson(responseString);
         dataUser = datas.data[0];
         print(dataUser.userId);
-      });
+      // });
     } else {
       return null;
     }
@@ -81,6 +81,9 @@ class _SlidePageState extends State<SlidePage> {
   Widget build(BuildContext context) {
     // resizeToAvoidBottomPadding:
     // false;
+     if (token != "") {
+        getMyAccounts();
+      }
 
     bool keyboardIsOpened =
         MediaQuery.of(context).viewInsets.bottom != 0.0; //ทำให้ floating หาย

@@ -93,7 +93,93 @@ class _ScrollProfilePage2BottomNavbarState extends State
     }
   }
 
-  buildSliverAppBar() {
+  Future<void> _topupDisplayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('ทดสอบเติมเงิน'),
+            content: TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                // setState(() {
+                //   valueText = value;
+                // });
+                print(value);
+              },
+              // controller: _textFieldController,
+              decoration: InputDecoration(hintText: "เช่น 50,100,2000"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                // color: Colors.red,
+                // textColor: Colors.white,
+                child: Text('ยกเลิก'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              TextButton(
+                // color: Colors.green,
+                // textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  // setState(() {
+                  //   codeDialog = valueText;
+                  //   Navigator.pop(context);
+                  // });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _withdrawDisplayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('ทดสอบถอนเงิน'),
+            content: TextField(
+              onChanged: (value) {
+                // setState(() {
+                //   valueText = value;
+                // });
+              },
+              // controller: _textFieldController,
+              decoration: InputDecoration(hintText: "เช่น 50,100,2000"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                // color: Colors.red,
+                // textColor: Colors.white,
+                child: Text('ยกเลิก'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              TextButton(
+                // color: Colors.green,
+                // textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  // setState(() {
+                  //   codeDialog = valueText;
+                  //   Navigator.pop(context);
+                  // });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  buildSliverAppBar(context) {
     return SliverAppBar(
       title: Text(data_DataAc.aliasName),
       pinned: true,
@@ -103,7 +189,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
       expandedHeight: (data_DataAc.userStatus == 0) ? 403 : 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
-        background: buildFlexibleSpaceWidget(),
+        background: buildFlexibleSpaceWidget(context),
       ),
       leading: IconButton(
         icon: Icon(Icons.menu),
@@ -144,7 +230,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
     );
   }
 
-  buildFlexibleSpaceWidget() {
+  buildFlexibleSpaceWidget(context) {
     return Column(
       children: [
         Container(
@@ -403,7 +489,10 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                           color: Colors.blueAccent,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      print("เติมเงิน");
+                                      _topupDisplayTextInputDialog(context);
+                                    },
                                   ),
                                 ),
                                 SizedBox(
@@ -421,7 +510,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                           color: Colors.blueAccent,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _withdrawDisplayTextInputDialog(context);
+                                    },
                                   ),
                                 ),
                               ],
@@ -464,7 +555,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
         },
 
         child: (token == "")
-            ? LoginPage(close: 1,)
+            ? LoginPage(
+                close: 1,
+              )
             : data_DataAc == null || data_MyPost == null
                 ? Container(
                     child: AlertDialog(
@@ -492,7 +585,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
     return NestedScrollView(
       // Configure foldable head layout
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return [buildSliverAppBar()];
+        return [buildSliverAppBar(context)];
       },
       // The main content of the page
       body: buidChildWidget(),

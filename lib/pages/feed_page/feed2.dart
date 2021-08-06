@@ -81,7 +81,7 @@ class _Feed2PageState extends State<Feed2Page> {
     final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
+   
         final String responseString = response.body;
 
         dataNewfeedsglobal = newfeedsglobalFromJson(responseString);
@@ -95,7 +95,7 @@ class _Feed2PageState extends State<Feed2Page> {
             dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
           }
         }
-      });
+         setState(() {});
     } else {
       return null;
     }

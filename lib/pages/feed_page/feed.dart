@@ -94,14 +94,14 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
+     
         final String responseString = response.body;
 
         datas = myAccountFromJson(responseString);
         dataUser = datas.data[0];
         print(dataUser.userId);
         checkFollowings();
-      });
+      setState(() { });
     } else {
       return null;
     }
@@ -124,10 +124,7 @@ class _FeedPageState extends State<FeedPage> {
         print(item.recipeId);
         checkBuy.add(item.recipeId.toString());
       }
-      print("checkBuy.indexOf() = ${checkBuy.indexOf("181") > 0}");
-      print("checkBuy.length = ${checkBuy.length}");
-      print(checkBuy);
-      // print("set=====");
+      
       setState(() {});
     } else {
       return null;
