@@ -10,6 +10,13 @@ class HelpCenter extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('ศูนย์ช่วยเหลือ'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+            
+          },
+          icon: Icon(Icons.clear),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,16 +37,17 @@ class HelpCenter extends StatelessWidget {
 
                 //     color: Colors.black)
               ),
-              trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.blue,),
+              trailing: Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.blue,
+              ),
               onTap: () {
-               Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HelpMyAccount()),
-                        );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HelpMyAccount()),
+                );
               },
             ),
-            
           ],
         ),
       ),

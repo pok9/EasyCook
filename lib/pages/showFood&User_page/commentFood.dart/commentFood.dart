@@ -95,6 +95,7 @@ class _CommentFoodState extends State<CommentFood> {
               (dataGetCommentPost == null)
                   ? Center(child: CircularProgressIndicator())
                   : ListView.builder(
+                      reverse: true,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       // scrollDirection: Axis.horizontal,

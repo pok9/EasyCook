@@ -4,48 +4,54 @@
 
 import 'dart:convert';
 
-SearchRecipeName searchRecipeNameFromJson(String str) => SearchRecipeName.fromJson(json.decode(str));
+SearchRecipeName searchRecipeNameFromJson(String str) =>
+    SearchRecipeName.fromJson(json.decode(str));
 
-String searchRecipeNameToJson(SearchRecipeName data) => json.encode(data.toJson());
+String searchRecipeNameToJson(SearchRecipeName data) =>
+    json.encode(data.toJson());
 
 class SearchRecipeName {
-    SearchRecipeName({
-        this.data,
-    });
+  SearchRecipeName({
+    this.data,
+  });
 
-    List<DataRecipe> data;
+  List<DataRecipe> data;
 
-    factory SearchRecipeName.fromJson(Map<String, dynamic> json) => SearchRecipeName(
-        data: List<DataRecipe>.from(json["data"].map((x) => DataRecipe.fromJson(x))),
-    );
+  factory SearchRecipeName.fromJson(Map<String, dynamic> json) =>
+      SearchRecipeName(
+        data: List<DataRecipe>.from(
+            json["data"].map((x) => DataRecipe.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
-    };
+      };
 }
 
 class DataRecipe {
-    DataRecipe({
-        this.rid,
-        this.recipeName,
-        this.image,
-        this.userId,
-        this.aliasName,
-        this.nameSurname,
-        this.profileImage,
-        this.score,
-    });
+  DataRecipe({
+    this.rid,
+    this.recipeName,
+    this.image,
+    this.userId,
+    this.aliasName,
+    this.nameSurname,
+    this.profileImage,
+    this.score,
+    this.price,
+  });
 
-    int rid;
-    String recipeName;
-    String image;
-    int userId;
-    String aliasName;
-    String nameSurname;
-    String profileImage;
-    int score;
+  int rid;
+  String recipeName;
+  String image;
+  int userId;
+  String aliasName;
+  String nameSurname;
+  String profileImage;
+  double score;
+  int price;
 
-    factory DataRecipe.fromJson(Map<String, dynamic> json) => DataRecipe(
+  factory DataRecipe.fromJson(Map<String, dynamic> json) => DataRecipe(
         rid: json["rid"],
         recipeName: json["recipe_name"],
         image: json["image"],
@@ -53,10 +59,11 @@ class DataRecipe {
         aliasName: json["alias_name"],
         nameSurname: json["name_surname"],
         profileImage: json["profile_image"],
-        score: json["score"],
-    );
+        score: json["score"].toDouble(),
+        price: json["price"],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "rid": rid,
         "recipe_name": recipeName,
         "image": image,
@@ -65,5 +72,6 @@ class DataRecipe {
         "name_surname": nameSurname,
         "profile_image": profileImage,
         "score": score,
-    };
+        "price": price,
+      };
 }

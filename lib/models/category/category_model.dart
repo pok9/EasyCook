@@ -33,7 +33,7 @@ class CategoryModel {
     String description;
     String image;
     int price;
-    int score;
+    double score;
 
     factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         rid: json["rid"],
@@ -46,7 +46,7 @@ class CategoryModel {
         description: json["description"],
         image: json["image"],
         price: json["price"],
-        score: json["score"],
+        score: json["score"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {

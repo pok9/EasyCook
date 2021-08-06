@@ -705,6 +705,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   bool clearNameFood = true;
   bool clearDesciptionFood = true;
+
+  
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;

@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
+import 'package:easy_cook/models/showfood/scoreFood/getScoreFoodModel.dart';
+import 'package:easy_cook/models/showfood/scoreFood/scoreFoodInputModel.dart';
 
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
@@ -42,6 +45,7 @@ class _ShowFoodState extends State<ShowFood> {
     getPost();
   }
 
+  //แสดงคอมเมนต์
   List<GetCommentPostModel> dataGetCommentPost;
   Future<Null> getCommentPosts() async {
     final String apiUrl =
@@ -54,7 +58,8 @@ class _ShowFoodState extends State<ShowFood> {
       setState(() {
         final String responseString = response.body;
 
-        dataGetCommentPost = getCommentPostModelFromJson(responseString);
+        dataGetCommentPost =
+            getCommentPostModelFromJson(responseString).reversed.toList();
       });
     } else {
       return null;
@@ -68,13 +73,61 @@ class _ShowFoodState extends State<ShowFood> {
 
     setState(() {
       token = preferences.getString("tokens");
-      
+
       if (token != "") {
         getMyAccounts();
+        getcoreFood();
       }
     });
   }
 
+  //ให้คะแนนสูตรอาหาร
+  Future<ScoreFoodInputModel> scoreFoodInput(
+       double score, String token) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/score";
+
+    var data = {
+      "recipe_ID": this.req_rid,
+      "score": score,
+    };
+
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return scoreFoodInputModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+ //แสดงคะแนนที่เรารีวิว
+  GetScoreFoodModel dataGetScoreFood;
+  Future<Null> getcoreFood() async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/getMyScore/" +
+            req_rid.toString();
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        dataGetScoreFood = getScoreFoodModelFromJson(responseString);
+      });
+    } else {
+      return null;
+    }
+  }
 
   //user
   MyAccount datas;
@@ -867,7 +920,10 @@ class _ShowFoodState extends State<ShowFood> {
                                         height: 10,
                                       ),
                                       RatingBar.builder(
-                                        initialRating: 0,
+                                        initialRating:
+                                            (dataGetScoreFood == null)
+                                                ? 0
+                                                : dataGetScoreFood.score,
                                         minRating: 0.5,
                                         direction: Axis.horizontal,
                                         allowHalfRating: true,
@@ -879,13 +935,12 @@ class _ShowFoodState extends State<ShowFood> {
                                           // color: Colors.amber,
                                           color: Colors.blue,
                                         ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                          // showDialog(
-                                          //     context: context,
-                                          //     builder: (_) {
-                                          //       return ReviewPage(rating);
-                                          //     });
+                                        onRatingUpdate: (rating) async {
+                                        
+                                         ScoreFoodInputModel scoreFoodInputModel = await scoreFoodInput(rating, token);
+
+                                         print(scoreFoodInputModel.success);
+                                          
                                         },
                                       ),
                                       Divider(
@@ -895,23 +950,31 @@ class _ShowFoodState extends State<ShowFood> {
                                         thickness: 1.0,
                                       ),
                                       ListView.builder(
+                                          padding: EdgeInsets.only(top: 0),
                                           shrinkWrap: true,
                                           physics:
                                               NeverScrollableScrollPhysics(),
-                                          itemCount: (dataGetCommentPost == null) ? 0 : dataGetCommentPost.length > 3 ? 3 : dataGetCommentPost.length ,
+                                          itemCount: (dataGetCommentPost ==
+                                                  null)
+                                              ? 0
+                                              : dataGetCommentPost.length > 3
+                                                  ? 3
+                                                  : dataGetCommentPost.length,
                                           itemBuilder: (context, index) {
                                             return ListTile(
                                               isThreeLine: true,
                                               leading: CircleAvatar(
                                                 backgroundImage: NetworkImage(
-                                                    dataGetCommentPost[index].profileImage),
+                                                    dataGetCommentPost[index]
+                                                        .profileImage),
                                               ),
                                               title: Padding(
                                                 padding:
                                                     const EdgeInsets.fromLTRB(
                                                         0, 10, 0, 0),
                                                 child: Text(
-                                                  dataGetCommentPost[index].aliasName,
+                                                  dataGetCommentPost[index]
+                                                      .aliasName,
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -934,8 +997,7 @@ class _ShowFoodState extends State<ShowFood> {
                                             );
                                           }),
                                       Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 5, 5, 5),
+                                        padding: const EdgeInsets.all(5),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -983,8 +1045,14 @@ class _ShowFoodState extends State<ShowFood> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              CommentFood(recipe_ID: this.widget.req_rid.toString(),))).then(
-                                                      (value) => this.getCommentPosts());
+                                                              CommentFood(
+                                                                recipe_ID: this
+                                                                    .widget
+                                                                    .req_rid
+                                                                    .toString(),
+                                                              ))).then(
+                                                      (value) => this
+                                                          .getCommentPosts());
                                                 }
                                               },
                                               child: Container(
