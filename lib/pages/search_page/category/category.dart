@@ -1,8 +1,9 @@
 import 'package:easy_cook/models/category/category_model.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
-import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
-import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';
+import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
+
+
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -163,9 +164,11 @@ class _CategoryState extends State<Category> {
                                   onTap: () {
                                     if (categoryFood[index].price == 0 ||
                                         categoryFood[index].userId ==
-                                            dataUser.userId || checkBuy.indexOf(
-                                                                              categoryFood[index].rid.toString()) >=
-                                                                          0) {
+                                            dataUser.userId ||
+                                        checkBuy.indexOf(categoryFood[index]
+                                                .rid
+                                                .toString()) >=
+                                            0) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -178,7 +181,8 @@ class _CategoryState extends State<Category> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 RecipePurchasePage(
-                                                  req_rid: categoryFood[index].rid,
+                                                  req_rid:
+                                                      categoryFood[index].rid,
                                                 )),
                                       );
                                     }
@@ -248,8 +252,9 @@ class _CategoryState extends State<Category> {
                                                                         ],
                                                                       ),
                                                                     )
-                                                                  : (checkBuy.indexOf(
-                                                                              categoryFood[index].rid.toString()) >=
+                                                                  : (checkBuy.indexOf(categoryFood[index]
+                                                                              .rid
+                                                                              .toString()) >=
                                                                           0)
                                                                       ? Padding(
                                                                           padding:

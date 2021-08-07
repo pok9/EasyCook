@@ -7,7 +7,7 @@ import 'package:easy_cook/pages/feed_page/xxx_feed_follow.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/profile_page/profile2BottomNavbar.dart';
-import 'package:easy_cook/pages/recipeArchive_page/recipeArchive.dart';
+
 import 'package:easy_cook/pages/search_page/xxx_search.dart';
 import 'package:easy_cook/pages/search_page/search1.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -19,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SlidePage extends StatefulWidget {
-
   // SlidePage({Key key}) : super(key: key);
 
   @override
@@ -57,17 +56,16 @@ class _SlidePageState extends State<SlidePage> {
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       // setState(() {
-        final String responseString = response.body;
+      final String responseString = response.body;
 
-        datas = myAccountFromJson(responseString);
-        dataUser = datas.data[0];
-        print(dataUser.userId);
+      datas = myAccountFromJson(responseString);
+      dataUser = datas.data[0];
+      print(dataUser.userId);
       // });
     } else {
       return null;
     }
   }
-  
 
   int currentTab = 0;
   final List screens = [
@@ -76,14 +74,14 @@ class _SlidePageState extends State<SlidePage> {
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currenetScreen = FeedPage();
-  
+
   @override
   Widget build(BuildContext context) {
     // resizeToAvoidBottomPadding:
     // false;
-     if (token != "") {
-        getMyAccounts();
-      }
+    if (token != "") {
+      getMyAccounts();
+    }
 
     bool keyboardIsOpened =
         MediaQuery.of(context).viewInsets.bottom != 0.0; //ทำให้ floating หาย
@@ -233,40 +231,40 @@ class _SlidePageState extends State<SlidePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         (dataUser == null)
-                          ? Icon(
-                              currentTab == 3
-                                  ? Icons.account_box
-                                  : Icons.account_box_outlined,
-                              color: currentTab == 3
-                                  ? Colors.white
-                                  : Colors.grey.shade300,
-                              size: 25)
-                          : currentTab == 3
-                              ? Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle),
-                                      height: 26,
-                                      width: 26,
-                                    ),
-                                    Positioned(
-                                      top: 1,
-                                      right: 1,
-                                      child: CircleAvatar(
-                                        radius: 12,
-                                        backgroundImage:
-                                            NetworkImage(dataUser.profileImage),
+                            ? Icon(
+                                currentTab == 3
+                                    ? Icons.account_box
+                                    : Icons.account_box_outlined,
+                                color: currentTab == 3
+                                    ? Colors.white
+                                    : Colors.grey.shade300,
+                                size: 25)
+                            : currentTab == 3
+                                ? Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle),
+                                        height: 26,
+                                        width: 26,
                                       ),
-                                    ),
-                                  ],
-                                )
-                              : CircleAvatar(
-                                  radius: 12,
-                                  backgroundImage:
-                                      NetworkImage(dataUser.profileImage),
-                                ),
+                                      Positioned(
+                                        top: 1,
+                                        right: 1,
+                                        child: CircleAvatar(
+                                          radius: 12,
+                                          backgroundImage: NetworkImage(
+                                              dataUser.profileImage),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : CircleAvatar(
+                                    radius: 12,
+                                    backgroundImage:
+                                        NetworkImage(dataUser.profileImage),
+                                  ),
                         Text('บัญชี',
                             style: TextStyle(
                                 color: currentTab == 4

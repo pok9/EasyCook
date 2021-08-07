@@ -71,7 +71,7 @@ class RecipePost {
     String image;
     DateTime date;
     int price;
-    int score;
+    double score;
 
     factory RecipePost.fromJson(Map<String, dynamic> json) => RecipePost(
         rid: json["rid"],
@@ -79,7 +79,7 @@ class RecipePost {
         image: json["image"],
         date: DateTime.parse(json["date"]),
         price: json["price"],
-        score: json["score"],
+        score: json["score"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {

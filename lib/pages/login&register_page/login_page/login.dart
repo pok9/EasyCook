@@ -200,6 +200,7 @@ class _LoginPageState extends State<LoginPage> {
       if (login.success == 1) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setString("tokens", login.token);
+        preferences.setString("email", _ctrlEmail.text);
         stateOnlyText = ButtonState.success;
         // Navigator.pop(context);
         Navigator.pushAndRemoveUntil(

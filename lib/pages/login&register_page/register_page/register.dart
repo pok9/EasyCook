@@ -1,4 +1,4 @@
-import 'package:easy_cook/class/token_class.dart';
+import 'package:easy_cook/class/xxx_token_class.dart';
 import 'package:easy_cook/models/register/register_model.dart';
 import 'package:easy_cook/style/utiltties.dart';
 // import 'package:easy_cook/slidepage.dart';
@@ -208,6 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SharedPreferences preferences =
                   await SharedPreferences.getInstance();
               preferences.setString("tokens", response.token);
+              preferences.setString("email", _ctrlEmail.text);
               // Navigator.pushNamed(context, '/register2-page');
               Navigator.pushNamedAndRemoveUntil(context, '/register2-page', (Route<dynamic> route) => false);
             }

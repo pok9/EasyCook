@@ -1,4 +1,4 @@
-import 'package:easy_cook/drawer/helpCenter/helpMyAccount/deleteAccount/deleteAccount.dart';
+import 'package:easy_cook/pages/drawer/helpCenter/helpMyAccount/deleteAccount/deleteAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,16 +19,16 @@ class HelpMyAccount extends StatelessWidget {
         ),
       ),
       body: Scaffold(
-        
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
           centerTitle: true,
-          title: Text('บัญชีของฉัน'),),
+          title: Text('บัญชีของฉัน'),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-               ListTile(
+              ListTile(
                 leading: Icon(
                   Icons.account_box_outlined,
                   color: Colors.blue,
@@ -40,17 +40,20 @@ class HelpMyAccount extends StatelessWidget {
                     fontSize: 17,
                     fontWeight: FontWeight.w300,
                   ),
-    
+
                   //     color: Colors.black)
                 ),
-                trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.blue,),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: Colors.blue,
+                ),
                 onTap: () {
                   print("ลืมรหัสผ่าน");
-                //  Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //                 builder: (context) => HelpMyAccount()),
-                //           );
+                  //  Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //                 builder: (context) => HelpMyAccount()),
+                  //           );
                 },
               ),
               ListTile(
@@ -65,17 +68,20 @@ class HelpMyAccount extends StatelessWidget {
                     fontSize: 17,
                     fontWeight: FontWeight.w300,
                   ),
-    
+
                   //     color: Colors.black)
                 ),
-                trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.blue,),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: Colors.blue,
+                ),
                 onTap: () {
                   print("ลบบัญชี");
-                 Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DeleteAccountPage()),
-                          );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DeleteAccountPage()),
+                  );
                 },
               ),
             ],

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:easy_cook/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollowing_model.dart';
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/feed/newfeedsglobal/newfeedsglobal.dart';
@@ -12,12 +11,15 @@ import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
+import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
+import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
 import 'package:easy_cook/pages/profile_page/profile.dart';
-import 'package:easy_cook/pages/recipeArchive_page/purchasedRecipes/purchasedRecipes.dart';
-import 'package:easy_cook/pages/recipe_purchase_page/recipe_purchase_page.dart';
+
+
 import 'package:easy_cook/pages/search_page/xxx_search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
@@ -94,14 +96,13 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-     
-        final String responseString = response.body;
+      final String responseString = response.body;
 
-        datas = myAccountFromJson(responseString);
-        dataUser = datas.data[0];
-        print(dataUser.userId);
-        checkFollowings();
-      setState(() { });
+      datas = myAccountFromJson(responseString);
+      dataUser = datas.data[0];
+      print(dataUser.userId);
+      checkFollowings();
+      setState(() {});
     } else {
       return null;
     }
@@ -124,7 +125,7 @@ class _FeedPageState extends State<FeedPage> {
         print(item.recipeId);
         checkBuy.add(item.recipeId.toString());
       }
-      
+
       setState(() {});
     } else {
       return null;
@@ -187,7 +188,7 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
+      
         print("555555555555555555555555555555555555555555555");
         final String responseString = response.body;
 
@@ -195,7 +196,7 @@ class _FeedPageState extends State<FeedPage> {
         if (token != "") {
           getMybuy();
         }
-      });
+     setState(() { });
     } else {
       return null;
     }
@@ -209,12 +210,12 @@ class _FeedPageState extends State<FeedPage> {
     final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
+      
         print("pok5555555");
         final String responseString = response.body;
 
         dataRecommendUser = recommendUserFromJson(responseString);
-      });
+     setState(() { });
     } else {
       return null;
     }
@@ -511,7 +512,7 @@ class _FeedPageState extends State<FeedPage> {
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
                         preferences.setString("tokens", "");
-
+                        preferences.setString("email", "");
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
