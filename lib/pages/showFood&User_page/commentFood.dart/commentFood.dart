@@ -81,93 +81,80 @@ class _CommentFoodState extends State<CommentFood> {
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("แสดงความคิดเห็น"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-              child: ListView(
-            children: [
-              (dataGetCommentPost == null)
-                  ? Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      reverse: true,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      // scrollDirection: Axis.horizontal,
-                      itemCount: (dataGetCommentPost == null)
-                          ? 0
-                          : dataGetCommentPost.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          isThreeLine: true,
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                dataGetCommentPost[index].profileImage),
-                          ),
-                          title: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            child: Text(
-                              dataGetCommentPost[index].aliasName,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          subtitle: Text(
-                            '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'OpenSans',
-                              fontSize: 12,
-                              color: Colors.black,
-                              decoration: TextDecoration.none,
-                            ),
-                          ),
-                          dense: true,
-                          // trailing: Text('Horse'),
-                        );
-                      })
-            ],
-          )),
-          Container(
-            padding: EdgeInsets.all(5),
-            child: Row(
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: ListView(
               children: [
-                Expanded(
-                    child: TextFormField(
-                  onTap: () {
-                    if (token == "") {
-                      showDialog(
-                          context: context,
-                          builder: (_) {
-                            return LoginPage();
-                          }).then((value) {
-                        if (value != null) {
-                          this.findUser();
-                        }
-
-                        // Navigator.pop(context);
-                      });
-                    }
-                  },
-                  controller: commentController,
-                  autofocus: this.widget.autoFocus,
-                  minLines: 1,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      // contentPadding: const EdgeInsets.symmetric(vertical: 1.0,horizontal: 20),
-                      hintText: "แสดงความคิดเห็น...",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40))),
-                )),
-                TextButton(
-                    onPressed: () async {
+                (dataGetCommentPost == null)
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        reverse: true,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        // scrollDirection: Axis.horizontal,
+                        itemCount: (dataGetCommentPost == null)
+                            ? 0
+                            : dataGetCommentPost.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            isThreeLine: true,
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  dataGetCommentPost[index].profileImage),
+                            ),
+                            title: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: Text(
+                                dataGetCommentPost[index].aliasName,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            subtitle: Text(
+                              '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'OpenSans',
+                                fontSize: 12,
+                                color: Colors.black,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                            dense: true,
+                            // trailing: Text('Horse'),
+                          );
+                        })
+              ],
+            )),
+            Container(
+              padding: EdgeInsets.all(5),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextFormField(
+                    onChanged: (value) {
+                      if(!value.isEmpty){
+                        if (_formKey.currentState.validate()) {}
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรอกข้อความแสดงความคิดเห็น';
+                      }
+                      return null;
+                    },
+                    onTap: () {
                       if (token == "") {
                         showDialog(
                             context: context,
@@ -180,27 +167,56 @@ class _CommentFoodState extends State<CommentFood> {
 
                           // Navigator.pop(context);
                         });
-                      } else {
-                        print("โพส");
-                        print(commentController.text);
-                        CommentPostModel commentPostModel = await CommentPost(
-                            this.widget.recipe_ID,
-                            commentController.text,
-                            token);
-
-                        if (commentPostModel.success == 1) {
-                          getCommentPosts();
-                          commentController.text = "";
-                        }
                       }
                     },
-                    child: Text("โพสต์"))
-                // CircleAvatar(
-                //     child: IconButton(onPressed: () {}, icon: Icon(Icons.send)))
-              ],
-            ),
-          )
-        ],
+                    controller: commentController,
+                    autofocus: this.widget.autoFocus,
+                    minLines: 1,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        // contentPadding: const EdgeInsets.symmetric(vertical: 1.0,horizontal: 20),
+                        hintText: "แสดงความคิดเห็น...",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40))),
+                  )),
+                  TextButton(
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          if (token == "") {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return LoginPage();
+                                }).then((value) {
+                              if (value != null) {
+                                this.findUser();
+                              }
+
+                              // Navigator.pop(context);
+                            });
+                          } else {
+                            print("โพส");
+                            print(commentController.text);
+                            CommentPostModel commentPostModel =
+                                await CommentPost(this.widget.recipe_ID,
+                                    commentController.text, token);
+
+                            if (commentPostModel.success == 1) {
+                              getCommentPosts();
+                              commentController.text = "";
+                            }
+                          }
+                        }
+                      },
+                      child: Text("โพสต์"))
+                  // CircleAvatar(
+                  //     child: IconButton(onPressed: () {}, icon: Icon(Icons.send)))
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
