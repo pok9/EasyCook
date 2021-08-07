@@ -13,14 +13,21 @@ import 'package:easy_cook/pages/search_page/search1.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/test.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SlidePage extends StatefulWidget {
   // SlidePage({Key key}) : super(key: key);
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  AndroidNotificationChannel channel;
 
+  SlidePage({this.flutterLocalNotificationsPlugin,this.channel});
   @override
   _SlidePageState createState() => _SlidePageState();
 }
@@ -31,6 +38,49 @@ class _SlidePageState extends State<SlidePage> {
     super.initState();
     findUser();
     print("slidePage ======");
+    // getTokenFireBase();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        this.widget.flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                this.widget.channel.id,
+                this.widget.channel.name,
+                this.widget.channel.description,
+                // TODO add a proper drawable resource to android, for now using
+                //      one that already exists in example app.
+                icon: 'launch_background',
+              ),
+            ));
+      }
+    });
+    getTokenFirebase();
+  }
+
+  // Future<Null> getTokenFireBase() async {
+  //   try {
+  //     FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  //     // String tokenFirebase = await messaging.getToken(vapidKey: "BGpdLRs......",);
+  //     String tokenFirebase = await messaging.getToken(
+  //         vapidKey:
+  //             "BC5Y9rRxIQizOB9jx5GuFuK9HK-XkB0NreHveINUNby-tvNdZklyAI0tY_P4u50aYhEcvQW65lzaEdPJF3rygzw");
+  //     print('tokenFireBaes = $tokenFirebase');
+  //   } catch (e) {
+  //     print("TokenFireBaseError");
+  //     print(e);
+  //     print("TokenFireBaseError");
+  //   }
+  // }
+
+  getTokenFirebase() async {
+    String tokenFirebase = await FirebaseMessaging.instance.getToken();
+    print(tokenFirebase);
   }
 
   String token = ""; //โทเคน
@@ -79,6 +129,7 @@ class _SlidePageState extends State<SlidePage> {
   Widget build(BuildContext context) {
     // resizeToAvoidBottomPadding:
     // false;
+    // getTokenFireBase();
     if (token != "") {
       getMyAccounts();
     }
