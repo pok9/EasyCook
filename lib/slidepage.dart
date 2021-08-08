@@ -29,7 +29,7 @@ class SlidePage extends StatefulWidget {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   AndroidNotificationChannel channel;
 
-  SlidePage({this.flutterLocalNotificationsPlugin,this.channel});
+  SlidePage({this.flutterLocalNotificationsPlugin, this.channel});
   @override
   _SlidePageState createState() => _SlidePageState();
 }
@@ -49,26 +49,21 @@ class _SlidePageState extends State<SlidePage> {
             notification.hashCode,
             notification.title,
             notification.body,
-            
             NotificationDetails(
               android: AndroidNotificationDetails(
                 this.widget.channel.id,
-                
                 this.widget.channel.name,
                 this.widget.channel.description,
-                sound: RawResourceAndroidNotificationSound('my_sound'),
                 largeIcon: DrawableResourceAndroidBitmap('hamburger'),
                 color: Colors.yellow,
                 playSound: true,
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
                 icon: 'hamburger',
+                timeoutAfter: 5000,
+                styleInformation: DefaultStyleInformation(true, true),
               ),
-            )
-            );
+            ));
       }
     });
-    
   }
 
   // Future<Null> getTokenFireBase() async {
@@ -86,8 +81,6 @@ class _SlidePageState extends State<SlidePage> {
   //     print("TokenFireBaseError");
   //   }
   // }
-
-  
 
   String token = ""; //โทเคน
   Future<Null> findUser() async {
@@ -109,7 +102,6 @@ class _SlidePageState extends State<SlidePage> {
   }
 
   Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
-
     print("SlidPage --- tokenFirebase = ${tokenFirebase} ; token = ${token}");
     final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
 
@@ -119,13 +111,14 @@ class _SlidePageState extends State<SlidePage> {
 
     print(data);
 
-    final response = await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
-      "Authorization": "Bearer $token",
-      "Content-Type": "application/json"
-    });
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
     print("responseUpdateTokenFirebase = ${response.statusCode}");
     print("response.body = ${response.body}");
-   
   }
 
   //user
