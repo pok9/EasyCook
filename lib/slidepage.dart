@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/admin/manage_members.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
@@ -60,7 +62,7 @@ class _SlidePageState extends State<SlidePage> {
             ));
       }
     });
-    getTokenFirebase();
+    
   }
 
   // Future<Null> getTokenFireBase() async {
@@ -79,10 +81,7 @@ class _SlidePageState extends State<SlidePage> {
   //   }
   // }
 
-  getTokenFirebase() async {
-    String tokenFirebase = await FirebaseMessaging.instance.getToken();
-    print(tokenFirebase);
-  }
+  
 
   String token = ""; //โทเคน
   Future<Null> findUser() async {
@@ -92,8 +91,35 @@ class _SlidePageState extends State<SlidePage> {
       token = preferences.getString("tokens");
       if (token != "") {
         getMyAccounts();
+        getTokenFirebase();
       }
     });
+  }
+
+  getTokenFirebase() async {
+    String tokenFirebase = await FirebaseMessaging.instance.getToken();
+    print("tokenFirebase ===>>> $tokenFirebase");
+    updateTokenLogin(tokenFirebase, token);
+  }
+
+  Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
+
+    print("SlidPage --- tokenFirebase = ${tokenFirebase} ; token = ${token}");
+    final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
+
+    var data = {
+      "token_noti": tokenFirebase,
+    };
+
+    print(data);
+
+    final response = await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json"
+    });
+    print("responseUpdateTokenFirebase = ${response.statusCode}");
+    print("response.body = ${response.body}");
+   
   }
 
   //user

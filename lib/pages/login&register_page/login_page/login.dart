@@ -2,8 +2,11 @@
 
 // import 'dart:io';
 
+import 'dart:convert';
+
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/slidepage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +17,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
-
   int close;
   LoginPage({this.close});
 
@@ -101,6 +103,33 @@ class _LoginPageState extends State<LoginPage> {
   bool hidePassword = true;
 
   String test = "";
+
+  getTokenFirebase(String token) async {
+    String tokenFirebase = await FirebaseMessaging.instance.getToken(vapidKey: "BC5Y9rRxIQizOB9jx5GuFuK9HK-XkB0NreHveINUNby-tvNdZklyAI0tY_P4u50aYhEcvQW65lzaEdPJF3rygzw");
+    print("tokenFirebaseLogin ===>>> $tokenFirebase");
+    updateTokenLogin(tokenFirebase, token);
+  }
+
+  Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
+
+    print("tokenFirebase = ${tokenFirebase} ; token = ${token}");
+    final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
+
+    var data = {
+      "token_noti": tokenFirebase,
+    };
+
+    print(data);
+
+    final response = await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json"
+    });
+    print("responseUpdateTokenFirebase = ${response.statusCode}");
+    print("response.body = ${response.body}");
+   
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -201,6 +230,8 @@ class _LoginPageState extends State<LoginPage> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setString("tokens", login.token);
         preferences.setString("email", _ctrlEmail.text);
+
+        getTokenFirebase(preferences.getString("tokens"));
         stateOnlyText = ButtonState.success;
         // Navigator.pop(context);
         Navigator.pushAndRemoveUntil(
@@ -211,7 +242,7 @@ class _LoginPageState extends State<LoginPage> {
             (route) => false);
       } else {
         // if (_formKey.currentState.validate()) {}
-        
+
         stateOnlyText = ButtonState.fail;
 
         Future.delayed(Duration(seconds: 2), () {

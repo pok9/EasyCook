@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
@@ -18,7 +19,6 @@ import 'package:easy_cook/pages/feed_page/notification_page/notification.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
 import 'package:easy_cook/pages/profile_page/profile.dart';
-
 
 import 'package:easy_cook/pages/search_page/xxx_search.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -77,11 +77,9 @@ class _FeedPageState extends State<FeedPage> {
 
     setState(() {
       token = preferences.getString("tokens");
-      print("token = ${token}");
 
-      if (token != "") {
+      if (token != "" || !token.isEmpty) {
         getMyAccounts();
-        getNewFeedsFollow();
       }
     });
   }
@@ -158,25 +156,6 @@ class _FeedPageState extends State<FeedPage> {
     }
   }
 
-  NewFeedsFollow newFeedsFollow;
-  Future<Null> getNewFeedsFollow() async {
-    //ฟิดที่เรากดติดตาม
-    final String apiUrl = "http://apifood.comsciproject.com/pjPost/newfeeds";
-
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    // print("response = " + response.statusCode.toString());
-    if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
-
-        newFeedsFollow = newFeedsFollowFromJson(responseString);
-      });
-    } else {
-      return null;
-    }
-  }
-
   List<RecommendRecipe> dataRecommendRecipe;
 
   Future<Null> getRecommendRecipe() async {
@@ -188,15 +167,14 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      
-        print("555555555555555555555555555555555555555555555");
-        final String responseString = response.body;
+      print("555555555555555555555555555555555555555555555");
+      final String responseString = response.body;
 
-        dataRecommendRecipe = recommendRecipeFromJson(responseString);
-        if (token != "") {
-          getMybuy();
-        }
-     setState(() { });
+      dataRecommendRecipe = recommendRecipeFromJson(responseString);
+      if (token != "") {
+        getMybuy();
+      }
+      setState(() {});
     } else {
       return null;
     }
@@ -210,12 +188,11 @@ class _FeedPageState extends State<FeedPage> {
     final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      
-        print("pok5555555");
-        final String responseString = response.body;
+      print("pok5555555");
+      final String responseString = response.body;
 
-        dataRecommendUser = recommendUserFromJson(responseString);
-     setState(() { });
+      dataRecommendUser = recommendUserFromJson(responseString);
+      setState(() {});
     } else {
       return null;
     }
@@ -265,6 +242,27 @@ class _FeedPageState extends State<FeedPage> {
     } else {
       return null;
     }
+  }
+
+  //ออกจากเครื่องให้เสร็จ null
+  Future<Null> updateTokenExit() async {
+  
+    final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
+
+   
+    var data = {
+      "token_noti" : null,
+    };
+
+    print(jsonEncode(data));
+    
+
+    final response = await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json"
+    });
+    print("responseUpdateTokenFirebase = ${response.statusCode}");
+    print("response.body = ${response.body}");
   }
 
   @override
@@ -511,6 +509,7 @@ class _FeedPageState extends State<FeedPage> {
                       onTap: () async {
                         SharedPreferences preferences =
                             await SharedPreferences.getInstance();
+                        updateTokenExit();
                         preferences.setString("tokens", "");
                         preferences.setString("email", "");
                         Navigator.pushAndRemoveUntil(
@@ -957,7 +956,7 @@ class _FeedPageState extends State<FeedPage> {
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
+                          "https://1.bp.blogspot.com/-lZZ9zblXUDw/YOAODqKn24I/AAAAAAABnCo/n-VGeIW4is4BjMCuUDlHhv0B9r1kQlG9ACLcBGAsYHQ/s280/girl-s%2B%25281%2529.jpg"),
                       fit: BoxFit.cover)),
             ),
             Padding(
@@ -1083,7 +1082,7 @@ class _FeedPageState extends State<FeedPage> {
                   // borderRadius: BorderRadius.circular(50),
                   image: DecorationImage(
                       image: NetworkImage(
-                          "https://apifood.comsciproject.com/uploadPost/2021-06-19T144016088Z-image_cropper_1624113521886.jpg"),
+                          "https://1.bp.blogspot.com/-lZZ9zblXUDw/YOAODqKn24I/AAAAAAABnCo/n-VGeIW4is4BjMCuUDlHhv0B9r1kQlG9ACLcBGAsYHQ/s280/girl-s%2B%25281%2529.jpg"),
                       fit: BoxFit.cover)),
             ),
             Padding(

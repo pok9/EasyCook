@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:easy_cook/class/xxx_token_class.dart';
 import 'package:easy_cook/models/register/register_model.dart';
 import 'package:easy_cook/style/utiltties.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -209,6 +212,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   await SharedPreferences.getInstance();
               preferences.setString("tokens", response.token);
               preferences.setString("email", _ctrlEmail.text);
+
+              getTokenFirebase(preferences.getString("tokens"));
               // Navigator.pushNamed(context, '/register2-page');
               Navigator.pushNamedAndRemoveUntil(context, '/register2-page', (Route<dynamic> route) => false);
             }
@@ -264,6 +269,32 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  getTokenFirebase(String token) async {
+    String tokenFirebase = await FirebaseMessaging.instance.getToken(vapidKey: "BC5Y9rRxIQizOB9jx5GuFuK9HK-XkB0NreHveINUNby-tvNdZklyAI0tY_P4u50aYhEcvQW65lzaEdPJF3rygzw");
+    print("tokenFirebaseLogin ===>>> $tokenFirebase");
+    updateTokenLogin(tokenFirebase, token);
+  }
+
+  Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
+
+    print("tokenFirebase = ${tokenFirebase} ; token = ${token}");
+    final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
+
+    var data = {
+      "token_noti": tokenFirebase,
+    };
+
+    print(data);
+
+    final response = await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json"
+    });
+    print("responseUpdateTokenFirebase = ${response.statusCode}");
+    print("response.body = ${response.body}");
+   
   }
 
   @override
