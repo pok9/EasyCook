@@ -49,17 +49,23 @@ class _SlidePageState extends State<SlidePage> {
             notification.hashCode,
             notification.title,
             notification.body,
+            
             NotificationDetails(
               android: AndroidNotificationDetails(
                 this.widget.channel.id,
+                
                 this.widget.channel.name,
                 this.widget.channel.description,
-                
+                sound: RawResourceAndroidNotificationSound('my_sound'),
+                largeIcon: DrawableResourceAndroidBitmap('hamburger'),
+                color: Colors.yellow,
+                playSound: true,
                 // TODO add a proper drawable resource to android, for now using
                 //      one that already exists in example app.
-                icon: 'launch_background',
+                icon: 'hamburger',
               ),
-            ));
+            )
+            );
       }
     });
     
