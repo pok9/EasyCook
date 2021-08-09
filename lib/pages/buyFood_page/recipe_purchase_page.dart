@@ -231,9 +231,12 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                             "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
                                         token: this.token,
                                         rid: dataFood.rid,
+                                        recipeName: dataFood.recipeName,
                                         foodOwner_userId:
                                             dataFood.userId.toString(),
-                                        myDataUser: myDataUser.userId.toString(),
+                                        myDataUser:
+                                            myDataUser.userId.toString(),
+                                        myNameUser: myDataUser.aliasName,
                                       );
                                     },
                                   );
@@ -288,14 +291,20 @@ class CustomAlertDialog extends StatefulWidget {
       this.description,
       this.token,
       this.rid,
+      this.recipeName,
       this.foodOwner_userId,
-      this.myDataUser});
+      this.myDataUser,
+      this.myNameUser});
 
-  final String title, description, token;
+  final String title, description, token, recipeName;
   //foodOwner_userId => userId ของเจ้าของสูตร
   final String foodOwner_userId;
+
   //myDataUser => userId ของเราเอง ที่เข้ามาดูสูตรนี้
   final String myDataUser;
+  //myNameUser => ชื่อของเราที่เข้ามาซื้อสูต
+  final String myNameUser;
+
   final int rid;
 
   @override
@@ -337,6 +346,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
     String description,
     String recipe_ID,
     String from_userid,
+    String status,
   ) async {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjNoti/insertNotificationData";
@@ -348,12 +358,14 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
       "description": description,
       "recipe_ID": recipe_ID,
       "from_userid": from_userid,
+      "status": status
     };
     print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data), headers: {"Content-Type": "application/json"});
 
-    print("response.statusCodeInsertNotificationData => ${response.statusCode}");
+    print(
+        "response.statusCodeInsertNotificationData => ${response.statusCode}");
     print("response.bodyInsertNotificationData => ${response.body}");
   }
 
@@ -413,10 +425,11 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                 if (dataBuyFood.success == 1) {
                   insertNotificationData(
                       this.widget.foodOwner_userId,
-                      "test tiiel ซื้อสูตอาหาร",
-                      "this description ซื้อสูตรอาหาร",
+                      "${this.widget.myNameUser} ซื้อสูตอาหารของคุณ",
+                      "${this.widget.myNameUser} ได้ทำการซื้อสูตอาหาร  ${this.widget.recipeName} ของคุณแล้ว",
                       this.widget.rid.toString(),
-                      this.widget.myDataUser);
+                      this.widget.myDataUser,
+                      "buy");
                   showDialog(
                       context: context,
                       builder: (context) => CustomDialog(
