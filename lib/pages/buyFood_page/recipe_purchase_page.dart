@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/buyFood/buyFood.dart';
 import 'package:easy_cook/models/category/category_model.dart';
+import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
@@ -41,7 +43,31 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
 
     setState(() {
       token = preferences.getString("tokens");
+      if (token != "") {
+        getMyAccounts();
+      }
     });
+  }
+
+  //user
+  MyAccount datas;
+  DataAc myDataUser;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      datas = myAccountFromJson(responseString);
+      myDataUser = datas.data[0];
+
+      setState(() {});
+    } else {
+      return null;
+    }
   }
 
   //ข้อมูลสูตรอาหารที่ค้นหา
@@ -194,19 +220,32 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                showDialog(
-                                  barrierColor: Colors.black26,
-                                  context: context,
-                                  builder: (context) {
-                                    return CustomAlertDialog(
-                                      title: "ซื้อสูตรอาหาร",
-                                      description:
-                                          "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
-                                      token: this.token,
-                                      rid: dataFood.rid,
-                                    );
-                                  },
-                                );
+                                if (token != "") {
+                                  showDialog(
+                                    barrierColor: Colors.black26,
+                                    context: context,
+                                    builder: (context) {
+                                      return CustomAlertDialog(
+                                        title: "ซื้อสูตรอาหาร",
+                                        description:
+                                            "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
+                                        token: this.token,
+                                        rid: dataFood.rid,
+                                        foodOwner_userId:
+                                            dataFood.userId.toString(),
+                                        myDataUser: myDataUser.userId.toString(),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return LoginPage();
+                                      }).then((value) {
+                                    // findUser();
+                                  });
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
@@ -244,9 +283,19 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
 }
 
 class CustomAlertDialog extends StatefulWidget {
-  const CustomAlertDialog({this.title, this.description, this.token, this.rid});
+  const CustomAlertDialog(
+      {this.title,
+      this.description,
+      this.token,
+      this.rid,
+      this.foodOwner_userId,
+      this.myDataUser});
 
   final String title, description, token;
+  //foodOwner_userId => userId ของเจ้าของสูตร
+  final String foodOwner_userId;
+  //myDataUser => userId ของเราเอง ที่เข้ามาดูสูตรนี้
+  final String myDataUser;
   final int rid;
 
   @override
@@ -280,6 +329,32 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
     } else {
       return null;
     }
+  }
+
+  Future<Null> insertNotificationData(
+    String my_ID,
+    String state,
+    String description,
+    String recipe_ID,
+    String from_userid,
+  ) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/insertNotificationData";
+
+    // List<st>
+    var data = {
+      "my_ID": my_ID,
+      "state": state,
+      "description": description,
+      "recipe_ID": recipe_ID,
+      "from_userid": from_userid,
+    };
+    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    print("response.statusCodeInsertNotificationData => ${response.statusCode}");
+    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   @override
@@ -336,6 +411,12 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                 Navigator.pop(context);
                 print(dataBuyFood.success);
                 if (dataBuyFood.success == 1) {
+                  insertNotificationData(
+                      this.widget.foodOwner_userId,
+                      "test tiiel ซื้อสูตอาหาร",
+                      "this description ซื้อสูตรอาหาร",
+                      this.widget.rid.toString(),
+                      this.widget.myDataUser);
                   showDialog(
                       context: context,
                       builder: (context) => CustomDialog(

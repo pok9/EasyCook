@@ -77,7 +77,7 @@ class _FeedPageState extends State<FeedPage> {
 
     setState(() {
       token = preferences.getString("tokens");
-
+      print("Token >>> $token");
       if (token != "" || !token.isEmpty) {
         getMyAccounts();
       }
