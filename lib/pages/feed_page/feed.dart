@@ -86,8 +86,8 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   //user
-  MyAccount datas;
-  DataAc dataUser;
+  MyAccount data_MyAccount;
+  DataAc data_DataAc;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
@@ -97,9 +97,9 @@ class _FeedPageState extends State<FeedPage> {
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
-      datas = myAccountFromJson(responseString);
-      dataUser = datas.data[0];
-      print(dataUser.userId);
+      data_MyAccount = myAccountFromJson(responseString);
+      data_DataAc = data_MyAccount.data[0];
+      print(data_DataAc.userId);
       checkFollowings();
       setState(() {});
     } else {
@@ -138,7 +138,7 @@ class _FeedPageState extends State<FeedPage> {
   Future<Null> checkFollowings() async {
     checkFollowing = [];
     final String apiUrl =
-        "http://apifood.comsciproject.com/pjFollow/checkFollowing/${dataUser.userId}";
+        "http://apifood.comsciproject.com/pjFollow/checkFollowing/${data_DataAc.userId}";
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
@@ -262,8 +262,8 @@ class _FeedPageState extends State<FeedPage> {
       ),
       drawer: Drawers(
         token: token,
-        datas: datas,
-        dataUser: dataUser,
+        data_MyAccount: data_MyAccount,
+        data_DataAc: data_DataAc,
       ),
 
       body: RefreshIndicator(
@@ -872,9 +872,9 @@ class _FeedPageState extends State<FeedPage> {
       width: 250,
       child: InkWell(
         onTap: () {
-          if (dataUser != null) {
+          if (data_DataAc != null) {
             if (dataRecommendRecipe.price == 0 ||
-                dataRecommendRecipe.userId == dataUser.userId ||
+                dataRecommendRecipe.userId == data_DataAc.userId ||
                 checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
               Navigator.push(
                 context,
@@ -1005,7 +1005,7 @@ class _FeedPageState extends State<FeedPage> {
                         ],
                       ),
                     ),
-                    (dataUser == null)
+                    (data_DataAc == null)
                         ? Text(
                             (dataRecommendRecipe.price == 0)
                                 ? "ฟรี "
@@ -1014,7 +1014,7 @@ class _FeedPageState extends State<FeedPage> {
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold))
                         : Text(
-                            (dataRecommendRecipe.userId == dataUser.userId)
+                            (dataRecommendRecipe.userId == data_DataAc.userId)
                                 ? ""
                                 : (checkBuy.indexOf(dataRecommendRecipe.rid
                                             .toString()) >=
@@ -1045,9 +1045,9 @@ class _FeedPageState extends State<FeedPage> {
   Widget _foodCard_3_1(context, RecommendRecipe dataRecommendRecipe) {
     return InkWell(
       onTap: () {
-        if (dataUser != null) {
+        if (data_DataAc != null) {
           if (dataRecommendRecipe.price == 0 ||
-              dataRecommendRecipe.userId == dataUser.userId ||
+              dataRecommendRecipe.userId == data_DataAc.userId ||
               checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
             Navigator.push(
               context,
@@ -1141,7 +1141,7 @@ class _FeedPageState extends State<FeedPage> {
                   Container(
                       height: 30,
                       width: 30,
-                      child: (dataUser == null)
+                      child: (data_DataAc == null)
                           ? (dataRecommendRecipe.price == 0)
                               ? Container()
                               : Image.network(
@@ -1152,7 +1152,7 @@ class _FeedPageState extends State<FeedPage> {
                               ? Image.network(
                                   "https://image.flaticon.com/icons/png/512/1053/1053171.png")
                               : (dataRecommendRecipe.userId ==
-                                          dataUser.userId ||
+                                          data_DataAc.userId ||
                                       (dataRecommendRecipe.price == 0))
                                   ? Container()
                                   : Image.network(
@@ -1239,13 +1239,13 @@ class _FeedPageState extends State<FeedPage> {
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: GestureDetector(
         onTap: () {
-          if (dataUser == null) {
+          if (data_DataAc == null) {
             Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => ProfileUser(dataRecommendUser.userId)),
             );
-          } else if ((dataUser.userId == dataRecommendUser.userId)) {
+          } else if ((data_DataAc.userId == dataRecommendUser.userId)) {
             Navigator.push(context, CupertinoPageRoute(builder: (context) {
               return ProfilePage();
             }));
@@ -1291,7 +1291,7 @@ class _FeedPageState extends State<FeedPage> {
                   )
                 ],
               ),
-              (dataUser == null)
+              (data_DataAc == null)
                   ? Row(
                       children: [
                         Container(
@@ -1324,7 +1324,7 @@ class _FeedPageState extends State<FeedPage> {
                         ),
                       ],
                     )
-                  : (dataUser.userId == dataRecommendUser.userId)
+                  : (data_DataAc.userId == dataRecommendUser.userId)
                       ? Container(
                           height: 25,
                         )

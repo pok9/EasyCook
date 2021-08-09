@@ -1,5 +1,6 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
+import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/edit_profile.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
@@ -191,11 +192,11 @@ class _ScrollProfilePage2BottomNavbarState extends State
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(context),
       ),
-      leading: IconButton(
-        icon: Icon(Icons.menu),
-        tooltip: 'Menu',
-        onPressed: () {},
-      ),
+      // leading: IconButton(
+      //   icon: Icon(Icons.menu),
+      //   tooltip: 'Menu',
+      //   onPressed:() => Scaffold(drawer: Drawer(),),
+      // ),
       bottom: buildFlexibleTooBarWidget(),
     );
   }

@@ -1,6 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/commentPost_model.dart';
+import 'package:easy_cook/models/showfood/commentFood_model.dart/deleteComment_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +37,30 @@ class _CommentFoodState extends State<CommentFood> {
 
     setState(() {
       token = preferences.getString("tokens");
+      getMyAccounts();
     });
+  }
+
+  //user
+  MyAccount data_MyAccount;
+  DataAc data_DataAc;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      data_MyAccount = myAccountFromJson(responseString);
+      data_DataAc = data_MyAccount.data[0];
+      print(data_DataAc.userId);
+
+      setState(() {});
+    } else {
+      return null;
+    }
   }
 
   List<GetCommentPostModel> dataGetCommentPost;
@@ -76,6 +103,33 @@ class _CommentFoodState extends State<CommentFood> {
       final String responseString = response.body;
 
       return commentPostModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  Future<DeleteCommentModel> deleteComment(int cid) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/deleteComment";
+
+    var data = {
+      "cid": cid,
+    };
+
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+        print(responseString);
+        return deleteCommentModelFromJson(responseString);
+      });
     } else {
       return null;
     }
@@ -132,6 +186,97 @@ class _CommentFoodState extends State<CommentFood> {
                               ),
                             ),
                             dense: true,
+                            trailing: (data_DataAc == null)
+                                ? null
+                                : (dataGetCommentPost[index].userId ==
+                                        data_DataAc.userId)
+                                    ? IconButton(
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    // ListTile(
+                                                    //   leading:
+                                                    //       Icon(Icons.edit),
+                                                    //   title: Text("แก้ไข"),
+                                                    //   onTap: () {},
+                                                    // ),
+                                                    ListTile(
+                                                      leading:
+                                                          Icon(Icons.delete),
+                                                      title: Text("ลบ"),
+                                                      onTap: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            // return object of type Dialog
+                                                            return AlertDialog(
+                                                              title: new Text(
+                                                                  "ลบความคิดเห็น"),
+                                                              content: new Text(
+                                                                  "ลบความคิดเห็นโดยถาวรใช่ไหม"),
+                                                              actions: <Widget>[
+                                                                // usually buttons at the bottom of the dialog
+                                                                new TextButton(
+                                                                  child: new Text(
+                                                                      "ยกเลิก"),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                ),
+                                                                new TextButton(
+                                                                  child:
+                                                                      new Text(
+                                                                          "ลบ"),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    
+                                                                        await deleteComment(
+                                                                            dataGetCommentPost[index].cid);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    
+                                                                    final snackBar =
+                                                                          SnackBar(
+                                                                        duration:
+                                                                            Duration(milliseconds: 1400),
+                                                                        content:
+                                                                            const Text('ลบความคิดเห็นแล้ว'),
+                                                                      );
+
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .showSnackBar(
+                                                                              snackBar);
+
+                                                                     getCommentPosts();
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        icon: Icon(Icons.more_vert))
+                                    : null,
                             // trailing: Text('Horse'),
                           );
                         })
@@ -144,7 +289,7 @@ class _CommentFoodState extends State<CommentFood> {
                   Expanded(
                       child: TextFormField(
                     onChanged: (value) {
-                      if(!value.isEmpty){
+                      if (!value.isEmpty) {
                         if (_formKey.currentState.validate()) {}
                       }
                     },

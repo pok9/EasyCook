@@ -15,10 +15,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Drawers extends StatefulWidget {
-  Drawers({this.token, this.datas, this.dataUser});
+  Drawers({this.token, this.data_MyAccount, this.data_DataAc});
   String token;
-  DataAc dataUser;
-  MyAccount datas;
+   MyAccount data_MyAccount;
+  DataAc data_DataAc;
+ 
   @override
   _DrawersState createState() => _DrawersState();
 }
@@ -88,7 +89,7 @@ class _DrawersState extends State<Drawers> {
 
     return Container(
       width: deviceSize.width - 45,
-      child: (this.widget.token != "" && this.widget.dataUser != null)
+      child: (this.widget.token != "" && this.widget.data_DataAc != null)
           ? Drawer(
               child: ListView(
                 children: [
@@ -131,20 +132,20 @@ class _DrawersState extends State<Drawers> {
                                 radius: 39,
                                 backgroundColor: Colors.grey,
                                 backgroundImage: NetworkImage(
-                                    this.widget.dataUser.profileImage),
+                                    this.widget.data_DataAc.profileImage),
                               ),
                             ),
                           ),
                           //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
                           Text(
-                            this.widget.datas.data[0].aliasName,
+                            this.widget.data_MyAccount.data[0].aliasName,
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.white,
                             ),
                           ),
                           Text(
-                            this.widget.datas.data[0].nameSurname,
+                            this.widget.data_MyAccount.data[0].nameSurname,
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.white70,
