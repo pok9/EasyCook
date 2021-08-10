@@ -52,13 +52,46 @@ class _NotificationPageState extends State<NotificationPage> {
     }
   }
 
+  Future<Null> clearNotificationData() async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/clearNotificationData";
+
+    final response = await http.post(Uri.parse(apiUrl), headers: {
+      "Authorization": "Bearer $token",
+    });
+
+    print("clearNotificationData======" + (response.statusCode.toString()));
+    print("clearNotificationData === >> "+ (response.body.toString()));
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('การแจ้งเตือน'),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.more_vert_outlined))
+          PopupMenuButton(
+            child: Center(child: Icon(Icons.more_vert_outlined)),
+            onSelected: (value) {
+              setState(() {
+                if (value == 1) {
+                  print("555");
+                  clearNotificationData();
+                  getNotification();
+                }
+              });
+            },
+            itemBuilder: (context) {
+              return [
+                
+                PopupMenuItem(
+                  child: Text('ลบการแจ้งเตือนทั้งหมด'),
+                  value: 1,
+                ),
+              ];
+            },
+          )
         ],
       ),
       body: (dataGetNotification == null)

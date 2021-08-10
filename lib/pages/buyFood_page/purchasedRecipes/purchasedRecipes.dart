@@ -50,6 +50,8 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
   }
 
   int _value = 1;
+
+  bool reverse = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +68,11 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                   onChanged: (value) {
                     setState(() {
                       _value = value;
+                      if(_value == 1){
+                        this.reverse = false;
+                      }else{
+                        this.reverse = true;
+                      }
                     });
                   },
                   value: _value,
@@ -93,6 +100,7 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                 )
               : ListView.builder(
                   shrinkWrap: true,
+                  reverse: this.reverse,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: dataMybuy.length,
                   itemBuilder: (context, index) {
