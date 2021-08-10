@@ -6,15 +6,16 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/commentPost_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/deleteComment_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
+import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommentFood extends StatefulWidget {
-  String recipe_ID;
+  ShowFoods dataFood;
   bool autoFocus;
-  CommentFood({this.recipe_ID, this.autoFocus});
+  CommentFood({this.dataFood, this.autoFocus});
 
   @override
   _CommentFoodState createState() => _CommentFoodState();
@@ -67,7 +68,7 @@ class _CommentFoodState extends State<CommentFood> {
   Future<Null> getCommentPosts() async {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/getComment/" +
-            this.widget.recipe_ID;
+            this.widget.dataFood.rid.toString();
 
     final response = await http.get(Uri.parse(apiUrl));
     print("response = " + response.statusCode.toString());
@@ -133,6 +134,35 @@ class _CommentFoodState extends State<CommentFood> {
     } else {
       return null;
     }
+  }
+
+  Future<Null> insertNotificationData(
+    String my_ID,
+    String state,
+    String description,
+    String recipe_ID,
+    String from_userid,
+    String status,
+  ) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/insertNotificationData";
+
+    // List<st>
+    var data = {
+      "my_ID": my_ID,
+      "state": state,
+      "description": description,
+      "recipe_ID": recipe_ID,
+      "from_userid": from_userid,
+      "status": status
+    };
+    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    print(
+        "response.statusCodeInsertNotificationData => ${response.statusCode}");
+    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -241,28 +271,30 @@ class _CommentFoodState extends State<CommentFood> {
                                                                           "ลบ"),
                                                                   onPressed:
                                                                       () async {
-                                                                    
-                                                                        await deleteComment(
-                                                                            dataGetCommentPost[index].cid);
+                                                                    await deleteComment(
+                                                                        dataGetCommentPost[index]
+                                                                            .cid);
                                                                     Navigator.pop(
                                                                         context);
                                                                     Navigator.pop(
                                                                         context);
-                                                                    
+
                                                                     final snackBar =
-                                                                          SnackBar(
-                                                                        duration:
-                                                                            Duration(milliseconds: 1400),
-                                                                        content:
-                                                                            const Text('ลบความคิดเห็นแล้ว'),
-                                                                      );
+                                                                        SnackBar(
+                                                                      duration: Duration(
+                                                                          milliseconds:
+                                                                              1400),
+                                                                      content:
+                                                                          const Text(
+                                                                              'ลบความคิดเห็นแล้ว'),
+                                                                    );
 
-                                                                      ScaffoldMessenger.of(
-                                                                              context)
-                                                                          .showSnackBar(
-                                                                              snackBar);
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                            snackBar);
 
-                                                                     getCommentPosts();
+                                                                    getCommentPosts();
                                                                   },
                                                                 ),
                                                               ],
@@ -344,11 +376,24 @@ class _CommentFoodState extends State<CommentFood> {
                             print("โพส");
                             print(commentController.text);
                             CommentPostModel commentPostModel =
-                                await CommentPost(this.widget.recipe_ID,
-                                    commentController.text, token);
+                                await CommentPost(
+                                    this.widget.dataFood.rid.toString(),
+                                    commentController.text,
+                                    token);
 
                             if (commentPostModel.success == 1) {
                               getCommentPosts();
+                              if (data_DataAc.userId !=
+                                  this.widget.dataFood.userId) {
+                                insertNotificationData(
+                                    this.widget.dataFood.userId.toString(),
+                                    data_DataAc.aliasName,
+                                    "ได้ทำการคอมเมนต์สูตรอาหาร ${this.widget.dataFood.recipeName} ของคุณ",
+                                    this.widget.dataFood.rid.toString(),
+                                    data_DataAc.userId.toString(),
+                                    "comment");
+                              }
+
                               commentController.text = "";
                             }
                           }

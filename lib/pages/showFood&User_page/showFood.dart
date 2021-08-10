@@ -969,7 +969,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                                         builder: (context) =>
                                                                             CommentFood(
                                                                               autoFocus: false,
-                                                                              recipe_ID: this.widget.req_rid.toString(),
+                                                                              dataFood: dataFood,
                                                                             ))).then(
                                                                     (value) => this
                                                                         .getCommentPosts());
@@ -1084,10 +1084,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                           builder: (context) =>
                                                               CommentFood(
                                                                 autoFocus: true,
-                                                                recipe_ID: this
-                                                                    .widget
-                                                                    .req_rid
-                                                                    .toString(),
+                                                                dataFood: dataFood,
                                                               ))).then(
                                                       (value) => this
                                                           .getCommentPosts());
