@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   ButtonState stateOnlyText = ButtonState.idle;
 
+  String textFail = "";
   Widget buildCustomButton() {
     var progressTextButton = ProgressButton(
       stateWidgets: {
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
         ButtonState.fail: Text(
-          "อีเมล หรือ รหัสผ่านไม่ถูกต้อง",
+          textFail,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
         ButtonState.success: Text(
@@ -105,13 +106,14 @@ class _LoginPageState extends State<LoginPage> {
   String test = "";
 
   getTokenFirebase(String token) async {
-    String tokenFirebase = await FirebaseMessaging.instance.getToken(vapidKey: "BC5Y9rRxIQizOB9jx5GuFuK9HK-XkB0NreHveINUNby-tvNdZklyAI0tY_P4u50aYhEcvQW65lzaEdPJF3rygzw");
+    String tokenFirebase = await FirebaseMessaging.instance.getToken(
+        vapidKey:
+            "BC5Y9rRxIQizOB9jx5GuFuK9HK-XkB0NreHveINUNby-tvNdZklyAI0tY_P4u50aYhEcvQW65lzaEdPJF3rygzw");
     print("tokenFirebaseLogin ===>>> $tokenFirebase");
     updateTokenLogin(tokenFirebase, token);
   }
 
   Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
-
     print("tokenFirebase = ${tokenFirebase} ; token = ${token}");
     final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
 
@@ -121,13 +123,14 @@ class _LoginPageState extends State<LoginPage> {
 
     print(data);
 
-    final response = await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
-      "Authorization": "Bearer $token",
-      "Content-Type": "application/json"
-    });
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
     print("responseUpdateTokenFirebase = ${response.statusCode}");
     print("response.body = ${response.body}");
-   
   }
 
   @override
@@ -242,9 +245,15 @@ class _LoginPageState extends State<LoginPage> {
             (route) => false);
       } else {
         // if (_formKey.currentState.validate()) {}
+        if (login.token != null) {
+          textFail = login.token;
+          stateOnlyText = ButtonState.fail;
+        }else{
+          textFail = "อีเมล หรือ รหัสผ่านไม่ถูกต้อง";
+          stateOnlyText = ButtonState.fail;
+        }
 
-        stateOnlyText = ButtonState.fail;
-
+      
         Future.delayed(Duration(seconds: 2), () {
           stateOnlyText = ButtonState.idle;
           setState(() {});
