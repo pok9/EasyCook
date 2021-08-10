@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:easy_cook/models/notification/getCountVisited/getCountVisitedModel.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
-import 'package:easy_cook/pages/drawer/helpCenter/helpMyAccount/helpCenter.dart';
+import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/pages/drawer/notification_page/notification.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
@@ -17,9 +17,9 @@ import 'package:http/http.dart' as http;
 class Drawers extends StatefulWidget {
   Drawers({this.token, this.data_MyAccount, this.data_DataAc});
   String token;
-   MyAccount data_MyAccount;
+  MyAccount data_MyAccount;
   DataAc data_DataAc;
- 
+
   @override
   _DrawersState createState() => _DrawersState();
 }
@@ -267,28 +267,31 @@ class _DrawersState extends State<Drawers> {
                       });
                     },
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.quiz_outlined,
-                      color: Colors.blue,
-                      size: 25,
-                    ),
-                    title: Text(
-                      'ศูนย์ช่วยเหลือ',
-                      style: GoogleFonts.kanit(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w300,
-                      ),
+                  (this.widget.data_DataAc.userStatus == 0)
+                      ? Container()
+                      : ListTile(
+                          leading: Icon(
+                            Icons.quiz_outlined,
+                            color: Colors.blue,
+                            size: 25,
+                          ),
+                          title: Text(
+                            'ศูนย์ช่วยเหลือ',
+                            style: GoogleFonts.kanit(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w300,
+                            ),
 
-                      //     color: Colors.black)
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HelpCenter()),
-                      );
-                    },
-                  ),
+                            //     color: Colors.black)
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HelpCenter()),
+                            );
+                          },
+                        ),
                   Divider(
                     thickness: 0.5,
                     color: Colors.grey,

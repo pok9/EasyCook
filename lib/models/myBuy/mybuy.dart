@@ -23,7 +23,7 @@ class Mybuy {
     int bid;
     int recipeId;
     DateTime datetime;
-    int price;
+    double price;
     String recipeName;
     String image;
     String foodCategory;
@@ -33,7 +33,7 @@ class Mybuy {
         bid: json["bid"],
         recipeId: json["recipe_ID"],
         datetime: DateTime.parse(json["datetime"]),
-        price: json["price"],
+        price: json["price"].toDouble(),
         recipeName: json["recipe_name"],
         image: json["image"],
         foodCategory: json["food_category"],

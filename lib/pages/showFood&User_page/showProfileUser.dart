@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
@@ -49,8 +50,8 @@ class _ProfileUserState extends State<ProfileUser> {
   }
 
   //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)
-  MyAccount datas;
-  DataAc dataUser; //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)-คนที่เข้ามาดู
+  MyAccount data_MyAccount;
+  DataAc data_DataAc; //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)-คนที่เข้ามาดู
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
@@ -61,8 +62,8 @@ class _ProfileUserState extends State<ProfileUser> {
       setState(() {
         final String responseString = response.body;
 
-        datas = myAccountFromJson(responseString);
-        dataUser = datas.data[0];
+        data_MyAccount = myAccountFromJson(responseString);
+        data_DataAc = data_MyAccount.data[0];
       });
     } else {
       return null;
@@ -144,6 +145,35 @@ class _ProfileUserState extends State<ProfileUser> {
     } else {
       return null;
     }
+  }
+
+  Future<Null> insertNotificationData(
+    String my_ID,
+    String state,
+    String description,
+    String recipe_ID,
+    String from_userid,
+    String status,
+  ) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/insertNotificationData";
+
+    // List<st>
+    var data = {
+      "my_ID": my_ID,
+      "state": state,
+      "description": description,
+      "recipe_ID": recipe_ID,
+      "from_userid": from_userid,
+      "status": status
+    };
+    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    print(
+        "response.statusCodeInsertNotificationData => ${response.statusCode}");
+    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   //===========================================================================
@@ -256,10 +286,12 @@ class _ProfileUserState extends State<ProfileUser> {
                                                     ),
                                                     shape: StadiumBorder(),
                                                   )
-                                                : (checkFollowers.checkFollower ==
+                                                : (checkFollowers
+                                                            .checkFollower ==
                                                         0)
                                                     ? MaterialButton(
-                                                        splashColor: Colors.grey,
+                                                        splashColor:
+                                                            Colors.grey,
                                                         color: Colors.blue[400],
                                                         onPressed: () {
                                                           print("ติดตาม");
@@ -268,6 +300,19 @@ class _ProfileUserState extends State<ProfileUser> {
                                                               this
                                                                   .data_PostUser
                                                                   .userId);
+
+                                                          insertNotificationData(
+                                                              data_PostUser
+                                                                  .userId
+                                                                  .toString(),
+                                                              data_DataAc
+                                                                  .aliasName,
+                                                              "ได้ติดตามคุณ",
+                                                              null,
+                                                              data_DataAc.userId
+                                                                  .toString(),
+                                                              "follow");
+
                                                           // _ProfileUserState(this.reqUid);
                                                         },
                                                         child: Text(
@@ -279,7 +324,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                                         shape: StadiumBorder(),
                                                       )
                                                     : MaterialButton(
-                                                        splashColor: Colors.grey,
+                                                        splashColor:
+                                                            Colors.grey,
                                                         color: Colors.grey,
                                                         onPressed: () {
                                                           print("ยกเลิกติดตาม");
@@ -310,7 +356,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                                   Colors.black.withOpacity(0.4),
                                               child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Container(
                                                     width: 110,
@@ -322,15 +369,16 @@ class _ProfileUserState extends State<ProfileUser> {
                                                         Text(
                                                           'โพสต์',
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.white70,
+                                                              color: Colors
+                                                                  .white70,
                                                               fontSize: 12),
                                                         ),
                                                         SizedBox(
                                                           height: 4,
                                                         ),
                                                         Text(
-                                                          data_PostUser.countPost
+                                                          data_PostUser
+                                                              .countPost
                                                               .toString(),
                                                           style: TextStyle(
                                                             color: Colors.white,
@@ -346,21 +394,34 @@ class _ProfileUserState extends State<ProfileUser> {
                                                     width: 110,
                                                     child: InkWell(
                                                       onTap: () {
-                                                        print("ติดตาม");
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ShowFollowerAndFollowing(
-                                                                    index: 0,
-                                                                    id: this
-                                                                        .data_PostUser
-                                                                        .userId,
-                                                                    name: this
-                                                                        .data_PostUser
-                                                                        .aliasName,
-                                                                  )),
-                                                        );
+                                                        if (token == "") {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (_) {
+                                                                return LoginPage();
+                                                              }).then((value) {
+                                                            findUser();
+                                                            // Navigator.pop(context);
+                                                          });
+                                                        } else {
+                                                          print("ติดตาม");
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ShowFollowerAndFollowing(
+                                                                          index:
+                                                                              0,
+                                                                          id: this
+                                                                              .data_PostUser
+                                                                              .userId,
+                                                                          name: this
+                                                                              .data_PostUser
+                                                                              .aliasName,
+                                                                        )),
+                                                          );
+                                                        }
                                                       },
                                                       child: Column(
                                                         mainAxisAlignment:
@@ -382,10 +443,12 @@ class _ProfileUserState extends State<ProfileUser> {
                                                                 .countFollower
                                                                 .toString(),
                                                             style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize: 20,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         ],
@@ -396,21 +459,34 @@ class _ProfileUserState extends State<ProfileUser> {
                                                     width: 110,
                                                     child: InkWell(
                                                       onTap: () {
-                                                        print("กำลังติดตาม");
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ShowFollowerAndFollowing(
-                                                                    index: 1,
-                                                                    id: this
-                                                                        .data_PostUser
-                                                                        .userId,
-                                                                    name: this
-                                                                        .data_PostUser
-                                                                        .aliasName,
-                                                                  )),
-                                                        );
+                                                        if (token == "") {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (_) {
+                                                                return LoginPage();
+                                                              }).then((value) {
+                                                            findUser();
+                                                            // Navigator.pop(context);
+                                                          });
+                                                        } else {
+                                                          print("กำลังติดตาม");
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ShowFollowerAndFollowing(
+                                                                          index:
+                                                                              1,
+                                                                          id: this
+                                                                              .data_PostUser
+                                                                              .userId,
+                                                                          name: this
+                                                                              .data_PostUser
+                                                                              .aliasName,
+                                                                        )),
+                                                          );
+                                                        }
                                                       },
                                                       child: Column(
                                                         mainAxisAlignment:
@@ -432,10 +508,12 @@ class _ProfileUserState extends State<ProfileUser> {
                                                                 .countFollowing
                                                                 .toString(),
                                                             style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize: 20,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         ],

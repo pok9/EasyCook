@@ -45,6 +45,25 @@ class _ShowFoodState extends State<ShowFood> {
     getPost();
   }
 
+  
+
+  double ratings = 0.0;
+  @override
+  void dispose() {
+    super.dispose();
+    if (token != "") {
+      if (dataFood.userId != dataMyAccont.userId && ratings != 0.0) {
+        insertNotificationData(
+            dataFood.userId.toString(),
+            dataMyAccont.aliasName,
+            "ให้คะแนนสูตรอาหาร ${dataFood.recipeName} ของคุณ",
+            dataFood.rid.toString(),
+            dataMyAccont.userId.toString(),
+            "scorefood");
+      }
+    }
+  }
+
   //แสดงคอมเมนต์
   List<GetCommentPostModel> dataGetCommentPost;
   Future<Null> getCommentPosts() async {
@@ -426,6 +445,35 @@ class _ShowFoodState extends State<ShowFood> {
         // onTap: () {},
       );
     }).toList(); // แปลงเป็นlist
+  }
+
+  Future<Null> insertNotificationData(
+    String my_ID,
+    String state,
+    String description,
+    String recipe_ID,
+    String from_userid,
+    String status,
+  ) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/insertNotificationData";
+
+    // List<st>
+    var data = {
+      "my_ID": my_ID,
+      "state": state,
+      "description": description,
+      "recipe_ID": recipe_ID,
+      "from_userid": from_userid,
+      "status": status
+    };
+    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    print(
+        "response.statusCodeInsertNotificationData => ${response.statusCode}");
+    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   int indexHowTo = 0;
@@ -935,12 +983,27 @@ class _ShowFoodState extends State<ShowFood> {
                                           color: Colors.blue,
                                         ),
                                         onRatingUpdate: (rating) async {
-                                          ScoreFoodInputModel
-                                              scoreFoodInputModel =
-                                              await scoreFoodInput(
-                                                  rating, token);
+                                          if (token == "") {
+                                            showDialog(
+                                                context: context,
+                                                builder: (_) {
+                                                  return LoginPage();
+                                                }).then((value) {
+                                              if (value != null) {
+                                                this.findUser();
+                                              }
 
-                                          print(scoreFoodInputModel.success);
+                                              // Navigator.pop(context);
+                                            });
+                                          } else {
+                                            ratings = rating;
+                                            ScoreFoodInputModel
+                                                scoreFoodInputModel =
+                                                await scoreFoodInput(
+                                                    rating, token);
+
+                                            print(scoreFoodInputModel.success);
+                                          }
                                         },
                                       ),
                                       Divider(
@@ -1084,7 +1147,8 @@ class _ShowFoodState extends State<ShowFood> {
                                                           builder: (context) =>
                                                               CommentFood(
                                                                 autoFocus: true,
-                                                                dataFood: dataFood,
+                                                                dataFood:
+                                                                    dataFood,
                                                               ))).then(
                                                       (value) => this
                                                           .getCommentPosts());

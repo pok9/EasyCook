@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollowing_model.dart';
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
@@ -36,9 +38,11 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
-      getMyAccounts();
-      getFollower();
-      getFollowing();
+      if (token != "") {
+        getMyAccounts();
+        getFollower();
+        getFollowing();
+      }
     });
   }
 
@@ -163,8 +167,38 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
     }
   }
 
+  Future<Null> insertNotificationData(
+    String my_ID,
+    String state,
+    String description,
+    String recipe_ID,
+    String from_userid,
+    String status,
+  ) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/insertNotificationData";
+
+    // List<st>
+    var data = {
+      "my_ID": my_ID,
+      "state": state,
+      "description": description,
+      "recipe_ID": recipe_ID,
+      "from_userid": from_userid,
+      "status": status
+    };
+    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    print(
+        "response.statusCodeInsertNotificationData => ${response.statusCode}");
+    print("response.bodyInsertNotificationData => ${response.body}");
+  }
+
   @override
   Widget build(BuildContext context) {
+   
     return DefaultTabController(
       length: 2,
       initialIndex: this.widget.index,
@@ -186,7 +220,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
         ),
         body: TabBarView(
           children: [
-            (checkFollower == null)
+            (checkFollower == null || data_DataAc == null)
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -235,7 +269,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                       },
                     ),
                   ),
-            (checkFollowing == null || checkFollowerList == null)
+            (checkFollowing == null || checkFollowerList == null || data_DataAc == null)
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -279,7 +313,8 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                                         image: new NetworkImage(checkFollowing
                                             .user[index].profileImage))),
                               ),
-                              trailing: (checkFollowerList.length !=
+                              trailing: (checkFollowing.user[index].userId ==
+                                data_DataAc.userId) ? null :(checkFollowerList.length !=
                                           checkFollowingList.length ||
                                       checkFollowerList[index] == 1)
                                   ? OutlinedButton(
@@ -299,10 +334,21 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                                     )
                                   : OutlinedButton(
                                       onPressed: () {
+                                        
+
                                         print("ติดตาม");
                                         checkFollowerList[index] = 1;
                                         manageFollow("fol",
                                             checkFollowing.user[index].userId);
+
+                                        insertNotificationData(
+                                            checkFollowing.user[index].userId
+                                                .toString(),
+                                            data_DataAc.aliasName,
+                                            "ได้ติดตามคุณ",
+                                            null,
+                                            data_DataAc.userId.toString(),
+                                            "follow");
                                       },
                                       child: Text('     ติดตาม     '),
                                       style: OutlinedButton.styleFrom(

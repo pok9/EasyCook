@@ -425,7 +425,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                 if (dataBuyFood.success == 1) {
                   insertNotificationData(
                       this.widget.foodOwner_userId,
-                      "${this.widget.myNameUser} ซื้อสูตอาหารของคุณ",
+                      this.widget.myNameUser,
                       "${this.widget.myNameUser} ได้ทำการซื้อสูตอาหาร  ${this.widget.recipeName} ของคุณแล้ว",
                       this.widget.rid.toString(),
                       this.widget.myDataUser,

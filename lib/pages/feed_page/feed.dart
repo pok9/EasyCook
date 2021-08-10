@@ -15,7 +15,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
-import 'package:easy_cook/pages/drawer/helpCenter/helpMyAccount/helpCenter.dart';
+import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
@@ -243,6 +243,35 @@ class _FeedPageState extends State<FeedPage> {
     } else {
       return null;
     }
+  }
+
+  Future<Null> insertNotificationData(
+    String my_ID,
+    String state,
+    String description,
+    String recipe_ID,
+    String from_userid,
+    String status,
+  ) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/insertNotificationData";
+
+    // List<st>
+    var data = {
+      "my_ID": my_ID,
+      "state": state,
+      "description": description,
+      "recipe_ID": recipe_ID,
+      "from_userid": from_userid,
+      "status": status
+    };
+    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    print(
+        "response.statusCodeInsertNotificationData => ${response.statusCode}");
+    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   @override
@@ -523,15 +552,18 @@ class _FeedPageState extends State<FeedPage> {
                       ? Container(
                           height: 135,
                         )
-                      : Container(
-                          height: 135,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: dataRecommendUser.length,
-                              itemBuilder: (context, index) {
-                                return _introduce_safe_Card(context,
-                                    dataRecommendUser[index], checkFollowing);
-                              })),
+                      : Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Container(
+                            height: 135,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: dataRecommendUser.length,
+                                itemBuilder: (context, index) {
+                                  return _introduce_safe_Card(context,
+                                      dataRecommendUser[index], checkFollowing);
+                                })),
+                      ),
                   // DividerCutom(),
                 ],
               ),
@@ -1393,6 +1425,14 @@ class _FeedPageState extends State<FeedPage> {
                                       } else {
                                         manageFollow(
                                             "fol", dataRecommendUser.userId);
+
+                                        insertNotificationData(
+                                            dataRecommendUser.userId.toString(),
+                                            data_DataAc.aliasName,
+                                            "ได้ติดตามคุณ",
+                                            null,
+                                            data_DataAc.userId.toString(),
+                                            "follow");
                                       }
                                     },
                                     child: Padding(
