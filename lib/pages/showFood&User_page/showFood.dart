@@ -3,7 +3,7 @@ import 'dart:ffi';
 
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
-import 'package:easy_cook/models/report/addReport_model.dart';
+import 'package:easy_cook/models/report/addReport/addReport_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
 import 'package:easy_cook/models/showfood/scoreFood/getScoreFoodModel.dart';
 import 'package:easy_cook/models/showfood/scoreFood/scoreFoodInputModel.dart';
