@@ -41,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _ctrlPassword = TextEditingController();
   TextEditingController _ctrlCheckPassword = TextEditingController();
 
+  String isEmail = "";
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,10 +58,12 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 60.0,
 
           child: TextFormField(
-            validator: (value) =>
-                EmailValidator.validate(value) ? null : "กรุณาป้อนอีเมล์ของคุณ",
+            validator: (value) => EmailValidator.validate(value)
+                ? (isEmail != "")
+                    ? isEmail
+                    : null
+                : "กรุณาป้อนอีเมล์ของคุณ",
             controller: _ctrlEmail,
-            
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -111,6 +114,8 @@ class _RegisterPageState extends State<RegisterPage> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'กรุณาป้อนรหัสผ่าน';
+              } else if (value != _ctrlCheckPassword.text) {
+                return 'รหัสผ่านไม่ตรงกัน';
               }
               return null;
             },
@@ -163,7 +168,9 @@ class _RegisterPageState extends State<RegisterPage> {
           child: TextFormField(
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'กรุณาป้อนรหัสผ่าน';
+                return 'กรุณาป้อนยืนยันรหัสผ่าน';
+              } else if (value != _ctrlPassword.text) {
+                return 'รหัสผ่านไม่ตรงกัน';
               }
               return null;
             },
@@ -204,6 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
+          isEmail = "";
           if (_formKey.currentState.validate()) {
             print(_ctrlPassword.text);
             print(_ctrlCheckPassword.text);
@@ -211,8 +219,21 @@ class _RegisterPageState extends State<RegisterPage> {
             if (_ctrlEmail.text != '' &&
                 _ctrlPassword.text == _ctrlCheckPassword.text &&
                 _ctrlPassword.text != '') {
+              showDialog(
+                  context: context,
+                  builder: (contex) {
+                    return AlertDialog(
+                        content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("กรุณารอสักครู่...   "),
+                        CircularProgressIndicator()
+                      ],
+                    ));
+                  });
               final RegisterModel response =
                   await registers(_ctrlEmail.text, _ctrlPassword.text);
+              Navigator.pop(context);
               print(response.success);
               print(response.token);
 
@@ -226,6 +247,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 Navigator.pushNamedAndRemoveUntil(context, '/register2-page',
                     (Route<dynamic> route) => false);
+              } else {
+                isEmail = response.message;
+                if (_formKey.currentState.validate()) {}
+                print(response.message);
               }
             } else {
               print("false");
