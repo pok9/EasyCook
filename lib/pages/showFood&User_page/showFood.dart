@@ -492,6 +492,22 @@ class _ShowFoodState extends State<ShowFood> {
     }
   }
 
+ 
+
+  AlertDialog alertDialog_successful_or_unsuccessful(
+      String reportText1, Color color, String reportText2) {
+    return AlertDialog(
+      title: Text(reportText1, style: TextStyle(color: Colors.white)),
+      titleTextStyle: TextStyle(
+          fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+      backgroundColor: color,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      content: Text(reportText2, style: TextStyle(color: Colors.white)),
+    );
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> ingredient =
@@ -555,39 +571,62 @@ class _ShowFoodState extends State<ShowFood> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return ReportFood(
-                                          dataFood: this.dataFood,
+                                         
                                         );
                                       }).then((value) async {
                                     if (value != null) {
-                                      // showDialog(
-                                      //     context: context,
-                                      //     builder: (contex) {
-                                      //       return AlertDialog(
-                                      //           content: Row(
-                                      //         mainAxisAlignment:
-                                      //             MainAxisAlignment.center,
-                                      //         children: [
-                                      //           Text("กรุณารอสักครู่...   "),
-                                      //           CircularProgressIndicator()
-                                      //         ],
-                                      //       ));
-                                      //     });
+                                      showDialog(
+                                          context: context,
+                                          builder: (contex) {
+                                            return AlertDialog(
+                                                content: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text("กรุณารอสักครู่...   "),
+                                                CircularProgressIndicator()
+                                              ],
+                                            ));
+                                          });
 
-                                      // AddReport dataAddReport = await addReport(
-                                      //     dataFood.userId.toString(),
-                                      //     "food",
-                                      //     dataFood.rid.toString(),
-                                      //     "รายงานสูตรอาหาร",
-                                      //     value[0],
-                                      //     value[1]);
+                                      AddReport dataAddReport = await addReport(
+                                          dataFood.userId.toString(),
+                                          "food",
+                                          dataFood.rid.toString(),
+                                          "รายงานสูตรอาหาร",
+                                          value[0],
+                                          value[1]);
 
-                                      //     Navigator.pop(context);
-                                      //     print("dataAddReport.success ===>>> ${dataAddReport.success}");
-
-                                      BuildContext con = context;
-                                      final snackBar =
-                                          SnackBar(content: Text("message"));
-                                      Scaffold.of(con).showSnackBar(snackBar);
+                                      Navigator.pop(context);
+                                      String reportText1;
+                                      String reportText2;
+                                      Color color;
+                                      if (dataAddReport.success == 1) {
+                                        reportText1 = "รายงานสำเร็จ";
+                                        reportText2 = "ขอบคุณสำหรับการรายงาน";
+                                        color = Colors.green;
+                                      } else {
+                                        reportText1 = "รายงานไม่สำเร็จ";
+                                        reportText2 = "โปรดรายงานใหม่ในภายหลัง";
+                                        color = Colors.red;
+                                      }
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            Future.delayed(
+                                                Duration(milliseconds: 1500),
+                                                () {
+                                              Navigator.of(context).pop(true);
+                                            
+                                              // Navigator.pop(context);
+                                            });
+                                            return alertDialog_successful_or_unsuccessful(
+                                                reportText1,
+                                                color,
+                                                reportText2);
+                                          });
+                                      print(
+                                          "dataAddReport.success ===>>> ${dataAddReport.success}");
                                     }
                                   });
                                 }

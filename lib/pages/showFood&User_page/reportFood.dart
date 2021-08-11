@@ -17,9 +17,6 @@ class ReportFood extends StatefulWidget {
   // const ReportFood({ Key? key }) : super(key: key);
 
   //ข้อมูลสูตรอาหารที่ค้นหา
-  ShowFoods dataFood;
-
-  ReportFood({this.dataFood});
 
   @override
   _ReportFoodState createState() => _ReportFoodState();
@@ -54,7 +51,6 @@ class _ReportFoodState extends State<ReportFood> {
 
   TextEditingController otherCtl = new TextEditingController();
 
-
   //อัปโหลดรูปภาพ
   Future<String> addreportImage(File image) async {
     // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
@@ -77,39 +73,6 @@ class _ReportFoodState extends State<ReportFood> {
     if (response.statusCode == 200) {
       final String responseString = response.body;
       return addReportImageModelFromJson(responseString).path;
-    } else {
-      return null;
-    }
-  }
-  
-
-  Future<AddReport> addReport(String userTarget_ID, String type_report,
-      String recipe_ID, String title, String description, String image) async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjPost/addReport";
-
-    var data = {
-      "userTarget_ID": userTarget_ID,
-      "type_report": type_report,
-      "recipe_ID": recipe_ID,
-      "title": title,
-      "description": description,
-      "image": image
-    };
-
-    print(jsonEncode(data));
-    final response = await http.post(Uri.parse(apiUrl),
-        body: jsonEncode(data),
-        headers: {
-          "Authorization": "Bearer $token",
-          "Content-Type": "application/json"
-        });
-
-    print(response.statusCode);
-    print(response.body);
-    if (response.statusCode == 200) {
-      final String responseString = response.body;
-
-      return addReportFromJson(responseString);
     } else {
       return null;
     }
@@ -143,25 +106,12 @@ class _ReportFoodState extends State<ReportFood> {
                       style: TextStyle(color: Colors.blue),
                     ),
                     onPressed: () async {
-
                       String description;
                       String path = "";
 
                       if (image != null) {
                         path = await addreportImage(this.image.image);
                       }
-                      
-                      
-                      
-                      
-                      
-                      
-                      // print(path);
-
-                      // print("userTarget_ID => ${this.widget.dataFood.userId}");
-                      // print("type_report => recipe");
-                      // print("recipe_ID => ${this.widget.dataFood.rid}");
-                      // print("title => รายงานสูตรอาหาร");
 
                       if (_selected != 1) {
                         print("description => ${exercises[_selected].name}");
@@ -169,55 +119,15 @@ class _ReportFoodState extends State<ReportFood> {
                       } else if (otherCtl.text != "" && otherCtl != null) {
                         print("description => ${otherCtl.text}");
                         description = otherCtl.text;
-                      } else {
-                        // print("description => $description");
-                        // description =
-                      }
+                      } 
                       print(path);
 
-
-                      List<String> arrValue = []; 
+                      List<String> arrValue = [];
 
                       arrValue.add(exercises[_selected].name);
                       arrValue.add(path);
 
-                      Navigator.pop(context,arrValue);
-
-                      // AddReport dataAddReport = await addReport(
-                      //     this.widget.dataFood.userId.toString(),
-                      //     "food",
-                      //     this.widget.dataFood.rid.toString(),
-                      //     "รายงานสูตรอาหาร",
-                      //     description,
-                      //     path);
-
-                      // Navigator.of(context).pop(true);
-                      // String reportText1;
-                      // String reportText2;
-                      // Color color;
-
-                      // if (dataAddReport.success == 1) {
-                      //   reportText1 = "รายงานสำเร็จ";
-                      //   reportText2 = "ขอบคุณสำหรับการรายงาน";
-                      //   color = Colors.green;
-                      // } else {
-                      //   reportText1 = "รายงานไม่สำเร็จ";
-                      //   reportText2 = "โปรดรายงานใหม่ในภายหลัง";
-                      //   color = Colors.red;
-                      // }
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (BuildContext context) {
-                      //       Future.delayed(Duration(milliseconds: 1500), () {
-                      //         Navigator.of(context).pop(true);
-                      //         Navigator.of(context).pop(true);
-                      //         // Navigator.pop(context);
-                      //       });
-                      //       return alertDialog_successful_or_unsuccessful(
-                      //           reportText1, color, reportText2);
-                      //     });
-
-                      // Navigator.pop(context);
+                      Navigator.pop(context, arrValue);
                     },
                   )
             : Padding(
@@ -339,19 +249,6 @@ class _ReportFoodState extends State<ReportFood> {
           ),
         ),
       ),
-    );
-  }
-
-  AlertDialog alertDialog_successful_or_unsuccessful(
-      String reportText1, Color color, String reportText2) {
-    return AlertDialog(
-      title: Text(reportText1, style: TextStyle(color: Colors.white)),
-      titleTextStyle: TextStyle(
-          fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
-      backgroundColor: color,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      content: Text(reportText2, style: TextStyle(color: Colors.white)),
     );
   }
 }
