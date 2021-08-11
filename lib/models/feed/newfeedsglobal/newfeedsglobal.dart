@@ -33,7 +33,7 @@ class Newfeedsglobal {
     String recipeName;
     String image;
     DateTime date;
-    int price;
+    double price;
 
     factory Newfeedsglobal.fromJson(Map<String, dynamic> json) => Newfeedsglobal(
         userId: json["user_ID"],
@@ -46,7 +46,7 @@ class Newfeedsglobal {
         recipeName: json["recipe_name"],
         image: json["image"],
         date: DateTime.parse(json["date"]),
-        price: json["price"],
+        price: json["price"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {

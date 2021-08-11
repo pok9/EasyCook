@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/report/addReport_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
 import 'package:easy_cook/models/showfood/scoreFood/getScoreFoodModel.dart';
 import 'package:easy_cook/models/showfood/scoreFood/scoreFoodInputModel.dart';
@@ -11,6 +12,7 @@ import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/showFood&User_page/commentFood.dart/commentFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/reportFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
@@ -44,8 +46,6 @@ class _ShowFoodState extends State<ShowFood> {
     getCommentPosts();
     getPost();
   }
-
-  
 
   double ratings = 0.0;
   @override
@@ -386,20 +386,6 @@ class _ShowFoodState extends State<ShowFood> {
                   elevation: 5,
                   margin: EdgeInsets.all(10),
                 )
-          // Card(
-          //     child: Align(
-          //       alignment: Alignment.bottomCenter,
-          //       child: AspectRatio(
-          //         aspectRatio: 6 / 3,
-          //         child: VideoItems(
-          //           videoPlayerController: VideoPlayerController.network(
-          //               dataHowto[displayNumber].pathFile),
-          //           looping: true,
-          //           autoplay: false,
-          //         ),
-          //       ),
-          //     ),
-          //   )
         ],
       );
     }).toList(); // แปลงเป็นlist
@@ -425,10 +411,6 @@ class _ShowFoodState extends State<ShowFood> {
       i++;
 
       return ListTile(
-        // selected: true,
-        // leading: CircleAvatar(
-        //   child: Text("$i"),
-        // ),
         title: Row(
           children: [
             CircleAvatar(
@@ -441,8 +423,6 @@ class _ShowFoodState extends State<ShowFood> {
             Expanded(child: Text(dataHowto[displayNumber].description)),
           ],
         ),
-        // subtitle: Text("Group Sub Category"),
-        // onTap: () {},
       );
     }).toList(); // แปลงเป็นlist
   }
@@ -479,6 +459,39 @@ class _ShowFoodState extends State<ShowFood> {
   int indexHowTo = 0;
   List<String> actionDropdown = ['แก้ไขสูตรอาหาร', 'ลบสูตรอาหาร'];
   List<bool> _isSelected = [true, false, false];
+
+  Future<AddReport> addReport(String userTarget_ID, String type_report,
+      String recipe_ID, String title, String description, String image) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/addReport";
+
+    var data = {
+      "userTarget_ID": userTarget_ID,
+      "type_report": type_report,
+      "recipe_ID": recipe_ID,
+      "title": title,
+      "description": description,
+      "image": image
+    };
+
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return addReportFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> ingredient =
@@ -522,12 +535,82 @@ class _ShowFoodState extends State<ShowFood> {
             floatingPosition: FloatingPosition(top: -20, left: 150),
             slivers: [
               SliverAppBar(
-                title: Text(dataFood.recipeName + this.req_rid.toString()),
+                title:
+                    Text(dataFood.recipeName + " " + this.req_rid.toString()),
                 actions: [
                   (dataMyAccont == null || dataFood == null)
                       ? Container()
                       : (dataMyAccont.userId != dataFood.userId)
-                          ? Container()
+                          ? PopupMenuButton(
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Icon(Icons.more_horiz_outlined),
+                              )),
+                              onSelected: (value) {
+                                if (value == 1) {
+                                  print("รายงานสูตรอาหารนี้");
+
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ReportFood(
+                                          dataFood: this.dataFood,
+                                        );
+                                      }).then((value) async {
+                                    if (value != null) {
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (contex) {
+                                      //       return AlertDialog(
+                                      //           content: Row(
+                                      //         mainAxisAlignment:
+                                      //             MainAxisAlignment.center,
+                                      //         children: [
+                                      //           Text("กรุณารอสักครู่...   "),
+                                      //           CircularProgressIndicator()
+                                      //         ],
+                                      //       ));
+                                      //     });
+
+                                      // AddReport dataAddReport = await addReport(
+                                      //     dataFood.userId.toString(),
+                                      //     "food",
+                                      //     dataFood.rid.toString(),
+                                      //     "รายงานสูตรอาหาร",
+                                      //     value[0],
+                                      //     value[1]);
+
+                                      //     Navigator.pop(context);
+                                      //     print("dataAddReport.success ===>>> ${dataAddReport.success}");
+
+                                      BuildContext con = context;
+                                      final snackBar =
+                                          SnackBar(content: Text("message"));
+                                      Scaffold.of(con).showSnackBar(snackBar);
+                                    }
+                                  });
+                                }
+                              },
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.flag,
+                                          color: Colors.black,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text('รายงานสูตรอาหารนี้'),
+                                      ],
+                                    ),
+                                    value: 1,
+                                  ),
+                                ];
+                              })
                           : PopupMenuButton(
                               child: Center(
                                   child: Padding(
@@ -1073,7 +1156,13 @@ class _ShowFoodState extends State<ShowFood> {
                                                           .aliasName,
                                                       style: TextStyle(
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                              FontWeight.bold,
+                                                          color: (dataGetCommentPost[
+                                                                          index]
+                                                                      .userStatus ==
+                                                                  0)
+                                                              ? Colors.red
+                                                              : Colors.black),
                                                     ),
                                                   ),
                                                   subtitle: Text(

@@ -14,6 +14,7 @@ class GetCommentPostModel {
         this.nameSurname,
         this.aliasName,
         this.profileImage,
+        this.userStatus,
         this.cid,
         this.recipeId,
         this.commentDetail,
@@ -24,6 +25,7 @@ class GetCommentPostModel {
     String nameSurname;
     String aliasName;
     String profileImage;
+    int userStatus;
     int cid;
     int recipeId;
     String commentDetail;
@@ -34,6 +36,7 @@ class GetCommentPostModel {
         nameSurname: json["name_surname"],
         aliasName: json["alias_name"],
         profileImage: json["profile_image"],
+        userStatus: json["user_status"],
         cid: json["cid"],
         recipeId: json["recipe_ID"],
         commentDetail: json["commentDetail"],
@@ -45,6 +48,7 @@ class GetCommentPostModel {
         "name_surname": nameSurname,
         "alias_name": aliasName,
         "profile_image": profileImage,
+        "user_status": userStatus,
         "cid": cid,
         "recipe_ID": recipeId,
         "commentDetail": commentDetail,

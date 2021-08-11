@@ -1,3 +1,6 @@
+
+
+
 // To parse this JSON data, do
 //
 //     final searchUserName = searchUserNameFromJson(jsonString);
@@ -30,18 +33,21 @@ class DataUser {
         this.nameSurname,
         this.aliasName,
         this.profileImage,
+        this.accessStatus,
     });
 
     int userId;
     String nameSurname;
     String aliasName;
     String profileImage;
+    int accessStatus;
 
     factory DataUser.fromJson(Map<String, dynamic> json) => DataUser(
         userId: json["user_ID"],
         nameSurname: json["name_surname"],
         aliasName: json["alias_name"],
         profileImage: json["profile_image"],
+        accessStatus: json["access_status"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -49,5 +55,6 @@ class DataUser {
         "name_surname": nameSurname,
         "alias_name": aliasName,
         "profile_image": profileImage,
+        "access_status": accessStatus,
     };
 }

@@ -201,7 +201,7 @@ class _CommentFoodState extends State<CommentFood> {
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                               child: Text(
                                 dataGetCommentPost[index].aliasName,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold,color: (dataGetCommentPost[index].userStatus == 0) ? Colors.red : Colors.black),
                               ),
                             ),
                             subtitle: Text(

@@ -110,11 +110,11 @@ class _Feed2PageState extends State<Feed2Page> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
+  
         final String responseString = response.body;
 
         newFeedsFollow = newFeedsFollowFromJson(responseString);
-      });
+         setState(() { });
     } else {
       return null;
     }
