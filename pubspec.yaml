@@ -123,6 +123,7 @@ flutter:
     # - assets/images/user.png
     - assets/images/
     - assets/logos/
+    - assets/loadGif/
     # - assets/logos/facebook.jpg
     # - assets/logos/drink.png
     # - assets/logos/vegetables.png

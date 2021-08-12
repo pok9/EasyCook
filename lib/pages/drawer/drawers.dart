@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/notification/getCountVisited/getCountVisitedModel.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
-import 'package:easy_cook/pages/admin/report/reportPage.dart';
+
 import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/pages/drawer/notification_page/notification.dart';
@@ -41,7 +41,8 @@ class _DrawersState extends State<Drawers> {
 
     final response = await http.get(Uri.parse(apiUrl),
         headers: {"Authorization": "Bearer ${this.widget.token}"});
-    print("responsegetCountVisited_function = " + response.statusCode.toString());
+    print(
+        "responsegetCountVisited_function = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -269,35 +270,6 @@ class _DrawersState extends State<Drawers> {
                       });
                     },
                   ),
-                  (this.widget.data_DataAc.userStatus == 1)
-                      ? Container()
-                      : ListTile(
-                          leading: Icon(
-                            Icons.report_outlined,
-                            color: Colors.blue,
-                            size: 25,
-                          ),
-                          title: Text(
-                            'การรายงานเข้ามา',
-                            style: GoogleFonts.kanit(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            // style: TextStyle(
-                            //     fontWeight: FontWeight.w300,
-                            //     fontSize: 23,
-                            //     color: Colors.black)
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ReportPage()),
-                      ).then((value) {
-                   
-                      });
-                          },
-                        ),
                   (this.widget.data_DataAc.userStatus == 0)
                       ? Container()
                       : ListTile(

@@ -106,7 +106,7 @@ class _ReportFoodState extends State<ReportFood> {
                       style: TextStyle(color: Colors.blue),
                     ),
                     onPressed: () async {
-                      String description;
+                      String description = "";
                       String path = "";
 
                       if (image != null) {
@@ -122,9 +122,10 @@ class _ReportFoodState extends State<ReportFood> {
                       } 
                       print(path);
 
+
                       List<String> arrValue = [];
 
-                      arrValue.add(exercises[_selected].name);
+                      arrValue.add(description);
                       arrValue.add(path);
 
                       Navigator.pop(context, arrValue);

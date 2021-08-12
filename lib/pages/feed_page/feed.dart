@@ -85,6 +85,8 @@ class _FeedPageState extends State<FeedPage> {
     });
   }
 
+   
+
   //user
   MyAccount data_MyAccount;
   DataMyAccount data_DataAc;

@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/admin/manage_members_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/report/getAllReport_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
+import 'package:easy_cook/pages/admin/report/reportPage.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,8 +34,9 @@ class _ManageMembersState extends State<ManageMembers> {
     setState(() {
       token = preferences.getString("tokens");
 
-      if (token != "") {
+      if (token != "" && token != null) {
         getMyAccounts();
+        getAllReport();
       }
     });
   }
@@ -69,7 +72,6 @@ class _ManageMembersState extends State<ManageMembers> {
 
     final response = await http.get(Uri.parse(apiUrl));
 
-    
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -85,14 +87,54 @@ class _ManageMembersState extends State<ManageMembers> {
 
   String searchUser = "";
 
+  //ฟั่งชั่นreportเข้ามา
+  List<GetAllReportModel> dateGetAllReport;
+  Future<Null> getAllReport() async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/getAllReport";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer ${token}"});
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+        dateGetAllReport = getAllReportModelFromJson(responseString);
+      });
+    } else {
+      return null;
+    }
+  }
+
+  Future<Null> deleteReport(String report_ID) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/deleteReport";
+
+    var data = {
+      "report_ID": report_ID,
+    };
+
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print("deleteReport_response.statusCode ==>> ${response.statusCode}");
+    print("deleteReport_response.body ==>> ${response.body}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
         title: Text('จัดการสมาชิก'),
       ),
       body: DefaultTabController(
-        length: 1,
+        length: 2,
         child: Scaffold(
           appBar: new PreferredSize(
             preferredSize: Size.fromHeight(40),
@@ -104,6 +146,13 @@ class _ManageMembersState extends State<ManageMembers> {
                     new Expanded(child: new Container()),
                     new TabBar(
                       tabs: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: new Text(
+                            "รายงาน",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: new Text(
@@ -119,6 +168,104 @@ class _ManageMembersState extends State<ManageMembers> {
             ),
           ),
           body: TabBarView(children: [
+            (dateGetAllReport == null)
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    //  reverse: true,
+                    shrinkWrap: true,
+                    // physics: NeverScrollableScrollPhysics(),
+                    // scrollDirection: Axis.v,
+                    itemCount: dateGetAllReport.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Card(
+                          color: Colors.white,
+                          margin: EdgeInsets.all(1),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              // leading: FlutterLogo(size: 72.0),
+                              leading: Stack(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                        dateGetAllReport[index]
+                                            .profileUserReport),
+                                  ),
+                                ],
+                              ),
+                              title: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                    dateGetAllReport[index].nameUserReport),
+                              ),
+                              subtitle: Text(
+                                  "${dateGetAllReport[index].title}\n\n${dateGetAllReport[index].datetime}"),
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        // return object of type Dialog
+                                        return AlertDialog(
+                                          title: new Text("ลบรายงาน"),
+                                          content: new Text(
+                                              "ลบรายงานผู้ใช้โดยถาวรใช่ไหม"),
+                                          actions: <Widget>[
+                                            // usually buttons at the bottom of the dialog
+                                            new TextButton(
+                                              child: new Text("ยกเลิก"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            new TextButton(
+                                              child: new Text("ลบ"),
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+                                                await deleteReport(
+                                                    dateGetAllReport[index]
+                                                        .reportId
+                                                        .toString());
+
+                                                await getAllReport();
+                                                final snackBar = SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 1400),
+                                                  content: const Text(
+                                                      'ลบรายงานเรียบร้อยแล้ว'),
+                                                );
+
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(snackBar);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.delete_forever,
+                                    color: Colors.blueAccent,
+                                  )),
+                              isThreeLine: true,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ReportPage(report_ID: dateGetAllReport[index].reportId.toString(),)),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
             (dataMyAccount == null)
                 ? Center(
                     child: CircularProgressIndicator(),
@@ -203,7 +350,9 @@ class _ManageMembersState extends State<ManageMembers> {
                                                     dataUser[index].aliasName,
                                                 nameSurname:
                                                     dataUser[index].nameSurname,
-                                                    getSearchUserNames: getSearchUserNames(searchUser),
+                                                getSearchUserNames:
+                                                    getSearchUserNames(
+                                                        searchUser),
                                               );
                                             },
                                           );
@@ -225,7 +374,7 @@ class _ManageMembersState extends State<ManageMembers> {
                         ),
                       ],
                     ),
-                  )
+                  ),
           ]),
         ),
       ),

@@ -554,7 +554,7 @@ class _ShowFoodState extends State<ShowFood> {
                   (dataMyAccont == null || dataFood == null)
                       ? Container()
                       : (dataMyAccont.userId != dataFood.userId)
-                          ? PopupMenuButton(
+                          ? (dataMyAccont.userStatus == 0) ? Container() :PopupMenuButton(
                               child: Center(
                                   child: Padding(
                                 padding: const EdgeInsets.only(right: 20),
@@ -644,7 +644,8 @@ class _ShowFoodState extends State<ShowFood> {
                                     value: 1,
                                   ),
                                 ];
-                              })
+                              }
+                              )
                           : PopupMenuButton(
                               child: Center(
                                   child: Padding(

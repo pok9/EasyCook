@@ -89,7 +89,7 @@ class _SlidePageState extends State<SlidePage> {
     setState(() {
       token = preferences.getString("tokens");
       if (token != "" && token != null) {
-        getMyAccounts();
+        getMyAccounts1();
         getTokenFirebase();
       }
     });
@@ -128,7 +128,7 @@ class _SlidePageState extends State<SlidePage> {
   //user
   MyAccount datas;
   DataMyAccount dataUser;
-  Future<Null> getMyAccounts() async {
+  Future<Null> getMyAccounts1() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
@@ -141,7 +141,27 @@ class _SlidePageState extends State<SlidePage> {
       datas = myAccountFromJson(responseString);
       dataUser = datas.data[0];
       print(dataUser.userId);
+      setState(() {});
       // });
+    } else {
+      return null;
+    }
+  }
+
+  Future<Null> getMyAccounts2() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responsegetMyAccounts() = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      datas = myAccountFromJson(responseString);
+      dataUser = datas.data[0];
+      print(dataUser.userId);
+      print(token);
+      
     } else {
       return null;
     }
@@ -161,7 +181,7 @@ class _SlidePageState extends State<SlidePage> {
     // false;
     // getTokenFireBase();
     if (token != "" && token != null) {
-      getMyAccounts();
+      getMyAccounts2();
     }
 
     bool keyboardIsOpened =
