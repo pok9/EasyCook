@@ -93,7 +93,7 @@ class _ShowFoodState extends State<ShowFood> {
     setState(() {
       token = preferences.getString("tokens");
 
-      if (token != "") {
+      if (token != "" && token != null) {
         getMyAccounts();
         getcoreFood();
       }
@@ -149,7 +149,7 @@ class _ShowFoodState extends State<ShowFood> {
 
   //user
   MyAccount datas;
-  DataAc dataMyAccont;
+  DataMyAccount dataMyAccont;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
@@ -492,8 +492,6 @@ class _ShowFoodState extends State<ShowFood> {
     }
   }
 
- 
-
   AlertDialog alertDialog_successful_or_unsuccessful(
       String reportText1, Color color, String reportText2) {
     return AlertDialog(
@@ -506,7 +504,6 @@ class _ShowFoodState extends State<ShowFood> {
       content: Text(reportText2, style: TextStyle(color: Colors.white)),
     );
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -570,9 +567,7 @@ class _ShowFoodState extends State<ShowFood> {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return ReportFood(
-                                         
-                                        );
+                                        return ReportFood();
                                       }).then((value) async {
                                     if (value != null) {
                                       showDialog(
@@ -617,7 +612,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                 Duration(milliseconds: 1500),
                                                 () {
                                               Navigator.of(context).pop(true);
-                                            
+
                                               // Navigator.pop(context);
                                             });
                                             return alertDialog_successful_or_unsuccessful(
@@ -1148,16 +1143,35 @@ class _ShowFoodState extends State<ShowFood> {
                                                         children: [
                                                           TextButton(
                                                               onPressed: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) =>
-                                                                            CommentFood(
-                                                                              autoFocus: false,
-                                                                              dataFood: dataFood,
-                                                                            ))).then(
-                                                                    (value) => this
-                                                                        .getCommentPosts());
+                                                                if (dataMyAccont ==
+                                                                    null) {
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (_) {
+                                                                        return LoginPage();
+                                                                      }).then((value) {
+                                                                    if (value !=
+                                                                        null) {
+                                                                      this.findUser();
+                                                                    }
+
+                                                                    // Navigator.pop(context);
+                                                                  });
+                                                                } else {
+                                                                  Navigator
+                                                                      .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                              builder: (context) =>
+                                                                                  CommentFood(
+                                                                                    autoFocus: false,
+                                                                                    dataFood: dataFood,
+                                                                                  ))).then(
+                                                                      (value) =>
+                                                                          this.getCommentPosts());
+                                                                }
                                                               },
                                                               child: Text(
                                                                   "ดูความเห็นทั้งหมด")),

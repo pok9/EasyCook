@@ -51,7 +51,7 @@ class _ProfileUserState extends State<ProfileUser> {
 
   //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)
   MyAccount data_MyAccount;
-  DataAc data_DataAc; //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)-คนที่เข้ามาดู
+  DataMyAccount data_DataAc; //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)-คนที่เข้ามาดู
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

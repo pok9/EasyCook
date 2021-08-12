@@ -88,7 +88,7 @@ class _SlidePageState extends State<SlidePage> {
 
     setState(() {
       token = preferences.getString("tokens");
-      if (token != "") {
+      if (token != "" && token != null) {
         getMyAccounts();
         getTokenFirebase();
       }
@@ -98,7 +98,9 @@ class _SlidePageState extends State<SlidePage> {
   getTokenFirebase() async {
     String tokenFirebase = await FirebaseMessaging.instance.getToken();
     print("tokenFirebase ===>>> $tokenFirebase");
-    updateTokenLogin(tokenFirebase, token);
+    if (token != "" && token != null) {
+      updateTokenLogin(tokenFirebase, token);
+    }
   }
 
   Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
@@ -117,19 +119,21 @@ class _SlidePageState extends State<SlidePage> {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
         });
+
+    print("token555 ===>> $token");
     print("responseUpdateTokenFirebase = ${response.statusCode}");
-    print("response.body = ${response.body}");
+    print("response.body5555 = ${response.body}");
   }
 
   //user
   MyAccount datas;
-  DataAc dataUser;
+  DataMyAccount dataUser;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+    print("responsegetMyAccounts() = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       // setState(() {
       final String responseString = response.body;
@@ -156,7 +160,7 @@ class _SlidePageState extends State<SlidePage> {
     // resizeToAvoidBottomPadding:
     // false;
     // getTokenFireBase();
-    if (token != "") {
+    if (token != "" && token != null) {
       getMyAccounts();
     }
 

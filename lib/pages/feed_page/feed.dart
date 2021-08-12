@@ -79,7 +79,7 @@ class _FeedPageState extends State<FeedPage> {
     setState(() {
       token = preferences.getString("tokens");
       print("Token >>> $token");
-      if (token != "" || !token.isEmpty) {
+      if (token != "" && token != null) {
         getMyAccounts();
       }
     });
@@ -87,13 +87,13 @@ class _FeedPageState extends State<FeedPage> {
 
   //user
   MyAccount data_MyAccount;
-  DataAc data_DataAc;
+  DataMyAccount data_DataAc;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -164,15 +164,13 @@ class _FeedPageState extends State<FeedPage> {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/recommendRecipe";
 
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      print("555555555555555555555555555555555555555555555");
       final String responseString = response.body;
 
       dataRecommendRecipe = recommendRecipeFromJson(responseString);
-      if (token != "") {
+      if (token != "" && token != null) {
         getMybuy();
       }
       setState(() {});
@@ -187,9 +185,8 @@ class _FeedPageState extends State<FeedPage> {
         "http://apifood.comsciproject.com/pjUsers/recommendUser";
 
     final response = await http.get(Uri.parse(apiUrl));
-    // print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
-      print("pok5555555");
       final String responseString = response.body;
 
       dataRecommendUser = recommendUserFromJson(responseString);
@@ -278,7 +275,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
 
-    print("6666666666666666666666666666666666666666");
+
 
     return Scaffold(
       // backgroundColor: Colors.white70,
@@ -553,17 +550,19 @@ class _FeedPageState extends State<FeedPage> {
                           height: 135,
                         )
                       : Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Container(
-                            height: 135,
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: dataRecommendUser.length,
-                                itemBuilder: (context, index) {
-                                  return _introduce_safe_Card(context,
-                                      dataRecommendUser[index], checkFollowing);
-                                })),
-                      ),
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Container(
+                              height: 135,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: dataRecommendUser.length,
+                                  itemBuilder: (context, index) {
+                                    return _introduce_safe_Card(
+                                        context,
+                                        dataRecommendUser[index],
+                                        checkFollowing);
+                                  })),
+                        ),
                   // DividerCutom(),
                 ],
               ),

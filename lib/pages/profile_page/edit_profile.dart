@@ -17,7 +17,7 @@ import '../addFood_page/addImage.dart';
 class EditProfilePage extends StatefulWidget {
   // EditProfilePage({Key key}) : super(key: key);
 
-  DataAc data_DataAc;
+  DataMyAccount data_DataAc;
   EditProfilePage(this.data_DataAc);
 
   @override
@@ -26,8 +26,8 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  DataAc _data_DataAc;
-  _EditProfilePageState(DataAc data_DataAc) {
+  DataMyAccount _data_DataAc;
+  _EditProfilePageState(DataMyAccount data_DataAc) {
     // this._data_DataAc = data_DataAc;
     _data_DataAc = data_DataAc;
     _imageProfile = data_DataAc.profileImage;

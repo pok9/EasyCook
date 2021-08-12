@@ -38,13 +38,14 @@ class _CommentFoodState extends State<CommentFood> {
 
     setState(() {
       token = preferences.getString("tokens");
+      
       getMyAccounts();
     });
   }
 
   //user
   MyAccount data_MyAccount;
-  DataAc data_DataAc;
+  DataMyAccount data_DataAc;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

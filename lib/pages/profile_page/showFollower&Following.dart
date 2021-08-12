@@ -47,7 +47,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
   }
 
   MyAccount data_MyAccount;
-  DataAc data_DataAc;
+  DataMyAccount data_DataAc;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

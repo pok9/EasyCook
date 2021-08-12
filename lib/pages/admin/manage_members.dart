@@ -40,7 +40,7 @@ class _ManageMembersState extends State<ManageMembers> {
 
   //user
   MyAccount datas;
-  DataAc dataMyAccount;
+  DataMyAccount dataMyAccount;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

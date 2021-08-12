@@ -51,7 +51,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
 
   //user
   MyAccount datas;
-  DataAc myDataUser;
+  DataMyAccount myDataUser;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

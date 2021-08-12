@@ -46,7 +46,7 @@ class _CategoryState extends State<Category> {
 
   //user
   MyAccount datas;
-  DataAc dataUser;
+  DataMyAccount dataUser;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

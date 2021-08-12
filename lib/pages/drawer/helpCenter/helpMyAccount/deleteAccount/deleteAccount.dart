@@ -56,7 +56,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
   //user
   MyAccount datas;
-  DataAc dataUser;
+  DataMyAccount dataUser;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

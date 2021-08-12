@@ -37,7 +37,7 @@ class _SearchPage2State extends State<SearchPage2> {
   }
 
   //ข้อมูลตัวเอง
-  DataAc dataAcUser;
+  DataMyAccount dataAcUser;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 

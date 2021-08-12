@@ -11,25 +11,34 @@ String myAccountToJson(MyAccount data) => json.encode(data.toJson());
 class MyAccount {
     MyAccount({
         this.success,
+        this.message,
         this.data,
     });
 
     int success;
-    List<DataAc> data;
+    String message;
+    List<DataMyAccount> data;
 
     factory MyAccount.fromJson(Map<String, dynamic> json) => MyAccount(
         success: json["success"],
-        data: List<DataAc>.from(json["data"].map((x) => DataAc.fromJson(x))),
+        message: json["message"],
+        // data: json["data"] != null ? new List<DataMyAccount>.from( json["data"].map((x) => DataMyAccount.fromJson(x))) : List<DataMyAccount>()
+        data: List<DataMyAccount>.from(json["data"].map((x) => DataMyAccount.fromJson(x))),
+    
+    
+    
+    
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
+        "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
     };
 }
 
-class DataAc {
-    DataAc({
+class DataMyAccount {
+    DataMyAccount({
         this.userId,
         this.email,
         this.facebookId,
@@ -51,7 +60,7 @@ class DataAc {
     int balance;
     String profileImage;
 
-    factory DataAc.fromJson(Map<String, dynamic> json) => DataAc(
+    factory DataMyAccount.fromJson(Map<String, dynamic> json) => DataMyAccount(
         userId: json["user_ID"],
         email: json["email"],
         facebookId: json["facebookID"],

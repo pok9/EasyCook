@@ -19,7 +19,7 @@ class Drawers extends StatefulWidget {
   Drawers({this.token, this.data_MyAccount, this.data_DataAc});
   String token;
   MyAccount data_MyAccount;
-  DataAc data_DataAc;
+  DataMyAccount data_DataAc;
 
   @override
   _DrawersState createState() => _DrawersState();
@@ -41,7 +41,7 @@ class _DrawersState extends State<Drawers> {
 
     final response = await http.get(Uri.parse(apiUrl),
         headers: {"Authorization": "Bearer ${this.widget.token}"});
-    print("response = " + response.statusCode.toString());
+    print("responsegetCountVisited_function = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -78,7 +78,7 @@ class _DrawersState extends State<Drawers> {
     final response = await http.post(Uri.parse(apiUrl),
         headers: {"Authorization": "Bearer ${this.widget.token}"});
     setState(() {
-      print("response = " + response.statusCode.toString());
+      print("responsesetVisited = " + response.statusCode.toString());
       print("responseSetVisited => ${response.body}");
       getCountVisited_function();
     });
@@ -87,7 +87,8 @@ class _DrawersState extends State<Drawers> {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-
+    print("this.widget.token ===>>> ${this.widget.token}");
+    print("this.widget.data_DataAc ===>>> ${this.widget.data_DataAc}");
     return Container(
       width: deviceSize.width - 45,
       child: (this.widget.token != "" && this.widget.data_DataAc != null)
