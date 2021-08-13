@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
@@ -13,6 +14,7 @@ import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
@@ -208,48 +210,50 @@ class _AddFoodPageState extends State<AddFoodPage> {
   //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
 
   //*******************************************************************************************************/
-  String valueChoosePeople = "1 คน";
-  List listPeopleItem = [
-    "1 คน",
-    "2 คน",
-    "3 คน",
-    "4 คน",
-    "5 คน",
-    "6 คน",
-    "7 คน",
-    "8 คน",
-    "9 คน",
-    "10 คน",
-    "มากกว่า 10 คน",
-    "มากกว่า 50 คน",
-    "มากกว่า 100 คน"
-  ];
+  // String valueChoosePeople = "1 คน";
+  // List listPeopleItem = [
+  //   "1 คน",
+  //   "2 คน",
+  //   "3 คน",
+  //   "4 คน",
+  //   "5 คน",
+  //   "6 คน",
+  //   "7 คน",
+  //   "8 คน",
+  //   "9 คน",
+  //   "10 คน",
+  //   "มากกว่า 10 คน",
+  //   "มากกว่า 50 คน",
+  //   "มากกว่า 100 คน"
+  // ];
 
-  String valueChooseTime = "ภายใน 3 นาที";
-  List listTimeItem = [
-    "ภายใน 3 นาที",
-    "ภายใน 5 นาที",
-    "ภายใน 10 นาที",
-    "ภายใน 15 นาที",
-    "ภายใน 30 นาที",
-    "ภายใน 60 นาที",
-    "ภายใน 90 นาที",
-    "ภายใน 2 ชั่วโมง",
-    "มากกว่า 2 ชั่วโมง",
-  ];
+  // String valueChooseTime = "ภายใน 3 นาที";
+  // List listTimeItem = [
+  //   "ภายใน 3 นาที",
+  //   "ภายใน 5 นาที",
+  //   "ภายใน 10 นาที",
+  //   "ภายใน 15 นาที",
+  //   "ภายใน 30 นาที",
+  //   "ภายใน 60 นาที",
+  //   "ภายใน 90 นาที",
+  //   "ภายใน 2 ชั่วโมง",
+  //   "มากกว่า 2 ชั่วโมง",
+  // ];
 
-  String valueChooseFood = "เมนูน้ำ";
-  List listFoodItem = [
-    "เมนูน้ำ",
-    "เมนูต้ม",
-    "เมนูสุขภาพ",
-    "เมนูนิ่ง",
-    "เมนูตุ่น",
-    "เมนูทอด",
-  ];
+  // String valueChooseFood = "เมนูน้ำ";
+  // List listFoodItem = [
+  //   "เมนูน้ำ",
+  //   "เมนูต้ม",
+  //   "เมนูสุขภาพ",
+  //   "เมนูนิ่ง",
+  //   "เมนูตุ่น",
+  //   "เมนูทอด",
+  // ];
 
   TextEditingController _ctrlPrice = TextEditingController()
-    ..text = 'ฟรี'; //ราคา
+    ..text = '0.00'; //ราคา
+
+  TextEditingController _ctrlPriceCopy = TextEditingController()..text = '0.00';
 
   //########################################################################################################/
 
@@ -706,7 +710,18 @@ class _AddFoodPageState extends State<AddFoodPage> {
   bool clearNameFood = true;
   bool clearDesciptionFood = true;
 
-  
+  String _selectPeoples;
+  List<People> _peoples;
+
+  String _selectTimes;
+  List<Time> _times;
+
+  String _selectCategorys;
+  List<Category> _categorys;
+
+  String _selectPrices;
+  List<Price> _prices;
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -773,9 +788,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       addImage[0].image,
                       _ctrlNameFood.text,
                       _ctrlPrice.text,
-                      valueChoosePeople,
-                      valueChooseTime,
-                      valueChooseFood,
+                      _selectPeoples,
+                      _selectTimes,
+                      _selectCategorys,
                       _ctrlExplain.text);
 
                   // print(postsData.success);
@@ -1108,109 +1123,220 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                  child: Table(
-                    border: TableBorder.all(),
-                    textDirection: TextDirection.ltr,
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                  child: Row(
                     children: [
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('สำหรับ'),
-                        ),
-                        Container(
-                          width: 300.0,
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              // hint: Text('1 คน'),
-                              isExpanded: true,
-                              underline: SizedBox(),
-                              value: valueChoosePeople,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  valueChoosePeople = newValue;
-                                });
-                              },
-                              items: listPeopleItem.map((valueItem) {
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Text(valueItem),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('เวลา'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: DropdownButton(
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            value: valueChooseTime,
-                            onChanged: (newValue) {
-                              setState(() {
-                                valueChooseTime = newValue;
-                              });
-                            },
-                            items: listTimeItem.map((valueItem) {
-                              return DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(valueItem),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('หมวดหมู่อาหาร'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: DropdownButton(
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            value: valueChooseFood,
-                            onChanged: (newValue) {
-                              setState(() {
-                                valueChooseFood = newValue;
-                              });
-                            },
-                            items: listFoodItem.map((valueItem) {
-                              return DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(valueItem),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('ราคา(\u0E3F)'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: TextField(
-                            controller: _ctrlPrice,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ]),
+                      Text(
+                        "เพิ่มแท็กสูตรอาหาร",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "สำหรับ",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: peopleWidgets.toList(),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "เวลา",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: timeWidgets.toList(),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "หมวดหมู่อาหาร",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: categoryWidgets.toList(),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "ราคา",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          children: priceWidgets.toList(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                //   child: Table(
+                //     border: TableBorder.all(),
+                //     textDirection: TextDirection.ltr,
+                //     children: [
+                //       TableRow(children: [
+                //         Padding(
+                //           padding: const EdgeInsets.all(15.0),
+                //           child: Text('สำหรับ'),
+                //         ),
+                //         Container(
+                //           width: 300.0,
+                //           padding: EdgeInsets.only(left: 16, right: 16),
+                //           child: DropdownButtonHideUnderline(
+                //             child: DropdownButton(
+                //               // hint: Text('1 คน'),
+                //               isExpanded: true,
+                //               underline: SizedBox(),
+                //               value: valueChoosePeople,
+                //               onChanged: (newValue) {
+                //                 setState(() {
+                //                   valueChoosePeople = newValue;
+                //                 });
+                //               },
+                //               items: listPeopleItem.map((valueItem) {
+                //                 return DropdownMenuItem(
+                //                   value: valueItem,
+                //                   child: Text(valueItem),
+                //                 );
+                //               }).toList(),
+                //             ),
+                //           ),
+                //         ),
+                //       ]),
+                //       TableRow(children: [
+                //         Padding(
+                //           padding: const EdgeInsets.all(15.0),
+                //           child: Text('เวลา'),
+                //         ),
+                //         Container(
+                //           padding: EdgeInsets.only(left: 16, right: 16),
+                //           child: DropdownButton(
+                //             isExpanded: true,
+                //             underline: SizedBox(),
+                //             value: valueChooseTime,
+                //             onChanged: (newValue) {
+                //               setState(() {
+                //                 valueChooseTime = newValue;
+                //               });
+                //             },
+                //             items: listTimeItem.map((valueItem) {
+                //               return DropdownMenuItem(
+                //                 value: valueItem,
+                //                 child: Text(valueItem),
+                //               );
+                //             }).toList(),
+                //           ),
+                //         ),
+                //       ]),
+                //       TableRow(children: [
+                //         Padding(
+                //           padding: const EdgeInsets.all(15.0),
+                //           child: Text('หมวดหมู่อาหาร'),
+                //         ),
+                //         Container(
+                //           padding: EdgeInsets.only(left: 16, right: 16),
+                //           child: DropdownButton(
+                //             isExpanded: true,
+                //             underline: SizedBox(),
+                //             value: valueChooseFood,
+                //             onChanged: (newValue) {
+                //               setState(() {
+                //                 valueChooseFood = newValue;
+                //               });
+                //             },
+                //             items: listFoodItem.map((valueItem) {
+                //               return DropdownMenuItem(
+                //                 value: valueItem,
+                //                 child: Text(valueItem),
+                //               );
+                //             }).toList(),
+                //           ),
+                //         ),
+                //       ]),
+                //       TableRow(children: [
+                //         Padding(
+                //           padding: const EdgeInsets.all(15.0),
+                //           child: Text('ราคา(\u0E3F)'),
+                //         ),
+                //         Container(
+                //           padding: EdgeInsets.only(left: 16, right: 16),
+                //           child: TextField(
+                //             controller: _ctrlPrice,
+                //             keyboardType: TextInputType.number,
+                //             decoration: InputDecoration(
+                //               border: InputBorder.none,
+                //             ),
+                //           ),
+                //         ),
+                //       ]),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -1353,6 +1479,53 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
     ingredient_row = widget.ingredient_row_start;
     howto_row = widget.howto_row_start;
+
+    _selectPeoples = "1 คน";
+    _peoples = <People>[
+      const People('1 คน'),
+      const People('2 คน'),
+      const People('3 คน'),
+      const People('4 คน'),
+      const People('5 คน'),
+      const People('6 คน'),
+      const People('7 คน'),
+      const People('8 คน'),
+      const People('9 คน'),
+      const People('10 คน'),
+      const People('มากกว่า 10 คน'),
+      const People('มากกว่า 50 คน'),
+      const People('มากกว่า 100 คน'),
+    ];
+
+    _selectTimes = "ภายใน 3 นาที";
+    _times = <Time>[
+      const Time('ภายใน 3 นาที'),
+      const Time('ภายใน 5 นาที'),
+      const Time('ภายใน 10 นาที'),
+      const Time('ภายใน 15 นาที'),
+      const Time('ภายใน 30 นาที'),
+      const Time('ภายใน 60 นาที'),
+      const Time('ภายใน 90 นาที'),
+      const Time('ภายใน 2 ชั่วโมง'),
+      const Time('มากกว่า 2 ชั่วโมง'),
+    ];
+
+    _selectCategorys = "ไม่ระบุ";
+    _categorys = <Category>[
+      const Category('ไม่ระบุ'),
+      const Category('เมนูน้ำ'),
+      const Category('เมนูต้ม'),
+      const Category('เมนูสุขภาพ'),
+      const Category('เมนูนิ่ง'),
+      const Category('เมนูตุ่น'),
+      const Category('เมนูทอด'),
+    ];
+
+    _selectPrices = "ฟรี";
+    _prices = <Price>[
+       Price('ฟรี'),
+       Price('ระบุราคา'),
+    ];
   }
 
   @override
@@ -1361,18 +1534,285 @@ class _AddFoodPageState extends State<AddFoodPage> {
     super.dispose();
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
+  Iterable<Widget> get peopleWidgets sync* {
+    for (People people in _peoples) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            child: Icon(Icons.person),
+          ),
+          label: Text(
+            people.name,
+            style: TextStyle(
+                color: (_selectPeoples.contains(people.name))
+                    ? Colors.white
+                    : Colors.black),
+          ),
+          selected: _selectPeoples.contains(people.name),
+          onSelected: (bool selected) {
+            setState(() {
+              _selectPeoples = people.name;
+            });
+          },
+        ),
+      );
+    }
+  }
 
-  // @override
-  // void didUpdateWidget(test oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  // }
+  Iterable<Widget> get timeWidgets sync* {
+    for (Time time in _times) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            backgroundColor: Colors.green,
+            child: Icon(
+              Icons.access_time_outlined,
+              color: Colors.amber,
+            ),
+          ),
+          label: Text(
+            time.name,
+            style: TextStyle(
+                color: (_selectTimes.contains(time.name))
+                    ? Colors.white
+                    : Colors.black),
+          ),
+          selected: _selectTimes.contains(time.name),
+          onSelected: (bool selected) {
+            setState(() {
+              _selectTimes = time.name;
+            });
+          },
+        ),
+      );
+    }
+  }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  // }
+  Iterable<Widget> get categoryWidgets sync* {
+    for (Category category in _categorys) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            backgroundColor: Colors.pink,
+            child: Icon(
+              Icons.food_bank,
+              // color: Colors.amber,
+            ),
+          ),
+          label: Text(
+            category.name,
+            style: TextStyle(
+                color: (_selectCategorys.contains(category.name))
+                    ? Colors.white
+                    : Colors.black),
+          ),
+          selected: _selectCategorys.contains(category.name),
+          onSelected: (bool selected) {
+            setState(() {
+              _selectCategorys = category.name;
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  Iterable<Widget> get priceWidgets sync* {
+    for (Price price in _prices) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            backgroundColor: Colors.amberAccent,
+            child: Icon(
+              Icons.monetization_on,
+              color: Colors.white,
+            ),
+          ),
+          label: Text(
+            (price.name == "ฟรี" || price.name == "ระบุราคา") ? price.name : price.name+" บาท",
+            style: TextStyle(
+                color: (_selectPrices.contains(price.name))
+                    ? Colors.white
+                    : Colors.black),
+          ),
+          selected: _selectPrices.contains(price.name),
+          onSelected: (bool selected) {
+            setState(() {
+              _selectPrices = price.name;
+
+              if (_selectPrices != "ฟรี") {
+                _tripEditModalBottomSheet(context);
+              } else {
+                 _prices[1] = Price('ระบุราคา');
+                _ctrlPrice.text = "0.00";
+                _ctrlPriceCopy.text = "0.00";
+              }
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  void _tripEditModalBottomSheet(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _buildBottomNavigationMenu(context),
+              ),
+            ));
+  }
+
+  Container _buildBottomNavigationMenu(context) {
+    return Container(
+
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "ระบุราคา(บาท)",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context);
+                          if (_ctrlPriceCopy.text == "0.00") {
+                            _ctrlPrice.text = "0.00";
+                             _selectPrices = "ฟรี";
+                             _prices[1] = Price('ระบุราคา');
+                      
+                          }
+                          
+                         
+                        });
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.blue,
+                        size: 25,
+                      ))
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(7),
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^(\d+)?\.?\d{0,2}')),
+                    // FilteringTextInputFormatter.allow(RegExp('[1234567890.0]')),
+                    // FilteringTextInputFormatter.deny('..')
+
+                    //   FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: _ctrlPrice,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    labelText: 'ราคา',
+                  ),
+                  autofocus: false,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  // padding: EdgeInsets.all(20),
+
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          Navigator.pop(context);
+                          _ctrlPriceCopy.text = _ctrlPrice.text;
+                          if(_ctrlPriceCopy.text == "0.00" || _ctrlPriceCopy.text == "" || double.parse(_ctrlPrice.text) == 0){
+                            _ctrlPrice.text = "0.00";
+                            _ctrlPriceCopy.text == "0.00";
+                            _selectPrices = "ฟรี";
+                            _prices[1] = Price('ระบุราคา');
+                          }else{
+   
+                            _prices[1] = Price('${_ctrlPrice.text}');
+                            _selectPrices = _ctrlPrice.text;
+                            
+                          }
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'ตกลง',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+}
+
+class People {
+  const People(this.name);
+  final String name;
+}
+
+class Time {
+  const Time(this.name);
+  final String name;
+}
+
+class Category {
+  const Category(this.name);
+  final String name;
+}
+
+class Price {
+  const Price(this.name);
+  final String name;
 }

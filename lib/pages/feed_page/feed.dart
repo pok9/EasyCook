@@ -964,8 +964,11 @@ class _FeedPageState extends State<FeedPage> {
                               shape: BoxShape.circle,
                               image: new DecorationImage(
                                   fit: BoxFit.fill,
+                                  
                                   image: new NetworkImage(
-                                      dataRecommendRecipe.profileImage))),
+                                      dataRecommendRecipe.profileImage)
+                                      
+                                      )),
                         ),
                         new SizedBox(
                           width: 10.0,

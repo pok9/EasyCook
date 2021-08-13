@@ -554,98 +554,105 @@ class _ShowFoodState extends State<ShowFood> {
                   (dataMyAccont == null || dataFood == null)
                       ? Container()
                       : (dataMyAccont.userId != dataFood.userId)
-                          ? (dataMyAccont.userStatus == 0) ? Container() :PopupMenuButton(
-                              child: Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Icon(Icons.more_horiz_outlined),
-                              )),
-                              onSelected: (value) {
-                                if (value == 1) {
-                                  print("รายงานสูตรอาหารนี้");
+                          ? (dataMyAccont.userStatus == 0)
+                              ? Container()
+                              : PopupMenuButton(
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: Icon(Icons.more_horiz_outlined),
+                                  )),
+                                  onSelected: (value) {
+                                    if (value == 1) {
+                                      print("รายงานสูตรอาหารนี้");
 
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return ReportFood();
-                                      }).then((value) async {
-                                    if (value != null) {
-                                      showDialog(
-                                          context: context,
-                                          builder: (contex) {
-                                            return AlertDialog(
-                                                content: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text("กรุณารอสักครู่...   "),
-                                                CircularProgressIndicator()
-                                              ],
-                                            ));
-                                          });
-
-                                      AddReport dataAddReport = await addReport(
-                                          dataFood.userId.toString(),
-                                          "food",
-                                          dataFood.rid.toString(),
-                                          "รายงานสูตรอาหาร",
-                                          value[0],
-                                          value[1]);
-
-                                      Navigator.pop(context);
-                                      String reportText1;
-                                      String reportText2;
-                                      Color color;
-                                      if (dataAddReport.success == 1) {
-                                        reportText1 = "รายงานสำเร็จ";
-                                        reportText2 = "ขอบคุณสำหรับการรายงาน";
-                                        color = Colors.green;
-                                      } else {
-                                        reportText1 = "รายงานไม่สำเร็จ";
-                                        reportText2 = "โปรดรายงานใหม่ในภายหลัง";
-                                        color = Colors.red;
-                                      }
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            Future.delayed(
-                                                Duration(milliseconds: 1500),
-                                                () {
-                                              Navigator.of(context).pop(true);
+                                            return ReportFood();
+                                          }).then((value) async {
+                                        if (value != null) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (contex) {
+                                                return AlertDialog(
+                                                    content: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                        "กรุณารอสักครู่...   "),
+                                                    CircularProgressIndicator()
+                                                  ],
+                                                ));
+                                              });
 
-                                              // Navigator.pop(context);
-                                            });
-                                            return alertDialog_successful_or_unsuccessful(
-                                                reportText1,
-                                                color,
-                                                reportText2);
-                                          });
-                                      print(
-                                          "dataAddReport.success ===>>> ${dataAddReport.success}");
+                                          AddReport dataAddReport =
+                                              await addReport(
+                                                  dataFood.userId.toString(),
+                                                  "food",
+                                                  dataFood.rid.toString(),
+                                                  "รายงานสูตรอาหาร",
+                                                  value[0],
+                                                  value[1]);
+
+                                          Navigator.pop(context);
+                                          String reportText1;
+                                          String reportText2;
+                                          Color color;
+                                          if (dataAddReport.success == 1) {
+                                            reportText1 = "รายงานสำเร็จ";
+                                            reportText2 =
+                                                "ขอบคุณสำหรับการรายงาน";
+                                            color = Colors.green;
+                                          } else {
+                                            reportText1 = "รายงานไม่สำเร็จ";
+                                            reportText2 =
+                                                "โปรดรายงานใหม่ในภายหลัง";
+                                            color = Colors.red;
+                                          }
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                Future.delayed(
+                                                    Duration(
+                                                        milliseconds: 1500),
+                                                    () {
+                                                  Navigator.of(context)
+                                                      .pop(true);
+
+                                                  // Navigator.pop(context);
+                                                });
+                                                return alertDialog_successful_or_unsuccessful(
+                                                    reportText1,
+                                                    color,
+                                                    reportText2);
+                                              });
+                                          print(
+                                              "dataAddReport.success ===>>> ${dataAddReport.success}");
+                                        }
+                                      });
                                     }
-                                  });
-                                }
-                              },
-                              itemBuilder: (context) {
-                                return [
-                                  PopupMenuItem(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.flag,
-                                          color: Colors.black,
+                                  },
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.flag,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text('รายงานสูตรอาหารนี้'),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text('รายงานสูตรอาหารนี้'),
-                                      ],
-                                    ),
-                                    value: 1,
-                                  ),
-                                ];
-                              }
-                              )
+                                        value: 1,
+                                      ),
+                                    ];
+                                  })
                           : PopupMenuButton(
                               child: Center(
                                   child: Padding(
@@ -1422,7 +1429,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                       context: context,
                       builder: (context) => CustomDialog(
                             title: "ลบสูตรอาหารไม่สำเร็จ",
-                            description: " ",
+                            description: "${deleteData.message}",
                             image:
                                 "https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g",
                           ));

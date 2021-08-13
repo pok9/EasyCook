@@ -41,6 +41,7 @@ class _ReportFoodState extends State<ReportFood> {
 
   List<Exercise> exercises = [
     Exercise(name: 'ละเมิดสิทธิ์ของฉัน'),
+    Exercise(name: 'หมวดหมู่ไม่ถูกต้อง'),
     Exercise(name: 'อื่นๆ'),
   ];
   int _selected;
@@ -92,7 +93,7 @@ class _ReportFoodState extends State<ReportFood> {
           },
         ),
         (isSelect)
-            ? (_selected == 1 && (otherCtl.text == "" && image == null))
+            ? (_selected == exercises.length-1 && (otherCtl.text == "" && image == null))
                 ? Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Text(
@@ -113,7 +114,7 @@ class _ReportFoodState extends State<ReportFood> {
                         path = await addreportImage(this.image.image);
                       }
 
-                      if (_selected != 1) {
+                      if (_selected != exercises.length-1) {
                         print("description => ${exercises[_selected].name}");
                         description = exercises[_selected].name;
                       } else if (otherCtl.text != "" && otherCtl != null) {
@@ -168,7 +169,7 @@ class _ReportFoodState extends State<ReportFood> {
                           });
                     }),
               ),
-              (_selected != 1)
+              (_selected != exercises.length-1)
                   ? Container()
                   : TextFormField(
                       onChanged: (value) {

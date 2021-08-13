@@ -333,14 +333,14 @@ class _SlidePageState extends State<SlidePage> {
                       children: [
                         (dataUser == null)
                             ? Icon(
-                                currentTab == 3
+                                currentTab == 4
                                     ? Icons.account_box
                                     : Icons.account_box_outlined,
-                                color: currentTab == 3
+                                color: currentTab == 4
                                     ? Colors.white
                                     : Colors.grey.shade300,
                                 size: 25)
-                            : currentTab == 3
+                            : currentTab == 4
                                 ? Stack(
                                     children: [
                                       Container(

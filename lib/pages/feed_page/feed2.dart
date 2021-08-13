@@ -81,21 +81,20 @@ class _Feed2PageState extends State<Feed2Page> {
     final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-   
-        final String responseString = response.body;
+      final String responseString = response.body;
 
-        dataNewfeedsglobal = newfeedsglobalFromJson(responseString);
+      dataNewfeedsglobal = newfeedsglobalFromJson(responseString);
 
-        if (dataNewfeedsglobal.length >= 10) {
-          for (int i = 0; i < 10; i++) {
-            dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-          }
-        } else {
-          for (int i = 0; i < dataNewfeedsglobal.length; i++) {
-            dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-          }
+      if (dataNewfeedsglobal.length >= 10) {
+        for (int i = 0; i < 10; i++) {
+          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
         }
-         setState(() {});
+      } else {
+        for (int i = 0; i < dataNewfeedsglobal.length; i++) {
+          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+        }
+      }
+      setState(() {});
     } else {
       return null;
     }
@@ -110,11 +109,10 @@ class _Feed2PageState extends State<Feed2Page> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-  
-        final String responseString = response.body;
+      final String responseString = response.body;
 
-        newFeedsFollow = newFeedsFollowFromJson(responseString);
-         setState(() { });
+      newFeedsFollow = newFeedsFollowFromJson(responseString);
+      setState(() {});
     } else {
       return null;
     }
@@ -126,42 +124,40 @@ class _Feed2PageState extends State<Feed2Page> {
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(40.0), child: AppBar()),
-        
         body: DefaultTabController(
           length: 2,
-        child: Scaffold(
-          appBar: new PreferredSize(
-            preferredSize: Size.fromHeight(40),
-            child: new Container(
-              color: Colors.white70,
-              child: new SafeArea(
-                child: Column(
-                  children: <Widget>[
-                    new Expanded(child: new Container()),
-                    new TabBar(
-                      tabs: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: new Text(
-                            "หน้าแรก",
-                            style: TextStyle(color: Colors.black),
+          child: Scaffold(
+            appBar: new PreferredSize(
+              preferredSize: Size.fromHeight(40),
+              child: new Container(
+                color: Colors.white70,
+                child: new SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      new Expanded(child: new Container()),
+                      new TabBar(
+                        tabs: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: new Text(
+                              "หน้าแรก",
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: new Text(
-                            "การติดตาม",
-                            style: TextStyle(color: Colors.black),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: new Text(
+                              "การติดตาม",
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
-                        ),
-                      ],
-                      
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
             body: TabBarView(children: [
               (dataNewfeedsglobal == null)
                   ? Container()
@@ -292,13 +288,18 @@ class _Feed2PageState extends State<Feed2Page> {
                                 Container(
                                   height: 161,
                                   // width: 500,
-                                  decoration: BoxDecoration(
-                                      // borderRadius: BorderRadius.circular(50),
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              dummyListDataNewfeedsglobal[index]
-                                                  .image),
-                                          fit: BoxFit.cover)),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: 'assets/logos/loadding.gif',
+                                    image: dummyListDataNewfeedsglobal[index]
+                                        .image,
+                                  ),
+                                  // decoration: BoxDecoration(
+                                  //     // borderRadius: BorderRadius.circular(50),
+                                  //     image: DecorationImage(
+                                  //         image: NetworkImage(
+                                  //             dummyListDataNewfeedsglobal[index]
+                                  //                 .image),
+                                  //         fit: BoxFit.cover)),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(4),
