@@ -407,21 +407,42 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     flex: 5,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 0),
-                      child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        maxLines: 5,
+                      //   child: TextFormField(
+                      //     minLines: 2,
+                      // keyboardType: TextInputType.multiline,
+                      // maxLines: null,
+                      //     controller: controller2,
+                      //     onChanged: (text) {
+                      //       print(text + "${displayNumber}.");
+                      //     },
+                      //     decoration: InputDecoration(
+                      //       contentPadding: new EdgeInsets.symmetric(
+                      //           vertical: 5.0, horizontal: 10),
+                      //       filled: true,
+                      //       fillColor: Colors.grey.shade200,
+
+                      //       border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(0),
+                      //         borderSide: BorderSide.none,
+                      //       ),
+                      //       hintText: "วิธีทำ",
+                      //       hintStyle: TextStyle(
+                      //           fontSize: 16,
+                      //           // fontWeight: FontWeight.bold,
+                      //           color: Colors.grey),
+                      //     ),
+                      //   ),
+                      child: TextFormField(
                         controller: controller2,
-                        onChanged: (text) {
-                          print(text + "${displayNumber}.");
-                        },
+                        // maxLength: 60,
+                        minLines: 2,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
                         decoration: InputDecoration(
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 5.0, horizontal: 10),
                           filled: true,
-                          fillColor: Colors.grey.shade200,
+                          fillColor: Color(0xfff3f3f4),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(0),
+                            borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
                           hintText: "วิธีทำ",
@@ -430,6 +451,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               // fontWeight: FontWeight.bold,
                               color: Colors.grey),
                         ),
+                        onChanged: (value) {},
                       ),
                     ),
                   ),
@@ -1516,15 +1538,15 @@ class _AddFoodPageState extends State<AddFoodPage> {
       const Category('เมนูน้ำ'),
       const Category('เมนูต้ม'),
       const Category('เมนูสุขภาพ'),
-      const Category('เมนูนิ่ง'),
+      const Category('เมนูนึ่ง'),
       const Category('เมนูตุ่น'),
       const Category('เมนูทอด'),
     ];
 
     _selectPrices = "ฟรี";
     _prices = <Price>[
-       Price('ฟรี'),
-       Price('ระบุราคา'),
+      Price('ฟรี'),
+      Price('ระบุราคา'),
     ];
   }
 
@@ -1637,7 +1659,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
             ),
           ),
           label: Text(
-            (price.name == "ฟรี" || price.name == "ระบุราคา") ? price.name : price.name+" บาท",
+            (price.name == "ฟรี" || price.name == "ระบุราคา")
+                ? price.name
+                : price.name + " บาท",
             style: TextStyle(
                 color: (_selectPrices.contains(price.name))
                     ? Colors.white
@@ -1651,7 +1675,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
               if (_selectPrices != "ฟรี") {
                 _tripEditModalBottomSheet(context);
               } else {
-                 _prices[1] = Price('ระบุราคา');
+                _prices[1] = Price('ระบุราคา');
                 _ctrlPrice.text = "0.00";
                 _ctrlPriceCopy.text = "0.00";
               }
@@ -1706,12 +1730,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           Navigator.pop(context);
                           if (_ctrlPriceCopy.text == "0.00") {
                             _ctrlPrice.text = "0.00";
-                             _selectPrices = "ฟรี";
-                             _prices[1] = Price('ระบุราคา');
-                      
+                            _selectPrices = "ฟรี";
+                            _prices[1] = Price('ระบุราคา');
                           }
-                          
-                         
                         });
                       },
                       icon: Icon(
@@ -1759,16 +1780,16 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         setState(() {
                           Navigator.pop(context);
                           _ctrlPriceCopy.text = _ctrlPrice.text;
-                          if(_ctrlPriceCopy.text == "0.00" || _ctrlPriceCopy.text == "" || double.parse(_ctrlPrice.text) == 0){
+                          if (_ctrlPriceCopy.text == "0.00" ||
+                              _ctrlPriceCopy.text == "" ||
+                              double.parse(_ctrlPrice.text) == 0) {
                             _ctrlPrice.text = "0.00";
                             _ctrlPriceCopy.text == "0.00";
                             _selectPrices = "ฟรี";
                             _prices[1] = Price('ระบุราคา');
-                          }else{
-   
+                          } else {
                             _prices[1] = Price('${_ctrlPrice.text}');
                             _selectPrices = _ctrlPrice.text;
-                            
                           }
                         });
                       },

@@ -565,7 +565,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         content: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("กรุณารอสักครู่222...   "),
+                        Text("กรุณารอสักครู่...   "),
                         CircularProgressIndicator()
                       ],
                     )),

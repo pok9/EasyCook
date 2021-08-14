@@ -1,4 +1,7 @@
 import 'package:easy_cook/models/notification/getNotification/getNotificationModel.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -61,7 +64,7 @@ class _NotificationPageState extends State<NotificationPage> {
     });
 
     print("clearNotificationData======" + (response.statusCode.toString()));
-    print("clearNotificationData === >> "+ (response.body.toString()));
+    print("clearNotificationData === >> " + (response.body.toString()));
     setState(() {
       getNotification();
     });
@@ -80,13 +83,11 @@ class _NotificationPageState extends State<NotificationPage> {
                 if (value == 1) {
                   print("555");
                   clearNotificationData();
-                  
                 }
               });
             },
             itemBuilder: (context) {
               return [
-                
                 PopupMenuItem(
                   child: Text('ลบการแจ้งเตือนทั้งหมด'),
                   value: 1,
@@ -140,10 +141,12 @@ class _NotificationPageState extends State<NotificationPage> {
                                         ? Colors.green
                                         : (dataGetNotification[index].status ==
                                                 "comment")
-                                            ? Colors.blue :(dataGetNotification[index].status ==
-                                                "scorefood")
-                                            ? Colors.red
-                                            : Colors.grey,
+                                            ? Colors.blue
+                                            : (dataGetNotification[index]
+                                                        .status ==
+                                                    "scorefood")
+                                                ? Colors.red
+                                                : Colors.grey,
                                     backgroundImage: (dataGetNotification[index]
                                                 .status ==
                                             "buy")
@@ -152,17 +155,19 @@ class _NotificationPageState extends State<NotificationPage> {
                                         : (dataGetNotification[index].status ==
                                                 "comment")
                                             ? NetworkImage(
-                                                "https://image.flaticon.com/icons/png/512/4081/4081342.png") :
-                                                (dataGetNotification[index].status ==
-                                                "scorefood")
-                                            ? NetworkImage(
-                                                "https://image.flaticon.com/icons/png/512/3237/3237420.png") : 
-                                                (dataGetNotification[index].status ==
-                                                "follow")
-                                            ? NetworkImage(
-                                                "https://image.flaticon.com/icons/png/512/1057/1057046.png")
-                                            : NetworkImage(
-                                                "https://image.flaticon.com/icons/png/512/3602/3602137.png")),
+                                                "https://image.flaticon.com/icons/png/512/4081/4081342.png")
+                                            : (dataGetNotification[index]
+                                                        .status ==
+                                                    "scorefood")
+                                                ? NetworkImage(
+                                                    "https://image.flaticon.com/icons/png/512/3237/3237420.png")
+                                                : (dataGetNotification[index]
+                                                            .status ==
+                                                        "follow")
+                                                    ? NetworkImage(
+                                                        "https://image.flaticon.com/icons/png/512/1057/1057046.png")
+                                                    : NetworkImage(
+                                                        "https://image.flaticon.com/icons/png/512/3602/3602137.png")),
                               ),
                             ],
                           ),
@@ -177,7 +182,23 @@ class _NotificationPageState extends State<NotificationPage> {
                         "${dataGetNotification[index].description}\n\n${dataGetNotification[index].date}"),
                     trailing: Icon(Icons.more_horiz),
                     isThreeLine: true,
-                    onTap: () {},
+                    onTap: () {
+                      if (dataGetNotification[index].status == "follow" ||
+                          dataGetNotification[index].status == "buy" ||
+                          dataGetNotification[index].status == "scorefood") {
+                        Navigator.push(context,
+                            CupertinoPageRoute(builder: (context) {
+                          return ProfileUser(
+                              dataGetNotification[index].fromUserid);
+                        }));
+                      } else if (dataGetNotification[index].status ==
+                          "comment") {
+                        Navigator.push(context,
+                            CupertinoPageRoute(builder: (context) {
+                          return ShowFood(dataGetNotification[index].recipeId);
+                        }));
+                      }
+                    },
                   ),
                 );
               }),
