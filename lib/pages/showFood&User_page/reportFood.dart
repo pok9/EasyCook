@@ -171,25 +171,48 @@ class _ReportFoodState extends State<ReportFood> {
               ),
               (_selected != exercises.length-1)
                   ? Container()
+                  // : TextFormField(
+                  //     onChanged: (value) {
+                  //       setState(() {});
+                  //     },
+                  //     controller: otherCtl,
+                  //     autofocus: false,
+                  //     maxLines: 1,
+                  //     style: TextStyle(fontSize: 18),
+                  //     keyboardType: TextInputType.multiline,
+                  //     decoration: new InputDecoration(
+                  //       filled: true,
+                  //       fillColor: Color(0xfff3f3f4),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide.none,
+                  //       ),
+                  //       hintText: "โปรดระบุ",
+                  //     ),
+                  //   ),
                   : TextFormField(
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      controller: otherCtl,
-                      autofocus: false,
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 18),
-                      keyboardType: TextInputType.multiline,
-                      decoration: new InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xfff3f3f4),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
+                        controller: otherCtl,
+                   
+                        minLines: 2,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xfff3f3f4),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: "โปรดระบุ",
+                          hintStyle: TextStyle(
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.grey),
                         ),
-                        hintText: "โปรดระบุ",
+                        onChanged: (value) {
+                           setState(() {});
+                        },
                       ),
-                    ),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Row(

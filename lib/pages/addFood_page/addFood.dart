@@ -340,7 +340,23 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide.none,
                   ),
-                  suffixIcon: IconButton(
+                  // suffixIcon: IconButton(
+                  //   icon: Icon(Icons.clear),
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       ingredient_row--;
+                  //       ctl_ingredient_row.remove(controller);
+                  //       if (ctl_ingredient_row.length == 0) {
+                  //         this.ingredient_row = 1;
+                  //       }
+                  //       print('controllers ${ctl_ingredient_row.length}');
+                  //     });
+                  //   },
+                  // ),
+                ),
+              ),
+            ),
+            IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
                       setState(() {
@@ -352,10 +368,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         print('controllers ${ctl_ingredient_row.length}');
                       });
                     },
-                  ),
-                ),
-              ),
-            ),
+                  )
           ],
         ),
       );
@@ -463,7 +476,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             padding: const EdgeInsets.all(8),
                             child: Container(
                               height: 75,
-                              color: Colors.grey.shade200,
+                              color: Color(0xfff3f3f4),
+                              
                               child: IconButton(
                                   iconSize: 30,
                                   icon: Icon(
@@ -668,9 +682,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                       )),
                       ],
                     ),
-              Divider(
-                color: Colors.black,
-              )
+              // Divider(
+              //   color: Colors.black,
+              // )
             ],
           ),
         ),
