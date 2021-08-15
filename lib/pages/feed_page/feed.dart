@@ -85,8 +85,6 @@ class _FeedPageState extends State<FeedPage> {
     });
   }
 
-   
-
   //user
   MyAccount data_MyAccount;
   DataMyAccount data_DataAc;
@@ -276,8 +274,6 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-
-
 
     return Scaffold(
       // backgroundColor: Colors.white70,
@@ -923,7 +919,11 @@ class _FeedPageState extends State<FeedPage> {
                     builder: (context) => RecipePurchasePage(
                           req_rid: dataRecommendRecipe.rid,
                         )),
-              ).then((value) => getMybuy());
+              ).then((value) {
+                if (token != "" && token != null) {
+                  getMybuy();
+                }
+              });
             }
           } else {
             if (dataRecommendRecipe.price == 0) {
@@ -941,7 +941,11 @@ class _FeedPageState extends State<FeedPage> {
                     builder: (context) => RecipePurchasePage(
                           req_rid: dataRecommendRecipe.rid,
                         )),
-              ).then((value) => getMybuy());
+              ).then((value) {
+                 if (token != "" && token != null) {
+                  getMybuy();
+                }
+              });
             }
           }
         },
@@ -964,11 +968,8 @@ class _FeedPageState extends State<FeedPage> {
                               shape: BoxShape.circle,
                               image: new DecorationImage(
                                   fit: BoxFit.fill,
-                                  
                                   image: new NetworkImage(
-                                      dataRecommendRecipe.profileImage)
-                                      
-                                      )),
+                                      dataRecommendRecipe.profileImage))),
                         ),
                         new SizedBox(
                           width: 10.0,
@@ -1099,7 +1100,11 @@ class _FeedPageState extends State<FeedPage> {
                   builder: (context) => RecipePurchasePage(
                         req_rid: dataRecommendRecipe.rid,
                       )),
-            ).then((value) => getMybuy());
+            ).then((value){
+               if (token != "" && token != null) {
+                  getMybuy();
+                }
+            });
           }
         } else {
           if (dataRecommendRecipe.price == 0) {
@@ -1117,7 +1122,11 @@ class _FeedPageState extends State<FeedPage> {
                   builder: (context) => RecipePurchasePage(
                         req_rid: dataRecommendRecipe.rid,
                       )),
-            ).then((value) => getMybuy());
+            ).then((value) {
+               if (token != "" && token != null) {
+                  getMybuy();
+                }
+            });
           }
         }
       },
@@ -1290,7 +1299,11 @@ class _FeedPageState extends State<FeedPage> {
               context,
               MaterialPageRoute(
                   builder: (context) => ProfileUser(dataRecommendUser.userId)),
-            ).then((value) => checkFollowings());
+            ).then((value){
+              if(token != "" && token != null){
+                checkFollowings();
+              }
+            });
           }
 
           // Navigator.push(context, CupertinoPageRoute(builder: (context) {

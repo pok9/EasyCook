@@ -5,8 +5,10 @@ import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_mode
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
+import 'package:easy_cook/models/report/addReport/addReport_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
+import 'package:easy_cook/pages/showFood&User_page/reportFood&User/reportUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -178,6 +180,51 @@ class _ProfileUserState extends State<ProfileUser> {
 
   //===========================================================================
 
+  Future<AddReport> addReport(String userTarget_ID, String type_report,
+      String recipe_ID, String title, String description, String image) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/addReport";
+
+    var data = {
+      "userTarget_ID": userTarget_ID,
+      "type_report": type_report,
+      "recipe_ID": recipe_ID,
+      "title": title,
+      "description": description,
+      "image": image
+    };
+
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return addReportFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  AlertDialog alertDialog_successful_or_unsuccessful(
+      String reportText1, Color color, String reportText2) {
+    return AlertDialog(
+      title: Text(reportText1, style: TextStyle(color: Colors.white)),
+      titleTextStyle: TextStyle(
+          fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+      backgroundColor: color,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      content: Text(reportText2, style: TextStyle(color: Colors.white)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -187,6 +234,100 @@ class _ProfileUserState extends State<ProfileUser> {
       appBar: AppBar(
         title: Text(data_PostUser == null ? "" : data_PostUser.aliasName),
         elevation: 0.0,
+        actions: [
+          (data_PostUser == null || data_DataAc == null)
+              ? Container()
+              : (data_DataAc.userStatus == 0 ||
+                      (token == "" && token == null))
+                  ? Container()
+                  : PopupMenuButton(
+                      child: Center(
+                          child: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Icon(Icons.more_horiz_outlined),
+                      )),
+                      onSelected: (value) {
+                        print(value);
+                        if (value == 0) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ReportUser();
+                              }).then((value) async {
+                            if (value != null) {
+                              showDialog(
+                                  context: context,
+                                  builder: (contex) {
+                                    return AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("กรุณารอสักครู่...   "),
+                                        CircularProgressIndicator()
+                                      ],
+                                    ));
+                                  });
+
+                              AddReport dataAddReport = await addReport(
+                                  data_PostUser.userId.toString(),
+                                  "user",
+                                  null,
+                                  "รายงานผู้ใช้",
+                                  value[0],
+                                  value[1]);
+
+                              Navigator.pop(context);
+                              String reportText1;
+                              String reportText2;
+                              Color color;
+                              if (dataAddReport.success == 1) {
+                                reportText1 = "รายงานสำเร็จ";
+                                reportText2 = "ขอบคุณสำหรับการรายงาน";
+                                color = Colors.green;
+                              } else {
+                                reportText1 = "รายงานไม่สำเร็จ";
+                                reportText2 = "โปรดรายงานใหม่ในภายหลัง";
+                                color = Colors.red;
+                              }
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    Future.delayed(Duration(milliseconds: 1500),
+                                        () {
+                                      Navigator.of(context).pop(true);
+
+                                      // Navigator.pop(context);
+                                    });
+                                    return alertDialog_successful_or_unsuccessful(
+                                        reportText1, color, reportText2);
+                                  });
+                              print(
+                                  "dataAddReport.success ===>>> ${dataAddReport.success}");
+                            }
+                          });
+                        }
+                      },
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.flag,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text('รายงานผู้ใช้'),
+                              ],
+                            ),
+                            value: 0,
+                          ),
+                        ];
+                      })
+        ],
       ),
       body: (data_PostUser == null && checkFollowers == null) ||
               (data_PostUser == null && checkFollowers != null)

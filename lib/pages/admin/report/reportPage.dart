@@ -84,7 +84,7 @@ class _ReportPageState extends State<ReportPage> {
                             child: Row(
                               children: [
                                 Text(
-                                  "เจ้าของสูตรอาหารที่โดนแจ้งรายงาน",
+                                  "บัญชีผู้ใช้ที่โดนแจ้งรายงาน",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold),
@@ -139,68 +139,75 @@ class _ReportPageState extends State<ReportPage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Card(
-                    color: Colors.grey.shade100,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "สูตรอาหารที่โดนแจ้งรายงาน",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    // child: Text(
-                                    //   "ชื่อสูตรอาหาร : "+dataRecipe.recipeName,
-                                    //   style: TextStyle(
-                                    //       fontSize: 20,
-                                    //       fontWeight: FontWeight.normal),
-                                    // ),
-                                    child: Text.rich(
-                                        TextSpan(children: <InlineSpan>[
-                                  TextSpan(
-                                    text: "ชื่อสูตรอาหาร : ",
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: dataRecipe.recipeName,
-                                    style: TextStyle(
-                                      fontSize: 17,
+                (dataRecipe == null)
+                    ? Container()
+                    : (dataRecipe.recipeId == null &&
+                            dataRecipe.recipeImage == null &&
+                            dataRecipe.recipeName == null)
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Card(
+                              color: Colors.grey.shade100,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "สูตรอาหารที่โดนแจ้งรายงาน",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  )
-                                ])))
-                              ],
+                                    (dataRecipe == null)
+                                        ? Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    child: Text.rich(
+                                                        TextSpan(children: <
+                                                            InlineSpan>[
+                                                  TextSpan(
+                                                    text: "ชื่อสูตรอาหาร : ",
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  TextSpan(
+                                                    text: dataRecipe.recipeName,
+                                                    style: TextStyle(
+                                                      fontSize: 17,
+                                                    ),
+                                                  )
+                                                ])))
+                                              ],
+                                            ),
+                                          ),
+                                    (dataRecipe == null)
+                                        ? Container()
+                                        : (dataRecipe.recipeImage == null)
+                                            ? Container()
+                                            : FadeInImage.assetNetwork(
+                                                placeholder:
+                                                    'assets/logos/loadding.gif',
+                                                image: dataRecipe.recipeImage,
+                                              ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                          (dataRecipe == null)
-                              ? Container()
-                              : FadeInImage.assetNetwork(
-                                  placeholder: 'assets/logos/loadding.gif',
-                                  image: dataRecipe.recipeImage,
-                                ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Card(
@@ -260,7 +267,7 @@ class _ReportPageState extends State<ReportPage> {
                             child: Row(
                               children: [
                                 Text(
-                                  "คนที่แจ้งรายงาน",
+                                  "บัญชีผู้ใช้ที่แจ้งรายงาน",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold),

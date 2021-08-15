@@ -12,7 +12,7 @@ import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/showFood&User_page/commentFood.dart/commentFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
-import 'package:easy_cook/pages/showFood&User_page/reportFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/reportFood&User/reportFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
 
 import 'package:easy_cook/pages/video_items.dart';

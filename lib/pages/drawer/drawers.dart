@@ -29,7 +29,7 @@ class _DrawersState extends State<Drawers> {
   @override
   void initState() {
     super.initState();
-    if (this.widget.token != "") {
+    if (this.widget.token != "" && this.widget.token != null) {
       getCountVisited_function();
     }
   }
