@@ -560,15 +560,18 @@ class _ScrollProfilePage2BottomNavbarState extends State
                 close: 1,
               )
             : data_DataAc == null || data_MyPost == null
-                ? Container(
-                    child: AlertDialog(
-                        content: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("กรุณารอสักครู่...   "),
-                        CircularProgressIndicator()
-                      ],
-                    )),
+                // ? Container(
+                //     child: AlertDialog(
+                //         content: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Text("กรุณารอสักครู่...   "),
+                //         CircularProgressIndicator()
+                //       ],
+                //     )),
+                //   )
+                ? Center(
+                    child: CircularProgressIndicator(),
                   )
                 : buildNestedScrollView(),
       ),
@@ -603,95 +606,84 @@ class _ScrollProfilePage2BottomNavbarState extends State
           physics: NeverScrollableScrollPhysics(),
           itemCount: data_RecipePost
               .length, /////////////////////////////////////////////////////////////////
-          itemBuilder: (context, index) => index < 0
-              ? new SizedBox(
-                  child: AlertDialog(
-                      content: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("กรุณารอสักครู่1111...   "),
-                      CircularProgressIndicator()
-                    ],
-                  )),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    //1st row
+          itemBuilder: (context, index) => Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              //1st row
 
-                    //2nd row
-                    GestureDetector(
-                      onTap: () {
-                        print("up $index");
-                        print(data_RecipePost[index].rid);
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context) {
-                          return ShowFood(data_RecipePost[index].rid);
-                        })).then((value) => findUser());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: Container(
-                          width: deviceSize.width,
-                          height: 300,
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(24.0),
-                            child: Image(
-                              fit: BoxFit.cover,
-                              // alignment: Alignment.topRight,
-                              image: NetworkImage(data_RecipePost[index]
-                                  .image), ////////////////////////////////////////////////////////
-                            ),
-                          ),
+              //2nd row
+              GestureDetector(
+                onTap: () {
+                  print("up $index");
+                  print(data_RecipePost[index].rid);
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) {
+                    return ShowFood(data_RecipePost[index].rid);
+                  })).then((value) => findUser());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Container(
+                    width: deviceSize.width,
+                    height: 300,
+                    child: ClipRRect(
+                      borderRadius: new BorderRadius.circular(24.0),
+                      child: Image(
+                        fit: BoxFit.cover,
+                        // alignment: Alignment.topRight,
+                        image: NetworkImage(data_RecipePost[index]
+                            .image), ////////////////////////////////////////////////////////
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 8, 8.0, 0),
+                child: Text(
+                  data_RecipePost[index].recipeName,
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        new Container(
+                          height: 30.0,
+                          width: 30.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(data_DataAc
+                                      .profileImage))), /////////////////////////////////////////////////
                         ),
-                      ),
+                        new SizedBox(
+                          width: 10.0,
+                        ),
+                        new Text(
+                          data_DataAc
+                              .aliasName, //////////////////////////////////////////////////
+                          style: TextStyle(fontWeight: FontWeight.normal),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 8, 8.0, 0),
-                      child: Text(
-                        data_RecipePost[index].recipeName,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              new Container(
-                                height: 30.0,
-                                width: 30.0,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: new NetworkImage(data_DataAc
-                                            .profileImage))), /////////////////////////////////////////////////
-                              ),
-                              new SizedBox(
-                                width: 10.0,
-                              ),
-                              new Text(
-                                data_DataAc
-                                    .aliasName, //////////////////////////////////////////////////
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              )
-                            ],
-                          ),
-                          new IconButton(
-                              icon: Icon(Icons.more_vert),
-                              onPressed: () {
-                                print("more_vert" + index.toString());
-                              })
-                        ],
-                      ),
-                    ),
+                    new IconButton(
+                        icon: Icon(Icons.more_vert),
+                        onPressed: () {
+                          print("more_vert" + index.toString());
+                        })
                   ],
                 ),
+              ),
+            ],
+          ),
         ),
         GridView.count(
           padding: EdgeInsets.zero,

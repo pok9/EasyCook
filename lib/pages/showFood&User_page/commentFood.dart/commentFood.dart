@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/report/addReport/addReport_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/commentPost_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/deleteComment_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
+import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportComment.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +40,7 @@ class _CommentFoodState extends State<CommentFood> {
 
     setState(() {
       token = preferences.getString("tokens");
-      
+
       getMyAccounts();
     });
   }
@@ -167,6 +169,52 @@ class _CommentFoodState extends State<CommentFood> {
   }
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<AddReport> addReport(String userTarget_ID, String type_report,
+      String recipe_ID, String title, String description, String image) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/addReport";
+
+    var data = {
+      "userTarget_ID": userTarget_ID,
+      "type_report": type_report,
+      "recipe_ID": recipe_ID,
+      "title": title,
+      "description": description,
+      "image": image
+    };
+
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return addReportFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  AlertDialog alertDialog_successful_or_unsuccessful(
+      String reportText1, Color color, String reportText2) {
+    return AlertDialog(
+      title: Text(reportText1, style: TextStyle(color: Colors.white)),
+      titleTextStyle: TextStyle(
+          fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+      backgroundColor: color,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      content: Text(reportText2, style: TextStyle(color: Colors.white)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,7 +229,7 @@ class _CommentFoodState extends State<CommentFood> {
             Expanded(
                 child: ListView(
               children: [
-                (dataGetCommentPost == null)
+                (dataGetCommentPost == null || data_DataAc == null)
                     ? Center(child: CircularProgressIndicator())
                     : ListView.builder(
                         reverse: true,
@@ -202,12 +250,21 @@ class _CommentFoodState extends State<CommentFood> {
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                               child: Text(
                                 dataGetCommentPost[index].aliasName,
-                                style: TextStyle(fontWeight: FontWeight.bold,color: (dataGetCommentPost[index].userStatus == 0) ? Colors.red : Colors.black),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: (dataGetCommentPost[index]
+                                                .userStatus ==
+                                            0)
+                                        ? Colors.red
+                                        : (dataGetCommentPost[index].userId ==
+                                                data_DataAc.userId)
+                                            ? Colors.blue
+                                            : Colors.black),
                               ),
                             ),
                             subtitle: Text(
                               '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                              textAlign: TextAlign.justify,
+                              // textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontFamily: 'OpenSans',
@@ -308,8 +365,124 @@ class _CommentFoodState extends State<CommentFood> {
                                                 );
                                               });
                                         },
-                                        icon: Icon(Icons.more_vert))
-                                    : null,
+                                        icon: Icon(
+                                          Icons.more_vert,
+                                          color: Colors.blue,
+                                        ))
+                                    : IconButton(
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    ListTile(
+                                                      leading: Icon(
+                                                          Icons.flag_outlined),
+                                                      title: Text("รายงาน"),
+                                                      onTap: () {
+                                                        
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return ReportComment();
+                                                            }).then((value) async {
+                                                          if (value != null) {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (contex) {
+                                                                  return AlertDialog(
+                                                                      content:
+                                                                          Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                          "กรุณารอสักครู่...   "),
+                                                                      CircularProgressIndicator()
+                                                                    ],
+                                                                  ));
+                                                                });
+
+                                                            AddReport
+                                                                dataAddReport =
+                                                                await addReport(
+                                                                    dataGetCommentPost[
+                                                                            index]
+                                                                        .userId
+                                                                        .toString(),
+                                                                    "comment",
+                                                                    null,
+                                                                    "รายงานการแสดงความคิดเห็นของผู้ใช้",
+                                                                    value[0],
+                                                                    value[1]);
+
+                                                            Navigator.pop(
+                                                                context);
+                                                            String reportText1;
+                                                            String reportText2;
+                                                            Color color;
+                                                            if (dataAddReport
+                                                                    .success ==
+                                                                1) {
+                                                              reportText1 =
+                                                                  "รายงานสำเร็จ";
+                                                              reportText2 =
+                                                                  "ขอบคุณสำหรับการรายงาน";
+                                                              color =
+                                                                  Colors.green;
+                                                            } else {
+                                                              reportText1 =
+                                                                  "รายงานไม่สำเร็จ";
+                                                              reportText2 =
+                                                                  "โปรดรายงานใหม่ในภายหลัง";
+                                                              color =
+                                                                  Colors.red;
+                                                            }
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  Future.delayed(
+                                                                      Duration(
+                                                                          milliseconds:
+                                                                              1500),
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(
+                                                                            true);
+                                                                    Navigator.pop(
+                                                                        context);
+
+                                                                    // Navigator.pop(context);
+                                                                  });
+                                                                  return alertDialog_successful_or_unsuccessful(
+                                                                      reportText1,
+                                                                      color,
+                                                                      reportText2);
+                                                                });
+                                                            print(
+                                                                "dataAddReport.success ===>>> ${dataAddReport.success}");
+                                                          }
+                                                        });
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        icon: Icon(Icons.more_vert),
+                                      ),
                             // trailing: Text('Horse'),
                           );
                         })

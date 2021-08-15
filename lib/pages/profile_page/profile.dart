@@ -488,16 +488,17 @@ class _ScrollProfilePageState extends State
           return Future.value(true);
         },
         child: data_DataAc == null || data_MyPost == null
-                ? Container(
-                    child: AlertDialog(
-                        content: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("กรุณารอสักครู่...   "),
-                        CircularProgressIndicator()
-                      ],
-                    )),
-                  )
+                // ? Container(
+                //     child: AlertDialog(
+                //         content: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Text("กรุณารอสักครู่...   "),
+                //         CircularProgressIndicator()
+                //       ],
+                //     )),
+                //   )
+                ? Center(child: CircularProgressIndicator(),)
                 : buildNestedScrollView(),
       ),
     );
@@ -532,16 +533,17 @@ class _ScrollProfilePageState extends State
           itemCount: data_RecipePost
               .length, /////////////////////////////////////////////////////////////////
           itemBuilder: (context, index) => index < 0
-              ? new SizedBox(
-                  child: AlertDialog(
-                      content: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("กรุณารอสักครู่...   "),
-                      CircularProgressIndicator()
-                    ],
-                  )),
-                )
+              // ? new SizedBox(
+              //     child: AlertDialog(
+              //         content: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Text("กรุณารอสักครู่...   "),
+              //         CircularProgressIndicator()
+              //       ],
+              //     )),
+              //   )
+              ? Center(child: CircularProgressIndicator(),)
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,

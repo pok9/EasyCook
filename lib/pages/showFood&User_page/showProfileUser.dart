@@ -8,7 +8,8 @@ import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:easy_cook/models/report/addReport/addReport_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
-import 'package:easy_cook/pages/showFood&User_page/reportFood&User/reportUser.dart';
+import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportUser.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

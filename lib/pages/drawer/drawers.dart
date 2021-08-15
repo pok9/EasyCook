@@ -54,7 +54,7 @@ class _DrawersState extends State<Drawers> {
     }
   }
 
-  //ออกจากเครื่องให้เสร็จ null
+  //ออกจากเครื่องให้เซ็ท null
   Future<Null> updateTokenExit() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
 

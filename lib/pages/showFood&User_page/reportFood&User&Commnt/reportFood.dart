@@ -23,21 +23,21 @@ class ReportFood extends StatefulWidget {
 }
 
 class _ReportFoodState extends State<ReportFood> {
-  @override
-  void initState() {
-    super.initState();
-    findUser();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   findUser();
+  // }
 
-  String token = ""; //โทเคน
-  //ดึง token
-  Future<Null> findUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  // String token = ""; //โทเคน
+  // //ดึง token
+  // Future<Null> findUser() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    setState(() {
-      token = preferences.getString("tokens");
-    });
-  }
+  //   setState(() {
+  //     token = preferences.getString("tokens");
+  //   });
+  // }
 
   List<Exercise> exercises = [
     Exercise(name: 'ละเมิดสิทธิ์ของฉัน'),

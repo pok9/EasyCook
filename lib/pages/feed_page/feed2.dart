@@ -160,7 +160,7 @@ class _Feed2PageState extends State<Feed2Page> {
             ),
             body: TabBarView(children: [
               (dataNewfeedsglobal == null)
-                  ? Container()
+                  ? Center(child: CircularProgressIndicator())
                   : GridView.builder(
                       // scrollDirection: Axis.vertical,
                       controller: _scrollController,
