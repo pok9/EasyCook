@@ -81,20 +81,22 @@ class _Feed2PageState extends State<Feed2Page> {
     final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-      dataNewfeedsglobal = newfeedsglobalFromJson(responseString);
+          dataNewfeedsglobal = newfeedsglobalFromJson(responseString);
 
-      if (dataNewfeedsglobal.length >= 10) {
-        for (int i = 0; i < 10; i++) {
-          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-        }
-      } else {
-        for (int i = 0; i < dataNewfeedsglobal.length; i++) {
-          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-        }
-      }
-      setState(() {});
+          if (dataNewfeedsglobal.length >= 10) {
+            for (int i = 0; i < 10; i++) {
+              dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+            }
+          } else {
+            for (int i = 0; i < dataNewfeedsglobal.length; i++) {
+              dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+            }
+          }
+        });
     } else {
       return null;
     }
@@ -109,10 +111,12 @@ class _Feed2PageState extends State<Feed2Page> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-      newFeedsFollow = newFeedsFollowFromJson(responseString);
-      setState(() {});
+          newFeedsFollow = newFeedsFollowFromJson(responseString);
+        });
     } else {
       return null;
     }

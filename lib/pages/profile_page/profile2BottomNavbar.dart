@@ -55,14 +55,15 @@ class _ScrollProfilePage2BottomNavbarState extends State
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-        data_MyAccount = myAccountFromJson(responseString);
-        data_DataAc = data_MyAccount.data[0];
-        // print(data_DataAc.userId);
-        getMyPost();
-      });
+          data_MyAccount = myAccountFromJson(responseString);
+          data_DataAc = data_MyAccount.data[0];
+          // print(data_DataAc.userId);
+          getMyPost();
+        });
     } else {
       return null;
     }
@@ -80,15 +81,16 @@ class _ScrollProfilePage2BottomNavbarState extends State
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-        data_MyPost = myPostFromJson(responseString);
-        data_RecipePost = data_MyPost.recipePost;
-        // newfeed = newfeedsFollowFromJson(responseString);
-        //  post = newfeed.feeds[0];
-        // dataUser = datas.data[0];
-      });
+          data_MyPost = myPostFromJson(responseString);
+          data_RecipePost = data_MyPost.recipePost;
+          // newfeed = newfeedsFollowFromJson(responseString);
+          //  post = newfeed.feeds[0];
+          // dataUser = datas.data[0];
+        });
     } else {
       return null;
     }

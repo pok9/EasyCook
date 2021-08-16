@@ -243,6 +243,29 @@ class _RegisterPageState extends State<RegisterPage> {
                 preferences.setString("tokens", response.token);
                 preferences.setString("email", _ctrlEmail.text);
 
+                ///////////////////////// insert swith user //////////////////////////////
+                List<String> listEmail =
+                    (preferences.getStringList("listEmail") == null)
+                        ? []
+                        : preferences.getStringList("listEmail");
+
+                bool searchEmail =
+                    listEmail.any((e) => e.contains(_ctrlEmail.text));
+
+                if (!searchEmail) {
+                  listEmail.add(_ctrlEmail.text);
+                  preferences.setStringList("listEmail", listEmail);
+
+                  // print("sss ===>>> ${preferences.getStringList("listPassword")}");
+                  List<String> listPassword =
+                      (preferences.getStringList("listPassword") == null)
+                          ? []
+                          : preferences.getStringList("listPassword");
+                  listPassword.add(_ctrlPassword.text);
+                  preferences.setStringList("listPassword", listPassword);
+                }
+                ///////////////////////// insert swith user //////////////////////////////
+
                 getTokenFirebase(preferences.getString("tokens"));
 
                 Navigator.pushNamedAndRemoveUntil(context, '/register2-page',

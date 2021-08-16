@@ -95,13 +95,15 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
     if (response.statusCode == 200) {
-      final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-      data_MyAccount = myAccountFromJson(responseString);
-      data_DataAc = data_MyAccount.data[0];
-      print(data_DataAc.userId);
-      checkFollowings();
-      setState(() {});
+          data_MyAccount = myAccountFromJson(responseString);
+          data_DataAc = data_MyAccount.data[0];
+          print(data_DataAc.userId);
+          checkFollowings();
+        });
     } else {
       return null;
     }
@@ -117,15 +119,16 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("responseFeed_follow = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-      dataMybuy = mybuyFromJson(responseString);
-      for (var item in dataMybuy) {
-        print(item.recipeId);
-        checkBuy.add(item.recipeId.toString());
-      }
-
-      setState(() {});
+          dataMybuy = mybuyFromJson(responseString);
+          for (var item in dataMybuy) {
+            print(item.recipeId);
+            checkBuy.add(item.recipeId.toString());
+          }
+        });
     } else {
       return null;
     }
@@ -144,14 +147,16 @@ class _FeedPageState extends State<FeedPage> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
     if (response.statusCode == 200) {
-      final String responseString = response.body;
-      dataCheckFollowing = checkFollowingFromJson(responseString);
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
+          dataCheckFollowing = checkFollowingFromJson(responseString);
 
-      for (var item in dataCheckFollowing.user) {
-        checkFollowing.add(item.userId.toString());
-      }
-      print(checkFollowing);
-      setState(() {});
+          for (var item in dataCheckFollowing.user) {
+            checkFollowing.add(item.userId.toString());
+          }
+          print(checkFollowing);
+        });
     } else {
       return null;
     }
@@ -167,13 +172,15 @@ class _FeedPageState extends State<FeedPage> {
     final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-      dataRecommendRecipe = recommendRecipeFromJson(responseString);
-      if (token != "" && token != null) {
-        getMybuy();
-      }
-      setState(() {});
+          dataRecommendRecipe = recommendRecipeFromJson(responseString);
+          if (token != "" && token != null) {
+            getMybuy();
+          }
+        });
     } else {
       return null;
     }
@@ -187,10 +194,12 @@ class _FeedPageState extends State<FeedPage> {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
-      final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-      dataRecommendUser = recommendUserFromJson(responseString);
-      setState(() {});
+          dataRecommendUser = recommendUserFromJson(responseString);
+        });
     } else {
       return null;
     }
@@ -942,7 +951,7 @@ class _FeedPageState extends State<FeedPage> {
                           req_rid: dataRecommendRecipe.rid,
                         )),
               ).then((value) {
-                 if (token != "" && token != null) {
+                if (token != "" && token != null) {
                   getMybuy();
                 }
               });
@@ -1100,10 +1109,10 @@ class _FeedPageState extends State<FeedPage> {
                   builder: (context) => RecipePurchasePage(
                         req_rid: dataRecommendRecipe.rid,
                       )),
-            ).then((value){
-               if (token != "" && token != null) {
-                  getMybuy();
-                }
+            ).then((value) {
+              if (token != "" && token != null) {
+                getMybuy();
+              }
             });
           }
         } else {
@@ -1123,9 +1132,9 @@ class _FeedPageState extends State<FeedPage> {
                         req_rid: dataRecommendRecipe.rid,
                       )),
             ).then((value) {
-               if (token != "" && token != null) {
-                  getMybuy();
-                }
+              if (token != "" && token != null) {
+                getMybuy();
+              }
             });
           }
         }
@@ -1299,8 +1308,8 @@ class _FeedPageState extends State<FeedPage> {
               context,
               MaterialPageRoute(
                   builder: (context) => ProfileUser(dataRecommendUser.userId)),
-            ).then((value){
-              if(token != "" && token != null){
+            ).then((value) {
+              if (token != "" && token != null) {
                 checkFollowings();
               }
             });

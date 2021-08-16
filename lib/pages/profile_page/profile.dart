@@ -74,15 +74,16 @@ class _ScrollProfilePageState extends State
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-        data_MyPost = myPostFromJson(responseString);
-        data_RecipePost = data_MyPost.recipePost;
-        // newfeed = newfeedsFollowFromJson(responseString);
-        //  post = newfeed.feeds[0];
-        // dataUser = datas.data[0];
-      });
+          data_MyPost = myPostFromJson(responseString);
+          data_RecipePost = data_MyPost.recipePost;
+          // newfeed = newfeedsFollowFromJson(responseString);
+          //  post = newfeed.feeds[0];
+          // dataUser = datas.data[0];
+        });
     } else {
       return null;
     }
@@ -488,18 +489,20 @@ class _ScrollProfilePageState extends State
           return Future.value(true);
         },
         child: data_DataAc == null || data_MyPost == null
-                // ? Container(
-                //     child: AlertDialog(
-                //         content: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         Text("กรุณารอสักครู่...   "),
-                //         CircularProgressIndicator()
-                //       ],
-                //     )),
-                //   )
-                ? Center(child: CircularProgressIndicator(),)
-                : buildNestedScrollView(),
+            // ? Container(
+            //     child: AlertDialog(
+            //         content: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Text("กรุณารอสักครู่...   "),
+            //         CircularProgressIndicator()
+            //       ],
+            //     )),
+            //   )
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : buildNestedScrollView(),
       ),
     );
   }
@@ -543,7 +546,9 @@ class _ScrollProfilePageState extends State
               //       ],
               //     )),
               //   )
-              ? Center(child: CircularProgressIndicator(),)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,

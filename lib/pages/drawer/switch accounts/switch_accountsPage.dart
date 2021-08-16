@@ -166,20 +166,23 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
                           trailing: (data_DataAc.userId ==
                                   ListData_DataAc[index].userId)
                               ? Padding(
-                                padding: const EdgeInsets.only(right: 17),
-                                child: Icon(
+                                  padding: const EdgeInsets.only(right: 17),
+                                  child: Icon(
                                     Icons.circle,
                                     color: Colors.blue,
                                     size: 15,
                                   ),
-                              )
-                              : IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.clear,
-                                    size: 15,
-                                  ),
-                                ),
+                                )
+                              : null,
+                          // : IconButton(
+                          //     onPressed: () {
+
+                          //     },
+                          //     icon: Icon(
+                          //       Icons.clear,
+                          //       size: 15,
+                          //     ),
+                          //   ),
                           onTap: (data_DataAc.userId ==
                                   ListData_DataAc[index].userId)
                               ? null
