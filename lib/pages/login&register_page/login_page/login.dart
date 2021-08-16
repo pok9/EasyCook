@@ -231,8 +231,33 @@ class _LoginPageState extends State<LoginPage> {
 
       if (login.success == 1) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
+ 
+                    
+                      
         preferences.setString("tokens", login.token);
         preferences.setString("email", _ctrlEmail.text);
+
+        ///////////////////////// insert swith user //////////////////////////////
+        List<String> listEmail =
+            (preferences.getStringList("listEmail") == null)
+                ? []
+                : preferences.getStringList("listEmail");
+
+        bool searchEmail = listEmail.any((e) => e.contains(_ctrlEmail.text));
+
+        if (!searchEmail) {
+          listEmail.add(_ctrlEmail.text);
+          preferences.setStringList("listEmail", listEmail);
+
+          // print("sss ===>>> ${preferences.getStringList("listPassword")}");
+          List<String> listPassword =
+              (preferences.getStringList("listPassword") == null)
+                  ? []
+                  : preferences.getStringList("listPassword");
+          listPassword.add(_ctrlPassword.text);
+          preferences.setStringList("listPassword", listPassword);
+        }
+        ///////////////////////// insert swith user //////////////////////////////
 
         getTokenFirebase(preferences.getString("tokens"));
         stateOnlyText = ButtonState.success;
@@ -248,12 +273,11 @@ class _LoginPageState extends State<LoginPage> {
         if (login.token != null) {
           textFail = login.token;
           stateOnlyText = ButtonState.fail;
-        }else{
+        } else {
           textFail = "อีเมล หรือ รหัสผ่านไม่ถูกต้อง";
           stateOnlyText = ButtonState.fail;
         }
 
-      
         Future.delayed(Duration(seconds: 2), () {
           stateOnlyText = ButtonState.idle;
           setState(() {});

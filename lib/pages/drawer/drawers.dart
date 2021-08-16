@@ -6,6 +6,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/pages/drawer/notification_page/notification.dart';
+import 'package:easy_cook/pages/drawer/switch%20accounts/switch_accountsPage.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/slidepage.dart';
@@ -301,7 +302,7 @@ class _DrawersState extends State<Drawers> {
                   ),
                   ListTile(
                     leading: Icon(
-                      Icons.settings,
+                      Icons.settings_outlined,
                       color: Colors.blue,
                       size: 25,
                     ),
@@ -317,6 +318,27 @@ class _DrawersState extends State<Drawers> {
                       //     color: Colors.black)
                     ),
                     onTap: () {},
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.switch_account_outlined,
+                      color: Colors.blue,
+                      size: 25,
+                    ),
+                    title: Text(
+                      'สลับบัญชี',
+                      style: GoogleFonts.kanit(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SwitchAccountsPage();
+                          });
+                    },
                   ),
                   ListTile(
                     leading: Icon(
@@ -338,9 +360,24 @@ class _DrawersState extends State<Drawers> {
                     onTap: () async {
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
-                      updateTokenExit();
+                      
                       preferences.setString("tokens", "");
                       preferences.setString("email", "");
+                      updateTokenExit();
+                      
+                      ///////////////////////// delete swith user //////////////////////////////
+                       List<String> listEmail = preferences.getStringList("listEmail");
+                      int index = listEmail.indexOf(this.widget.data_DataAc.email);
+                      listEmail.removeAt(index);
+                      preferences.setStringList("listEmail", listEmail);
+                      
+                       List<String> listPassword = preferences.getStringList("listPassword");
+                       listPassword.removeAt(index);
+                       preferences.setStringList("listPassword", listPassword);
+                      ///////////////////////// delete swith user //////////////////////////////
+
+
+                     
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
