@@ -320,19 +320,6 @@ class _ShowFoodState extends State<ShowFood> {
             // ),
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
-              // ? Card(
-              //     semanticContainer: true,
-              //     clipBehavior: Clip.antiAliasWithSaveLayer,
-              //     child: Image.network(
-              //       dataHowto[displayNumber].pathFile,
-              //       fit: BoxFit.fill,
-              //     ),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(10.0),
-              //     ),
-              //     elevation: 5,
-              //     margin: EdgeInsets.all(10),
-              //   )
               ? Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
@@ -349,35 +336,35 @@ class _ShowFoodState extends State<ShowFood> {
                     ),
                   ),
                 )
-              // : Padding(
-              //     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              //     child: Align(
-              //       alignment: Alignment.topCenter,
-              //       child: AspectRatio(
-              //         aspectRatio: 1,
-              //         child: Container(
-              //           child: VideoItems(
-              //             videoPlayerController: VideoPlayerController.network(
-              //                 dataHowto[displayNumber].pathFile),
-              //             looping: false,
-              //             autoplay: false,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   )
               : Card(
                   semanticContainer: true,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
-                      aspectRatio: 1,
+                      aspectRatio: 3/2,
+                      // aspectRatio: 16 / 9,
+                      // aspectRatio: 1,
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.network(
                             dataHowto[displayNumber].pathFile),
+
+                        // videoPlayerController: VideoPlayerController.asset(
+                        //     "assets/images/testVideo.mp4"),
+
+                        // videoPlayerController: VideoPlayerController.network(
+                        //     'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4'),
+
+                        // videoPlayerController:
+                        //     VideoPlayerController
+                        //         .network(
+                        //             "https://apifood.comsciproject.com/uploadHowto/2021-08-14T081022011Z-21-08-09-20-08-44.mp4"),
+
+                        // videoPlayerController: VideoPlayerController.network("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"),
                         looping: false,
                         autoplay: false,
+                        addfood_showfoo: 1,
+                        
                       ),
                     ),
                   ),
@@ -400,7 +387,7 @@ class _ShowFoodState extends State<ShowFood> {
       for (i = 0; i < dataHowto.length; i++) {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
-        // ctl.add(TextEditingController());
+
         controllers2.add(ctl);
       }
     }
@@ -510,6 +497,7 @@ class _ShowFoodState extends State<ShowFood> {
   Widget build(BuildContext context) {
     final List<Widget> ingredient =
         dataIngredient == null ? [] : _ingredientList();
+
     final List<Widget> howto1 = dataHowto == null ? [] : _howtoList1();
     final List<Widget> howto2 = dataHowto == null ? [] : _howtoList2();
 
@@ -881,11 +869,6 @@ class _ShowFoodState extends State<ShowFood> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      // Divider(
-                                      //   height: 1,
-                                      //   thickness: 1,
-                                      //   color: Colors.black,
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -929,10 +912,6 @@ class _ShowFoodState extends State<ShowFood> {
                                         physics: NeverScrollableScrollPhysics(),
                                         children: ingredient,
                                       ),
-                                      // Divider(
-                                      //   thickness: 1,
-                                      //   color: Colors.grey,
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -1002,50 +981,6 @@ class _ShowFoodState extends State<ShowFood> {
                                                     Radius.circular(10)),
                                               ),
                                             )
-                                            // Padding(
-                                            //   padding: const EdgeInsets.only(
-                                            //       right: 40),
-                                            //   child: Container(
-                                            //     child: Row(
-                                            //       children: [
-                                            //         GestureDetector(
-                                            //           onTap: () {
-                                            //             indexHowTo = 0;
-                                            //             print(indexHowTo);
-                                            //             setState(() {});
-                                            //           },
-                                            //           child: Icon(
-                                            //             (indexHowTo == 0)
-                                            //                 ? Icons.contacts
-                                            //                 : Icons
-                                            //                     .contacts_outlined,
-                                            //             color: Colors.black,
-                                            //             size: 40.0,
-                                            //             semanticLabel:
-                                            //                 'Text to announce in accessibility modes',
-                                            //           ),
-                                            //         ),
-                                            //         GestureDetector(
-                                            //           onTap: () {
-                                            //             indexHowTo = 1;
-                                            //             print(indexHowTo);
-                                            //             setState(() {});
-                                            //           },
-                                            //           child: Icon(
-                                            //             (indexHowTo == 1)
-                                            //                 ? Icons.contacts
-                                            //                 : Icons
-                                            //                     .contacts_outlined,
-                                            //             color: Colors.black,
-                                            //             size: 40.0,
-                                            //             semanticLabel:
-                                            //                 'Text to announce in accessibility modes',
-                                            //           ),
-                                            //         ),
-                                            //       ],
-                                            //     ),
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
                                       ),

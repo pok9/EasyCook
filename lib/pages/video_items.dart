@@ -6,12 +6,14 @@ class VideoItems extends StatefulWidget {
   final VideoPlayerController videoPlayerController;
   final bool looping;
   final bool autoplay;
+  final int addfood_showfoo;
 
   // VideoItems({Key key}) : super(key: key);
   VideoItems(
       {@required this.videoPlayerController,
       this.looping,
       this.autoplay,
+      this.addfood_showfoo,
       Key key})
       : super(key: key);
 
@@ -30,7 +32,8 @@ class _VideoItemsState extends State<VideoItems> {
         videoPlayerController: widget.videoPlayerController,
         // aspectRatio: 30 / 15,
         // aspectRatio: 16 / 9,
-         aspectRatio: 1,
+        aspectRatio: 3 / 2,
+        // aspectRatio: 1,
         // aspectRatio: widget.videoPlayerController.value.aspectRatio,
         autoInitialize: true,
         autoPlay: widget.autoplay,
@@ -48,10 +51,23 @@ class _VideoItemsState extends State<VideoItems> {
   @override
   void dispose() {
     // TODO: implement dispose
+
+
+    
+    // widget.videoPlayerController?.pause();
+
+    if(widget.addfood_showfoo == 0){
+      widget.videoPlayerController?.pause();
+    }else{
+      widget.videoPlayerController?.dispose();
+    }
+   
+   _chewieController?.dispose();
+
+    // widget.videoPlayerController?.dispose();
+    // _chewieController?.dispose();
     super.dispose();
     // widget.videoPlayerController.pause();
-    // widget.videoPlayerController.dispose();
-    _chewieController.dispose();
   }
 
   @override

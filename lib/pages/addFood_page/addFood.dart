@@ -357,18 +357,18 @@ class _AddFoodPageState extends State<AddFoodPage> {
               ),
             ),
             IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        ingredient_row--;
-                        ctl_ingredient_row.remove(controller);
-                        if (ctl_ingredient_row.length == 0) {
-                          this.ingredient_row = 1;
-                        }
-                        print('controllers ${ctl_ingredient_row.length}');
-                      });
-                    },
-                  )
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                setState(() {
+                  ingredient_row--;
+                  ctl_ingredient_row.remove(controller);
+                  if (ctl_ingredient_row.length == 0) {
+                    this.ingredient_row = 1;
+                  }
+                  print('controllers ${ctl_ingredient_row.length}');
+                });
+              },
+            )
           ],
         ),
       );
@@ -477,7 +477,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             child: Container(
                               height: 75,
                               color: Color(0xfff3f3f4),
-                              
                               child: IconButton(
                                   iconSize: 30,
                                   icon: Icon(
@@ -652,13 +651,15 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                               },
                                             )),
                                       )
+                                    // :Container()
                                     : Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 10, 0, 0),
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: AspectRatio(
-                                            aspectRatio: 16 / 9,
+                                            // aspectRatio: 16 / 9,
+                                            aspectRatio: 3/2,
                                             child: Container(
                                               //     child: VideoPlayerScreen(
                                               //       videoPlayerController:
@@ -673,8 +674,12 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                     VideoPlayerController.file(
                                                         imageHowto[
                                                             displayNumber - 1]),
+                                                // videoPlayerController:
+                                                //     VideoPlayerController.network(
+                                                //         'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4'),
                                                 looping: false,
                                                 autoplay: false,
+                                                addfood_showfoo: 0,
                                               ),
                                             ),
                                           ),
@@ -1510,7 +1515,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
+    
+
     findUser();
 
     ingredient_row = widget.ingredient_row_start;
@@ -1562,11 +1568,17 @@ class _AddFoodPageState extends State<AddFoodPage> {
       Price('ฟรี'),
       Price('ระบุราคา'),
     ];
+
+    super.initState();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    print("wwwwww");
+    // for (int i = 0; i < imageHowto.length; i++) {
+    //   VideoPlayerController.file(imageHowto[i]).dispose();
+    // }
     super.dispose();
   }
 
