@@ -5,6 +5,7 @@ import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -555,76 +556,177 @@ class _ScrollProfilePageState extends State
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     //1st row
-
+                    // Padding(
+                    //   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 8.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Row(
+                    //         children: [
+                    //           new Container(
+                    //             height: 40.0,
+                    //             width: 40.0,
+                    //             decoration: new BoxDecoration(
+                    //                 shape: BoxShape.circle,
+                    //                 image: new DecorationImage(
+                    //                     fit: BoxFit.fill,
+                    //                     image: new NetworkImage(
+                    //                         data_DataAc.profileImage))),
+                    //           ),
+                    //           new SizedBox(
+                    //             width: 10.0,
+                    //           ),
+                    //           new Text(
+                    //             data_DataAc.aliasName,
+                    //             style: TextStyle(fontWeight: FontWeight.bold),
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     //2nd row
-                    GestureDetector(
-                      onTap: () {
-                        print("up $index");
-                        print(data_RecipePost[index].rid);
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context) {
-                          return ShowFood(data_RecipePost[index].rid);
-                        })).then((value) => findUser());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: Container(
-                          width: deviceSize.width,
-                          height: 300,
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(24.0),
-                            child: Image(
-                              fit: BoxFit.cover,
-                              // alignment: Alignment.topRight,
-                              image: NetworkImage(data_RecipePost[index]
-                                  .image), ////////////////////////////////////////////////////////
+                    Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            print("up $index");
+                            print(data_RecipePost[index].rid);
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context) {
+                              return ShowFood(data_RecipePost[index].rid);
+                            })).then((value) => findUser());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: Container(
+                              width: deviceSize.width,
+                              height: 300,
+                              child: ClipRRect(
+                                borderRadius: new BorderRadius.circular(24.0),
+                                child: Image(
+                                  fit: BoxFit.cover,
+                                  // alignment: Alignment.topRight,
+                                  image: NetworkImage(data_RecipePost[index]
+                                      .image), ////////////////////////////////////////////////////////
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 8, 8.0, 0),
-                      child: Text(
-                        data_RecipePost[index].recipeName,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+                        Positioned(
+                          left: 8.0,
+                          bottom: 0.0,
+                          right: 8.0,
+                          child: Container(
+                            height: 60.0,
+                            width: deviceSize.width,
+                            decoration: BoxDecoration(
+                              borderRadius: new BorderRadius.circular(24.0),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.black,
+                                  Colors.black12,
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 18.0,
+                          bottom: 10.0,
+                          child: Row(
                             children: [
-                              new Container(
-                                height: 30.0,
-                                width: 30.0,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: new NetworkImage(data_DataAc
-                                            .profileImage))), /////////////////////////////////////////////////
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data_RecipePost[index].recipeName,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      RatingBarIndicator(
+                                        rating: (data_RecipePost[index].score ==
+                                                null)
+                                            ? 0
+                                            : data_RecipePost[index].score,
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.blue,
+                                        ),
+                                        itemCount: 5,
+                                        itemSize: 16.0,
+                                        // direction: Axis.vertical,
+                                      ),
+                                      Text(
+                                        "(คะแนน " +
+                                            (data_RecipePost[index]
+                                                .score
+                                                .toString()) +
+                                            ")",
+                                        style: TextStyle(color: Colors.grey),
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
-                              new SizedBox(
-                                width: 10.0,
-                              ),
-                              new Text(
-                                data_DataAc
-                                    .aliasName, //////////////////////////////////////////////////
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              )
                             ],
                           ),
-                          new IconButton(
-                              icon: Icon(Icons.more_vert),
-                              onPressed: () {
-                                print("more_vert" + index.toString());
-                              })
-                        ],
-                      ),
+                        )
+                      ],
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 0),
+                    //   child: Text(
+                    //     data_RecipePost[index].recipeName,
+                    //     style: TextStyle(fontSize: 20),
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 16.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Row(
+                    //         children: [
+                    //           new Container(
+                    //             height: 30.0,
+                    //             width: 30.0,
+                    //             decoration: new BoxDecoration(
+                    //                 shape: BoxShape.circle,
+                    //                 image: new DecorationImage(
+                    //                     fit: BoxFit.fill,
+                    //                     image: new NetworkImage(data_DataAc
+                    //                         .profileImage))), /////////////////////////////////////////////////
+                    //           ),
+                    //           new SizedBox(
+                    //             width: 10.0,
+                    //           ),
+                    //           new Text(
+                    //             data_DataAc
+                    //                 .aliasName, //////////////////////////////////////////////////
+                    //             style: TextStyle(fontWeight: FontWeight.normal),
+                    //           )
+                    //         ],
+                    //       ),
+                    //       // new IconButton(
+                    //       //     icon: Icon(Icons.more_vert),
+                    //       //     onPressed: () {
+                    //       //       print("more_vert" + index.toString());
+                    //       //     })
+                    //     ],
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 16,
+                    )
                   ],
                 ),
         ),

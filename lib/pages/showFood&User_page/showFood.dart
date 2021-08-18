@@ -342,9 +342,9 @@ class _ShowFoodState extends State<ShowFood> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
-                      aspectRatio: 3/2,
+                      // aspectRatio: 3 / 2,
                       // aspectRatio: 16 / 9,
-                      // aspectRatio: 1,
+                      aspectRatio: 1,
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.network(
                             dataHowto[displayNumber].pathFile),
@@ -364,7 +364,6 @@ class _ShowFoodState extends State<ShowFood> {
                         looping: false,
                         autoplay: false,
                         addfood_showfoo: 1,
-                        
                       ),
                     ),
                   ),
@@ -701,594 +700,584 @@ class _ShowFoodState extends State<ShowFood> {
               //   ],
               // ),
               SliverList(
-                  delegate: SliverChildListDelegate(List.generate(
-                      1,
-                      (index) => Container(
-                            color: Color(0xFFf3f5f9),
-                            child: Column(
-                              children: [
-                                Container(
-                                    height: 50,
-                                    width: 500,
-                                    color: Colors.white),
-                                Card(
-                                  margin: EdgeInsets
-                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                                  //ปรับขอบการ์ด
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
+                  delegate: SliverChildListDelegate([
+                Container(
+                  color: Color(0xFFf3f5f9),
+                  child: Column(
+                    children: [
+                      Container(height: 50, width: 500, color: Colors.white),
+                      Card(
+                        margin:
+                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                        //ปรับขอบการ์ด
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      dataFood
+                                          .aliasName, ///////////////////////////
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        decoration: TextDecoration.none,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      dataFood.description,
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
                                   ),
-                                  color: Colors.white,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                                dataFood
-                                                    .aliasName, ///////////////////////////
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 20,
-                                                  color: Colors.black,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                dataFood.description,
-                                                textAlign: TextAlign.justify,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 15,
-                                                  color: Colors.black,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Divider(
-                                        thickness: 1,
-                                        color: Colors.grey,
-                                      ),
-                                      Text(
-                                        dataFood
-                                            .recipeName, ////////////////////////////////
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 25,
-                                          color: Colors.black,
-                                          decoration: TextDecoration.none,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Container(
-                                          width: 300,
-                                          height: 200,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                new BorderRadius.circular(24.0),
-                                            child: Image(
-                                              fit: BoxFit.contain,
-                                              image: NetworkImage(dataFood
-                                                  .image), ///////////////////////
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Divider(
-                                        thickness: 1,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      Row(
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.spaceAround,
-                                        // mainAxisAlignment: MainAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Icon(
-                                                Icons.person,
-                                                color: Colors.grey,
-                                                size: 30.0,
-                                              ),
-                                              Text(
-                                                dataFood.suitableFor,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 12,
-                                                  color: Colors.grey.shade600,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Icon(
-                                                Icons.watch_later_outlined,
-                                                color: Colors.grey,
-                                                size: 30.0,
-                                              ),
-                                              Text(
-                                                dataFood.takeTime,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 12,
-                                                  color: Colors.grey.shade600,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.grey,
-                                                size: 30.0,
-                                              ),
-                                              Text(
-                                                dataFood.foodCategory,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 12,
-                                                  color: Colors.grey.shade600,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Card(
-                                  margin: EdgeInsets
-                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                                  //ปรับขอบการ์ด
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                  ),
-                                  color: Colors.white,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 10),
-                                            child: Text(
-                                              "ส่วนผสม",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontFamily: 'OpenSans',
-                                                fontSize: 25,
-                                                color: Colors.black,
-                                                decoration: TextDecoration.none,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      ListView(
-                                        padding: EdgeInsets.all(0),
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        children: ingredient,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Card(
-                                  margin: EdgeInsets
-                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                                  //ปรับขอบการ์ด
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                  ),
-                                  color: Colors.white,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        // color: Colors.white,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10),
-                                              child: Text(
-                                                "วิธีทำ",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 25,
-                                                  color: Colors.black,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: ToggleButtons(
-                                                children: <Widget>[
-                                                  Icon(Icons.image),
-                                                  Icon(Icons.list),
-                                                  Icon(Icons.list_alt),
-                                                ],
-                                                onPressed: (int index) {
-                                                  setState(() {
-                                                    _isSelected[0] = false;
-                                                    _isSelected[1] = false;
-                                                    _isSelected[2] = false;
-                                                    _isSelected[index] =
-                                                        !_isSelected[index];
-
-                                                    indexHowTo = index;
-                                                  });
-                                                },
-                                                isSelected: _isSelected,
-                                                borderColor: Colors.grey,
-                                                color: Colors.grey,
-                                                selectedColor: Colors.white,
-                                                fillColor: Colors.blue,
-                                                selectedBorderColor:
-                                                    Colors.grey,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      ListView(
-                                        padding: EdgeInsets.all(0),
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        children:
-                                            (indexHowTo == 0) ? howto1 : howto2,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Card(
-                                  margin: EdgeInsets
-                                      .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                                  //ปรับขอบการ์ด
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                  ),
-                                  color: Colors.white,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              "ให้คะแนน & แสดงความคิดเห็น",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      RatingBar.builder(
-                                        initialRating:
-                                            (dataGetScoreFood == null)
-                                                ? 0
-                                                : dataGetScoreFood.score,
-                                        minRating: 0.5,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        itemBuilder: (context, _) => Icon(
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              thickness: 1,
+                              color: Colors.grey,
+                            ),
+                            (dataFood.score == null)
+                                ? Container()
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Icon(
                                           Icons.star,
-                                          // color: Colors.amber,
                                           color: Colors.blue,
+                                          size: 17,
                                         ),
-                                        onRatingUpdate: (rating) async {
-                                          if (token == "") {
-                                            showDialog(
-                                                context: context,
-                                                builder: (_) {
-                                                  return LoginPage();
-                                                }).then((value) {
-                                              if (value != null) {
-                                                this.findUser();
-                                              }
-
-                                              // Navigator.pop(context);
-                                            });
-                                          } else {
-                                            ratings = rating;
-                                            ScoreFoodInputModel
-                                                scoreFoodInputModel =
-                                                await scoreFoodInput(
-                                                    rating, token);
-
-                                            print(scoreFoodInputModel.success);
-                                          }
-                                        },
-                                      ),
-                                      Divider(
-                                        indent: 60,
-                                        endIndent: 60,
-                                        color: Colors.teal.shade100,
-                                        thickness: 1.0,
-                                      ),
-                                      Column(
-                                        children: [
-                                          (dataGetCommentPost == null)
-                                              ? Container()
-                                              : (dataGetCommentPost.length == 0)
-                                                  ? Container()
-                                                  : Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 8),
-                                                      child: Row(
-                                                        children: [
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                if (dataMyAccont ==
-                                                                    null) {
-                                                                  showDialog(
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (_) {
-                                                                        return LoginPage();
-                                                                      }).then((value) {
-                                                                    if (value !=
-                                                                        null) {
-                                                                      this.findUser();
-                                                                    }
-
-                                                                    // Navigator.pop(context);
-                                                                  });
-                                                                } else {
-                                                                  Navigator
-                                                                      .push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (context) =>
-                                                                                  CommentFood(
-                                                                                    autoFocus: false,
-                                                                                    dataFood: dataFood,
-                                                                                  ))).then(
-                                                                      (value) =>
-                                                                          this.getCommentPosts());
-                                                                }
-                                                              },
-                                                              child: Text(
-                                                                  "ดูความเห็นทั้งหมด")),
-                                                        ],
-                                                      ),
-                                                    ),
-                                          (dataMyAccont == null ||
-                                                  dataGetCommentPost == null)
-                                              ? Center(
-                                                  child:
-                                                      CircularProgressIndicator())
-                                              : ListView.builder(
-                                                  padding:
-                                                      EdgeInsets.only(top: 0),
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                  itemCount:
-                                                      (dataGetCommentPost ==
-                                                              null)
-                                                          ? 0
-                                                          : dataGetCommentPost
-                                                                      .length >
-                                                                  3
-                                                              ? 3
-                                                              : dataGetCommentPost
-                                                                  .length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ListTile(
-                                                      isThreeLine: true,
-                                                      leading: CircleAvatar(
-                                                        backgroundImage: NetworkImage(
-                                                            dataGetCommentPost[
-                                                                    index]
-                                                                .profileImage),
-                                                      ),
-                                                      title: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                0, 10, 0, 0),
-                                                        child: Text(
-                                                          dataGetCommentPost[
-                                                                  index]
-                                                              .aliasName,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: (dataGetCommentPost[
-                                                                              index]
-                                                                          .userStatus ==
-                                                                      0)
-                                                                  ? Colors.red
-                                                                  : (dataGetCommentPost[index]
-                                                                              .userId ==
-                                                                          dataMyAccont
-                                                                              .userId)
-                                                                      ? Colors
-                                                                          .blue
-                                                                      : Colors
-                                                                          .black),
-                                                        ),
-                                                      ),
-                                                      subtitle: Text(
-                                                        '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                                                        textAlign:
-                                                            TextAlign.justify,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          fontFamily:
-                                                              'OpenSans',
-                                                          fontSize: 12,
-                                                          color: Colors.black,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .none,
-                                                        ),
-                                                      ),
-                                                      dense: true,
-                                                      // trailing: Text('Horse'),
-                                                    );
-                                                  }),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(5),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            (dataMyAccont == null)
-                                                ? CircleAvatar(
-                                                    child: Icon(Icons
-                                                        .account_box_outlined),
-                                                  )
-                                                : CircleAvatar(
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                            dataMyAccont
-                                                                .profileImage),
-                                                  ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                side: BorderSide(
-                                                    width: 2,
-                                                    color: Colors.blue),
-                                                primary: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30)),
-                                              ),
-                                              onPressed: () {
-                                                if (dataMyAccont == null) {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (_) {
-                                                        return LoginPage();
-                                                      }).then((value) {
-                                                    if (value != null) {
-                                                      this.findUser();
-                                                    }
-
-                                                    // Navigator.pop(context);
-                                                  });
-                                                } else {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              CommentFood(
-                                                                autoFocus: true,
-                                                                dataFood:
-                                                                    dataFood,
-                                                              ))).then(
-                                                      (value) => this
-                                                          .getCommentPosts());
-                                                }
-                                              },
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width -
-                                                    100,
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Center(
-                                                        child: Text(
-                                                      'แสดงความคิดเห็น...',
-                                                      style: TextStyle(
-                                                          color: Colors.black54,
-                                                          fontSize: 16),
-                                                    )),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                        SizedBox(
+                                          width: 1,
                                         ),
+                                        Text(dataFood.score.toString() + "/5")
+                                      ],
+                                    ),
+                                  ),
+                            Text(
+                              dataFood
+                                  .recipeName, ////////////////////////////////
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'OpenSans',
+                                fontSize: 25,
+                                color: Colors.black,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Container(
+                                width: 300,
+                                height: 200,
+                                child: ClipRRect(
+                                  borderRadius: new BorderRadius.circular(24.0),
+                                  child: Image(
+                                    fit: BoxFit.contain,
+                                    image: NetworkImage(
+                                        dataFood.image), ///////////////////////
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              thickness: 1,
+                              color: Colors.grey.shade400,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceAround,
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.person,
+                                      color: Colors.grey,
+                                      size: 30.0,
+                                    ),
+                                    // CircleAvatar(
+                                    //   child: Icon(
+                                    //     Icons.person,
+                                    //     size: 30.0,
+                                    //   ),
+                                    // ),
+                                    SizedBox(height: 5,),
+                                    Text(
+                                      dataFood.suitableFor,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 12,
+                                        color: Colors.grey.shade600,
+                                        decoration: TextDecoration.none,
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.watch_later_outlined,
+                                      color: Colors.grey,
+                                      size: 30.0,
+                                    ),
+                                    // CircleAvatar(
+                                    //   backgroundColor: Colors.green,
+                                    //   child: Icon(
+                                    //     Icons.access_time_outlined,
+                                    //     color: Colors.amber,
+                                    //     size: 30.0,
+                                    //   ),
+                                    // ),
+                                    SizedBox(height: 5,),
+                                    Text(
+                                      dataFood.takeTime,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 12,
+                                        color: Colors.grey.shade600,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.food_bank,
+                                      color: Colors.grey,
+                                      size: 30.0,
+                                    ),
+                                    // CircleAvatar(
+                                    //   backgroundColor: Colors.pink,
+                                    //   child: Icon(Icons.food_bank, size: 30.0
+                                    //       // color: Colors.amber,
+                                    //       ),
+                                    // ),
+                                    SizedBox(height: 5,),
+                                    Text(
+                                      dataFood.foodCategory,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 12,
+                                        color: Colors.grey.shade600,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Card(
+                        margin:
+                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                        //ปรับขอบการ์ด
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "ส่วนผสม",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 25,
+                                      color: Colors.black,
+                                      decoration: TextDecoration.none,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                          ))))
+                            SizedBox(
+                              height: 15,
+                            ),
+                            ListView(
+                              padding: EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              children: ingredient,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Card(
+                        margin:
+                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                        //ปรับขอบการ์ด
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              // color: Colors.white,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "วิธีทำ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 25,
+                                        color: Colors.black,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ToggleButtons(
+                                      children: <Widget>[
+                                        Icon(Icons.image),
+                                        Icon(Icons.list),
+                                        Icon(Icons.list_alt),
+                                      ],
+                                      onPressed: (int index) {
+                                        setState(() {
+                                          _isSelected[0] = false;
+                                          _isSelected[1] = false;
+                                          _isSelected[2] = false;
+                                          _isSelected[index] =
+                                              !_isSelected[index];
+
+                                          indexHowTo = index;
+                                        });
+                                      },
+                                      isSelected: _isSelected,
+                                      borderColor: Colors.grey,
+                                      color: Colors.grey,
+                                      selectedColor: Colors.white,
+                                      fillColor: Colors.blue,
+                                      selectedBorderColor: Colors.grey,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            ListView(
+                              padding: EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              children: (indexHowTo == 0) ? howto1 : howto2,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Card(
+                        margin:
+                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                        //ปรับขอบการ์ด
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "ให้คะแนน & แสดงความคิดเห็น",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            RatingBar.builder(
+                              initialRating: (dataGetScoreFood == null)
+                                  ? 0
+                                  : dataGetScoreFood.score,
+                              minRating: 0.5,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                // color: Colors.amber,
+                                color: Colors.blue,
+                              ),
+                              onRatingUpdate: (rating) async {
+                                if (token == "") {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return LoginPage();
+                                      }).then((value) {
+                                    if (value != null) {
+                                      this.findUser();
+                                    }
+
+                                    // Navigator.pop(context);
+                                  });
+                                } else {
+                                  ratings = rating;
+                                  ScoreFoodInputModel scoreFoodInputModel =
+                                      await scoreFoodInput(rating, token);
+
+                                  print(scoreFoodInputModel.success);
+                                }
+                              },
+                            ),
+                            Divider(
+                              indent: 60,
+                              endIndent: 60,
+                              color: Colors.teal.shade100,
+                              thickness: 1.0,
+                            ),
+                            Column(
+                              children: [
+                                (dataGetCommentPost == null)
+                                    ? Container()
+                                    : (dataGetCommentPost.length == 0)
+                                        ? Container()
+                                        : Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 8),
+                                            child: Row(
+                                              children: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      if (dataMyAccont ==
+                                                          null) {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (_) {
+                                                              return LoginPage();
+                                                            }).then((value) {
+                                                          if (value != null) {
+                                                            this.findUser();
+                                                          }
+
+                                                          // Navigator.pop(context);
+                                                        });
+                                                      } else {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    CommentFood(
+                                                                      autoFocus:
+                                                                          false,
+                                                                      dataFood:
+                                                                          dataFood,
+                                                                    ))).then(
+                                                            (value) => this
+                                                                .getCommentPosts());
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                        "ดูความเห็นทั้งหมด")),
+                                              ],
+                                            ),
+                                          ),
+                                (dataMyAccont == null ||
+                                        dataGetCommentPost == null)
+                                    ? Center(child: CircularProgressIndicator())
+                                    : ListView.builder(
+                                        padding: EdgeInsets.only(top: 0),
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: (dataGetCommentPost == null)
+                                            ? 0
+                                            : dataGetCommentPost.length > 3
+                                                ? 3
+                                                : dataGetCommentPost.length,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            isThreeLine: true,
+                                            leading: CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  dataGetCommentPost[index]
+                                                      .profileImage),
+                                            ),
+                                            title: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 10, 0, 0),
+                                              child: Text(
+                                                dataGetCommentPost[index]
+                                                    .aliasName,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: (dataGetCommentPost[
+                                                                    index]
+                                                                .userStatus ==
+                                                            0)
+                                                        ? Colors.red
+                                                        : (dataGetCommentPost[
+                                                                        index]
+                                                                    .userId ==
+                                                                dataMyAccont
+                                                                    .userId)
+                                                            ? Colors.blue
+                                                            : Colors.black),
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                                              textAlign: TextAlign.justify,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                decoration: TextDecoration.none,
+                                              ),
+                                            ),
+                                            dense: true,
+                                            // trailing: Text('Horse'),
+                                          );
+                                        }),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  (dataMyAccont == null)
+                                      ? CircleAvatar(
+                                          child:
+                                              Icon(Icons.account_box_outlined),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              dataMyAccont.profileImage),
+                                        ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      side: BorderSide(
+                                          width: 2, color: Colors.blue),
+                                      primary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                    ),
+                                    onPressed: () {
+                                      if (dataMyAccont == null) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return LoginPage();
+                                            }).then((value) {
+                                          if (value != null) {
+                                            this.findUser();
+                                          }
+
+                                          // Navigator.pop(context);
+                                        });
+                                      } else {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CommentFood(
+                                                      autoFocus: true,
+                                                      dataFood: dataFood,
+                                                    ))).then(
+                                            (value) => this.getCommentPosts());
+                                      }
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          100,
+                                      height: 50,
+                                      child: Row(
+                                        children: [
+                                          Center(
+                                              child: Text(
+                                            'แสดงความคิดเห็น...',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 16),
+                                          )),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ]))
             ],
           );
   }

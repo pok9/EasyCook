@@ -659,7 +659,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                           alignment: Alignment.center,
                                           child: AspectRatio(
                                             // aspectRatio: 16 / 9,
-                                            aspectRatio: 3/2,
+                                            // aspectRatio: 3/2,
+                                            aspectRatio: 1,
                                             child: Container(
                                               //     child: VideoPlayerScreen(
                                               //       videoPlayerController:

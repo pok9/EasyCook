@@ -3,15 +3,19 @@ import 'dart:math';
 
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
+import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:easy_cook/models/report/addReport/addReport_model.dart';
+import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportUser.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,17 +43,18 @@ class _ProfileUserState extends State<ProfileUser> {
   //ดึงข้อมูล Token
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (mounted)
+      setState(() {
+        token = preferences.getString("tokens");
+        // print(token);
 
-    setState(() {
-      token = preferences.getString("tokens");
-      // print(token);
+        getPostUser();
 
-      getPostUser();
-
-      if (token != "") {
-        getMyAccounts();
-      }
-    });
+        if (token != "" && token != null) {
+          getMyAccounts();
+          getMybuy();
+        }
+      });
   }
 
   //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)
@@ -226,6 +231,31 @@ class _ProfileUserState extends State<ProfileUser> {
     );
   }
 
+  List<Mybuy> dataMybuy;
+  List<String> checkBuy = [];
+  Future<Null> getMybuy() async {
+    checkBuy = [];
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responseFeed_follow = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
+
+          dataMybuy = mybuyFromJson(responseString);
+          for (var item in dataMybuy) {
+            print(item.recipeId);
+            checkBuy.add(item.recipeId.toString());
+          }
+        });
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -238,8 +268,7 @@ class _ProfileUserState extends State<ProfileUser> {
         actions: [
           (data_PostUser == null || data_DataAc == null)
               ? Container()
-              : (data_DataAc.userStatus == 0 ||
-                      (token == "" && token == null))
+              : (data_DataAc.userStatus == 0 || (token == "" && token == null))
                   ? Container()
                   : PopupMenuButton(
                       child: Center(
@@ -723,7 +752,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                       //1st row
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            16.0, 16.0, 8.0, 16.0),
+                                            16.0, 16.0, 8.0, 8.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -752,31 +781,89 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 )
                                               ],
                                             ),
-                                            new IconButton(
-                                                icon: Icon(Icons.more_vert),
-                                                onPressed: () {
-                                                  print("more_vert" +
-                                                      index.toString());
-                                                })
                                           ],
                                         ),
                                       ),
 
                                       //2nd row
-                                      Stack(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              print("up $index");
-                                              // print(data_RecipePost[index].rid);/////////////////////////////////////////////
-                                              // Navigator.push(context,
-                                              //     CupertinoPageRoute(
-                                              //         builder: (context) {
-                                              //   return ShowFood(
-                                              //       data_RecipePost[index].rid);
-                                              // }));
-                                            },
-                                            child: Padding(
+                                      GestureDetector(
+                                        onTap: () {
+                                          print(data_RecipePost[index].price);
+                                          if (data_DataAc != null) {
+                                            if (data_RecipePost[index].price ==
+                                                    0 ||
+                                                reqUid == data_DataAc.userId ||
+                                                checkBuy.indexOf(
+                                                        data_RecipePost[index]
+                                                            .rid
+                                                            .toString()) >=
+                                                    0) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ShowFood(
+                                                            data_RecipePost[
+                                                                    index]
+                                                                .rid)),
+                                              );
+                                            } else {
+                                              // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+                                              // print("dataUser.userId = ${dataUser.userId}");
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RecipePurchasePage(
+                                                          req_rid:
+                                                              data_RecipePost[
+                                                                      index]
+                                                                  .rid,
+                                                        )),
+                                              ).then((value) {
+                                                if (token != "" &&
+                                                    token != null) {
+                                                  getMybuy();
+                                                }
+                                              });
+                                            }
+                                          } else {
+                                            if (data_RecipePost[index].price ==
+                                                0) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ShowFood(
+                                                            data_RecipePost[
+                                                                    index]
+                                                                .rid)),
+                                              );
+                                            } else {
+                                              // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+                                              // print("dataUser.userId = ${dataUser.userId}");
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RecipePurchasePage(
+                                                          req_rid:
+                                                              data_RecipePost[
+                                                                      index]
+                                                                  .rid,
+                                                        )),
+                                              ).then((value) {
+                                                if (token != "" &&
+                                                    token != null) {
+                                                  getMybuy();
+                                                }
+                                              });
+                                            }
+                                          }
+                                        },
+                                        child: Stack(
+                                          children: [
+                                            Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       8, 0, 8, 0),
@@ -797,23 +884,50 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          // ),
-                                          Positioned(
-                                            left: 8.0,
-                                            bottom: 0.0,
-                                            right: 8.0,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                print("down $index");
-                                                // Navigator.push(context,////////////////////////////////////
-                                                //     CupertinoPageRoute(
-                                                //         builder: (context) {
-                                                //   return ShowFood(
-                                                //       data_RecipePost[index]
-                                                //           .rid);
-                                                // }));
-                                              },
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 15, 15, 0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: (data_DataAc ==
+                                                              null)
+                                                          ? (data_RecipePost[
+                                                                          index]
+                                                                      .price ==
+                                                                  0)
+                                                              ? Container()
+                                                              : Image.network(
+                                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                          : (checkBuy.indexOf(data_RecipePost[
+                                                                          index]
+                                                                      .rid
+                                                                      .toString()) >=
+                                                                  0)
+                                                              ? Image.network(
+                                                                  "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                              : (reqUid ==
+                                                                          data_DataAc
+                                                                              .userId ||
+                                                                      (data_RecipePost[index]
+                                                                              .price ==
+                                                                          0))
+                                                                  ? Container()
+                                                                  : Image.network(
+                                                                      "https://image.flaticon.com/icons/png/512/1177/1177428.png")),
+                                                ],
+                                              ),
+                                            ),
+                                            // ),
+                                            Positioned(
+                                              left: 8.0,
+                                              bottom: 0.0,
+                                              right: 8.0,
                                               child: Container(
                                                 height: 60.0,
                                                 width: deviceSize.width,
@@ -833,92 +947,80 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          Positioned(
-                                            left: 18.0,
-                                            bottom: 10.0,
-                                            child: Row(
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      data_RecipePost[index]
-                                                          .recipeName,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 18.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.star,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star_half,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star_border,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16.0,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5.0,
-                                                        ),
-                                                        Text(
-                                                          "(คะแนน " +
-                                                              (data_RecipePost[
-                                                                      index]
-                                                                  .score
-                                                                  .toString()) +
-                                                              ")",
-                                                          style: TextStyle(
+                                            Positioned(
+                                              left: 18.0,
+                                              bottom: 10.0,
+                                              child: Row(
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        data_RecipePost[index]
+                                                            .recipeName,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          RatingBarIndicator(
+                                                            rating: (data_RecipePost[
+                                                                            index]
+                                                                        .score ==
+                                                                    null)
+                                                                ? 0
+                                                                : data_RecipePost[
+                                                                        index]
+                                                                    .score,
+                                                            itemBuilder:
+                                                                (context,
+                                                                        index) =>
+                                                                    Icon(
+                                                              Icons.star,
                                                               color:
-                                                                  Colors.grey),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
+                                                                  Colors.blue,
+                                                            ),
+                                                            itemCount: 5,
+                                                            itemSize: 16.0,
+                                                            // direction: Axis.vertical,
+                                                          ),
+                                                          Text(
+                                                            "(คะแนน " +
+                                                                (data_RecipePost[
+                                                                        index]
+                                                                    .score
+                                                                    .toString()) +
+                                                                ")",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(
                                         height: 10,
                                       ),
-                                      Divider(
-                                        thickness: 1,
-                                        color: Colors.grey,
-                                      ),
+                                      // Divider(
+                                      //   thickness: 1,
+                                      //   color: Colors.grey,
+                                      // ),
                                     ],
                                   ),
                           ),
