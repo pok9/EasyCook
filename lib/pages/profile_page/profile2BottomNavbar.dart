@@ -1,14 +1,18 @@
+import 'dart:ffi';
+
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/edit_profile/edit_profile.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
-import 'package:easy_cook/pages/profile_page/topup&withdraw/topupPage.dart';
+import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/payment_channel.dart';
+import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/topupPage.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -96,50 +100,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
     } else {
       return null;
     }
-  }
-
-  Future<void> _topupDisplayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('ทดสอบเติมเงิน'),
-            content: TextField(
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                // setState(() {
-                //   valueText = value;
-                // });
-                print(value);
-              },
-              // controller: _textFieldController,
-              decoration: InputDecoration(hintText: "เช่น 50,100,2000"),
-            ),
-            actions: <Widget>[
-              TextButton(
-                // color: Colors.red,
-                // textColor: Colors.white,
-                child: Text('ยกเลิก'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              TextButton(
-                // color: Colors.green,
-                // textColor: Colors.white,
-                child: Text('ตกลง'),
-                onPressed: () {
-                  // setState(() {
-                  //   codeDialog = valueText;
-                  //   Navigator.pop(context);
-                  // });
-                },
-              ),
-            ],
-          );
-        });
   }
 
   Future<void> _withdrawDisplayTextInputDialog(BuildContext context) async {
@@ -496,12 +456,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                     ),
                                     onPressed: () {
                                       print("เติมเงิน");
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => TopupPage()),
-                                      );
+                                      _ctrlPrice.text = "";
                                       // _topupDisplayTextInputDialog(context);
+                                      _topupDisplayBottomSheet(context);
                                     },
                                   ),
                                 ),
@@ -536,6 +493,150 @@ class _ScrollProfilePage2BottomNavbarState extends State
         )),
       ],
     );
+  }
+
+  void _topupDisplayBottomSheet(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _buildBottomNavigationMenu(context),
+              ),
+            ));
+  }
+
+  TextEditingController _ctrlPrice = TextEditingController()
+    ; //ราคา
+  Container _buildBottomNavigationMenu(context) {
+    return Container(
+
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "ระบุจำนวนเงิน(บาท)",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        // setState(() {
+                        Navigator.pop(context);
+
+                        //   if (_ctrlPriceCopy.text == "0.00") {
+                        //     _ctrlPrice.text = "0.00";
+                        //     _selectPrices = "ฟรี";
+                        //     _prices[1] = Price('ระบุราคา');
+                        //   }
+                        // });
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.blue,
+                        size: 25,
+                      ))
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(7),
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^(\d+)?\.?\d{0,2}')),
+                    // FilteringTextInputFormatter.allow(RegExp('[1234567890.0]')),
+                    // FilteringTextInputFormatter.deny('..')
+
+                    //   FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: _ctrlPrice,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    labelText: 'จำนวนเงิน',
+                    hintText:'0.00'
+                  ),
+                  autofocus: false,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  // padding: EdgeInsets.all(20),
+
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () async {
+                        print("object");
+                        if (double.parse(_ctrlPrice.text) >= 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PaymentChannelPage(amount_to_fill: double.parse(_ctrlPrice.text),)),
+                          );
+                        }
+
+                        // setState(() {
+                        //   Navigator.pop(context);
+                        //   _ctrlPriceCopy.text = _ctrlPrice.text;
+                        //   if (_ctrlPriceCopy.text == "0.00" ||
+                        //       _ctrlPriceCopy.text == "" ||
+                        //       double.parse(_ctrlPrice.text) == 0) {
+                        //     _ctrlPrice.text = "0.00";
+                        //     _ctrlPriceCopy.text == "0.00";
+                        //     _selectPrices = "ฟรี";
+                        //     _prices[1] = Price('ระบุราคา');
+                        //   } else {
+                        //     _prices[1] = Price('${_ctrlPrice.text}');
+                        //     _selectPrices = _ctrlPrice.text;
+                        //   }
+                        // });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'ตกลง',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 
   @override
