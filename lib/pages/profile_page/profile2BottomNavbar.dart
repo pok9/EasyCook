@@ -2,8 +2,9 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
-import 'package:easy_cook/pages/profile_page/edit_profile.dart';
+import 'package:easy_cook/pages/profile_page/edit_profile/edit_profile.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
+import 'package:easy_cook/pages/profile_page/topup&withdraw/topupPage.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/cupertino.dart';
@@ -495,7 +496,12 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                     ),
                                     onPressed: () {
                                       print("เติมเงิน");
-                                      _topupDisplayTextInputDialog(context);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => TopupPage()),
+                                      );
+                                      // _topupDisplayTextInputDialog(context);
                                     },
                                   ),
                                 ),
@@ -665,7 +671,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                       ),
                     ),
                   ),
-                  
                   Positioned(
                     left: 8.0,
                     bottom: 0.0,

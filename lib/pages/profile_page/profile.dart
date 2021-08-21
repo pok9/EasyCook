@@ -1,6 +1,6 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
-import 'package:easy_cook/pages/profile_page/edit_profile.dart';
+import 'package:easy_cook/pages/profile_page/edit_profile/edit_profile.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';

@@ -12,7 +12,7 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import '../addFood_page/addImage.dart';
+import '../../addFood_page/addImage.dart';
 
 class EditProfilePage extends StatefulWidget {
   // EditProfilePage({Key key}) : super(key: key);
