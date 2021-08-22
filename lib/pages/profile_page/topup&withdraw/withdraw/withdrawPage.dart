@@ -1,16 +1,40 @@
+import 'dart:convert';
+
+import 'package:easy_cook/models/topup&withdraw/withdraw.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class WithdrawPage extends StatefulWidget {
   // const WithdrawPage({ Key? key }) : super(key: key);
 
   double amount_to_fill;
-  WithdrawPage({this.amount_to_fill});
+  String name;
+  String email;
+  WithdrawPage({this.amount_to_fill, this.name, this.email});
 
   @override
   _WithdrawPageState createState() => _WithdrawPageState();
 }
 
 class _WithdrawPageState extends State<WithdrawPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findUser();
+  }
+
+  String token = ""; //โทเคน
+  //ดึง token
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString("tokens");
+      // print("ProfilePage_token = " + token);
+    });
+  }
+
   String _selected;
   List<Map> _myJson = [
     {
@@ -68,6 +92,50 @@ class _WithdrawPageState extends State<WithdrawPage> {
     },
   ];
 
+  Future<Withdraw> Withdraw_fuc(
+      String token,
+      String name,
+      String email,
+      String bankBand,
+      String banknumber,
+      String bankname,
+      double amount) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/topup";
+
+    var data = {
+      "token": token,
+      "name": name,
+      "email": email,
+      "bankBand": bankBand,
+      "banknumber": banknumber,
+      "bankname": bankname,
+      "amount": amount
+    };
+    print(jsonEncode(data));
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print("respon = ${response.statusCode}");
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      print("responseString = ${responseString}");
+
+      return withdrawFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  int checkDropdown = 1;
+
+  TextEditingController _ctrlBankname = TextEditingController();
+  TextEditingController _ctrlBanknumber = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size sizeScreen = MediaQuery.of(context).size;
@@ -75,95 +143,147 @@ class _WithdrawPageState extends State<WithdrawPage> {
       appBar: AppBar(
         title: Text('ถอนเงิน'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: DropdownButtonHideUnderline(
-                          child: ButtonTheme(
-                    alignedDropdown: true,
-                    child: DropdownButton(
-                      hint: Text('Selct Bank'),
-                      value: _selected,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selected = newValue;
-                        });
-                      },
-                      items: _myJson.map((bankItem) {
-                        return DropdownMenuItem(
-                          value: bankItem['code'].toString(),
-                          child: Row(
-                            children: [
-                              Image.network(
-                                bankItem['image'].toString(),
-                                width: 25,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                child: Text(bankItem['name']),
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  )))
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                labelText: 'ชื่อบัญชี',
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                labelText: 'หมายเลขบัญชี',
-                hintText: 'XXXX XXXX XXXX XXXX',
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Container(
-              width: sizeScreen.width,
-              padding: EdgeInsets.only(left: 10, right: 10),
-              // margin: const EdgeInsets.all(10),
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.lightBlue,
-                  padding: EdgeInsets.all(12),
-                  textStyle: TextStyle(fontSize: 22),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Container(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 1,
+                        color: (checkDropdown == 0) ? Colors.red : Colors.grey),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: DropdownButtonHideUnderline(
+                            child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        hint: Text('เลือกธนาคาร'),
+                        value: _selected,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selected = newValue;
+                            checkDropdown = 1;
+                          });
+                        },
+                        items: _myJson.map((bankItem) {
+                          return DropdownMenuItem(
+                            value: bankItem['code'].toString(),
+                            child: Row(
+                              children: [
+                                Image.network(
+                                  bankItem['image'].toString(),
+                                  width: 25,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Text(bankItem['name']),
+                                )
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    )))
+                  ],
                 ),
-                child: Text('ถอนเงิน'),
-                onPressed: () {},
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: TextFormField(
+                controller: _ctrlBankname,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'กรุณากรอกชื่อบัญชี';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  labelText: 'ชื่อบัญชี',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                controller: _ctrlBanknumber,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'กรุณาหมายเลขบัญชี';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  labelText: 'หมายเลขบัญชี',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                width: sizeScreen.width,
+                padding: EdgeInsets.only(left: 10, right: 10),
+                // margin: const EdgeInsets.all(10),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightBlue,
+                    padding: EdgeInsets.all(12),
+                    textStyle: TextStyle(fontSize: 22),
+                  ),
+                  child: Text('ถอนเงิน ${this.widget.amount_to_fill} บาท'),
+                  onPressed: () async {
+                    if (_selected == null) {
+                      setState(() {
+                        checkDropdown = 0;
+                      });
+                    }
+                    if (_formKey.currentState.validate()) {
+                      if (_selected != null) {
+                        print("token ===>>> $token");
+                        print("name ===>>> ${this.widget.name}");
+                        print("email ===>>> ${this.widget.email}");
+                        print("bankBand ===>>> $_selected");
+                        print("banknumber ===>>> ${_ctrlBanknumber.text}");
+                        print("bankname ===>>> ${_ctrlBankname.text}");
+                        print("amount ===>>> ${this.widget.amount_to_fill}");
+                        Withdraw withdrawData = await Withdraw_fuc(
+                            token,
+                            this.widget.name,
+                            this.widget.email,
+                            _selected,
+                            _ctrlBanknumber.text,
+                            _ctrlBankname.text,
+                            this.widget.amount_to_fill);
+                        
+                        print(withdrawData.success);
+                        if(withdrawData.success == 1){
+                          print(withdrawData.message);
+                        }
+
+
+                      }
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

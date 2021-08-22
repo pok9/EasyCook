@@ -549,6 +549,8 @@ class _ScrollProfilePage2BottomNavbarState extends State
                       } else if (select == 'withdraw') {
                         if (double.parse(_ctrlPrice.text) < 100) {
                           return 'ขั้นต่ำ 100 บาท';
+                        }else if(double.parse(_ctrlPrice.text) > data_DataAc.balance ){
+                          return 'คุณสามาถอนเงินได้ ${data_DataAc.balance} บาท';
                         }
                       }
 
@@ -593,6 +595,8 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                       builder: (context) => WithdrawPage(
                                             amount_to_fill:
                                                 double.parse(_ctrlPrice.text),
+                                                name: data_DataAc.aliasName,
+                                                email: data_DataAc.email,
                                           )),
                                 ).then((value) => {
                                       if (token != "" && token != null)
