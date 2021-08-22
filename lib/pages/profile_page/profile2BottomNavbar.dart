@@ -40,7 +40,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
-      if (token != "") {
+      if (token != "" && token != null) {
         print("ProfilePage2BottomNavbar_token = " + token);
         getMyAccounts();
       }
@@ -509,8 +509,8 @@ class _ScrollProfilePage2BottomNavbarState extends State
             ));
   }
 
-  TextEditingController _ctrlPrice = TextEditingController()
-    ; //ราคา
+  TextEditingController _ctrlPrice = TextEditingController(); //ราคา
+  final _formKey = GlobalKey<FormState>();
   Container _buildBottomNavigationMenu(context) {
     return Container(
 
@@ -522,119 +522,140 @@ class _ScrollProfilePage2BottomNavbarState extends State
                 topRight: const Radius.circular(30))),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "ระบุจำนวนเงิน(บาท)",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "ระบุจำนวนเงิน(บาท)",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        // setState(() {
-                        Navigator.pop(context);
+                    Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          // setState(() {
+                          Navigator.pop(context);
 
-                        //   if (_ctrlPriceCopy.text == "0.00") {
-                        //     _ctrlPrice.text = "0.00";
-                        //     _selectPrices = "ฟรี";
-                        //     _prices[1] = Price('ระบุราคา');
-                        //   }
-                        // });
-                      },
-                      icon: Icon(
-                        Icons.cancel,
-                        color: Colors.blue,
-                        size: 25,
-                      ))
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(7),
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^(\d+)?\.?\d{0,2}')),
-                    // FilteringTextInputFormatter.allow(RegExp('[1234567890.0]')),
-                    // FilteringTextInputFormatter.deny('..')
-
-                    //   FilteringTextInputFormatter.digitsOnly
+                          //   if (_ctrlPriceCopy.text == "0.00") {
+                          //     _ctrlPrice.text = "0.00";
+                          //     _selectPrices = "ฟรี";
+                          //     _prices[1] = Price('ระบุราคา');
+                          //   }
+                          // });
+                        },
+                        icon: Icon(
+                          Icons.cancel,
+                          color: Colors.blue,
+                          size: 25,
+                        ))
                   ],
-                  controller: _ctrlPrice,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                    labelText: 'จำนวนเงิน',
-                    hintText:'0.00'
-                  ),
-                  autofocus: false,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  // padding: EdgeInsets.all(20),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(7),
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^(\d+)?\.?\d{0,2}')),
+                      // FilteringTextInputFormatter.allow(RegExp('[1234567890.0]')),
+                      // FilteringTextInputFormatter.deny('..')
 
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () async {
-                        print("object");
-                        if (double.parse(_ctrlPrice.text) >= 1) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PaymentChannelPage(amount_to_fill: double.parse(_ctrlPrice.text),)),
-                          );
-                        }
+                      //   FilteringTextInputFormatter.digitsOnly
+                    ],
+                    controller: _ctrlPrice,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      labelText: 'จำนวนเงิน',
+                      hintText: '0.00',
+                    ),
+                    autofocus: false,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'โปรดระบุยอดเงิน';
+                      } else if (double.parse(_ctrlPrice.text) < 20) {
+                        return 'ขั้นต่ำ 20 บาท';
+                      }
 
-                        // setState(() {
-                        //   Navigator.pop(context);
-                        //   _ctrlPriceCopy.text = _ctrlPrice.text;
-                        //   if (_ctrlPriceCopy.text == "0.00" ||
-                        //       _ctrlPriceCopy.text == "" ||
-                        //       double.parse(_ctrlPrice.text) == 0) {
-                        //     _ctrlPrice.text = "0.00";
-                        //     _ctrlPriceCopy.text == "0.00";
-                        //     _selectPrices = "ฟรี";
-                        //     _prices[1] = Price('ระบุราคา');
-                        //   } else {
-                        //     _prices[1] = Price('${_ctrlPrice.text}');
-                        //     _selectPrices = _ctrlPrice.text;
-                        //   }
-                        // });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'ตกลง',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            )
-                          ],
+                      print(value);
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    // padding: EdgeInsets.all(20),
+
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          if (_formKey.currentState.validate()) {
+                            print("object");
+                            if (double.parse(_ctrlPrice.text) >= 20) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PaymentChannelPage(
+                                          amount_to_fill:
+                                              double.parse(_ctrlPrice.text),
+                                        )),
+                              ).then((value) => {
+                                    if (token != "" && token != null)
+                                      {getMyAccounts()}
+                                  });
+                            }
+                          }
+
+                          // setState(() {
+                          //   Navigator.pop(context);
+                          //   _ctrlPriceCopy.text = _ctrlPrice.text;
+                          //   if (_ctrlPriceCopy.text == "0.00" ||
+                          //       _ctrlPriceCopy.text == "" ||
+                          //       double.parse(_ctrlPrice.text) == 0) {
+                          //     _ctrlPrice.text = "0.00";
+                          //     _ctrlPriceCopy.text == "0.00";
+                          //     _selectPrices = "ฟรี";
+                          //     _prices[1] = Price('ระบุราคา');
+                          //   } else {
+                          //     _prices[1] = Price('${_ctrlPrice.text}');
+                          //     _selectPrices = _ctrlPrice.text;
+                          //   }
+                          // });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'ตกลง',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

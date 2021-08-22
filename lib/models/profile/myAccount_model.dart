@@ -57,7 +57,7 @@ class DataMyAccount {
     String aliasName;
     int userStatus;
     int accessStatus;
-    int balance;
+    double balance;
     String profileImage;
 
     factory DataMyAccount.fromJson(Map<String, dynamic> json) => DataMyAccount(
@@ -68,7 +68,7 @@ class DataMyAccount {
         aliasName: json["alias_name"],
         userStatus: json["user_status"],
         accessStatus: json["access_status"],
-        balance: json["balance"],
+        balance: json["balance"].toDouble(),
         profileImage: json["profile_image"],
     );
 
