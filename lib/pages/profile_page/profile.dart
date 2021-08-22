@@ -417,7 +417,9 @@ class _ScrollProfilePageState extends State
                                           color: Colors.blueAccent,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+
+                                    },
                                   ),
                                 ),
                               ],
@@ -586,18 +588,18 @@ class _ScrollProfilePageState extends State
                     //   ),
                     // ),
                     //2nd row
-                    Stack(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            print("up $index");
+                    GestureDetector(
+                      onTap: (){
+                        print("up $index");
                             print(data_RecipePost[index].rid);
                             Navigator.push(context,
                                 CupertinoPageRoute(builder: (context) {
                               return ShowFood(data_RecipePost[index].rid);
                             })).then((value) => findUser());
-                          },
-                          child: Padding(
+                      },
+                      child: Stack(
+                        children: [
+                          Padding(
                             padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                             child: Container(
                               width: deviceSize.width,
@@ -613,74 +615,74 @@ class _ScrollProfilePageState extends State
                               ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          left: 8.0,
-                          bottom: 0.0,
-                          right: 8.0,
-                          child: Container(
-                            height: 60.0,
-                            width: deviceSize.width,
-                            decoration: BoxDecoration(
-                              borderRadius: new BorderRadius.circular(24.0),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.black,
-                                  Colors.black12,
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
+                          Positioned(
+                            left: 8.0,
+                            bottom: 0.0,
+                            right: 8.0,
+                            child: Container(
+                              height: 60.0,
+                              width: deviceSize.width,
+                              decoration: BoxDecoration(
+                                borderRadius: new BorderRadius.circular(24.0),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.black,
+                                    Colors.black12,
+                                  ],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          left: 18.0,
-                          bottom: 10.0,
-                          child: Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data_RecipePost[index].recipeName,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      RatingBarIndicator(
-                                        rating: (data_RecipePost[index].score ==
-                                                null)
-                                            ? 0
-                                            : data_RecipePost[index].score,
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.star,
-                                          color: Colors.blue,
+                          Positioned(
+                            left: 18.0,
+                            bottom: 10.0,
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      data_RecipePost[index].recipeName,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        RatingBarIndicator(
+                                          rating: (data_RecipePost[index].score ==
+                                                  null)
+                                              ? 0
+                                              : data_RecipePost[index].score,
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: Colors.blue,
+                                          ),
+                                          itemCount: 5,
+                                          itemSize: 16.0,
+                                          // direction: Axis.vertical,
                                         ),
-                                        itemCount: 5,
-                                        itemSize: 16.0,
-                                        // direction: Axis.vertical,
-                                      ),
-                                      Text(
-                                        "(คะแนน " +
-                                            (data_RecipePost[index]
-                                                .score
-                                                .toString()) +
-                                            ")",
-                                        style: TextStyle(color: Colors.grey),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+                                        Text(
+                                          "(คะแนน " +
+                                              (data_RecipePost[index]
+                                                  .score
+                                                  .toString()) +
+                                              ")",
+                                          style: TextStyle(color: Colors.grey),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     // Padding(
                     //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 0),

@@ -8,6 +8,7 @@ import 'package:easy_cook/pages/profile_page/edit_profile/edit_profile.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/payment_channel.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/topupPage.dart';
+import 'package:easy_cook/pages/profile_page/topup&withdraw/withdraw/withdrawPage.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/cupertino.dart';
@@ -100,48 +101,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
     } else {
       return null;
     }
-  }
-
-  Future<void> _withdrawDisplayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('ทดสอบถอนเงิน'),
-            content: TextField(
-              onChanged: (value) {
-                // setState(() {
-                //   valueText = value;
-                // });
-              },
-              // controller: _textFieldController,
-              decoration: InputDecoration(hintText: "เช่น 50,100,2000"),
-            ),
-            actions: <Widget>[
-              TextButton(
-                // color: Colors.red,
-                // textColor: Colors.white,
-                child: Text('ยกเลิก'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              TextButton(
-                // color: Colors.green,
-                // textColor: Colors.white,
-                child: Text('ตกลง'),
-                onPressed: () {
-                  // setState(() {
-                  //   codeDialog = valueText;
-                  //   Navigator.pop(context);
-                  // });
-                },
-              ),
-            ],
-          );
-        });
   }
 
   buildSliverAppBar(context) {
@@ -458,7 +417,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                       print("เติมเงิน");
                                       _ctrlPrice.text = "";
                                       // _topupDisplayTextInputDialog(context);
-                                      _topupDisplayBottomSheet(context);
+                                      _displayBottomSheet(context, "topup");
                                     },
                                   ),
                                 ),
@@ -478,7 +437,8 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onPressed: () {
-                                      _withdrawDisplayTextInputDialog(context);
+                                      _ctrlPrice.text = "";
+                                      _displayBottomSheet(context, "withdraw");
                                     },
                                   ),
                                 ),
@@ -495,7 +455,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
     );
   }
 
-  void _topupDisplayBottomSheet(context) {
+  void _displayBottomSheet(context, String select) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -504,14 +464,14 @@ class _ScrollProfilePage2BottomNavbarState extends State
                 color: Color(0xFF737373),
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: _buildBottomNavigationMenu(context),
+                child: _buildBottomNavigationMenu(context, select),
               ),
             ));
   }
 
   TextEditingController _ctrlPrice = TextEditingController(); //ราคา
   final _formKey = GlobalKey<FormState>();
-  Container _buildBottomNavigationMenu(context) {
+  Container _buildBottomNavigationMenu(context, String select) {
     return Container(
 
         // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
@@ -580,8 +540,16 @@ class _ScrollProfilePage2BottomNavbarState extends State
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'โปรดระบุยอดเงิน';
-                      } else if (double.parse(_ctrlPrice.text) < 20) {
-                        return 'ขั้นต่ำ 20 บาท';
+                      }
+
+                      if (select == 'topup') {
+                        if (double.parse(_ctrlPrice.text) < 20) {
+                          return 'ขั้นต่ำ 20 บาท';
+                        }
+                      } else if (select == 'withdraw') {
+                        if (double.parse(_ctrlPrice.text) < 100) {
+                          return 'ขั้นต่ำ 100 บาท';
+                        }
                       }
 
                       print(value);
@@ -603,19 +571,33 @@ class _ScrollProfilePage2BottomNavbarState extends State
                       child: InkWell(
                         onTap: () async {
                           if (_formKey.currentState.validate()) {
-                            print("object");
-                            if (double.parse(_ctrlPrice.text) >= 20) {
+                            if (select == 'topup') {
+                              print("object");
+                              if (double.parse(_ctrlPrice.text) >= 20) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentChannelPage(
+                                            amount_to_fill:
+                                                double.parse(_ctrlPrice.text),
+                                          )),
+                                ).then((value) => {
+                                      if (token != "" && token != null)
+                                        {getMyAccounts()}
+                                    });
+                              }
+                            }else if(select == 'withdraw'){
                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PaymentChannelPage(
-                                          amount_to_fill:
-                                              double.parse(_ctrlPrice.text),
-                                        )),
-                              ).then((value) => {
-                                    if (token != "" && token != null)
-                                      {getMyAccounts()}
-                                  });
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => WithdrawPage(
+                                            amount_to_fill:
+                                                double.parse(_ctrlPrice.text),
+                                          )),
+                                ).then((value) => {
+                                      if (token != "" && token != null)
+                                        {getMyAccounts()}
+                                    });
                             }
                           }
 
@@ -761,11 +743,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
               //     ],
               //   ),
               // ),
-              Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      print("up $index");
+              GestureDetector(
+                onTap: (){
+                  print("up $index");
                       print(data_RecipePost[index].rid);
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
@@ -775,8 +755,10 @@ class _ScrollProfilePage2BottomNavbarState extends State
                           findUser();
                         }
                       });
-                    },
-                    child: Padding(
+                },
+                child: Stack(
+                  children: [
+                    Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: Container(
                         width: deviceSize.width,
@@ -792,73 +774,73 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    left: 8.0,
-                    bottom: 0.0,
-                    right: 8.0,
-                    child: Container(
-                      height: 60.0,
-                      width: deviceSize.width,
-                      decoration: BoxDecoration(
-                        borderRadius: new BorderRadius.circular(24.0),
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.black,
-                            Colors.black12,
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
+                    Positioned(
+                      left: 8.0,
+                      bottom: 0.0,
+                      right: 8.0,
+                      child: Container(
+                        height: 60.0,
+                        width: deviceSize.width,
+                        decoration: BoxDecoration(
+                          borderRadius: new BorderRadius.circular(24.0),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.black,
+                              Colors.black12,
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    left: 18.0,
-                    bottom: 10.0,
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              data_RecipePost[index].recipeName,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                RatingBarIndicator(
-                                  rating: (data_RecipePost[index].score == null)
-                                      ? 0
-                                      : data_RecipePost[index].score,
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.star,
-                                    color: Colors.blue,
+                    Positioned(
+                      left: 18.0,
+                      bottom: 10.0,
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data_RecipePost[index].recipeName,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  RatingBarIndicator(
+                                    rating: (data_RecipePost[index].score == null)
+                                        ? 0
+                                        : data_RecipePost[index].score,
+                                    itemBuilder: (context, index) => Icon(
+                                      Icons.star,
+                                      color: Colors.blue,
+                                    ),
+                                    itemCount: 5,
+                                    itemSize: 16.0,
+                                    // direction: Axis.vertical,
                                   ),
-                                  itemCount: 5,
-                                  itemSize: 16.0,
-                                  // direction: Axis.vertical,
-                                ),
-                                Text(
-                                  "(คะแนน " +
-                                      (data_RecipePost[index]
-                                          .score
-                                          .toString()) +
-                                      ")",
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                                  Text(
+                                    "(คะแนน " +
+                                        (data_RecipePost[index]
+                                            .score
+                                            .toString()) +
+                                        ")",
+                                    style: TextStyle(color: Colors.grey),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
               // Padding(
               //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 0),

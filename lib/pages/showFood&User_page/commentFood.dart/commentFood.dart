@@ -369,51 +369,53 @@ class _CommentFoodState extends State<CommentFood> {
                                           Icons.more_vert,
                                           color: Colors.blue,
                                         ))
-                                    : IconButton(
-                                        onPressed: () {
-                                          showModalBottomSheet(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    ListTile(
-                                                      leading: Icon(
-                                                          Icons.flag_outlined),
-                                                      title: Text("รายงาน"),
-                                                      onTap: () {
-                                                        
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return ReportComment();
-                                                            }).then((value) async {
-                                                          if (value != null) {
+                                    : (dataGetCommentPost[index].userStatus ==
+                                            0)
+                                        ? null
+                                        : IconButton(
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        ListTile(
+                                                          leading: Icon(Icons
+                                                              .flag_outlined),
+                                                          title: Text("รายงาน"),
+                                                          onTap: () {
                                                             showDialog(
                                                                 context:
                                                                     context,
                                                                 builder:
-                                                                    (contex) {
-                                                                  return AlertDialog(
-                                                                      content:
-                                                                          Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Text(
-                                                                          "กรุณารอสักครู่...   "),
-                                                                      CircularProgressIndicator()
-                                                                    ],
-                                                                  ));
-                                                                });
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return ReportComment();
+                                                                }).then((value) async {
+                                                              if (value !=
+                                                                  null) {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (contex) {
+                                                                      return AlertDialog(
+                                                                          content:
+                                                                              Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(
+                                                                              "กรุณารอสักครู่...   "),
+                                                                          CircularProgressIndicator()
+                                                                        ],
+                                                                      ));
+                                                                    });
 
-                                                            AddReport
-                                                                dataAddReport =
-                                                                await addReport(
+                                                                AddReport dataAddReport = await addReport(
                                                                     dataGetCommentPost[
                                                                             index]
                                                                         .userId
@@ -424,65 +426,64 @@ class _CommentFoodState extends State<CommentFood> {
                                                                     value[0],
                                                                     value[1]);
 
-                                                            Navigator.pop(
-                                                                context);
-                                                            String reportText1;
-                                                            String reportText2;
-                                                            Color color;
-                                                            if (dataAddReport
-                                                                    .success ==
-                                                                1) {
-                                                              reportText1 =
-                                                                  "รายงานสำเร็จ";
-                                                              reportText2 =
-                                                                  "ขอบคุณสำหรับการรายงาน";
-                                                              color =
-                                                                  Colors.green;
-                                                            } else {
-                                                              reportText1 =
-                                                                  "รายงานไม่สำเร็จ";
-                                                              reportText2 =
-                                                                  "โปรดรายงานใหม่ในภายหลัง";
-                                                              color =
-                                                                  Colors.red;
-                                                            }
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  Future.delayed(
-                                                                      Duration(
-                                                                          milliseconds:
-                                                                              1500),
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop(
-                                                                            true);
-                                                                    Navigator.pop(
-                                                                        context);
+                                                                Navigator.pop(
+                                                                    context);
+                                                                String
+                                                                    reportText1;
+                                                                String
+                                                                    reportText2;
+                                                                Color color;
+                                                                if (dataAddReport
+                                                                        .success ==
+                                                                    1) {
+                                                                  reportText1 =
+                                                                      "รายงานสำเร็จ";
+                                                                  reportText2 =
+                                                                      "ขอบคุณสำหรับการรายงาน";
+                                                                  color = Colors
+                                                                      .green;
+                                                                } else {
+                                                                  reportText1 =
+                                                                      "รายงานไม่สำเร็จ";
+                                                                  reportText2 =
+                                                                      "โปรดรายงานใหม่ในภายหลัง";
+                                                                  color = Colors
+                                                                      .red;
+                                                                }
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      Future.delayed(
+                                                                          Duration(
+                                                                              milliseconds: 1500),
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop(true);
+                                                                        Navigator.pop(
+                                                                            context);
 
-                                                                    // Navigator.pop(context);
-                                                                  });
-                                                                  return alertDialog_successful_or_unsuccessful(
-                                                                      reportText1,
-                                                                      color,
-                                                                      reportText2);
-                                                                });
-                                                            print(
-                                                                "dataAddReport.success ===>>> ${dataAddReport.success}");
-                                                          }
-                                                        });
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                        },
-                                        icon: Icon(Icons.more_vert),
-                                      ),
+                                                                        // Navigator.pop(context);
+                                                                      });
+                                                                      return alertDialog_successful_or_unsuccessful(
+                                                                          reportText1,
+                                                                          color,
+                                                                          reportText2);
+                                                                    });
+                                                                print(
+                                                                    "dataAddReport.success ===>>> ${dataAddReport.success}");
+                                                              }
+                                                            });
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+                                            },
+                                            icon: Icon(Icons.more_vert),
+                                          ),
                             // trailing: Text('Horse'),
                           );
                         })
