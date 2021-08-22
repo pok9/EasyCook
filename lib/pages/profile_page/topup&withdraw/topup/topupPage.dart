@@ -106,6 +106,9 @@ class _TopupPageState extends State<TopupPage> {
                       cardHolderName: cardHolderName,
                       expiryDate: expiryDate,
                       themeColor: Colors.blue,
+                      numberValidationMessage: 'กรุณากรอกหมายเลขบัตร',
+                      dateValidationMessage: 'กรุณากรอกวันหมดอายุ',
+                      cvvValidationMessage: 'กรุณากรอกหมายเลข CVV',
                       cardNumberDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'หมายเลขบัตร',

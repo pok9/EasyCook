@@ -12,9 +12,6 @@ class PaymentChannelPage extends StatefulWidget {
 }
 
 class _PaymentChannelPageState extends State<PaymentChannelPage> {
-
-  
-
   int _selection = 0;
 
   selectTime(int timeSelected) {
@@ -168,15 +165,20 @@ class _PaymentChannelPageState extends State<PaymentChannelPage> {
                             ),
                           ),
                         ),
-                        onPressed: (_selection != 0) ? () {
-                          if(_selection == 1){
-                            Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => TopupPage(amount_to_fill: this.widget.amount_to_fill,)),
-                                      );
-                          }
-                        } : null,
+                        onPressed: (_selection != 0)
+                            ? () {
+                                if (_selection == 1) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TopupPage(
+                                              amount_to_fill:
+                                                  this.widget.amount_to_fill,
+                                            )),
+                                  );
+                                }
+                              }
+                            : null,
                       ),
                     ],
                   )),

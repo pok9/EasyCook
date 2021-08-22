@@ -1556,11 +1556,11 @@ class _AddFoodPageState extends State<AddFoodPage> {
           label: Text(
             people.name,
             style: TextStyle(
-                color: (_selectPeoples.contains(people.name))
+                color: (_selectPeoples == people.name)
                     ? Colors.white
                     : Colors.black),
           ),
-          selected: _selectPeoples.contains(people.name),
+          selected: _selectPeoples == people.name,
           onSelected: (bool selected) {
             setState(() {
               _selectPeoples = people.name;
@@ -1587,11 +1587,11 @@ class _AddFoodPageState extends State<AddFoodPage> {
           label: Text(
             time.name,
             style: TextStyle(
-                color: (_selectTimes.contains(time.name))
+                color: (_selectTimes == time.name)
                     ? Colors.white
                     : Colors.black),
           ),
-          selected: _selectTimes.contains(time.name),
+          selected: _selectTimes == time.name,
           onSelected: (bool selected) {
             setState(() {
               _selectTimes = time.name;
@@ -1618,11 +1618,11 @@ class _AddFoodPageState extends State<AddFoodPage> {
           label: Text(
             category.name,
             style: TextStyle(
-                color: (_selectCategorys.contains(category.name))
+                color: (_selectCategorys == category.name)
                     ? Colors.white
                     : Colors.black),
           ),
-          selected: _selectCategorys.contains(category.name),
+          selected: _selectCategorys == category.name,
           onSelected: (bool selected) {
             setState(() {
               _selectCategorys = category.name;
