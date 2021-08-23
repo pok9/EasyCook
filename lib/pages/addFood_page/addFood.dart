@@ -209,8 +209,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
   }
   //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
 
-  
-
   TextEditingController _ctrlPrice = TextEditingController()
     ..text = '0.00'; //ราคา
 
@@ -301,19 +299,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide.none,
                   ),
-                  // suffixIcon: IconButton(
-                  //   icon: Icon(Icons.clear),
-                  //   onPressed: () {
-                  //     setState(() {
-                  //       ingredient_row--;
-                  //       ctl_ingredient_row.remove(controller);
-                  //       if (ctl_ingredient_row.length == 0) {
-                  //         this.ingredient_row = 1;
-                  //       }
-                  //       print('controllers ${ctl_ingredient_row.length}');
-                  //     });
-                  //   },
-                  // ),
                 ),
               ),
             ),
@@ -381,31 +366,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     flex: 5,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 0),
-                      //   child: TextFormField(
-                      //     minLines: 2,
-                      // keyboardType: TextInputType.multiline,
-                      // maxLines: null,
-                      //     controller: controller2,
-                      //     onChanged: (text) {
-                      //       print(text + "${displayNumber}.");
-                      //     },
-                      //     decoration: InputDecoration(
-                      //       contentPadding: new EdgeInsets.symmetric(
-                      //           vertical: 5.0, horizontal: 10),
-                      //       filled: true,
-                      //       fillColor: Colors.grey.shade200,
-
-                      //       border: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(0),
-                      //         borderSide: BorderSide.none,
-                      //       ),
-                      //       hintText: "วิธีทำ",
-                      //       hintStyle: TextStyle(
-                      //           fontSize: 16,
-                      //           // fontWeight: FontWeight.bold,
-                      //           color: Colors.grey),
-                      //     ),
-                      //   ),
                       child: TextFormField(
                         controller: controller2,
                         // maxLength: 60,
@@ -494,7 +454,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                         "i")
                                     ? Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            0, 20, 0, 0),
+                                            0, 10, 0, 20),
                                         child: Container(
                                             constraints:
                                                 new BoxConstraints.expand(
@@ -743,6 +703,46 @@ class _AddFoodPageState extends State<AddFoodPage> {
       backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
         title: Text('เขียนสูตรอาหาร'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigator.pop(context);
+
+            print("รูปอาหาร => ${addImage.length}");
+            print("ชื่อสูตรอาหาร => ${_ctrlNameFood.text}");
+            print("คำอธิบาย => ${_ctrlExplain.text}");
+            print("ราคา => ${_ctrlPrice.text}");
+
+            print("ขนาดส่วนผสม => ${ctl_ingredient_row.length}");
+            print(ctl_ingredient_row[0][0].text +
+                " " +
+                ctl_ingredient_row[0][1].text);
+
+            print("ขนาดวิธีทำ => ${ctl_howto_row.length}");
+            print(ctl_howto_row[0].text + " " + imageHowto[0].path);
+
+            if (addImage.length != 0 ||
+                _ctrlNameFood.text != "" ||
+                _ctrlExplain.text != "" ||
+                _ctrlPrice.text != "0.00" ||
+                ctl_ingredient_row.length != 1 ||
+                ctl_howto_row.length != 1 ||
+                ctl_ingredient_row[0][0].text != "" ||
+                ctl_ingredient_row[0][1].text != "" ||
+                ctl_howto_row[0].text != "" ||
+                imageHowto[0].path != "") {
+              showDialog(
+                  context: context,
+                  builder: (context) => CustomDialog(
+                        title: "ยังไม่ได้บันทึกการเปลี่ยนแปลง",
+                        description:
+                            "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก แน่ใจไหมว่าต้องการยกเลิก",
+                      ));
+            } else {
+              Navigator.pop(context);
+            }
+          },
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -1236,110 +1236,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     ),
                   ],
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                //   child: Table(
-                //     border: TableBorder.all(),
-                //     textDirection: TextDirection.ltr,
-                //     children: [
-                //       TableRow(children: [
-                //         Padding(
-                //           padding: const EdgeInsets.all(15.0),
-                //           child: Text('สำหรับ'),
-                //         ),
-                //         Container(
-                //           width: 300.0,
-                //           padding: EdgeInsets.only(left: 16, right: 16),
-                //           child: DropdownButtonHideUnderline(
-                //             child: DropdownButton(
-                //               // hint: Text('1 คน'),
-                //               isExpanded: true,
-                //               underline: SizedBox(),
-                //               value: valueChoosePeople,
-                //               onChanged: (newValue) {
-                //                 setState(() {
-                //                   valueChoosePeople = newValue;
-                //                 });
-                //               },
-                //               items: listPeopleItem.map((valueItem) {
-                //                 return DropdownMenuItem(
-                //                   value: valueItem,
-                //                   child: Text(valueItem),
-                //                 );
-                //               }).toList(),
-                //             ),
-                //           ),
-                //         ),
-                //       ]),
-                //       TableRow(children: [
-                //         Padding(
-                //           padding: const EdgeInsets.all(15.0),
-                //           child: Text('เวลา'),
-                //         ),
-                //         Container(
-                //           padding: EdgeInsets.only(left: 16, right: 16),
-                //           child: DropdownButton(
-                //             isExpanded: true,
-                //             underline: SizedBox(),
-                //             value: valueChooseTime,
-                //             onChanged: (newValue) {
-                //               setState(() {
-                //                 valueChooseTime = newValue;
-                //               });
-                //             },
-                //             items: listTimeItem.map((valueItem) {
-                //               return DropdownMenuItem(
-                //                 value: valueItem,
-                //                 child: Text(valueItem),
-                //               );
-                //             }).toList(),
-                //           ),
-                //         ),
-                //       ]),
-                //       TableRow(children: [
-                //         Padding(
-                //           padding: const EdgeInsets.all(15.0),
-                //           child: Text('หมวดหมู่อาหาร'),
-                //         ),
-                //         Container(
-                //           padding: EdgeInsets.only(left: 16, right: 16),
-                //           child: DropdownButton(
-                //             isExpanded: true,
-                //             underline: SizedBox(),
-                //             value: valueChooseFood,
-                //             onChanged: (newValue) {
-                //               setState(() {
-                //                 valueChooseFood = newValue;
-                //               });
-                //             },
-                //             items: listFoodItem.map((valueItem) {
-                //               return DropdownMenuItem(
-                //                 value: valueItem,
-                //                 child: Text(valueItem),
-                //               );
-                //             }).toList(),
-                //           ),
-                //         ),
-                //       ]),
-                //       TableRow(children: [
-                //         Padding(
-                //           padding: const EdgeInsets.all(15.0),
-                //           child: Text('ราคา(\u0E3F)'),
-                //         ),
-                //         Container(
-                //           padding: EdgeInsets.only(left: 16, right: 16),
-                //           child: TextField(
-                //             controller: _ctrlPrice,
-                //             keyboardType: TextInputType.number,
-                //             decoration: InputDecoration(
-                //               border: InputBorder.none,
-                //             ),
-                //           ),
-                //         ),
-                //       ]),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -1383,11 +1279,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     });
                   },
                 ),
-                // ListView(
-                //     padding: EdgeInsets.all(0),
-                //     shrinkWrap: true,
-                //     physics: NeverScrollableScrollPhysics(),
-                //     children: ingredient),
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(
@@ -1447,12 +1338,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     });
                   },
                 ),
-                // ListView(
-                //   padding: EdgeInsets.all(0),
-                //   shrinkWrap: true,
-                //   physics: NeverScrollableScrollPhysics(),
-                //   children: howto,
-                // ),
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(
@@ -1476,9 +1361,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    
-
     findUser();
 
     ingredient_row = widget.ingredient_row_start;
@@ -1536,11 +1418,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     print("wwwwww");
-    // for (int i = 0; i < imageHowto.length; i++) {
-    //   VideoPlayerController.file(imageHowto[i]).dispose();
-    // }
+
     super.dispose();
   }
 
@@ -1587,9 +1466,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
           label: Text(
             time.name,
             style: TextStyle(
-                color: (_selectTimes == time.name)
-                    ? Colors.white
-                    : Colors.black),
+                color:
+                    (_selectTimes == time.name) ? Colors.white : Colors.black),
           ),
           selected: _selectTimes == time.name,
           onSelected: (bool selected) {
@@ -1738,10 +1616,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     LengthLimitingTextInputFormatter(7),
                     FilteringTextInputFormatter.allow(
                         RegExp(r'^(\d+)?\.?\d{0,2}')),
-                    // FilteringTextInputFormatter.allow(RegExp('[1234567890.0]')),
-                    // FilteringTextInputFormatter.deny('..')
-
-                    //   FilteringTextInputFormatter.digitsOnly
                   ],
                   controller: _ctrlPrice,
                   decoration: InputDecoration(
@@ -1824,4 +1698,101 @@ class Category {
 class Price {
   const Price(this.name);
   final String name;
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title, description, buttonText;
+  final Image image;
+
+  CustomDialog({this.title, this.description, this.buttonText, this.image});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 22.0, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text(
+                description,
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "ไม่ใช่",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text("ใช่"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 16,
+          right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.blueAccent,
+            radius: 50,
+            backgroundImage: NetworkImage(
+                'https://media.giphy.com/media/Q81NcsY6YxK7jxnr4v/giphy.gif'),
+          ),
+        )
+      ],
+    );
+  }
 }

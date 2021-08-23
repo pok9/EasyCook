@@ -827,7 +827,9 @@ class _ShowFoodState extends State<ShowFood> {
                                     //     size: 30.0,
                                     //   ),
                                     // ),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text(
                                       dataFood.suitableFor,
                                       style: TextStyle(
@@ -855,7 +857,9 @@ class _ShowFoodState extends State<ShowFood> {
                                     //     size: 30.0,
                                     //   ),
                                     // ),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text(
                                       dataFood.takeTime,
                                       style: TextStyle(
@@ -881,7 +885,9 @@ class _ShowFoodState extends State<ShowFood> {
                                     //       // color: Colors.amber,
                                     //       ),
                                     // ),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text(
                                       dataFood.foodCategory,
                                       style: TextStyle(
@@ -1140,64 +1146,72 @@ class _ShowFoodState extends State<ShowFood> {
                                               ],
                                             ),
                                           ),
-                                (dataMyAccont == null ||
-                                        dataGetCommentPost == null)
-                                    ? Center(child: CircularProgressIndicator())
-                                    : ListView.builder(
-                                        padding: EdgeInsets.only(top: 0),
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: (dataGetCommentPost == null)
-                                            ? 0
-                                            : dataGetCommentPost.length > 3
-                                                ? 3
-                                                : dataGetCommentPost.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            isThreeLine: true,
-                                            leading: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  dataGetCommentPost[index]
-                                                      .profileImage),
-                                            ),
-                                            title: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 10, 0, 0),
-                                              child: Text(
-                                                dataGetCommentPost[index]
-                                                    .aliasName,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: (dataGetCommentPost[
-                                                                    index]
-                                                                .userStatus ==
-                                                            0)
-                                                        ? Colors.red
-                                                        : (dataGetCommentPost[
+                                (token == "")
+                                    ? Container()
+                                    : (dataMyAccont == null ||
+                                            dataGetCommentPost == null)
+                                        ? Center(
+                                            child: CircularProgressIndicator())
+                                        : ListView.builder(
+                                            padding: EdgeInsets.only(top: 0),
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemCount: (dataGetCommentPost ==
+                                                    null)
+                                                ? 0
+                                                : dataGetCommentPost.length > 3
+                                                    ? 3
+                                                    : dataGetCommentPost.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                isThreeLine: true,
+                                                leading: CircleAvatar(
+                                                  backgroundImage: NetworkImage(
+                                                      dataGetCommentPost[index]
+                                                          .profileImage),
+                                                ),
+                                                title: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 10, 0, 0),
+                                                  child: Text(
+                                                    dataGetCommentPost[index]
+                                                        .aliasName,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: (dataGetCommentPost[
                                                                         index]
-                                                                    .userId ==
-                                                                dataMyAccont
-                                                                    .userId)
-                                                            ? Colors.blue
-                                                            : Colors.black),
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                                              textAlign: TextAlign.justify,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontFamily: 'OpenSans',
-                                                fontSize: 12,
-                                                color: Colors.black,
-                                                decoration: TextDecoration.none,
-                                              ),
-                                            ),
-                                            dense: true,
-                                            // trailing: Text('Horse'),
-                                          );
-                                        }),
+                                                                    .userStatus ==
+                                                                0)
+                                                            ? Colors.red
+                                                            : (dataGetCommentPost[
+                                                                            index]
+                                                                        .userId ==
+                                                                    dataMyAccont
+                                                                        .userId)
+                                                                ? Colors.blue
+                                                                : Colors.black),
+                                                  ),
+                                                ),
+                                                subtitle: Text(
+                                                  '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                                                  textAlign: TextAlign.justify,
+                                                  style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 12,
+                                                    color: Colors.black,
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                  ),
+                                                ),
+                                                dense: true,
+                                                // trailing: Text('Horse'),
+                                              );
+                                            }),
                               ],
                             ),
                             Padding(
