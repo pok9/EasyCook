@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:easy_cook/models/topup&withdraw/withdraw.dart';
@@ -100,7 +101,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
       String banknumber,
       String bankname,
       double amount) async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/topup";
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/withdraw";
 
     var data = {
       "token": token,
@@ -254,6 +255,20 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     }
                     if (_formKey.currentState.validate()) {
                       if (_selected != null) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("กรุณารอสักครู่...   "),
+                                CircularProgressIndicator()
+                              ],
+                            ));
+                          },
+                        );
                         print("token ===>>> $token");
                         print("name ===>>> ${this.widget.name}");
                         print("email ===>>> ${this.widget.email}");
@@ -269,13 +284,46 @@ class _WithdrawPageState extends State<WithdrawPage> {
                             _ctrlBanknumber.text,
                             _ctrlBankname.text,
                             this.widget.amount_to_fill);
-                        
+
+                        Navigator.pop(context);
+
                         print(withdrawData.success);
-                        if(withdrawData.success == 1){
+                        if (withdrawData.success == 1) {
                           print(withdrawData.message);
+                          print("wwww");
+
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext builderContext) {
+                                Timer(Duration(milliseconds: 2500 ), () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  
+                                });
+                                return CustomDialog(
+                                  title: "คำขอการถอนเงินสำเร็จ",
+                                  description:
+                                      withdrawData.message,
+                                  image:
+                                      'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                                  colors: Colors.lightGreen,
+                                  index: 1,
+                                );
+                              });
+                        } else {
+                          print("mmmm");
+
+                          showDialog(
+                              context: context,
+                              builder: (context) => CustomDialog(
+                                    title: "ถอนเงินไม่สำเร็จ",
+                                    description: "โปรดทำรายการใหม่",
+                                    image:
+                                        'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                                    colors: Colors.redAccent,
+                                    index: 0,
+                                  ));
                         }
-
-
                       }
                     }
                   },
@@ -285,6 +333,90 @@ class _WithdrawPageState extends State<WithdrawPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title, description, buttonText, image;
+  final Color colors;
+  final int index;
+  final int rid;
+
+  CustomDialog(
+      {this.title,
+      this.description,
+      this.buttonText,
+      this.image,
+      this.colors,
+      this.index,
+      this.rid});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 22.0, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text(
+                description,
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 16,
+          right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.blueAccent,
+            radius: 50,
+            backgroundImage: NetworkImage(this.image),
+          ),
+        )
+      ],
     );
   }
 }

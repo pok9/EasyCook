@@ -549,8 +549,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
                       } else if (select == 'withdraw') {
                         if (double.parse(_ctrlPrice.text) < 100) {
                           return 'ขั้นต่ำ 100 บาท';
-                        }else if(double.parse(_ctrlPrice.text) > data_DataAc.balance ){
-                          return 'คุณสามาถอนเงินได้ ${data_DataAc.balance} บาท';
+                        } else if (double.parse(_ctrlPrice.text) >
+                            data_DataAc.balance) {
+                          return 'เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
                         }
                       }
 
@@ -576,6 +577,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                             if (select == 'topup') {
                               print("object");
                               if (double.parse(_ctrlPrice.text) >= 20) {
+                                Navigator.of(context).pop();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -588,20 +590,21 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                         {getMyAccounts()}
                                     });
                               }
-                            }else if(select == 'withdraw'){
+                            } else if (select == 'withdraw') {
+                              Navigator.of(context).pop();
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WithdrawPage(
-                                            amount_to_fill:
-                                                double.parse(_ctrlPrice.text),
-                                                name: data_DataAc.aliasName,
-                                                email: data_DataAc.email,
-                                          )),
-                                ).then((value) => {
-                                      if (token != "" && token != null)
-                                        {getMyAccounts()}
-                                    });
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WithdrawPage(
+                                          amount_to_fill:
+                                              double.parse(_ctrlPrice.text),
+                                          name: data_DataAc.aliasName,
+                                          email: data_DataAc.email,
+                                        )),
+                              ).then((value) => {
+                                    if (token != "" && token != null)
+                                      {getMyAccounts()}
+                                  });
                             }
                           }
 
@@ -748,17 +751,17 @@ class _ScrollProfilePage2BottomNavbarState extends State
               //   ),
               // ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   print("up $index");
-                      print(data_RecipePost[index].rid);
-                      Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) {
-                        return ShowFood(data_RecipePost[index].rid);
-                      })).then((value) {
-                        if (token != "" && token != null) {
-                          findUser();
-                        }
-                      });
+                  print(data_RecipePost[index].rid);
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) {
+                    return ShowFood(data_RecipePost[index].rid);
+                  })).then((value) {
+                    if (token != "" && token != null) {
+                      findUser();
+                    }
+                  });
                 },
                 child: Stack(
                   children: [
@@ -817,9 +820,10 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   RatingBarIndicator(
-                                    rating: (data_RecipePost[index].score == null)
-                                        ? 0
-                                        : data_RecipePost[index].score,
+                                    rating:
+                                        (data_RecipePost[index].score == null)
+                                            ? 0
+                                            : data_RecipePost[index].score,
                                     itemBuilder: (context, index) => Icon(
                                       Icons.star,
                                       color: Colors.blue,

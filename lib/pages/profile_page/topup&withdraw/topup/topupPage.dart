@@ -201,7 +201,6 @@ class _TopupPageState extends State<TopupPage> {
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
                                   });
                                   return CustomDialog(
                                     title: "เติมเงินสำเร็จ",
@@ -213,15 +212,7 @@ class _TopupPageState extends State<TopupPage> {
                                     index: 1,
                                   );
                                 }
-                                // builder: (context) => CustomDialog(
-                                //       title: "เติมเงินสำเร็จ",
-                                //       description:
-                                //           "เราได้ทำการเติมเงินให้คุณเรียบร้อยแล้ว",
-                                //       image:
-                                //           'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
-                                //       colors: Colors.lightGreen,
-                                //       index: 1,
-                                //     )
+                                
                                 );
                           } else {
                             print("mmmm");
