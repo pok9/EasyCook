@@ -11,6 +11,7 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -360,24 +361,32 @@ class _DrawersState extends State<Drawers> {
                     onTap: () async {
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
-                      
+
                       preferences.setString("tokens", "");
                       preferences.setString("email", "");
                       updateTokenExit();
-                      
+
                       ///////////////////////// delete swith user //////////////////////////////
-                       List<String> listEmail = preferences.getStringList("listEmail");
-                      int index = listEmail.indexOf(this.widget.data_DataAc.email);
-                      listEmail.removeAt(index);
-                      preferences.setStringList("listEmail", listEmail);
-                      
-                       List<String> listPassword = preferences.getStringList("listPassword");
-                       listPassword.removeAt(index);
-                       preferences.setStringList("listPassword", listPassword);
+                      List<String> listEmail =
+                          preferences.getStringList("listEmail");
+                      int index =
+                          listEmail.indexOf(this.widget.data_DataAc.email);
+                      print("index => $index");
+                      if (index > -1) {
+                        listEmail.removeAt(index);
+                        preferences.setStringList("listEmail", listEmail);
+
+                        List<String> listPassword =
+                            preferences.getStringList("listPassword");
+                        listPassword.removeAt(index);
+                        preferences.setStringList("listPassword", listPassword);
+                      } else {
+                        print("LogOutFacebook");
+                        _logOut();
+                      }
+
                       ///////////////////////// delete swith user //////////////////////////////
 
-
-                     
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -475,6 +484,11 @@ class _DrawersState extends State<Drawers> {
             ),
     );
   }
+}
+
+Future<Null> _logOut() async {
+  var facebookSignIn = AuthBlock.facebookSignIns;
+  await facebookSignIn.logOut();
 }
 
 void _tripEditModalBottomSheet(context) {

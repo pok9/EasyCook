@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SwitchAccountsPage extends StatefulWidget {
+
+ 
+
   @override
   _SwitchAccountsPageState createState() => _SwitchAccountsPageState();
 }
@@ -201,7 +204,7 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
                   showDialog(
                       context: context,
                       builder: (_) {
-                        return LoginPage();
+                        return LoginPage(closeFacebook: 0,);
                       });
                 },
               )

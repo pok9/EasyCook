@@ -10,6 +10,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -20,7 +22,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   int close;
-  LoginPage({this.close});
+  int closeFacebook;
+  LoginPage({this.close, this.closeFacebook});
 
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -135,25 +138,31 @@ class _LoginPageState extends State<LoginPage> {
     print("response.body = ${response.body}");
   }
 
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
   String userID, email, alias_name, name_surname, profile_image;
+  var facebookSignIn = AuthBlock.facebookSignIns;
 
   LoginModel loginFacebook;
   Future<Null> loginFacebooks(
       String userID, email, alias_name, name_surname, profile_image) async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjUsers/loginFacebook";
 
-    final response = await http.post(Uri.parse(apiUrl), body: {
+    var data = {
       "userID": userID,
       "email": email,
       "name_surname": alias_name,
       "alias_name": name_surname,
       "profile_image": profile_image
-    });
+    };
+
+    print(jsonEncode(data));
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
 
     if (response.statusCode == 200) {
       final String responseString = response.body;
-
+      print("responseStringFacebook => $responseString");
       loginFacebook = loginModelFromJson(responseString);
     } else {
       return null;
@@ -237,37 +246,71 @@ class _LoginPageState extends State<LoginPage> {
             height: 30,
           ),
           Container(width: 220, height: 45, child: buildCustomButton()),
-          DialogButton(
-            height: 45,
-            onPressed: () async {
-              final FacebookLoginResult result =
-                  await facebookSignIn.logIn(['email']);
+          SizedBox(
+            height: 15,
+          ),
+          (this.widget.closeFacebook == 0)
+              ? Container()
+              // : DialogButton(
+              //     height: 45,
+              //     onPressed: () async {
 
-              switch (result.status) {
-                case FacebookLoginStatus.loggedIn:
-                  final FacebookAccessToken accessToken = result.accessToken;
+              //     },
+              //     child: Text(
+              //       "Facebook",
+              //       style: TextStyle(color: Colors.white, fontSize: 20),
+              //     ),
+              //   ),
+              
+              : Container(
+                width: 220, height: 45,
+                child: SignInButton(Buttons.Facebook, onPressed: () async {
+                    final FacebookLoginResult result =
+                        await facebookSignIn.logIn(['email']);
 
-                  final graphResponse = await http.get(
-                      // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
-                      Uri.parse(
-                          'https://graph.facebook.com/v11.0/me?fields=name,first_name,last_name,email,picture&access_token=${accessToken.token}'));
-                  final profile = jsonDecode(graphResponse.body);
-                  print(profile);
-                  setState(() {
-                    userID = profile['id'];
-                    email = profile['email'];
-                    name_surname = profile['first_name'];
-                    alias_name = profile['last_name'];
-                    profile_image = profile['picture']['data']['url'];
+                    switch (result.status) {
+                      case FacebookLoginStatus.loggedIn:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  content: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("กรุณารอสักครู่...   "),
+                                  CircularProgressIndicator()
+                                ],
+                              ));
+                            });
+                        final FacebookAccessToken accessToken =
+                            result.accessToken;
 
-                    print("userID => $userID");
-                    print("email => $email");
-                    print("name_surname => $name_surname");
-                    print("alias_name => $alias_name");
-                    print("profile_image => $profile_image");
-                  });
+                        final graphResponse = await http.get(
+                            // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
+                            Uri.parse(
+                                'https://graph.facebook.com/v11.0/me?fields=name,first_name,last_name,email,picture.width(800).height(800)&access_token=${accessToken.token}'));
+                        final profile = jsonDecode(graphResponse.body);
+                        print(profile);
+                        setState(() {
+                          userID = profile['id'];
+                          email = profile['email'];
+                          name_surname = profile['first_name'];
+                          alias_name = profile['last_name'];
+                          profile_image = profile['picture']['data']['url'];
 
-                  print('''
+                          LoginFacebookMD(userID, email, alias_name, name_surname,
+                              profile_image);
+
+                          // print("loginFacebook.success => ${loginFacebook.success}");
+
+                          print("userID => $userID");
+                          print("email => $email");
+                          print("name_surname => $name_surname");
+                          print("alias_name => $alias_name");
+                          print("profile_image => $profile_image");
+                        });
+
+                        print('''
          Logged in!
          
          Token: ${accessToken.token}
@@ -276,21 +319,17 @@ class _LoginPageState extends State<LoginPage> {
          Permissions: ${accessToken.permissions}
          Declined permissions: ${accessToken.declinedPermissions}
          ''');
-                  break;
-                case FacebookLoginStatus.cancelledByUser:
-                  print('Login cancelled by the user.');
-                  break;
-                case FacebookLoginStatus.error:
-                  print('Something went wrong with the login process.\n'
-                      'Here\'s the error Facebook gave us: ${result.errorMessage}');
-                  break;
-              }
-            },
-            child: Text(
-              "Facebook",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
+                        break;
+                      case FacebookLoginStatus.cancelledByUser:
+                        print('Login cancelled by the user.');
+                        break;
+                      case FacebookLoginStatus.error:
+                        print('Something went wrong with the login process.\n'
+                            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+                        break;
+                    }
+                  }),
+              )
         ],
       ),
     );
@@ -362,4 +401,33 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() {});
   }
+
+  void LoginFacebookMD(
+      String userID, email, alias_name, name_surname, profile_image) async {
+    await loginFacebooks(
+        userID, email, alias_name, name_surname, profile_image);
+    print("loginFacebook.success => ${loginFacebook.success}");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    Navigator.pop(context);
+    preferences.setString("tokens", loginFacebook.token);
+    preferences.setString("email", email);
+
+    getTokenFirebase(preferences.getString("tokens"));
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => SlidePage(),
+        ),
+        (route) => false);
+  }
+
+  // static Future<Null> _logOut() async {
+  //   await facebookSignIn.logOut();
+  // }
+}
+
+//Static valiable FacebookLogin
+class AuthBlock {
+  static final FacebookLogin facebookSignIns = new FacebookLogin();
 }
