@@ -9,12 +9,14 @@ import 'package:easy_cook/slidepage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LoginPage extends StatefulWidget {
   int close;
@@ -133,6 +135,31 @@ class _LoginPageState extends State<LoginPage> {
     print("response.body = ${response.body}");
   }
 
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+  String userID, email, alias_name, name_surname, profile_image;
+
+  LoginModel loginFacebook;
+  Future<Null> loginFacebooks(
+      String userID, email, alias_name, name_surname, profile_image) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+
+    final response = await http.post(Uri.parse(apiUrl), body: {
+      "userID": userID,
+      "email": email,
+      "name_surname": alias_name,
+      "alias_name": name_surname,
+      "profile_image": profile_image
+    });
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      loginFacebook = loginModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -212,7 +239,53 @@ class _LoginPageState extends State<LoginPage> {
           Container(width: 220, height: 45, child: buildCustomButton()),
           DialogButton(
             height: 45,
-            onPressed: () => Navigator.pop(context),
+            onPressed: () async {
+              final FacebookLoginResult result =
+                  await facebookSignIn.logIn(['email']);
+
+              switch (result.status) {
+                case FacebookLoginStatus.loggedIn:
+                  final FacebookAccessToken accessToken = result.accessToken;
+
+                  final graphResponse = await http.get(
+                      // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
+                      Uri.parse(
+                          'https://graph.facebook.com/v11.0/me?fields=name,first_name,last_name,email,picture&access_token=${accessToken.token}'));
+                  final profile = jsonDecode(graphResponse.body);
+                  print(profile);
+                  setState(() {
+                    userID = profile['id'];
+                    email = profile['email'];
+                    name_surname = profile['first_name'];
+                    alias_name = profile['last_name'];
+                    profile_image = profile['picture']['data']['url'];
+
+                    print("userID => $userID");
+                    print("email => $email");
+                    print("name_surname => $name_surname");
+                    print("alias_name => $alias_name");
+                    print("profile_image => $profile_image");
+                  });
+
+                  print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+                  break;
+                case FacebookLoginStatus.cancelledByUser:
+                  print('Login cancelled by the user.');
+                  break;
+                case FacebookLoginStatus.error:
+                  print('Something went wrong with the login process.\n'
+                      'Here\'s the error Facebook gave us: ${result.errorMessage}');
+                  break;
+              }
+            },
             child: Text(
               "Facebook",
               style: TextStyle(color: Colors.white, fontSize: 20),
@@ -231,9 +304,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (login.success == 1) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
- 
-                    
-                      
+
         preferences.setString("tokens", login.token);
         preferences.setString("email", _ctrlEmail.text);
 
