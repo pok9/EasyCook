@@ -1,7 +1,9 @@
+import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchIngred_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
+import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/search_page/searchIngredient/searchIngredient_page.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
@@ -30,8 +32,10 @@ class _SearchPage2State extends State<SearchPage2> {
 
     setState(() {
       token = preferences.getString("tokens");
-      if (token != "") {
+      if (token != "" && token != null) {
         getMyAccounts();
+
+        getMybuy();
       }
     });
   }
@@ -43,13 +47,12 @@ class _SearchPage2State extends State<SearchPage2> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
 
         dataAcUser = myAccountFromJson(responseString).data[0];
-        // dataAcUser = datas.data[0];
       });
     } else {
       return null;
@@ -72,7 +75,6 @@ class _SearchPage2State extends State<SearchPage2> {
         dataRecipe = searchRecipeNameFromJson(responseString).data;
       });
     } else {
-      // flag = true;
       return null;
     }
   }
@@ -114,8 +116,7 @@ class _SearchPage2State extends State<SearchPage2> {
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
-        print("pok test");
-        // dataRecipe = searchRecipeNameFromJson(responseString).data;
+
         dataIngredient = searchIngredModelFromJson(responseString).data;
         for (int i = 0; i < dataIngredient.length; i++) {
           dataIngredientName.add(dataIngredient[i].ingredientName);
@@ -127,9 +128,35 @@ class _SearchPage2State extends State<SearchPage2> {
     }
   }
 
-  
+  List<Mybuy> dataMybuy;
+  List<String> checkBuy = [];
+  Future<Null> getMybuy() async {
+    checkBuy = [];
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responseFeed_follow = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
+
+          dataMybuy = mybuyFromJson(responseString);
+          for (var item in dataMybuy) {
+            print(item.recipeId);
+            checkBuy.add(item.recipeId.toString());
+          }
+        });
+    } else {
+      return null;
+    }
+  }
+
+  bool isText = false;
   @override
   Widget build(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
@@ -148,40 +175,16 @@ class _SearchPage2State extends State<SearchPage2> {
                   ),
                   child: TextFormField(
                     autofocus: true,
-                    onTap: () {
-                      // textFocus = true;
-                      // if (body == true) {
-                      //   // Navigator.pushNamed(context, '/search-page');
-                      //   body = false;
-                      //   Navigator.push(
-                      //     context,
-                      //     new MaterialPageRoute(
-                      //         builder: (context) => new SearchPage()),
-                      //   ).then((value) {
-
-                      //     print("back pop");
-                      //     body = true;
-                      //     textFocus = false;
-                      //     setState(() {});
-                      //   });
-                      // }
-                      // //
-                      // //
-                      // print(body);
-                      // setState(() {});
-                    },
+                    onTap: () {},
                     onChanged: (String text) {
-                      // setState(() {
-                      //   if (text == "") {
-                      //     body = true;
-
-                      //   }
                       if (text != "") {
                         getSearchRecipeNames(text);
                         getSearchUserNames(text);
                         getSearchIngredient(text);
+                        isText = true;
                       } else {
                         setState(() {
+                          isText = false;
                           dataRecipe = [];
                           dataUser = [];
                           dataIngredientName = Set();
@@ -190,13 +193,11 @@ class _SearchPage2State extends State<SearchPage2> {
 
                       // });
                     },
-                    // controller: _controller,
                     decoration: InputDecoration(
                       hintText: "ค้นหา...",
                       contentPadding: const EdgeInsets.only(left: 24.0),
                       border: InputBorder.none,
                       enabled: true,
-                      // filled: true
                     ),
                   ),
                 ),
@@ -220,7 +221,6 @@ class _SearchPage2State extends State<SearchPage2> {
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(50.0),
               child: AppBar(
-                // backgroundColor: Colors.redAccent,
                 elevation: 0,
                 bottom: TabBar(
                     labelColor: Colors.black,
@@ -253,139 +253,349 @@ class _SearchPage2State extends State<SearchPage2> {
                     ]),
               ),
             ),
-            body: TabBarView(children: [
-              ListView.builder(
-                  itemCount: (dataRecipe == null) ? 0 : dataRecipe.length,
-                  itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print("index = " + index.toString());
-                            print(dataRecipe[index]);
-                            // Navigator.pushReplacement(context, newRoute)
-                            Navigator.push(context,
-                                CupertinoPageRoute(builder: (context) {
-                              return ShowFood(dataRecipe[index].rid);
-                            }));
-                          },
-                          child: Container(
-                            child: FittedBox(
-                              child: Material(
-                                color: Colors.white,
-                                elevation: 5.0,
-                                borderRadius: BorderRadius.circular(24.0),
-                                shadowColor: Color(0x802196F3),
-                                child: Row(
+            body: (isText == false)
+                ? Container()
+                : TabBarView(children: [
+                    (dataRecipe == null)
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.blue),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: dataRecipe.length,
+                            itemBuilder: (context, index) => Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
-                                    Container(
+                                    GestureDetector(
+                                      onTap: () {
+                                        if (dataRecipe[index].price == 0) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => ShowFood(
+                                                    dataRecipe[index].rid)),
+                                          );
+                                        } else {
+                                          if (dataAcUser == null) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RecipePurchasePage(
+                                                        req_rid:
+                                                            dataRecipe[index]
+                                                                .rid,
+                                                      )),
+                                            );
+                                          } else {
+                                            if (dataAcUser.userId ==
+                                                    dataRecipe[index].userId ||
+                                                checkBuy.indexOf(
+                                                        dataRecipe[index]
+                                                            .rid
+                                                            .toString()) >=
+                                                    0) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ShowFood(
+                                                            dataRecipe[index]
+                                                                .rid)),
+                                              );
+                                            } else {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RecipePurchasePage(
+                                                          req_rid:
+                                                              dataRecipe[index]
+                                                                  .rid,
+                                                        )),
+                                              );
+                                            }
+                                          }
+                                        }
+                                        // if (data_DataAc != null) {
+                                        //   if (dataRecommendRecipe.price == 0 ||
+                                        //       dataRecommendRecipe.userId ==
+                                        //           data_DataAc.userId ||
+                                        //       checkBuy.indexOf(
+                                        //               dataRecommendRecipe.rid
+                                        //                   .toString()) >=
+                                        //           0) {
+                                        //     Navigator.push(
+                                        //       context,
+                                        //       MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               ShowFood(
+                                        //                   dataRecommendRecipe
+                                        //                       .rid)),
+                                        //     );
+                                        //   } else {
+                                        //     // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+                                        //     // print("dataUser.userId = ${dataUser.userId}");
+                                        //     Navigator.push(
+                                        //       context,
+                                        //       MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               RecipePurchasePage(
+                                        //                 req_rid:
+                                        //                     dataRecommendRecipe
+                                        //                         .rid,
+                                        //               )),
+                                        //     ).then((value) {
+                                        //       if (token != "" &&
+                                        //           token != null) {
+                                        //         getMybuy();
+                                        //       }
+                                        //     });
+                                        //   }
+                                        // } else {
+                                        //   if (dataRecommendRecipe.price == 0) {
+                                        //     Navigator.push(
+                                        //       context,
+                                        //       MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               ShowFood(
+                                        //                   dataRecommendRecipe
+                                        //                       .rid)),
+                                        //     );
+                                        //   } else {
+                                        //     // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+                                        //     // print("dataUser.userId = ${dataUser.userId}");
+                                        //     Navigator.push(
+                                        //       context,
+                                        //       MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               RecipePurchasePage(
+                                        //                 req_rid:
+                                        //                     dataRecommendRecipe
+                                        //                         .rid,
+                                        //               )),
+                                        //     ).then((value) {
+                                        //       if (token != "" &&
+                                        //           token != null) {
+                                        //         getMybuy();
+                                        //       }
+                                        //     });
+                                        //   }
+                                        // }
+                                      },
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16.0),
-                                        child: myDetailsContainer3(
-                                            dataRecipe, index),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 50,
-                                    ),
-                                    Container(
-                                      width: 250,
-                                      height: 180,
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            new BorderRadius.circular(24.0),
-                                        child: Image(
-                                          fit: BoxFit.cover,
-                                          alignment: Alignment.topRight,
-                                          image: NetworkImage(
-                                              dataRecipe[index].image),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 16, 16, 0),
+                                        child: Column(
+                                          children: [
+                                            Stack(
+                                              children: [
+                                                Container(
+                                                  width: deviceSize.width,
+                                                  height: 220,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(15.0),
+                                                    child: Image(
+                                                      fit: BoxFit.cover,
+                                                      // alignment: Alignment.topRight,
+                                                      image: NetworkImage(
+                                                          dataRecipe[index]
+                                                              .image), ////////////////////////////////////////////////////////
+                                                    ),
+                                                  ),
+                                                ),
+                                                (dataRecipe[index].price == 0)
+                                                    ? Container()
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 8,
+                                                                right: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Stack(
+                                                              children: [
+                                                                CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  radius: 16,
+                                                                ),
+                                                                Positioned(
+                                                                  top: 1,
+                                                                  right: 1,
+                                                                  child:
+                                                                      Container(
+                                                                    height: 30,
+                                                                    width: 30,
+                                                                    child: (dataAcUser ==
+                                                                            null)
+                                                                        ? Image.network(
+                                                                            "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                        : (dataAcUser.userId ==
+                                                                                dataRecipe[index].userId)
+                                                                            ? Container()
+                                                                            : (checkBuy.indexOf(dataRecipe[index].rid.toString()) >= 0)
+                                                                                ? Image.network("https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                                                : Image.network("https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8, bottom: 8),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 6,
+                                                    child: Text(
+                                                      dataRecipe[index]
+                                                          .recipeName,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    // flex: 1,
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.star,
+                                                          color: Colors.blue,
+                                                          size: 18,
+                                                        ),
+                                                        Text(dataRecipe[index]
+                                                            .score
+                                                            .toString())
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                new Container(
+                                                  height: 30.0,
+                                                  width: 30.0,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(
+                                                              dataRecipe[index]
+                                                                  .profileImage))),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(dataRecipe[index]
+                                                        .nameSurname +
+                                                    "(${dataRecipe[index].aliasName})")
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
+                                    SizedBox(
+                                      height: 16,
+                                    )
                                   ],
-                                ),
+                                )),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: ListView.builder(
+                        itemCount: (dataUser == null) ? 0 : dataUser.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (token == "") {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    dataUser[index].userId,
+                                  );
+                                }));
+                              } else if (dataAcUser.userId ==
+                                  dataUser[index].userId) {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfilePage();
+                                }));
+                              } else {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    dataUser[index].userId,
+                                  );
+                                }));
+                              }
+                            },
+                            child: ListTile(
+                              title: Text(dataUser[index].aliasName),
+                              subtitle: Text(dataUser[index].nameSurname),
+                              leading: Container(
+                                height: 40.0,
+                                width: 40.0,
+                                decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: new NetworkImage(
+                                            dataUser[index].profileImage))),
                               ),
                             ),
-                          ),
-                        ),
-                      )),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: ListView.builder(
-                  itemCount: (dataUser == null) ? 0 : dataUser.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        // print("test = " + index.toString());
-                        // print(dataUser[index].userId);
-                        // print(dataUser[index].aliasName);
-                        // print(dataUser[index].nameSurname);
-                        // print(dataUser[index].profileImage);
-
-                        if (token == "") {
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            return ProfileUser(
-                              dataUser[index].userId,
-                            );
-                          }));
-                        } else if (dataAcUser.userId ==
-                            dataUser[index].userId) {
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            return ProfilePage();
-                          }));
-                        } else {
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            return ProfileUser(
-                              dataUser[index].userId,
-                            );
-                          }));
-                        }
-                      },
-                      child: ListTile(
-                        title: Text(dataUser[index].aliasName),
-                        subtitle: Text(dataUser[index].nameSurname),
-                        leading: Container(
-                          height: 40.0,
-                          width: 40.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: new NetworkImage(
-                                      dataUser[index].profileImage))),
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
-
-              ListView.builder(
-                itemCount: (dataIngredientName == null)
-                    ? 0
-                    : dataIngredientName.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SearchIngredient(
-                                  nameIngredient:
-                                      dataIngredientName.elementAt(index),
-                                )),
-                      );
-                    },
-                    title: Text(dataIngredientName.elementAt(index)),
-                  );
-                },
-              )
-              // Icon(Icons.ac_unit),
-            ]),
+                    ),
+                    ListView.builder(
+                      itemCount: (dataIngredientName == null)
+                          ? 0
+                          : dataIngredientName.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchIngredient(
+                                        nameIngredient:
+                                            dataIngredientName.elementAt(index),
+                                      )),
+                            );
+                          },
+                          title: Text(dataIngredientName.elementAt(index)),
+                        );
+                      },
+                    )
+                  ]),
           )),
     );
   }

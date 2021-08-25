@@ -10,7 +10,6 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/profile_page/profile2BottomNavbar.dart';
 
-import 'package:easy_cook/pages/search_page/xxx_search.dart';
 import 'package:easy_cook/pages/search_page/search1.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
@@ -161,7 +160,6 @@ class _SlidePageState extends State<SlidePage> {
       dataUser = datas.data[0];
       print(dataUser.userId);
       print(token);
-      
     } else {
       return null;
     }

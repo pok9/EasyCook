@@ -721,35 +721,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 8.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       Row(
-              //         children: [
-              //           new Container(
-              //             height: 40.0,
-              //             width: 40.0,
-              //             decoration: new BoxDecoration(
-              //                 shape: BoxShape.circle,
-              //                 image: new DecorationImage(
-              //                     fit: BoxFit.fill,
-              //                     image: new NetworkImage(
-              //                         data_DataAc.profileImage))),
-              //           ),
-              //           new SizedBox(
-              //             width: 10.0,
-              //           ),
-              //           new Text(
-              //             data_DataAc.aliasName,
-              //             style: TextStyle(fontWeight: FontWeight.bold),
-              //           )
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              
               GestureDetector(
                 onTap: () {
                   print("up $index");
@@ -850,48 +822,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 0),
-              //   child: Text(
-              //     data_RecipePost[index].recipeName,
-              //     style: TextStyle(fontSize: 20),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 16.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       Row(
-              //         children: [
-              //           new Container(
-              //             height: 30.0,
-              //             width: 30.0,
-              //             decoration: new BoxDecoration(
-              //                 shape: BoxShape.circle,
-              //                 image: new DecorationImage(
-              //                     fit: BoxFit.fill,
-              //                     image: new NetworkImage(data_DataAc
-              //                         .profileImage))), /////////////////////////////////////////////////
-              //           ),
-              //           new SizedBox(
-              //             width: 10.0,
-              //           ),
-              //           new Text(
-              //             data_DataAc
-              //                 .aliasName, //////////////////////////////////////////////////
-              //             style: TextStyle(fontWeight: FontWeight.normal),
-              //           )
-              //         ],
-              //       ),
-              //       // new IconButton(
-              //       //     icon: Icon(Icons.more_vert),
-              //       //     onPressed: () {
-              //       //       print("more_vert" + index.toString());
-              //       //     })
-              //     ],
-              //   ),
-              // ),
+              
               SizedBox(
                 height: 16,
               )

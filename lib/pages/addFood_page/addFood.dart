@@ -743,7 +743,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   }
                   if (imageHowto[i].toString() == File('').toString() &&
                       checkimageHowto == 0) {
-                    text += "และภาพรูปวิธีทำ";
+                    text += "และรูปภาพวิธีทำ";
                     checkimageHowto = 1;
                   }
 
@@ -1721,7 +1721,7 @@ class CustomDialog extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      "ไม่ใช่",
+                      "อยู่หน้านี้ต่อ",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -1730,7 +1730,7 @@ class CustomDialog extends StatelessWidget {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },
-                    child: Text("ใช่"),
+                    child: Text("ออกไปหน้าอื่น"),
                   ),
                 ],
               ),

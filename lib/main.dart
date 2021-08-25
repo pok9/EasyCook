@@ -8,7 +8,6 @@ import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:easy_cook/pages/search_page/xxx_search.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
