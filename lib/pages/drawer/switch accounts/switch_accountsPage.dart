@@ -204,7 +204,7 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
                   showDialog(
                       context: context,
                       builder: (_) {
-                        return LoginPage(closeFacebook: 0,);
+                        return LoginPage(closeFacebook: 0,token: token,);
                       });
                 },
               )
@@ -225,6 +225,7 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
 
     print(login.success);
     if (login.success == 1) {
+      updateTokenExit();
       SharedPreferences preferences = await SharedPreferences.getInstance();
 
       preferences.setString("tokens", login.token);
@@ -281,5 +282,23 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
     } else {
       return null;
     }
+  }
+
+  Future<Null> updateTokenExit() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
+
+    var data = {
+      "token_noti": null,
+    };
+
+    print(jsonEncode(data));
+
+    final response =
+        await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
+      "Authorization": "Bearer ${this.token}",
+      "Content-Type": "application/json"
+    });
+    print("responseUpdateTokenFirebase = ${response.statusCode}");
+    print("response.body = ${response.body}");
   }
 }

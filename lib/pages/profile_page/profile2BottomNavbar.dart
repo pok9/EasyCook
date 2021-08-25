@@ -15,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -390,8 +391,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                   height: 12,
                                 ),
                                 Text(
-                                  data_DataAc.balance
-                                      .toString(), //"data_DataAc.balance.toString()"
+                                  '${NumberFormat("#,###.##").format(data_DataAc.balance)}',
                                   style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.white,

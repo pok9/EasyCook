@@ -23,7 +23,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginPage extends StatefulWidget {
   int close;
   int closeFacebook;
-  LoginPage({this.close, this.closeFacebook});
+  String token;
+  LoginPage({this.close, this.closeFacebook,this.token});
 
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -169,6 +170,24 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<Null> updateTokenExit() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
+
+    var data = {
+      "token_noti": null,
+    };
+
+    print(jsonEncode(data));
+
+    final response =
+        await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
+      "Authorization": "Bearer ${this.widget.token}",
+      "Content-Type": "application/json"
+    });
+    print("responseUpdateTokenFirebase = ${response.statusCode}");
+    print("response.body = ${response.body}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -261,10 +280,11 @@ class _LoginPageState extends State<LoginPage> {
               //       style: TextStyle(color: Colors.white, fontSize: 20),
               //     ),
               //   ),
-              
+
               : Container(
-                width: 220, height: 45,
-                child: SignInButton(Buttons.Facebook, onPressed: () async {
+                  width: 220,
+                  height: 45,
+                  child: SignInButton(Buttons.Facebook,text: "เข้าสู่ระบบ ด้วย Facebook", onPressed: () async {
                     final FacebookLoginResult result =
                         await facebookSignIn.logIn(['email']);
 
@@ -298,8 +318,8 @@ class _LoginPageState extends State<LoginPage> {
                           alias_name = profile['last_name'];
                           profile_image = profile['picture']['data']['url'];
 
-                          LoginFacebookMD(userID, email, alias_name, name_surname,
-                              profile_image);
+                          LoginFacebookMD(userID, email, alias_name,
+                              name_surname, profile_image);
 
                           // print("loginFacebook.success => ${loginFacebook.success}");
 
@@ -329,11 +349,13 @@ class _LoginPageState extends State<LoginPage> {
                         break;
                     }
                   }),
-              )
+                )
         ],
       ),
     );
   }
+
+  
 
   void onPressedCustomButton() async {
     if (_formKey.currentState.validate()) {
@@ -342,6 +364,11 @@ class _LoginPageState extends State<LoginPage> {
       await logins(_ctrlEmail.text, _ctrlPassword.text);
 
       if (login.success == 1) {
+        
+        if(this.widget.token != ""){
+          updateTokenExit();
+        }
+
         SharedPreferences preferences = await SharedPreferences.getInstance();
 
         preferences.setString("tokens", login.token);
