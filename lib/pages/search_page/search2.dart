@@ -150,7 +150,6 @@ class _SearchPage2State extends State<SearchPage2> {
           "563492ad6f91700001000001b188747699b94c359b127e9ce347ea08"
     });
 
- 
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -403,12 +402,16 @@ class _SearchPage2State extends State<SearchPage2> {
                                                           children: [
                                                             Stack(
                                                               children: [
-                                                                CircleAvatar(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  radius: 16,
-                                                                ),
+                                                                (dataAcUser.userId ==
+                                                                        dataRecipe[index]
+                                                                            .userId)
+                                                                    ? Container()
+                                                                    : CircleAvatar(
+                                                                        backgroundColor:
+                                                                            Colors.white,
+                                                                        radius:
+                                                                            16,
+                                                                      ),
                                                                 Positioned(
                                                                   top: 1,
                                                                   right: 1,
