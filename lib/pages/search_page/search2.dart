@@ -3,6 +3,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchIngred_model.dart';
 import 'package:easy_cook/models/search/searchRecipe_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
+import 'package:easy_cook/models/search/tranlate_languageModel/tranlate_languageModel.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/search_page/searchIngredient/searchIngredient_page.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 
 class SearchPage2 extends StatefulWidget {
   @override
@@ -104,9 +106,11 @@ class _SearchPage2State extends State<SearchPage2> {
   //ข้อมูลวัตถุดิบ
   List<DataIngredient> dataIngredient;
   Set<String> dataIngredientName = Set();
+
   Future<Null> getSearchIngredient(String ingredient) async {
     dataIngredient = [];
     dataIngredientName = Set();
+    imageTranslationResPath = [];
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/searchIngredient/" +
             ingredient;
@@ -120,6 +124,43 @@ class _SearchPage2State extends State<SearchPage2> {
         dataIngredient = searchIngredModelFromJson(responseString).data;
         for (int i = 0; i < dataIngredient.length; i++) {
           dataIngredientName.add(dataIngredient[i].ingredientName);
+        }
+        for (int i = 0; i < dataIngredientName.length; i++) {
+          tranlate_language(dataIngredient[i].ingredientName);
+        }
+      });
+    } else {
+      // flag = true;
+      return null;
+    }
+  }
+
+  TranlateLanguageModel translationRes;
+  List<String> imageTranslationResPath = [];
+  void tranlate_language(String input) async {
+    var translation = await translator.translate(input, from: 'th', to: 'en');
+    print(translation);
+
+    final String apiUrl =
+        "https://api.pexels.com/v1/search?query=${translation}&per_page=1";
+
+    final response = await http.get(Uri.parse(apiUrl), headers: {
+      "Content-Type": "application/json",
+      "Authorization":
+          "563492ad6f91700001000001b188747699b94c359b127e9ce347ea08"
+    });
+
+ 
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        translationRes = tranlateLanguageModelFromJson(responseString);
+
+        if (translationRes.totalResults > 0) {
+          imageTranslationResPath.add(translationRes.photos[0].src.original);
+        } else {
+          imageTranslationResPath.add("");
         }
       });
     } else {
@@ -154,6 +195,7 @@ class _SearchPage2State extends State<SearchPage2> {
   }
 
   bool isText = false;
+  final translator = GoogleTranslator();
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -322,71 +364,6 @@ class _SearchPage2State extends State<SearchPage2> {
                                             }
                                           }
                                         }
-                                        // if (data_DataAc != null) {
-                                        //   if (dataRecommendRecipe.price == 0 ||
-                                        //       dataRecommendRecipe.userId ==
-                                        //           data_DataAc.userId ||
-                                        //       checkBuy.indexOf(
-                                        //               dataRecommendRecipe.rid
-                                        //                   .toString()) >=
-                                        //           0) {
-                                        //     Navigator.push(
-                                        //       context,
-                                        //       MaterialPageRoute(
-                                        //           builder: (context) =>
-                                        //               ShowFood(
-                                        //                   dataRecommendRecipe
-                                        //                       .rid)),
-                                        //     );
-                                        //   } else {
-                                        //     // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-                                        //     // print("dataUser.userId = ${dataUser.userId}");
-                                        //     Navigator.push(
-                                        //       context,
-                                        //       MaterialPageRoute(
-                                        //           builder: (context) =>
-                                        //               RecipePurchasePage(
-                                        //                 req_rid:
-                                        //                     dataRecommendRecipe
-                                        //                         .rid,
-                                        //               )),
-                                        //     ).then((value) {
-                                        //       if (token != "" &&
-                                        //           token != null) {
-                                        //         getMybuy();
-                                        //       }
-                                        //     });
-                                        //   }
-                                        // } else {
-                                        //   if (dataRecommendRecipe.price == 0) {
-                                        //     Navigator.push(
-                                        //       context,
-                                        //       MaterialPageRoute(
-                                        //           builder: (context) =>
-                                        //               ShowFood(
-                                        //                   dataRecommendRecipe
-                                        //                       .rid)),
-                                        //     );
-                                        //   } else {
-                                        //     // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-                                        //     // print("dataUser.userId = ${dataUser.userId}");
-                                        //     Navigator.push(
-                                        //       context,
-                                        //       MaterialPageRoute(
-                                        //           builder: (context) =>
-                                        //               RecipePurchasePage(
-                                        //                 req_rid:
-                                        //                     dataRecommendRecipe
-                                        //                         .rid,
-                                        //               )),
-                                        //     ).then((value) {
-                                        //       if (token != "" &&
-                                        //           token != null) {
-                                        //         getMybuy();
-                                        //       }
-                                        //     });
-                                        //   }
-                                        // }
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
@@ -464,7 +441,7 @@ class _SearchPage2State extends State<SearchPage2> {
                                               child: Row(
                                                 children: [
                                                   Expanded(
-                                                    flex: 6,
+                                                    flex: 4,
                                                     child: Text(
                                                       dataRecipe[index]
                                                           .recipeName,
@@ -479,21 +456,28 @@ class _SearchPage2State extends State<SearchPage2> {
                                                   ),
                                                   Expanded(
                                                     // flex: 1,
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.star,
-                                                          color: Colors.blue,
-                                                          size: 18,
-                                                        ),
-                                                        Text(dataRecipe[index]
-                                                            .score
-                                                            .toString())
-                                                      ],
-                                                    ),
+                                                    child: (dataRecipe[index]
+                                                                .score ==
+                                                            0)
+                                                        ? Container()
+                                                        : Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Icon(
+                                                                Icons.star,
+                                                                color:
+                                                                    Colors.blue,
+                                                                size: 18,
+                                                              ),
+                                                              Text(dataRecipe[
+                                                                          index]
+                                                                      .score
+                                                                      .toString() +
+                                                                  "/5")
+                                                            ],
+                                                          ),
                                                   ),
                                                 ],
                                               ),
@@ -581,7 +565,7 @@ class _SearchPage2State extends State<SearchPage2> {
                           : dataIngredientName.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          onTap: () {
+                          onTap: () async {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -591,6 +575,17 @@ class _SearchPage2State extends State<SearchPage2> {
                                       )),
                             );
                           },
+                          leading: (imageTranslationResPath.isEmpty)
+                              ? null
+                              : (imageTranslationResPath.length !=
+                                      dataIngredientName.length)
+                                  ? null
+                                  : (imageTranslationResPath[index] == "")
+                                      ? null
+                                      : CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              imageTranslationResPath[index]),
+                                        ),
                           title: Text(dataIngredientName.elementAt(index)),
                         );
                       },

@@ -73,7 +73,7 @@ class _ShowFoodState extends State<ShowFood> {
             req_rid.toString();
 
     final response = await http.get(Uri.parse(apiUrl));
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -110,7 +110,6 @@ class _ShowFoodState extends State<ShowFood> {
       "score": score,
     };
 
-    print(jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
@@ -136,7 +135,7 @@ class _ShowFoodState extends State<ShowFood> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -156,7 +155,7 @@ class _ShowFoodState extends State<ShowFood> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -179,9 +178,9 @@ class _ShowFoodState extends State<ShowFood> {
   Future<Null> getPost() async {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/getPost/" + req_rid.toString();
-    // print("xxlToken = " + token);
+
     final response = await http.get(Uri.parse(apiUrl));
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -220,11 +219,6 @@ class _ShowFoodState extends State<ShowFood> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Container(
-            //   margin: EdgeInsets.all(5.0),
-            //   decoration:
-            //       BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
-            // ),
             Padding(
               padding: const EdgeInsets.all(5.0),
               child: Text(
@@ -239,8 +233,6 @@ class _ShowFoodState extends State<ShowFood> {
                     fontSize: 17,
                     color: Colors.black,
                     decoration: TextDecoration.none),
-                //
-                // style: kHintTextStyle2,
               ),
             ),
             SizedBox(
@@ -267,7 +259,7 @@ class _ShowFoodState extends State<ShowFood> {
       for (i = 0; i < dataHowto.length; i++) {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
-        // ctl.add(TextEditingController());
+
         controllers2.add(ctl);
       }
     }
@@ -294,30 +286,17 @@ class _ShowFoodState extends State<ShowFood> {
                 ),
                 Expanded(
                   child: Text(
-                    // (displayNumber + 1).toString() +
-                    //     ". " +
                     dataHowto[displayNumber].description,
-                    // textAlign: TextAlign.left,
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontFamily: 'OpenSans',
                         fontSize: 17,
                         color: Colors.black,
                         decoration: TextDecoration.none),
-                    // style: kHintTextStyle2,
                   ),
                 ),
               ],
             ),
-            // child: Card(
-            //   child: Text(
-            //     (displayNumber + 1).toString() +
-            //         ". " +
-            //         dataHowto[displayNumber].description,
-            //     // style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
-            //     style: kHintTextStyle2,
-            //   ),
-            // ),
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
               ? Padding(
@@ -348,19 +327,6 @@ class _ShowFoodState extends State<ShowFood> {
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.network(
                             dataHowto[displayNumber].pathFile),
-
-                        // videoPlayerController: VideoPlayerController.asset(
-                        //     "assets/images/testVideo.mp4"),
-
-                        // videoPlayerController: VideoPlayerController.network(
-                        //     'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4'),
-
-                        // videoPlayerController:
-                        //     VideoPlayerController
-                        //         .network(
-                        //             "https://apifood.comsciproject.com/uploadHowto/2021-08-14T081022011Z-21-08-09-20-08-44.mp4"),
-
-                        // videoPlayerController: VideoPlayerController.network("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"),
                         looping: false,
                         autoplay: false,
                         addfood_showfoo: 1,
@@ -434,13 +400,9 @@ class _ShowFoodState extends State<ShowFood> {
       "from_userid": from_userid,
       "status": status
     };
-    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data), headers: {"Content-Type": "application/json"});
-
-    print(
-        "response.statusCodeInsertNotificationData => ${response.statusCode}");
-    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   int indexHowTo = 0;
@@ -460,7 +422,6 @@ class _ShowFoodState extends State<ShowFood> {
       "image": image
     };
 
-    print(jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
@@ -468,8 +429,6 @@ class _ShowFoodState extends State<ShowFood> {
           "Content-Type": "application/json"
         });
 
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -505,32 +464,30 @@ class _ShowFoodState extends State<ShowFood> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // Text(
-                //   "Initialization",
-                //   style: TextStyle(
-                //     fontSize: 32,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
                 SizedBox(height: 20),
                 CircularProgressIndicator()
               ],
             ),
           )
         : SliverFab(
-            floatingWidget: Container(
-              height: 100,
-              width: 100,
-              child: ClipOval(
-                child: Image.network(
-                  dataFood.profileImage, //////////////////////////////////
-                  fit: BoxFit.fill,
+            floatingWidget: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  child: ClipOval(
+                    child: Image.network(
+                      dataFood.profileImage,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 8.0)),
                 ),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 8.0)),
+              ],
             ),
             expandedHeight: 256.0,
             floatingPosition: FloatingPosition(top: -20, left: 150),
@@ -552,8 +509,6 @@ class _ShowFoodState extends State<ShowFood> {
                                   )),
                                   onSelected: (value) {
                                     if (value == 1) {
-                                      print("รายงานสูตรอาหารนี้");
-
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -608,16 +563,12 @@ class _ShowFoodState extends State<ShowFood> {
                                                     () {
                                                   Navigator.of(context)
                                                       .pop(true);
-
-                                                  // Navigator.pop(context);
                                                 });
                                                 return alertDialog_successful_or_unsuccessful(
                                                     reportText1,
                                                     color,
                                                     reportText2);
                                               });
-                                          print(
-                                              "dataAddReport.success ===>>> ${dataAddReport.success}");
                                         }
                                       });
                                     }
@@ -659,7 +610,6 @@ class _ShowFoodState extends State<ShowFood> {
                                             dataHowto)),
                                   );
                                 } else if (value == 1) {
-                                  print("ลบสูตรอาหาร");
                                   showDialog(
                                     barrierColor: Colors.black26,
                                     context: context,
@@ -689,16 +639,11 @@ class _ShowFoodState extends State<ShowFood> {
                 expandedHeight: 256.0,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Image.network(
-                    dataFood.image, ///////////////////////////
+                    dataFood.image,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              // CustomScrollView(
-              //   slivers: [
-
-              //   ],
-              // ),
               SliverList(
                   delegate: SliverChildListDelegate([
                 Container(
@@ -721,9 +666,7 @@ class _ShowFoodState extends State<ShowFood> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                      dataFood
-                                          .aliasName, ///////////////////////////
+                                  Text(dataFood.aliasName,
                                       style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontFamily: 'OpenSans',
@@ -779,8 +722,7 @@ class _ShowFoodState extends State<ShowFood> {
                                     ),
                                   ),
                             Text(
-                              dataFood
-                                  .recipeName, ////////////////////////////////
+                              dataFood.recipeName,
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontFamily: 'OpenSans',
@@ -798,8 +740,7 @@ class _ShowFoodState extends State<ShowFood> {
                                   borderRadius: new BorderRadius.circular(24.0),
                                   child: Image(
                                     fit: BoxFit.contain,
-                                    image: NetworkImage(
-                                        dataFood.image), ///////////////////////
+                                    image: NetworkImage(dataFood.image),
                                   ),
                                 ),
                               ),
@@ -809,9 +750,6 @@ class _ShowFoodState extends State<ShowFood> {
                               color: Colors.grey.shade400,
                             ),
                             Row(
-                              // mainAxisAlignment:
-                              //     MainAxisAlignment.spaceAround,
-                              // mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Column(
@@ -821,12 +759,6 @@ class _ShowFoodState extends State<ShowFood> {
                                       color: Colors.grey,
                                       size: 30.0,
                                     ),
-                                    // CircleAvatar(
-                                    //   child: Icon(
-                                    //     Icons.person,
-                                    //     size: 30.0,
-                                    //   ),
-                                    // ),
                                     SizedBox(
                                       height: 5,
                                     ),
@@ -849,14 +781,6 @@ class _ShowFoodState extends State<ShowFood> {
                                       color: Colors.grey,
                                       size: 30.0,
                                     ),
-                                    // CircleAvatar(
-                                    //   backgroundColor: Colors.green,
-                                    //   child: Icon(
-                                    //     Icons.access_time_outlined,
-                                    //     color: Colors.amber,
-                                    //     size: 30.0,
-                                    //   ),
-                                    // ),
                                     SizedBox(
                                       height: 5,
                                     ),
@@ -879,12 +803,6 @@ class _ShowFoodState extends State<ShowFood> {
                                       color: Colors.grey,
                                       size: 30.0,
                                     ),
-                                    // CircleAvatar(
-                                    //   backgroundColor: Colors.pink,
-                                    //   child: Icon(Icons.food_bank, size: 30.0
-                                    //       // color: Colors.amber,
-                                    //       ),
-                                    // ),
                                     SizedBox(
                                       height: 5,
                                     ),
@@ -1089,8 +1007,6 @@ class _ShowFoodState extends State<ShowFood> {
                                   ratings = rating;
                                   ScoreFoodInputModel scoreFoodInputModel =
                                       await scoreFoodInput(rating, token);
-
-                                  print(scoreFoodInputModel.success);
                                 }
                               },
                             ),
@@ -1322,8 +1238,6 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           "Content-Type": "application/json"
         });
 
-    print("addIngredients======" + (response.statusCode.toString()));
-    // print("addIngredients======"+(response));
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -1366,10 +1280,6 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
               onTap: () async {
                 DeleteRecipeModel deleteData = await deleteMyFood(
                     this.widget.token, this.widget.recipe_ID);
-                // print(deleteData.success);
-                // print(deleteData.message);
-                // Navigator.of(context).pop();
-                // Navigator.of(context).pop();
 
                 if (deleteData.success == 1) {
                   showDialog(
