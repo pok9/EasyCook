@@ -5,7 +5,6 @@ import 'package:easy_cook/pages/admin/manage_members.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed2.dart';
 
-import 'package:easy_cook/pages/feed_page/xxx_feed_follow.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/profile_page/profile2BottomNavbar.dart';

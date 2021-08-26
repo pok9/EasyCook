@@ -43,12 +43,8 @@ class _ScrollProfilePage2BottomNavbarState extends State
     setState(() {
       token = preferences.getString("tokens");
       if (token != "" && token != null) {
-        print("ProfilePage2BottomNavbar_token = " + token);
         getMyAccounts();
       }
-
-      // getMyAccounts();
-      // print("dataUser = " + dataUser.toString());
     });
   }
 
@@ -61,7 +57,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -69,7 +65,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
           data_MyAccount = myAccountFromJson(responseString);
           data_DataAc = data_MyAccount.data[0];
-          // print(data_DataAc.userId);
+
           getMyPost();
         });
     } else {
@@ -87,7 +83,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -205,7 +201,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                           splashColor: Colors.white,
                           color: Colors.blue,
                           onPressed: () {
-                            print("แก้ไขโปรไฟล์");
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -237,9 +232,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                               Container(
                                 width: 110,
                                 child: InkWell(
-                                  onTap: () {
-                                    print("โพสต์");
-                                  },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -308,7 +300,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                 width: 110,
                                 child: InkWell(
                                   onTap: () {
-                                    print("กำลังตืดตาม");
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -414,9 +405,8 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onPressed: () {
-                                      print("เติมเงิน");
                                       _ctrlPrice.text = "";
-                                      // _topupDisplayTextInputDialog(context);
+
                                       _displayBottomSheet(context, "topup");
                                     },
                                   ),
@@ -555,7 +545,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         }
                       }
 
-                      print(value);
                       return null;
                     },
                   ),
@@ -575,7 +564,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         onTap: () async {
                           if (_formKey.currentState.validate()) {
                             if (select == 'topup') {
-                              print("object");
                               if (double.parse(_ctrlPrice.text) >= 20) {
                                 Navigator.of(context).pop();
                                 Navigator.push(
@@ -721,11 +709,8 @@ class _ScrollProfilePage2BottomNavbarState extends State
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              
               GestureDetector(
                 onTap: () {
-                  print("up $index");
-                  print(data_RecipePost[index].rid);
                   Navigator.push(context,
                       CupertinoPageRoute(builder: (context) {
                     return ShowFood(data_RecipePost[index].rid);
@@ -792,10 +777,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   RatingBarIndicator(
-                                    rating:
-                                        (data_RecipePost[index].score == null)
-                                            ? 0
-                                            : data_RecipePost[index].score,
+                                    rating: data_RecipePost[index].score,
                                     itemBuilder: (context, index) => Icon(
                                       Icons.star,
                                       color: Colors.blue,
@@ -822,7 +804,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                   ],
                 ),
               ),
-              
               SizedBox(
                 height: 16,
               )

@@ -1,5 +1,6 @@
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/feed/newfeedsglobal/newfeedsglobal.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -127,7 +128,10 @@ class _Feed2PageState extends State<Feed2Page> {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(40.0), child: AppBar()),
+            preferredSize: Size.fromHeight(40.0),
+            child: AppBar(
+              title: Text('สูตรล่าสุด'),
+            )),
         body: DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -166,14 +170,10 @@ class _Feed2PageState extends State<Feed2Page> {
               (dataNewfeedsglobal == null)
                   ? Center(child: CircularProgressIndicator())
                   : GridView.builder(
-                      // scrollDirection: Axis.vertical,
                       controller: _scrollController,
                       shrinkWrap: true,
-                      // physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        // maxCrossAxisExtent: 200,
                         mainAxisExtent: 290,
-
                         maxCrossAxisExtent:
                             (deviceSize.width > 400) ? 250 : 200,
                       ),
@@ -198,13 +198,13 @@ class _Feed2PageState extends State<Feed2Page> {
                         return InkWell(
                           onTap: () {
                             print(deviceSize.width);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => ShowFood(
-                            //           dataNewfeedsglobal[index]
-                            //               .rid)),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ShowFood(
+                                      dataNewfeedsglobal[index]
+                                          .rid)),
+                            );
                           },
                           child: Card(
                             semanticContainer: true,

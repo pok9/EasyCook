@@ -973,12 +973,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                                 .end,
                                                         children: [
                                                           RatingBarIndicator(
-                                                            rating: (data_RecipePost[
-                                                                            index]
-                                                                        .score ==
-                                                                    null)
-                                                                ? 0
-                                                                : data_RecipePost[
+                                                            rating: data_RecipePost[
                                                                         index]
                                                                     .score,
                                                             itemBuilder:
