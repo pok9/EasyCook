@@ -6,6 +6,7 @@ import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:easy_cook/pages/addFood_page/addImageOrVideo.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mime/mime.dart';
 import 'package:video_player/video_player.dart';
 
@@ -20,65 +21,41 @@ class EditFoodPage extends StatefulWidget {
 
   String recipeName;
   String imageFood;
+
+  String suitableFor;
+  String takeTime;
+  String foodCategory;
+  String price;
+
+  String description;
   List<Ingredient> dataIngredient;
   List<Howto> dataHowto;
   EditFoodPage(
-      this.recipeName, this.imageFood, this.dataIngredient, this.dataHowto);
+      {this.recipeName,
+      this.imageFood,
+      this.suitableFor,
+      this.takeTime,
+      this.foodCategory,
+      this.price,
+      this.description,
+      this.dataIngredient,
+      this.dataHowto});
 
   // final int ingredient_row_start; //จำนวนแถวส่วนผสมตั้งต้น
   // final int howto_row_start; //ทดสอบ
   @override
-  _EditFoodPageState createState() => _EditFoodPageState(
-      this.recipeName, this.imageFood, this.dataIngredient, this.dataHowto);
+  _EditFoodPageState createState() => _EditFoodPageState(this.recipeName,
+      this.imageFood, this.description, this.dataIngredient, this.dataHowto);
 }
-
-String valueChoosePeople = "1 คน";
-List listPeopleItem = [
-  "1 คน",
-  "2 คน",
-  "3 คน",
-  "4 คน",
-  "5 คน",
-  "6 คน",
-  "7 คน",
-  "8 คน",
-  "9 คน",
-  "10 คน",
-  "มากกว่า 10 คน",
-  "มากกว่า 50 คน",
-  "มากกว่า 100 คน"
-];
-
-String valueChooseTime = "ภายใน 3 นาที";
-List listTimeItem = [
-  "ภายใน 3 นาที",
-  "ภายใน 5 นาที",
-  "ภายใน 10 นาที",
-  "ภายใน 15 นาที",
-  "ภายใน 30 นาที",
-  "ภายใน 60 นาที",
-  "ภายใน 90 นาที",
-  "ภายใน 2 ชั่วโมง",
-  "มากกว่า 2 ชั่วโมง",
-];
-
-String valueChooseFood = "เมนูน้ำ";
-List listFoodItem = [
-  "เมนูน้ำ",
-  "เมนูต้ม",
-  "เมนูสุขภาพ",
-  "เมนูนิ่ง",
-  "เมนูตุ่น",
-  "เมนูทอด",
-];
 
 TextEditingController _ctrlPrice = TextEditingController()..text = 'ฟรี'; //ราคา
 
 class _EditFoodPageState extends State<EditFoodPage> {
-  _EditFoodPageState(String recipeName, String imageFood,
+  _EditFoodPageState(String recipeName, String imageFood, String description,
       List<Ingredient> dataIngredient, List<Howto> dataHowto) {
     this._ctrlNameFood.text = recipeName;
     this._imageFood = imageFood;
+    this._ctrlExplain.text = description;
 
     this.ingredient_row = dataIngredient.length;
     for (int i = 0; i < dataIngredient.length; i++) {
@@ -98,9 +75,29 @@ class _EditFoodPageState extends State<EditFoodPage> {
   }
 
   var _ctrlNameFood = TextEditingController(); //ชื่อสูตรอาหาร
+  var _ctrlExplain = TextEditingController(); //อธิบายสูตรอาหาร
 
   String _imageFood;
   List<AddImage> addImage = []; //รูปหน้าปก สูตรอาหาร
+
+  List<String> exampleIngredient_row1 = [
+    "หมูสามชั้น หั่นเป็นชั้นขนาดพอดีคำ",
+    "กะปิ",
+    "น้ำตาลปึก",
+    "ซอสหอยนางรม",
+    "น้ำปลา",
+    "ใบมะกรูด",
+    "พริกแห้ง"
+  ];
+  List<String> exampleIngredient_row2 = [
+    "1 กิโลกรัม",
+    "6 ช้อนโต้ะ",
+    "6 ช้อนโต้ะ",
+    "1 ช้อนโต้ะ",
+    "1 ช้อนโต้ะ",
+    "1 กำมือ",
+    "1 กำมือ"
+  ];
 
   int ingredient_row;
   List<List<TextEditingController>> ctl_ingredient_row =
@@ -125,7 +122,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
 
       return Padding(
         key: ValueKey('${displayNumber - 1}'),
-        padding: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 10, bottom: 1),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -136,40 +133,57 @@ class _EditFoodPageState extends State<EditFoodPage> {
             Expanded(
               child: TextField(
                 controller: ctl_ingredient_row[displayNumber - 1][0],
-                onChanged: (text) {
-                  print(
-                      'Left:' + ctl_ingredient_row[displayNumber - 1][0].text);
-                },
                 decoration: InputDecoration(
-                  hintText: "ส่วนผสมที่ $displayNumber",
+                  contentPadding:
+                      new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                  hintText:
+                      "เช่น " + exampleIngredient_row1[(displayNumber - 1) % 6],
+                  hintStyle: TextStyle(
+                      fontSize: 16,
+                      // fontWeight: FontWeight.bold,
+                      color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
+            ),
+            SizedBox(
+              width: 1,
             ),
             Expanded(
               child: TextField(
                 controller: ctl_ingredient_row[displayNumber - 1][1],
-                onChanged: (text) {
-                  print(
-                      'Right:' + ctl_ingredient_row[displayNumber - 1][1].text);
-                },
                 decoration: InputDecoration(
-                  hintText: "จำนวนที่ $displayNumber",
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        ingredient_row--;
-                        ctl_ingredient_row.remove(controller);
-
-                        if (ctl_ingredient_row.length == 0) {
-                          this.ingredient_row = 1;
-                        }
-                        print('controllers ${ctl_ingredient_row.length}');
-                      });
-                    },
+                  contentPadding:
+                      new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+                  filled: true,
+                  fillColor: Color(0xfff3f3f4),
+                  hintText: exampleIngredient_row2[(displayNumber - 1) % 6],
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
                   ),
                 ),
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                setState(() {
+                  ingredient_row--;
+                  ctl_ingredient_row.remove(controller);
+
+                  if (ctl_ingredient_row.length == 0) {
+                    this.ingredient_row = 1;
+                  }
+                  print('controllers ${ctl_ingredient_row.length}');
+                });
+              },
             ),
           ],
         ),
@@ -177,6 +191,13 @@ class _EditFoodPageState extends State<EditFoodPage> {
     }).toList(); // แปลงเป็นlist
   }
 
+  List<String> exampleHowto_row = [
+    "เริ่มจากเตรียมหมักหมู เตรียมเครื่องหมัก โดยผสม กะปิ น้ำตาลปึก น้ำมันหอย และ น้ำปลา ผสมให้ละลายเข้ากัน จากนั้นนำเครื่องหมักไปคลุกกับหมูสามชั้นที่เตรียมเอาไว้ หมักในตู้เย็น 1 คืน",
+    "ตั้งกระทะน้ำมัน ความร้อนอ่อน ใส่ ใบมะกรูดลงไปทอด ให้กรอบ และ นำมาพักให้เย็น จากนั้นพริกแห้งลงไปทอดในน้ำมันเดียวกัน ด้วยไฟอ่อนๆ ให้สุกกรอบ และ ก็นำมาพักเช้นกัน",
+    "เร่งไปปานกลาง นำหมูสามชั้นที่หมักลงไปทอด โดยทอดให้สุกประมาณ 60 % ให้นำขึ้นมาพักให้เย็น",
+    "เปลี่ยนน้ำมันใหม่ เร่งไฟให้แรงและร้อน ใส่หมูลงไปทอด ให้เหลืองสุก นำขึ้มมาพักให้สะเด็ดน้ำมัน",
+    "เพียงเท่านี้ก็เสร็จสิ้นหมูทอดกะปิ แสนอร่อย กินกับข้าวเหนียว"
+  ];
   int howto_row; //จำนวนแถววิธีทำ
   List<TextEditingController> ctl_howto_row = <TextEditingController>[]; //ทดสอบ
   List<File> imageHowto = <File>[];
@@ -205,12 +226,11 @@ class _EditFoodPageState extends State<EditFoodPage> {
         // elevation: 5,
         margin: EdgeInsets.all(0),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
@@ -218,22 +238,24 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   ),
                   Expanded(
                     flex: 5,
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      minLines: 1,
-                      maxLines: 5,
-                      controller: controller2,
-                      onChanged: (text) {
-                        print(text + "${displayNumber}.");
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: TextFormField(
+                        controller: controller2,
+                        minLines: 2,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xfff3f3f4),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: exampleHowto_row[(displayNumber - 1) % 5],
+                          hintStyle:
+                              TextStyle(fontSize: 16, color: Colors.grey),
                         ),
-                        hintText: "วิธีทำที่ $displayNumber",
                       ),
                     ),
                   ),
@@ -241,29 +263,38 @@ class _EditFoodPageState extends State<EditFoodPage> {
                           File('').toString())
                       ? Expanded(
                           flex: 2,
-                          child: IconButton(
-                              iconSize: 100,
-                              icon: Image.asset('assets/images/dot.png'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) =>
-                                          new AddImageOrViderPage()),
-                                ).then((value) {
-                                  if (value != null) {
-                                    imageHowto[displayNumber - 1] = value.image;
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Container(
+                              height: 75,
+                              color: Color(0xfff3f3f4),
+                              child: IconButton(
+                                  iconSize: 30,
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) =>
+                                              new AddImageOrViderPage()),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        imageHowto[displayNumber - 1] =
+                                            value.image;
 
-                                    setState(() {});
-                                  }
-                                });
-                              }))
+                                        setState(() {});
+                                      }
+                                    });
+                                  }),
+                            ),
+                          ))
                       : Container(),
                   IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
-                      print("${displayNumber}");
-
                       howto_row--;
                       ctl_howto_row.remove(controller2);
                       imageHowto.remove(imageHowto[displayNumber - 1]);
@@ -271,7 +302,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                       if (ctl_howto_row.length == 0) {
                         howto_row = 1;
                       }
-                      print('controllers2.length =  ${ctl_howto_row.length}');
+
                       setState(() {});
                     },
                   ),
@@ -279,196 +310,203 @@ class _EditFoodPageState extends State<EditFoodPage> {
               ),
               (imageHowto[displayNumber - 1].toString() == File('').toString())
                   ? Container()
-                  : Container(
-                      height: 350,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              // flex: 3,
-                              child: (imageHowto[displayNumber - 1]
-                                          .toString() ==
-                                      File('').toString())
-                                  ? Container()
-                                  : (lookupMimeType(
-                                              imageHowto[displayNumber - 1]
-                                                  .path)[0] ==
-                                          "i")
-                                      ? Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 20, 0, 0),
-                                          child: Container(
-                                              constraints:
-                                                  new BoxConstraints.expand(
-                                                height: 350.0,
-                                              ),
-                                              alignment: Alignment.bottomRight,
-                                              padding: new EdgeInsets.only(
-                                                  right: 10, bottom: 8.0),
-                                              decoration: new BoxDecoration(
-                                                image: new DecorationImage(
-                                                  image: (imageHowto[displayNumber -
-                                                                  1]
-                                                              .path
-                                                              .substring(
-                                                                  0, 4) ==
-                                                          "http")
-                                                      ? NetworkImage(imageHowto[
-                                                              displayNumber - 1]
-                                                          .path)
-                                                      : FileImage(imageHowto[
-                                                          displayNumber - 1]),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              child: ToggleButtons(
-                                                color: Colors.black
-                                                    .withOpacity(0.60),
-                                                selectedColor: Colors.black,
-                                                selectedBorderColor:
-                                                    Colors.grey,
-                                                // fillColor: Color(0xFF6200EE).withOpacity(0.08),
-                                                splashColor: Colors.blue,
-                                                hoverColor: Color(0xFF6200EE)
-                                                    .withOpacity(0.04),
-                                                borderRadius:
-                                                    BorderRadius.circular(20.0),
-                                                constraints: BoxConstraints(
-                                                    minHeight: 30.0),
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.camera_alt,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 1,
-                                                      ),
-                                                      Text("แก้ไข")
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.delete),
-                                                      Text("ลบ")
-                                                    ],
-                                                  ),
-                                                ],
-                                                isSelected: [true, true],
-                                                onPressed: (int index) {
-                                                  setState(() {
-                                                    if (index == 0) {
-                                                      Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                new AddImageOrViderPage()),
-                                                      ).then((value) {
-                                                        if (value != null) {
-                                                          setState(() {
-                                                            imageHowto[
+                  : Row(
+                      children: [
+                        Expanded(
+                            // flex: 3,
+                            child: (imageHowto[displayNumber - 1].toString() ==
+                                    File('').toString())
+                                ? Container()
+                                : (lookupMimeType(imageHowto[displayNumber - 1]
+                                            .path)[0] ==
+                                        "i")
+                                    ? Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 10, 0, 20),
+                                        child: Container(
+                                            constraints:
+                                                new BoxConstraints.expand(
+                                              height: 350.0,
+                                            ),
+                                            alignment: Alignment.bottomRight,
+                                            padding: new EdgeInsets.only(
+                                                right: 10, bottom: 8.0),
+                                            decoration: new BoxDecoration(
+                                              image: new DecorationImage(
+                                                image: (imageHowto[
                                                                 displayNumber -
-                                                                    1] = value
-                                                                .image;
-                                                          });
-                                                        }
-                                                      });
-                                                    } else if (index == 1) {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              title: const Text(
-                                                                  'ยืนยัน'),
-                                                              content: const Text(
-                                                                  'คุณต้องการลบรูปนี้ ?'),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          context,
-                                                                          'Cancel'),
-                                                                  child:
-                                                                      const Text(
-                                                                    'ยกเลิก',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .red),
-                                                                  ),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    setState(
-                                                                        () {
-                                                                      print(
-                                                                          imageHowto);
-                                                                      imageHowto[
-                                                                          displayNumber -
-                                                                              1] = File(
-                                                                          '');
-
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    });
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    'ตกลง',
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          });
-                                                    }
-                                                  });
-                                                },
-                                              )),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 10, 0, 0),
-                                          child: Align(
-                                            alignment: Alignment.topCenter,
-                                            child: AspectRatio(
-                                              aspectRatio: 1,
-                                              child: Container(
-                                                child: VideoItems(
-                                                  videoPlayerController: (imageHowto[
-                                                                  displayNumber -
-                                                                      1]
-                                                              .path
-                                                              .substring(
-                                                                  0, 4) ==
-                                                          "http")
-                                                      ? VideoPlayerController
-                                                          .network(imageHowto[
-                                                                  displayNumber -
-                                                                      1]
-                                                              .path)
-                                                      : VideoPlayerController
-                                                          .file(imageHowto[
-                                                              displayNumber -
-                                                                  1]),
-                                                  looping: false,
-                                                  autoplay: false,
+                                                                    1]
+                                                            .path
+                                                            .substring(0, 4) ==
+                                                        "http")
+                                                    ? NetworkImage(imageHowto[
+                                                            displayNumber - 1]
+                                                        .path)
+                                                    : FileImage(imageHowto[
+                                                        displayNumber - 1]),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            child: ToggleButtons(
+                                              color: Colors.black
+                                                  .withOpacity(0.60),
+                                              selectedColor: Colors.black,
+                                              selectedBorderColor: Colors.grey,
+                                              // fillColor: Color(0xFF6200EE).withOpacity(0.08),
+                                              splashColor: Colors.blue,
+                                              hoverColor: Color(0xFF6200EE)
+                                                  .withOpacity(0.04),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              constraints: BoxConstraints(
+                                                  minHeight: 30.0),
+                                              children: <Widget>[
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.camera_alt,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 1,
+                                                    ),
+                                                    Text("แก้ไข")
+                                                  ],
                                                 ),
+                                                Row(
+                                                  children: [
+                                                    Icon(Icons.delete),
+                                                    Text("ลบ")
+                                                  ],
+                                                ),
+                                              ],
+                                              isSelected: [true, true],
+                                              onPressed: (int index) {
+                                                setState(() {
+                                                  if (index == 0) {
+                                                    Navigator.push(
+                                                      context,
+                                                      new MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              new AddImageOrViderPage()),
+                                                    ).then((value) {
+                                                      if (value != null) {
+                                                        setState(() {
+                                                          imageHowto[
+                                                              displayNumber -
+                                                                  1] = value
+                                                              .image;
+                                                        });
+                                                      }
+                                                    });
+                                                  } else if (index == 1) {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            title: const Text(
+                                                                'ยืนยัน'),
+                                                            content: const Text(
+                                                                'คุณต้องการลบรูปนี้ ?'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context,
+                                                                        'Cancel'),
+                                                                child:
+                                                                    const Text(
+                                                                  'ยกเลิก',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .red),
+                                                                ),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    print(
+                                                                        imageHowto);
+                                                                    imageHowto[
+                                                                        displayNumber -
+                                                                            1] = File(
+                                                                        '');
+
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  });
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  'ตกลง',
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        });
+                                                  }
+                                                });
+                                              },
+                                            )),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 10, 0, 0),
+                                        child: Align(
+                                          alignment: Alignment.topCenter,
+                                          child: AspectRatio(
+                                            aspectRatio: 1,
+                                            child: Container(
+                                              child: VideoItems(
+                                                videoPlayerController: (imageHowto[
+                                                                displayNumber -
+                                                                    1]
+                                                            .path
+                                                            .substring(0, 4) ==
+                                                        "http")
+                                                    ? VideoPlayerController
+                                                        .network(imageHowto[
+                                                                displayNumber -
+                                                                    1]
+                                                            .path)
+                                                    : VideoPlayerController
+                                                        .file(imageHowto[
+                                                            displayNumber - 1]),
+                                                looping: false,
+                                                autoplay: false,
+                                                addfood_showfoo: 0,
                                               ),
                                             ),
                                           ),
-                                        )),
-                        ],
-                      ),
+                                        ),
+                                      )),
+                      ],
                     ),
-              Divider(
-                color: Colors.black,
-              )
             ],
           ),
         ),
       );
     }).toList(); // แปลงเป็นlist
   }
+
+  bool _validate = false;
+
+  bool clearNameFood = true;
+  bool clearDesciptionFood = true;
+
+  String _selectPeoples;
+  List<People> _peoples;
+
+  String _selectTimes;
+  List<Time> _times;
+
+  String _selectCategorys;
+  List<Category> _categorys;
+
+  String _selectPrices;
+  List<Price> _prices;
+
+  TextEditingController _ctrlPriceCopy = TextEditingController()..text = '0.00';
 
   @override
   Widget build(BuildContext context) {
@@ -527,35 +565,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
             color: Colors.white,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    maxLength: 30,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 20),
-                    controller: _ctrlNameFood,
-                    decoration: InputDecoration(
-                      // errorText: _validate ? 'โปรดใส่ชื่อเมนู' : null,
-                      filled: true,
-                      fillColor: Color(0xFFFAFAFA),
-                      border: OutlineInputBorder(),
-                      hintText: "ชื่อเมนู",
-                      hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
-                    ),
-                    // onChanged: (value) {
-                    //   if (value.length > 0) {
-                    //     setState(() {
-                    //       _validate = false;
-                    //     });
-                    //   }
-                    // },
-                  ),
-                ),
                 (addImage.length == 0 && _imageFood == null)
                     ? Card(
                         semanticContainer: true,
@@ -589,7 +598,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0),
                         ),
-                        margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
                       )
                     : Container(
                         constraints: new BoxConstraints.expand(
@@ -693,128 +702,230 @@ class _EditFoodPageState extends State<EditFoodPage> {
                       ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    // controller: _ctrlExplain,
-
-                    minLines: 4,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xFFFAFAFA),
-                      border: OutlineInputBorder(),
-                      hintText: "อธิบายสูตรอาหาร",
-                      hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        "ชื่อสูตรอาหาร",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                  child: Table(
-                    border: TableBorder.all(),
-                    textDirection: TextDirection.ltr,
-                    children: [
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('สำหรับ'),
-                        ),
-                        Container(
-                          width: 300.0,
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              // hint: Text('1 คน'),
-                              isExpanded: true,
-                              underline: SizedBox(),
-                              value: valueChoosePeople,
-                              onChanged: (newValue) {
+                  child: TextFormField(
+                    maxLength: 30,
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                    controller: _ctrlNameFood,
+                    decoration: InputDecoration(
+                      suffixIcon: (clearNameFood)
+                          ? null
+                          : IconButton(
+                              onPressed: () {
                                 setState(() {
-                                  valueChoosePeople = newValue;
+                                  _ctrlNameFood.text = "";
+                                  clearNameFood = true;
                                 });
                               },
-                              items: listPeopleItem.map((valueItem) {
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Text(valueItem),
-                                );
-                              }).toList(),
+                              icon: Icon(Icons.clear),
                             ),
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('เวลา'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: DropdownButton(
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            value: valueChooseTime,
-                            onChanged: (newValue) {
-                              setState(() {
-                                valueChooseTime = newValue;
-                              });
-                            },
-                            items: listTimeItem.map((valueItem) {
-                              return DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(valueItem),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('หมวดหมู่อาหาร'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: DropdownButton(
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            value: valueChooseFood,
-                            onChanged: (newValue) {
-                              setState(() {
-                                valueChooseFood = newValue;
-                              });
-                            },
-                            items: listFoodItem.map((valueItem) {
-                              return DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(valueItem),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text('ราคา(\u0E3F)'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: TextField(
-                            controller: _ctrlPrice,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ]),
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10),
+                      errorText: _validate ? 'โปรดใส่ชื่อเมนู' : null,
+                      filled: true,
+                      fillColor: Color(0xfff3f3f4),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: "ชื่อเมนู",
+                      hintStyle: TextStyle(
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.grey),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.length > 0) {
+                          clearNameFood = false;
+                          _validate = false;
+                        } else {
+                          clearNameFood = true;
+                        }
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: Row(
+                    children: [
+                      Text(
+                        "คำอธิบาย",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: TextFormField(
+                    controller: _ctrlExplain,
+                    // maxLength: 60,
+                    minLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      suffixIcon: (clearDesciptionFood)
+                          ? null
+                          : Padding(
+                              padding: const EdgeInsets.only(bottom: 50),
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _ctrlExplain.text = "";
+                                    clearDesciptionFood = true;
+                                  });
+                                },
+                                icon: Icon(Icons.clear),
+                              ),
+                            ),
+                      filled: true,
+                      fillColor: Color(0xfff3f3f4),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: "บอกเราเกี่ยวกับสูตรอาหารนี้",
+                      hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.length > 0) {
+                          clearDesciptionFood = false;
+                        } else {
+                          clearDesciptionFood = true;
+                        }
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                  child: Row(
+                    children: [
+                      Text(
+                        "เพิ่มแท็กสูตรอาหาร",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "สำหรับ",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: peopleWidgets.toList(),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "เวลา",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: timeWidgets.toList(),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "หมวดหมู่อาหาร",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: categoryWidgets.toList(),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "ราคา",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          children: priceWidgets.toList(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -836,17 +947,12 @@ class _EditFoodPageState extends State<EditFoodPage> {
                         "ส่วนผสม",
                         style: TextStyle(
                             color: Colors.black87,
-                            fontSize: 20,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                // ListView(
-                //     padding: EdgeInsets.all(0),
-                //     shrinkWrap: true,
-                //     physics: NeverScrollableScrollPhysics(),
-                //     children: ingredient),
                 ReorderableListView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -873,7 +979,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                         ingredient_row++;
                       });
                     },
-                    child: Text('เพิ่มส่วนผสม'),
+                    child: Text('เพิ่ม ส่วนผสม'),
                   ),
                 ),
               ],
@@ -955,8 +1061,61 @@ class _EditFoodPageState extends State<EditFoodPage> {
     // TODO: implement initState
     super.initState();
 
-    // ingredient_row = widget.ingredient_row_start;
-    // howto_row = widget.howto_row_start;
+    _selectPeoples = this.widget.suitableFor;
+    _peoples = <People>[
+      const People('1 คน'),
+      const People('2 คน'),
+      const People('3 คน'),
+      const People('4 คน'),
+      const People('5 คน'),
+      const People('6 คน'),
+      const People('7 คน'),
+      const People('8 คน'),
+      const People('9 คน'),
+      const People('10 คน'),
+      const People('มากกว่า 10 คน'),
+      const People('มากกว่า 50 คน'),
+      const People('มากกว่า 100 คน'),
+    ];
+
+    _selectTimes = this.widget.takeTime;
+    _times = <Time>[
+      const Time('ภายใน 3 นาที'),
+      const Time('ภายใน 5 นาที'),
+      const Time('ภายใน 10 นาที'),
+      const Time('ภายใน 15 นาที'),
+      const Time('ภายใน 30 นาที'),
+      const Time('ภายใน 60 นาที'),
+      const Time('ภายใน 90 นาที'),
+      const Time('ภายใน 2 ชั่วโมง'),
+      const Time('มากกว่า 2 ชั่วโมง'),
+    ];
+
+    _selectCategorys = this.widget.foodCategory;
+    _categorys = <Category>[
+      const Category('ไม่ระบุ'),
+      const Category('เมนูน้ำ'),
+      const Category('เมนูต้ม'),
+      const Category('เมนูสุขภาพ'),
+      const Category('เมนูนึ่ง'),
+      const Category('เมนูตุ่น'),
+      const Category('เมนูทอด'),
+    ];
+
+    // _selectPrices = "ฟรี";
+  
+    _prices = <Price>[
+      Price('ฟรี'),
+      Price('ระบุราคา'),
+    ];
+    if(this.widget.price != "0"){
+       _selectPrices = this.widget.price;
+      _prices[1] = Price('${this.widget.price}');
+    }else{
+      _selectPrices = "ฟรี";
+    }
+     
+    
   }
 
   @override
@@ -964,4 +1123,278 @@ class _EditFoodPageState extends State<EditFoodPage> {
     // TODO: implement dispose
     super.dispose();
   }
+
+  Iterable<Widget> get peopleWidgets sync* {
+    for (People people in _peoples) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            child: Icon(Icons.person),
+          ),
+          label: Text(
+            people.name,
+            style: TextStyle(
+                color: (_selectPeoples == people.name)
+                    ? Colors.white
+                    : Colors.black),
+          ),
+          selected: _selectPeoples == people.name,
+          onSelected: (bool selected) {
+            setState(() {
+              _selectPeoples = people.name;
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  Iterable<Widget> get timeWidgets sync* {
+    for (Time time in _times) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            backgroundColor: Colors.green,
+            child: Icon(
+              Icons.access_time_outlined,
+              color: Colors.amber,
+            ),
+          ),
+          label: Text(
+            time.name,
+            style: TextStyle(
+                color:
+                    (_selectTimes == time.name) ? Colors.white : Colors.black),
+          ),
+          selected: _selectTimes == time.name,
+          onSelected: (bool selected) {
+            setState(() {
+              _selectTimes = time.name;
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  Iterable<Widget> get categoryWidgets sync* {
+    for (Category category in _categorys) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            backgroundColor: Colors.pink,
+            child: Icon(
+              Icons.food_bank,
+              // color: Colors.amber,
+            ),
+          ),
+          label: Text(
+            category.name,
+            style: TextStyle(
+                color: (_selectCategorys == category.name)
+                    ? Colors.white
+                    : Colors.black),
+          ),
+          selected: _selectCategorys == category.name,
+          onSelected: (bool selected) {
+            setState(() {
+              _selectCategorys = category.name;
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  Iterable<Widget> get priceWidgets sync* {
+    for (Price price in _prices) {
+      yield Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: FilterChip(
+          backgroundColor: Color(0xfff3f3f4),
+          avatar: CircleAvatar(
+            backgroundColor: Colors.amberAccent,
+            child: Icon(
+              Icons.monetization_on,
+              color: Colors.white,
+            ),
+          ),
+          label: Text(
+            (price.name == "ฟรี" || price.name == "ระบุราคา")
+                ? price.name
+                : price.name + " บาท",
+            style: TextStyle(
+                color: (_selectPrices.contains(price.name))
+                    ? Colors.white
+                    : Colors.black),
+          ),
+          selected: _selectPrices.contains(price.name),
+          onSelected: (bool selected) {
+            setState(() {
+              _selectPrices = price.name;
+
+              if (_selectPrices != "ฟรี") {
+                _tripEditModalBottomSheet(context);
+              } else {
+                _prices[1] = Price('ระบุราคา');
+                _ctrlPrice.text = "0.00";
+                _ctrlPriceCopy.text = "0.00";
+              }
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  void _tripEditModalBottomSheet(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _buildBottomNavigationMenu(context),
+              ),
+            ));
+  }
+
+  Container _buildBottomNavigationMenu(context) {
+    return Container(
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "ระบุราคา(บาท)",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context);
+                          if (_ctrlPriceCopy.text == "0.00") {
+                            _ctrlPrice.text = "0.00";
+                            _selectPrices = "ฟรี";
+                            _prices[1] = Price('ระบุราคา');
+                          }
+                        });
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.blue,
+                        size: 25,
+                      ))
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(7),
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^(\d+)?\.?\d{0,2}')),
+                  ],
+                  controller: _ctrlPrice,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    labelText: 'ราคา',
+                  ),
+                  autofocus: false,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  // padding: EdgeInsets.all(20),
+
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          Navigator.pop(context);
+                          _ctrlPriceCopy.text = _ctrlPrice.text;
+                          if (_ctrlPriceCopy.text == "0.00" ||
+                              _ctrlPriceCopy.text == "" ||
+                              double.parse(_ctrlPrice.text) == 0) {
+                            _ctrlPrice.text = "0.00";
+                            _ctrlPriceCopy.text == "0.00";
+                            _selectPrices = "ฟรี";
+                            _prices[1] = Price('ระบุราคา');
+                          } else {
+                            _prices[1] = Price('${_ctrlPrice.text}');
+                            _selectPrices = _ctrlPrice.text;
+                          }
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'ตกลง',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+}
+
+class People {
+  const People(this.name);
+  final String name;
+}
+
+class Time {
+  const Time(this.name);
+  final String name;
+}
+
+class Category {
+  const Category(this.name);
+  final String name;
+}
+
+class Price {
+  const Price(this.name);
+  final String name;
 }

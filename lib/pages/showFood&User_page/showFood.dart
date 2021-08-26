@@ -604,10 +604,15 @@ class _ShowFoodState extends State<ShowFood> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => EditFoodPage(
-                                            dataFood.recipeName,
-                                            dataFood.image,
-                                            dataIngredient,
-                                            dataHowto)),
+                                            recipeName: dataFood.recipeName,
+                                            description: dataFood.description,
+                                            imageFood: dataFood.image,
+                                            suitableFor: dataFood.suitableFor,
+                                            takeTime: dataFood.takeTime,
+                                            foodCategory: dataFood.foodCategory,
+                                            price: dataFood.price.toString(),
+                                            dataIngredient: dataIngredient,
+                                            dataHowto: dataHowto,)),
                                   );
                                 } else if (value == 1) {
                                   showDialog(

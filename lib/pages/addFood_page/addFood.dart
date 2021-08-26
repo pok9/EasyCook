@@ -1250,7 +1250,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                         ingredient_row++;
                       });
                     },
-                    child: Text('เพิ่มส่วนผสม'),
+                    child: Text('เพิ่ม ส่วนผสม'),
                   ),
                 ),
               ],
