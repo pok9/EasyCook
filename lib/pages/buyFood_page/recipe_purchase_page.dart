@@ -272,26 +272,30 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: Divider(
-                          thickness: 1,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "ความคิดเห็น",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
+                      (dataGetCommentPost.isEmpty)
+                          ? Container()
+                          : Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              child: Divider(
+                                thickness: 1,
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
+                      (dataGetCommentPost.isEmpty)
+                          ? Container()
+                          : Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "ความคิดเห็น",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
 
                       ListView.builder(
                           padding: EdgeInsets.only(top: 0),
