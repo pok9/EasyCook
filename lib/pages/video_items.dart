@@ -6,14 +6,14 @@ class VideoItems extends StatefulWidget {
   final VideoPlayerController videoPlayerController;
   final bool looping;
   final bool autoplay;
-  final int addfood_showfoo;
+  final int addfood_showfood;
 
   // VideoItems({Key key}) : super(key: key);
   VideoItems(
       {@required this.videoPlayerController,
       this.looping,
       this.autoplay,
-      this.addfood_showfoo,
+      this.addfood_showfood,
       Key key})
       : super(key: key);
 
@@ -52,17 +52,20 @@ class _VideoItemsState extends State<VideoItems> {
   void dispose() {
     // TODO: implement dispose
 
-
-    
     // widget.videoPlayerController?.pause();
 
-    if(widget.addfood_showfoo == 0){
-      widget.videoPlayerController?.pause();
-    }else{
+    if (widget.addfood_showfood == 0) {
+      // widget.videoPlayerController?.pause();
+      // widget.videoPlayerController?.dispose();//---
+      widget.videoPlayerController.pause();
+      widget.videoPlayerController.dispose(); //---
+    } else if((widget.addfood_showfood == 1)){
       widget.videoPlayerController?.dispose();
+    }else if(widget.addfood_showfood == 2){//editFood
+      widget.videoPlayerController.pause();
     }
-   
-   _chewieController?.dispose();
+
+    _chewieController?.dispose();
 
     // widget.videoPlayerController?.dispose();
     // _chewieController?.dispose();

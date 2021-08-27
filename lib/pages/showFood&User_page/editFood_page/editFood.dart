@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
+import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
+import 'package:easy_cook/models/showfood/editFood/editImageFoodModel.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:easy_cook/pages/addFood_page/addImageOrVideo.dart';
@@ -8,9 +11,11 @@ import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mime/mime.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:http/http.dart' as http;
 import '../../video_items.dart';
+import 'package:http_parser/http_parser.dart';
 
 class EditFoodPage extends StatefulWidget {
   // EditFoodPage({Key? key}) : super(key: key);
@@ -18,6 +23,9 @@ class EditFoodPage extends StatefulWidget {
   //   this.ingredient_row_start = 1,
   //   this.howto_row_start = 1, //ทดสอบ
   // });
+
+  int rid;
+  int uid;
 
   String recipeName;
   String imageFood;
@@ -31,7 +39,9 @@ class EditFoodPage extends StatefulWidget {
   List<Ingredient> dataIngredient;
   List<Howto> dataHowto;
   EditFoodPage(
-      {this.recipeName,
+      {this.rid,
+      this.uid,
+      this.recipeName,
       this.imageFood,
       this.suitableFor,
       this.takeTime,
@@ -474,7 +484,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                             displayNumber - 1]),
                                                 looping: false,
                                                 autoplay: false,
-                                                addfood_showfoo: 0,
+                                                addfood_showfood: 2,
                                               ),
                                             ),
                                           ),
@@ -508,6 +518,196 @@ class _EditFoodPageState extends State<EditFoodPage> {
 
   TextEditingController _ctrlPriceCopy = TextEditingController()..text = '0.00';
 
+  Future<String> editImageFood(File image) async {
+
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/addImageRecipePost";
+
+    var mimeTypeData =
+        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+    final images = await http.MultipartFile.fromPath(
+        'image', image.path,
+        contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(images);
+ 
+
+    var streamedResponse = await imageUploadRequest.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return editImageFoodModelFromJson(responseString).path;
+    } else {
+      return null;
+    }
+  }
+
+  Future<Null> editRecipePost_Fuc(
+      String recipe_name,
+      image,
+      String price,
+      String suitable_for,
+      take_time,
+      food_category,
+      description,
+      int uid,
+      rid) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/editRecipePost";
+
+    // List<st>
+    var data = {
+      "recipe_name": recipe_name,
+      "image": image,
+      "price": price,
+      "suitable_for": suitable_for,
+      "take_time": take_time,
+      "food_category": food_category,
+      "description": description,
+      "uid": uid,
+      "rid": rid
+    };
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.body);
+  }
+
+  Future<Null> editIngredient_Fuc(
+      int rid,
+      List<String> ingredientName,
+      List<int> ingredients_ID,
+      List<String> amount,
+      List<String> ingredientName_step) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/editIngredient";
+
+    // List<st>
+    var data = {
+      "recipe_ID": rid,
+      "ingredientName": ingredientName,
+      "ingredients_ID": ingredients_ID,
+      "amount": amount,
+      "step": ingredientName_step
+    };
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.body);
+  }
+
+  Future<UploadHowtoFileModels> addloadHowtoFiles(File image) async {
+    // final String apiUrl = "http://apifood.comsciproject.com/pjUsers/signin";
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/uploadHowtoFile";
+
+    var mimeTypeData =
+        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
+
+    final images = await http.MultipartFile.fromPath('file', image.path,
+        contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(images);
+
+    var streamedResponse = await imageUploadRequest.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return uploadHowtoFileModelsFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  Future<Null> editHowto_Fuc(
+      int rid,
+      List<int> howto_ID,
+      List<String> description_howto,
+      List<String> path_file,
+      List<String> type_file,
+      List<String> howto_step) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/editHowto";
+
+    // List<st>
+    var data = {
+      "recipe_ID": rid,
+      "howto_ID": howto_ID,
+      "description": description_howto,
+      "path_file": path_file,
+      "type_file": type_file,
+      "step": howto_step
+    };
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.body);
+  }
+
+  //แจ้งเตือนตอนกดโพส
+  showdialogPost(context, String txt) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "แจ้งเตือน",
+              style: TextStyle(color: Colors.red),
+            ),
+            content: Text(txt),
+            actions: [
+              TextButton(
+                child: Text(
+                  "ตกลง",
+                  style: TextStyle(color: Colors.blue),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  //dialog รอ
+  showdialog(context) {
+    return showDialog(
+        context: context,
+        builder: (contex) {
+          return AlertDialog(
+              content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("กรุณารอสักครู่...   "),
+              CircularProgressIndicator()
+            ],
+          ));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     var screen = MediaQuery.of(context).size; //ขนาดของหน้าจอ
@@ -522,29 +722,195 @@ class _EditFoodPageState extends State<EditFoodPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              onPressed: () {
-                print("ชื่อเมนู = " + _ctrlNameFood.text);
+              onPressed: () async {
+                String text = "";
+                bool check = true;
+                
+                //ชื่อเมนู
+                String recipe_name;
+                //รูปภาพ
+                String image;
+                //ราคา
+                String price;
+                //สำหรับ
+                String suitable_for;
+                //เวลา
+                String take_time;
+                //หมวดหมู่
+                String food_category;
+                //อธิบาย
+                String description;
+                
 
+                //รูปอาหาร
                 if (_imageFood != null) {
-                  //รูปไม่ถูกเปลี่ยน
-                  print(true);
+                  //รูปเก่าไม่ถูกเปลี่ยน
+                  // print(true);
+                  print("รูปเก่าไม่ถูกเปลี่ยน => $_imageFood");
+                  image = _imageFood;
                 } else {
-                  print(false);
+                  if (addImage.length == 0) {
+                    //ยังไม่มีรูปภาพอาหาร
+                    // print("addImage.length => ${addImage.length}");
+                    print("ยังไม่มีรูปภาพอาหาร");
+                    text += "กรุณาเพิ่มรูปภาพปกอาหาร";
+                  } else {
+                    //รูปภาพถูกเปลี่ยนใหม่ <--
+                    // print(false);
+                    image = await editImageFood(addImage[0].image);
+                    print("image = ${image}");
+                    print("รูปภาพถูกเปลี่ยนใหม่");
+                  }
                 }
+
+
+                //ชื่อเมนู
+                if (_ctrlNameFood.text != "") {
+                  print("ชื่อเมนู = " + _ctrlNameFood.text);
+                  recipe_name = _ctrlNameFood.text;
+                } else {
+                  print("ยังไม่ใส่ชื่อเมนู");
+                  text += "\nกรุณาเพิ่มชื่อเมนูอาหาร";
+                }
+
+                //คำอธิบาย
+                print("คำอธิบาย => ${_ctrlExplain.text}");
+                description = _ctrlExplain.text;
+
+                //สำหรับ
+                print("สำหรับ => ${_selectPeoples}");
+                suitable_for = _selectPeoples;
+
+                //เวลา
+                print("เวลา => ${_selectTimes}");
+                take_time = _selectTimes;
+
+                //หมวดหมู่อาหาร
+                print("หมวดหมู่อาหาร => ${_selectCategorys}");
+                food_category = _selectCategorys;
+
+                //ราคา
+                print("ราคา => ${_selectPrices}");
+                price = _selectPrices;
+
+                //uid
+                print("uid => ${this.widget.uid}");
+
+                //rid
+                print("rid => ${this.widget.rid}");
+
+                //token
+                print("token => ${token}");
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                
+                //ingredient
+                List<String> ingredientName = [];
+                List<int> ingredients_ID = [];
+                List<String> amount = [];
+                List<String> ingredientName_step = [];
 
                 //ส่วนผสม
                 for (int i = 0; i < ctl_ingredient_row.length; i++) {
-                  print((i + 1).toString() +
-                      " " +
-                      ctl_ingredient_row[i][0].text +
-                      " " +
-                      ctl_ingredient_row[i][1].text);
+                  if (ctl_ingredient_row[i][0].text == "") {
+                    text += "\nกรุณกรอกส่วนผสมให้ครบ";
+                    break;
+                  }
+                  ingredientName.add(ctl_ingredient_row[i][0].text);
+                  amount.add(ctl_ingredient_row[i][1].text);
+
+                  final index = this.widget.dataIngredient.indexWhere(
+                      (element) =>
+                          element.ingredientName ==
+                          ctl_ingredient_row[i][0].text);
+                  if (index > -1) {
+                    ingredients_ID
+                        .add(this.widget.dataIngredient[index].ingredientsId);
+                  } else {
+                    ingredients_ID.add(null);
+                  }
+                  ingredientName_step.add((i + 1).toString());
+                }
+                
+
+                
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                //how to
+                List<int> howto_ID = [];
+                List<String> description_howto = [];
+                List<String> path_file = [];
+                List<String> type_file = [];
+                List<String> howto_step = [];
+
+                for (var i = 0; i < ctl_howto_row.length; i++) {
+                  if (ctl_howto_row[i].text == "") {
+                    text += "\nกรุณกรอกวิธีทำ";
+                    break;
+                  }
+                  if(imageHowto[i].toString() == File('').toString()){
+                    text += "\nกรุณเพิ่มรูปภาพวิธีทำ";
+                    break;
+                  }
+
+                  final index = this.widget.dataHowto.indexWhere((element) =>
+                      element.description == ctl_howto_row[i].text);
+
+                  if (index > -1) {
+                    howto_ID.add(this.widget.dataHowto[index].howtoId);
+                  } else {
+                    howto_ID.add(null);
+                  }
+
+                  description_howto.add(ctl_howto_row[i].text);
+
+                  if (imageHowto[i].path.substring(0, 4) != "http") {
+                    UploadHowtoFileModels imageData =
+                        await addloadHowtoFiles(imageHowto[i]);
+                    path_file.add(imageData.path);
+                  } else {
+                    path_file.add(imageHowto[i].path);
+                  }
+
+                  type_file
+                      .add(lookupMimeType(imageHowto[i].path).split("/")[0]);
+
+                  howto_step.add((i + 1).toString());
+                }
+         
+
+                if (text != "") {
+                  showdialogPost(context, text);
+                  check = false;
+                }
+                if (check) {
+                  showdialog(context);
+                  await editRecipePost_Fuc(recipe_name, image, price, suitable_for, take_time, food_category, description, this.widget.uid, this.widget.rid);
+                  await editIngredient_Fuc(this.widget.rid, ingredientName, ingredients_ID, amount, ingredientName_step);
+                  await editHowto_Fuc(this.widget.rid, howto_ID, description_howto, path_file, type_file, howto_step);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 }
 
-                //วิธีทำ
-                for (int i = 0; i < ctl_howto_row.length; i++) {
-                  print(ctl_howto_row[i].text);
-                }
+                // //วิธีทำ
+                // int checkCtl_howto_row = 0, checkimageHowto = 0;
+                // for (int i = 0; i < howto.length; i++) {
+                //   if (ctl_howto_row[i].text == "" && checkCtl_howto_row == 0) {
+                //     print("กรุณกรอกวิธีทำ");
+                //     checkCtl_howto_row = 1;
+                //   }
+                //   if (imageHowto[i].toString() == File('').toString() &&
+                //       checkimageHowto == 0) {
+                //     print("และรูปภาพวิธีทำ");
+                //     checkimageHowto = 1;
+                //   }
+
+                //   if (checkCtl_howto_row == 1 && checkimageHowto == 1) {
+                //     break;
+                //   }
+                // }
               },
               child: Text('แก้ไข'),
               style: ElevatedButton.styleFrom(
@@ -974,7 +1340,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   child: TextButton(
                     style: flatButtonStyle,
                     onPressed: () {
-                      print('Button pressed');
                       setState(() {
                         ingredient_row++;
                       });
@@ -1060,6 +1425,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    findUser();
 
     _selectPeoples = this.widget.suitableFor;
     _peoples = <People>[
@@ -1103,19 +1469,27 @@ class _EditFoodPageState extends State<EditFoodPage> {
     ];
 
     // _selectPrices = "ฟรี";
-  
+
     _prices = <Price>[
       Price('ฟรี'),
       Price('ระบุราคา'),
     ];
-    if(this.widget.price != "0"){
-       _selectPrices = this.widget.price;
+    if (this.widget.price != "0") {
+      _selectPrices = this.widget.price;
       _prices[1] = Price('${this.widget.price}');
-    }else{
+    } else {
       _selectPrices = "ฟรี";
     }
-     
-    
+  }
+
+  String token = ""; //โทเคน
+  //ดึง token
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+    });
   }
 
   @override

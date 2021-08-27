@@ -585,7 +585,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                             displayNumber - 1]),
                                                 looping: false,
                                                 autoplay: false,
-                                                addfood_showfoo: 0,
+                                                addfood_showfood: 0,
                                               ),
                                             ),
                                           ),
@@ -781,10 +781,11 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     }
                     ingredientName.add(ctl_ingredient_row[i][0].text);
                     amount.add(ctl_ingredient_row[i][1].text);
-                  }
-                  for (var i = 0; i < amount.length; i++) {
                     ingredientName_step.add((i + 1).toString());
                   }
+                  // for (var i = 0; i < amount.length; i++) {
+                  //   ingredientName_step.add((i + 1).toString());
+                  // }
 
                   AddIngredientsArrayModel ingredientsData =
                       await addIngredients(postsData.recipeId.toString(),

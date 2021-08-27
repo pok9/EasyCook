@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:easy_cook/models/buyFood/buyFood.dart';
 import 'package:easy_cook/models/category/category_model.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
-import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
+import 'package:easy_cook/models/showfood/commentFood_model/getCommentPost_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 

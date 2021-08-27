@@ -4,7 +4,8 @@ import 'dart:ffi';
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/report/addReport/addReport_model.dart';
-import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
+import 'package:easy_cook/models/showfood/commentFood_model/getCommentPost_model.dart';
+
 import 'package:easy_cook/models/showfood/scoreFood/getScoreFoodModel.dart';
 import 'package:easy_cook/models/showfood/scoreFood/scoreFoodInputModel.dart';
 
@@ -329,7 +330,7 @@ class _ShowFoodState extends State<ShowFood> {
                             dataHowto[displayNumber].pathFile),
                         looping: false,
                         autoplay: false,
-                        addfood_showfoo: 1,
+                        addfood_showfood: 0,
                       ),
                     ),
                   ),
@@ -604,6 +605,8 @@ class _ShowFoodState extends State<ShowFood> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => EditFoodPage(
+                                            rid: dataFood.rid,
+                                            uid: dataFood.userId,
                                             recipeName: dataFood.recipeName,
                                             description: dataFood.description,
                                             imageFood: dataFood.image,
@@ -613,7 +616,9 @@ class _ShowFoodState extends State<ShowFood> {
                                             price: dataFood.price.toString(),
                                             dataIngredient: dataIngredient,
                                             dataHowto: dataHowto,)),
-                                  );
+                                  ).then((value){
+                                    getPost();
+                                  });
                                 } else if (value == 1) {
                                   showDialog(
                                     barrierColor: Colors.black26,

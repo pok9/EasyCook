@@ -4,9 +4,9 @@ import 'dart:io';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/report/addReport/addReport_model.dart';
-import 'package:easy_cook/models/showfood/commentFood_model.dart/commentPost_model.dart';
-import 'package:easy_cook/models/showfood/commentFood_model.dart/deleteComment_model.dart';
-import 'package:easy_cook/models/showfood/commentFood_model.dart/getCommentPost_model.dart';
+import 'package:easy_cook/models/showfood/commentFood_model/commentPost_model.dart';
+import 'package:easy_cook/models/showfood/commentFood_model/deleteComment_model.dart';
+import 'package:easy_cook/models/showfood/commentFood_model/getCommentPost_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportComment.dart';
