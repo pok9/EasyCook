@@ -519,7 +519,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
   TextEditingController _ctrlPriceCopy = TextEditingController()..text = '0.00';
 
   Future<String> editImageFood(File image) async {
-
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/addImageRecipePost";
 
@@ -528,12 +527,10 @@ class _EditFoodPageState extends State<EditFoodPage> {
 
     final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(apiUrl));
 
-    final images = await http.MultipartFile.fromPath(
-        'image', image.path,
+    final images = await http.MultipartFile.fromPath('image', image.path,
         contentType: new MediaType(mimeTypeData[0], mimeTypeData[1]));
 
     imageUploadRequest.files.add(images);
- 
 
     var streamedResponse = await imageUploadRequest.send();
     var response = await http.Response.fromStream(streamedResponse);
@@ -643,8 +640,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
       List<String> path_file,
       List<String> type_file,
       List<String> howto_step) async {
-    final String apiUrl =
-        "http://apifood.comsciproject.com/pjPost/editHowto";
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/editHowto";
 
     // List<st>
     var data = {
@@ -718,6 +714,37 @@ class _EditFoodPageState extends State<EditFoodPage> {
       backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
         title: Text('แก้ไขสูตรอาหาร'),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              print(
+                  'dataIngredient.length => ${this.widget.dataIngredient.length}');
+              print('this.ingredient_row => ${this.ingredient_row}');
+              if (_selectPrices == "ฟรี") {
+                _selectPrices = "0";
+              }
+              if (_imageFood != null &&
+                  _ctrlNameFood.text == this.widget.recipeName &&
+                  _ctrlExplain.text == this.widget.description &&
+                  _selectPeoples == this.widget.suitableFor &&
+                  _selectTimes == this.widget.takeTime &&
+                  _selectCategorys == this.widget.foodCategory &&
+                  _selectPrices == this.widget.price &&
+                  this.widget.dataIngredient.length == this.ingredient_row &&
+                  this.widget.dataHowto.length == this.howto_row) {
+                print("กลับได้เลย");
+                Navigator.pop(context);
+              } else {
+                print("กลับไม่ได้");
+                showDialog(
+                    context: context,
+                    builder: (context) => CustomDialog(
+                          title: "ยังไม่ได้บันทึกการเปลี่ยนแปลง",
+                          description:
+                              "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก แน่ใจไหมว่าต้องการยกเลิก",
+                        ));
+              }
+            }),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -725,7 +752,20 @@ class _EditFoodPageState extends State<EditFoodPage> {
               onPressed: () async {
                 String text = "";
                 bool check = true;
-                
+
+                //   if (_selectPrices == "ฟรี") {
+                //   _selectPrices = "0";
+                // }
+                //   if (_imageFood == null &&
+                //     _ctrlNameFood.text != this.widget.recipeName &&
+                //     _ctrlExplain.text != this.widget.description &&
+                //     _selectPeoples != this.widget.suitableFor &&
+                //     _selectTimes != this.widget.takeTime &&
+                //     _selectCategorys != this.widget.foodCategory &&
+                //     _selectPrices != this.widget.price){
+
+                //     }
+
                 //ชื่อเมนู
                 String recipe_name;
                 //รูปภาพ
@@ -740,7 +780,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 String food_category;
                 //อธิบาย
                 String description;
-                
 
                 //รูปอาหาร
                 if (_imageFood != null) {
@@ -762,7 +801,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                     print("รูปภาพถูกเปลี่ยนใหม่");
                   }
                 }
-
 
                 //ชื่อเมนู
                 if (_ctrlNameFood.text != "") {
@@ -804,7 +842,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
 
                 ///////////////////////////////////////////////////////////////////////////////////
 
-                
                 //ingredient
                 List<String> ingredientName = [];
                 List<int> ingredients_ID = [];
@@ -832,9 +869,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   }
                   ingredientName_step.add((i + 1).toString());
                 }
-                
-
-                
 
                 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -850,7 +884,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                     text += "\nกรุณกรอกวิธีทำ";
                     break;
                   }
-                  if(imageHowto[i].toString() == File('').toString()){
+                  if (imageHowto[i].toString() == File('').toString()) {
                     text += "\nกรุณเพิ่มรูปภาพวิธีทำ";
                     break;
                   }
@@ -879,7 +913,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
 
                   howto_step.add((i + 1).toString());
                 }
-         
 
                 if (text != "") {
                   showdialogPost(context, text);
@@ -887,9 +920,20 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 }
                 if (check) {
                   showdialog(context);
-                  await editRecipePost_Fuc(recipe_name, image, price, suitable_for, take_time, food_category, description, this.widget.uid, this.widget.rid);
-                  await editIngredient_Fuc(this.widget.rid, ingredientName, ingredients_ID, amount, ingredientName_step);
-                  await editHowto_Fuc(this.widget.rid, howto_ID, description_howto, path_file, type_file, howto_step);
+                  await editRecipePost_Fuc(
+                      recipe_name,
+                      image,
+                      price,
+                      suitable_for,
+                      take_time,
+                      food_category,
+                      description,
+                      this.widget.uid,
+                      this.widget.rid);
+                  await editIngredient_Fuc(this.widget.rid, ingredientName,
+                      ingredients_ID, amount, ingredientName_step);
+                  await editHowto_Fuc(this.widget.rid, howto_ID,
+                      description_howto, path_file, type_file, howto_step);
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }
@@ -1771,4 +1815,101 @@ class Category {
 class Price {
   const Price(this.name);
   final String name;
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title, description, buttonText;
+  final Image image;
+
+  CustomDialog({this.title, this.description, this.buttonText, this.image});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 22.0, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text(
+                description,
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "อยู่หน้านี้ต่อ",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text("ออกไปหน้าอื่น"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 16,
+          right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.blueAccent,
+            radius: 50,
+            backgroundImage: NetworkImage(
+                'https://media.giphy.com/media/Q81NcsY6YxK7jxnr4v/giphy.gif'),
+          ),
+        )
+      ],
+    );
+  }
 }
