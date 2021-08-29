@@ -1,22 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:easy_cook/models/topup&withdraw/topup.dart';
+import 'package:easy_cook/models/topup&withdraw/topup/topupCreditCardModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class TopupPage extends StatefulWidget {
+class TopupCreditCardPage extends StatefulWidget {
   // const TopupPage({ Key? key }) : super(key: key);
   double amount_to_fill;
 
-  TopupPage({this.amount_to_fill});
+  TopupCreditCardPage({this.amount_to_fill});
   @override
-  _TopupPageState createState() => _TopupPageState();
+  _TopupCreditCardPageState createState() => _TopupCreditCardPageState();
 }
 
-class _TopupPageState extends State<TopupPage> {
+class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
@@ -31,7 +31,7 @@ class _TopupPageState extends State<TopupPage> {
     findUser();
   }
 
-  Future<Topup> Topup_fuc(String token, String name, String number, int month,
+  Future<TopupCreditCardModel> Topup_fuc(String token, String name, String number, int month,
       int year, double amount) async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/topup";
 
@@ -56,7 +56,7 @@ class _TopupPageState extends State<TopupPage> {
       final String responseString = response.body;
       print("responseString = ${responseString}");
 
-      return topupFromJson(responseString);
+      return topupCreditCardFromJson(responseString);
     } else {
       return null;
     }
@@ -182,7 +182,7 @@ class _TopupPageState extends State<TopupPage> {
 
                           print(cvvCode);
 
-                          Topup topupData = await Topup_fuc(
+                          TopupCreditCardModel topupData = await Topup_fuc(
                               token,
                               cardHolderName,
                               cardNumberRp,

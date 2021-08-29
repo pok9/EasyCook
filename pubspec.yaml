@@ -100,6 +100,12 @@ dependencies:
 
   translator: ^0.1.7
 
+  flutter_svg: ^0.22.0
+
+  dio: ^4.0.0
+  path_provider: ^2.0.2
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -130,6 +136,7 @@ flutter:
     - assets/images/
     - assets/logos/
     - assets/loadGif/
+    - assets/topupQRcode/
     # - assets/logos/facebook.jpg
     # - assets/logos/drink.png
     # - assets/logos/vegetables.png

@@ -1,5 +1,8 @@
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/feed/newfeedsglobal/newfeedsglobal.dart';
+import 'package:easy_cook/models/myBuy/mybuy.dart';
+import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,10 +69,56 @@ class _Feed2PageState extends State<Feed2Page> {
       token = preferences.getString("tokens");
       print("token = ${token}");
 
-      if (token != "") {
+      if (token != "" && token != null) {
         getNewFeedsFollow();
+        getMybuy();
+        getMyAccounts();
       }
     });
+  }
+
+  //ข้อมูลตัวเอง
+  DataMyAccount dataAcUser;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+
+        dataAcUser = myAccountFromJson(responseString).data[0];
+      });
+    } else {
+      return null;
+    }
+  }
+
+  List<Mybuy> dataMybuy;
+  List<String> checkBuy = [];
+  Future<Null> getMybuy() async {
+    checkBuy = [];
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responseFeed_follow = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
+
+          dataMybuy = mybuyFromJson(responseString);
+          for (var item in dataMybuy) {
+            print(item.recipeId);
+            checkBuy.add(item.recipeId.toString());
+          }
+        });
+    } else {
+      return null;
+    }
   }
 
   List<Newfeedsglobal> dataNewfeedsglobal;
@@ -135,6 +184,7 @@ class _Feed2PageState extends State<Feed2Page> {
         body: DefaultTabController(
           length: 2,
           child: Scaffold(
+            backgroundColor: Color(0xFFf3f5f9),
             appBar: new PreferredSize(
               preferredSize: Size.fromHeight(40),
               child: new Container(
@@ -173,7 +223,7 @@ class _Feed2PageState extends State<Feed2Page> {
                       controller: _scrollController,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        mainAxisExtent: 290,
+                        mainAxisExtent: 285,
                         maxCrossAxisExtent:
                             (deviceSize.width > 400) ? 250 : 200,
                       ),
@@ -198,14 +248,190 @@ class _Feed2PageState extends State<Feed2Page> {
                         return InkWell(
                           onTap: () {
                             print(deviceSize.width);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ShowFood(
-                                      dataNewfeedsglobal[index]
-                                          .rid)),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) =>
+                            //           ShowFood(dataNewfeedsglobal[index].rid)),
+                            // );
+                            if (dummyListDataNewfeedsglobal[index].price == 0) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ShowFood(
+                                        dummyListDataNewfeedsglobal[index]
+                                            .rid)),
+                              );
+                            } else {
+                              if (dataAcUser == null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RecipePurchasePage(
+                                            req_rid:
+                                                dummyListDataNewfeedsglobal[
+                                                        index]
+                                                    .rid,
+                                          )),
+                                );
+                              } else {
+                                if (dataAcUser.userId ==
+                                        dummyListDataNewfeedsglobal[index]
+                                            .userId ||
+                                    checkBuy.indexOf(
+                                            dummyListDataNewfeedsglobal[index]
+                                                .rid
+                                                .toString()) >=
+                                        0) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ShowFood(
+                                            dummyListDataNewfeedsglobal[index]
+                                                .rid)),
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RecipePurchasePage(
+                                              req_rid:
+                                                  dummyListDataNewfeedsglobal[
+                                                          index]
+                                                      .rid,
+                                            )),
+                                  ).then((value) => {
+                                        if (token != "" && token != null)
+                                          {getMybuy()}
+                                      });
+                                }
+                              }
+                            }
                           },
+                          // child: Column(
+                          //   children: [
+                          //     Padding(
+                          //       padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
+                          //       child: Row(
+                          //         children: [
+                          //           new Container(
+                          //             height: 30.0,
+                          //             width: 30.0,
+                          //             decoration: new BoxDecoration(
+                          //                 shape: BoxShape.circle,
+                          //                 image: new DecorationImage(
+                          //                     fit: BoxFit.fill,
+                          //                     image: new NetworkImage(
+                          //                         dummyListDataNewfeedsglobal[
+                          //                                 index]
+                          //                             .profileImage))),
+                          //           ),
+                          //           new SizedBox(
+                          //             width: 10.0,
+                          //           ),
+                          //           Expanded(
+                          //             child: new Text(
+                          //               dummyListDataNewfeedsglobal[index]
+                          //                   .aliasName,
+                          //               style: TextStyle(
+                          //                   fontWeight: FontWeight.normal),
+                          //               maxLines: 1,
+                          //               overflow: TextOverflow.ellipsis,
+                          //             ),
+                          //           ),
+
+                          //           // IconButton(
+                          //           //     icon: Icon(Icons.more_vert),
+                          //           //     onPressed: () {
+                          //           //       // print("more_vert" + index.toString());
+                          //           //     })
+                          //         ],
+                          //       ),
+                          //     ),
+                          //     Card(
+                          //       semanticContainer: true,
+                          //       clipBehavior: Clip.antiAliasWithSaveLayer,
+                          //       child: Column(
+                          //         children: [
+                          //           Stack(
+                          //             children: [
+                          //               Container(
+                          //                 height: 170,
+                          //                 // child: FadeInImage.assetNetwork(
+                          //                 //   placeholder:
+                          //                 //       'assets/logos/loadding.gif',
+                          //                 //   image:
+                          //                 //       dummyListDataNewfeedsglobal[index]
+                          //                 //           .image,
+                          //                 // ),
+                          //                 decoration: BoxDecoration(
+                          //                   color: const Color(0xff7c94b6),
+                          //                   image: DecorationImage(
+                          //                     image: NetworkImage(
+                          //                         dummyListDataNewfeedsglobal[
+                          //                                 index]
+                          //                             .image),
+                          //                     fit: BoxFit.cover,
+                          //                   ),
+                          //                   borderRadius:
+                          //                       BorderRadius.circular(5),
+                          //                 ),
+                          //               ),
+                          //               Padding(
+                          //                 padding: const EdgeInsets.only(
+                          //                     top: 8, right: 8),
+                          //                 child: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.end,
+                          //                   children: [
+                          //                     Stack(
+                          //                       children: [
+                          //                         CircleAvatar(
+                          //                           backgroundColor:
+                          //                               Colors.white,
+                          //                           radius: 16,
+                          //                         ),
+                          //                         Positioned(
+                          //                           top: 1,
+                          //                           right: 1,
+                          //                           child: Container(
+                          //                               height: 30,
+                          //                               width: 30,
+                          //                               child: Image.network(
+                          //                                   "https://image.flaticon.com/icons/png/512/1177/1177428.png")),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               )
+                          //             ],
+                          //           ),
+                          //           Padding(
+                          //             padding: const EdgeInsets.all(4.0),
+                          //             child: Row(
+                          //               children: [
+                          //                 Expanded(
+                          //                   child: Text(
+                          //                     dummyListDataNewfeedsglobal[index]
+                          //                         .recipeName,
+                          //                     maxLines: 1,
+                          //                     overflow: TextOverflow.ellipsis,
+                          //                     textAlign: TextAlign.left,
+                          //                     style: TextStyle(
+                          //                         color: Colors.black),
+                          //                   ),
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+
                           child: Card(
                             semanticContainer: true,
                             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -214,10 +440,8 @@ class _Feed2PageState extends State<Feed2Page> {
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
+                                      Column(
                                         children: [
                                           new Container(
                                             height: 30.0,
@@ -231,34 +455,20 @@ class _Feed2PageState extends State<Feed2Page> {
                                                                 index]
                                                             .profileImage))),
                                           ),
-                                          new SizedBox(
-                                            width: 10.0,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 8, 0, 8),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                new Text(
-                                                  dummyListDataNewfeedsglobal[
-                                                          index]
-                                                      .aliasName,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                new Text(
-                                                  "1 นาทีที่แล้ว",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                              ],
-                                            ),
-                                          )
                                         ],
+                                      ),
+                                      new SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Expanded(
+                                        child: new Text(
+                                          dummyListDataNewfeedsglobal[index]
+                                              .aliasName,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                       IconButton(
                                           icon: Icon(Icons.more_vert),
@@ -268,64 +478,135 @@ class _Feed2PageState extends State<Feed2Page> {
                                     ],
                                   ),
                                 ),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      height: 160,
+                                      // width: 250,
+
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          // borderRadius: BorderRadius.circular(50),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  dummyListDataNewfeedsglobal[
+                                                          index]
+                                                      .image),
+                                              fit: BoxFit.cover)),
+                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(
+                                    //       top: 4, right: 4),
+                                    //   child: Row(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.end,
+                                    //     children: [
+                                    //       Stack(
+                                    //         children: [
+                                    //           CircleAvatar(
+                                    //             backgroundColor: Colors.white,
+                                    //             radius: 16,
+                                    //           ),
+                                    //           Positioned(
+                                    //             top: 1,
+                                    //             right: 1,
+                                    //             child: Container(
+                                    //                 height: 30,
+                                    //                 width: 30,
+                                    //                 child: Image.network(
+                                    //                     "https://image.flaticon.com/icons/png/512/1177/1177428.png")),
+                                    //           ),
+                                    //         ],
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    (dummyListDataNewfeedsglobal[index].price ==
+                                            0)
+                                        ? Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8, right: 8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Stack(
+                                                  children: [
+                                                    (dataAcUser.userId ==
+                                                            dummyListDataNewfeedsglobal[
+                                                                    index]
+                                                                .userId)
+                                                        ? Container()
+                                                        : CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            radius: 16,
+                                                          ),
+                                                    Positioned(
+                                                      top: 1,
+                                                      right: 1,
+                                                      child: Container(
+                                                        height: 30,
+                                                        width: 30,
+                                                        child: (dataAcUser ==
+                                                                null)
+                                                            ? Image.network(
+                                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                            : (dataAcUser
+                                                                        .userId ==
+                                                                    dummyListDataNewfeedsglobal[
+                                                                            index]
+                                                                        .userId)
+                                                                ? Container()
+                                                                : (checkBuy.indexOf(dummyListDataNewfeedsglobal[index]
+                                                                            .rid
+                                                                            .toString()) >=
+                                                                        0)
+                                                                    ? Image.network(
+                                                                        "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                                    : Image.network(
+                                                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                  ],
+                                ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(4, 0, 0, 4),
+                                  padding: const EdgeInsets.all(3.0),
                                   child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
                                         child: Text(
                                           dummyListDataNewfeedsglobal[index]
                                               .recipeName,
-                                          maxLines: 1,
+                                          maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(color: Colors.black),
+                                          textAlign: TextAlign.justify,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-
-                                // SizedBox(height: 19,),
-
-                                Container(
-                                  height: 161,
-                                  // width: 500,
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: 'assets/logos/loadding.gif',
-                                    image: dummyListDataNewfeedsglobal[index]
-                                        .image,
-                                  ),
-                                  // decoration: BoxDecoration(
-                                  //     // borderRadius: BorderRadius.circular(50),
-                                  //     image: DecorationImage(
-                                  //         image: NetworkImage(
-                                  //             dummyListDataNewfeedsglobal[index]
-                                  //                 .image),
-                                  //         fit: BoxFit.cover)),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RatingBarIndicator(
-                                        rating: 3,
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.star,
-                                          color: Colors.blue,
-                                        ),
-                                        itemCount: 5,
-                                        itemSize: 16,
-                                      ),
-                                      Text("ฟรี"),
-                                    ],
-                                  ),
-                                )
+                                Expanded(child: Container()),
                               ],
                             ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            elevation: 5,
+                            // margin: EdgeInsets.all(10),
                           ),
                         );
                       }),

@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-Topup topupFromJson(String str) => Topup.fromJson(json.decode(str));
+TopupCreditCardModel topupCreditCardFromJson(String str) => TopupCreditCardModel.fromJson(json.decode(str));
 
-String topupToJson(Topup data) => json.encode(data.toJson());
+String topupCreditCardToJson(TopupCreditCardModel data) => json.encode(data.toJson());
 
-class Topup {
-    Topup({
+class TopupCreditCardModel {
+    TopupCreditCardModel({
         this.success,
         this.balance,
     });
@@ -17,7 +17,7 @@ class Topup {
     int success;
     double balance;
 
-    factory Topup.fromJson(Map<String, dynamic> json) => Topup(
+    factory TopupCreditCardModel.fromJson(Map<String, dynamic> json) => TopupCreditCardModel(
         success: json["success"],
         balance: json["balance"].toDouble(),
     );
