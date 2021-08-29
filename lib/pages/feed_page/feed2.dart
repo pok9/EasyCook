@@ -223,7 +223,7 @@ class _Feed2PageState extends State<Feed2Page> {
                       controller: _scrollController,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        mainAxisExtent: 285,
+                        mainAxisExtent: 300,
                         maxCrossAxisExtent:
                             (deviceSize.width > 400) ? 250 : 200,
                       ),
@@ -309,128 +309,7 @@ class _Feed2PageState extends State<Feed2Page> {
                               }
                             }
                           },
-                          // child: Column(
-                          //   children: [
-                          //     Padding(
-                          //       padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
-                          //       child: Row(
-                          //         children: [
-                          //           new Container(
-                          //             height: 30.0,
-                          //             width: 30.0,
-                          //             decoration: new BoxDecoration(
-                          //                 shape: BoxShape.circle,
-                          //                 image: new DecorationImage(
-                          //                     fit: BoxFit.fill,
-                          //                     image: new NetworkImage(
-                          //                         dummyListDataNewfeedsglobal[
-                          //                                 index]
-                          //                             .profileImage))),
-                          //           ),
-                          //           new SizedBox(
-                          //             width: 10.0,
-                          //           ),
-                          //           Expanded(
-                          //             child: new Text(
-                          //               dummyListDataNewfeedsglobal[index]
-                          //                   .aliasName,
-                          //               style: TextStyle(
-                          //                   fontWeight: FontWeight.normal),
-                          //               maxLines: 1,
-                          //               overflow: TextOverflow.ellipsis,
-                          //             ),
-                          //           ),
-
-                          //           // IconButton(
-                          //           //     icon: Icon(Icons.more_vert),
-                          //           //     onPressed: () {
-                          //           //       // print("more_vert" + index.toString());
-                          //           //     })
-                          //         ],
-                          //       ),
-                          //     ),
-                          //     Card(
-                          //       semanticContainer: true,
-                          //       clipBehavior: Clip.antiAliasWithSaveLayer,
-                          //       child: Column(
-                          //         children: [
-                          //           Stack(
-                          //             children: [
-                          //               Container(
-                          //                 height: 170,
-                          //                 // child: FadeInImage.assetNetwork(
-                          //                 //   placeholder:
-                          //                 //       'assets/logos/loadding.gif',
-                          //                 //   image:
-                          //                 //       dummyListDataNewfeedsglobal[index]
-                          //                 //           .image,
-                          //                 // ),
-                          //                 decoration: BoxDecoration(
-                          //                   color: const Color(0xff7c94b6),
-                          //                   image: DecorationImage(
-                          //                     image: NetworkImage(
-                          //                         dummyListDataNewfeedsglobal[
-                          //                                 index]
-                          //                             .image),
-                          //                     fit: BoxFit.cover,
-                          //                   ),
-                          //                   borderRadius:
-                          //                       BorderRadius.circular(5),
-                          //                 ),
-                          //               ),
-                          //               Padding(
-                          //                 padding: const EdgeInsets.only(
-                          //                     top: 8, right: 8),
-                          //                 child: Row(
-                          //                   mainAxisAlignment:
-                          //                       MainAxisAlignment.end,
-                          //                   children: [
-                          //                     Stack(
-                          //                       children: [
-                          //                         CircleAvatar(
-                          //                           backgroundColor:
-                          //                               Colors.white,
-                          //                           radius: 16,
-                          //                         ),
-                          //                         Positioned(
-                          //                           top: 1,
-                          //                           right: 1,
-                          //                           child: Container(
-                          //                               height: 30,
-                          //                               width: 30,
-                          //                               child: Image.network(
-                          //                                   "https://image.flaticon.com/icons/png/512/1177/1177428.png")),
-                          //                         ),
-                          //                       ],
-                          //                     ),
-                          //                   ],
-                          //                 ),
-                          //               )
-                          //             ],
-                          //           ),
-                          //           Padding(
-                          //             padding: const EdgeInsets.all(4.0),
-                          //             child: Row(
-                          //               children: [
-                          //                 Expanded(
-                          //                   child: Text(
-                          //                     dummyListDataNewfeedsglobal[index]
-                          //                         .recipeName,
-                          //                     maxLines: 1,
-                          //                     overflow: TextOverflow.ellipsis,
-                          //                     textAlign: TextAlign.left,
-                          //                     style: TextStyle(
-                          //                         color: Colors.black),
-                          //                   ),
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                          
 
                           child: Card(
                             semanticContainer: true,
@@ -481,7 +360,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                 Stack(
                                   children: [
                                     Container(
-                                      height: 160,
+                                      height: 170,
                                       // width: 250,
 
                                       decoration: BoxDecoration(
