@@ -17,7 +17,7 @@ import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.d
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
-import 'package:easy_cook/pages/feed_page/feed/recommend.dart';
+import 'package:easy_cook/pages/feed_page/feed/recommendPage.dart';
 
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 

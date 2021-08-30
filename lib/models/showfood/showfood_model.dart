@@ -26,6 +26,7 @@ class ShowFoods {
         this.ingredient,
         this.howto,
         this.score,
+           this.count,
         this.comment,
     });
 
@@ -41,10 +42,11 @@ class ShowFoods {
     String takeTime;
     String foodCategory;
     String description;
-    int price;
+    double price;
     List<Ingredient> ingredient;
     List<Howto> howto;
     dynamic score;
+    int count;
     List<dynamic> comment;
 
     factory ShowFoods.fromJson(Map<String, dynamic> json) => ShowFoods(
@@ -60,10 +62,11 @@ class ShowFoods {
         takeTime: json["take_time"],
         foodCategory: json["food_category"],
         description: json["description"],
-        price: json["price"],
+        price: json["price"].toDouble(),
         ingredient: List<Ingredient>.from(json["ingredient"].map((x) => Ingredient.fromJson(x))),
         howto: List<Howto>.from(json["howto"].map((x) => Howto.fromJson(x))),
         score: json["score"],
+        count: json["count"],
         comment: List<dynamic>.from(json["comment"].map((x) => x)),
     );
 
@@ -84,6 +87,7 @@ class ShowFoods {
         "ingredient": List<dynamic>.from(ingredient.map((x) => x.toJson())),
         "howto": List<dynamic>.from(howto.map((x) => x.toJson())),
         "score": score,
+        "count": count,
         "comment": List<dynamic>.from(comment.map((x) => x)),
     };
 }

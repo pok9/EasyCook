@@ -21,6 +21,8 @@ class Newfeedsglobal {
         this.image,
         this.date,
         this.price,
+        this.score,
+        this.count,
     });
 
     int userId;
@@ -34,6 +36,8 @@ class Newfeedsglobal {
     String image;
     DateTime date;
     double price;
+    double score;
+    int count;
 
     factory Newfeedsglobal.fromJson(Map<String, dynamic> json) => Newfeedsglobal(
         userId: json["user_ID"],
@@ -47,6 +51,8 @@ class Newfeedsglobal {
         image: json["image"],
         date: DateTime.parse(json["date"]),
         price: json["price"].toDouble(),
+        score: json["score"].toDouble(),
+        count: json["count"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -61,5 +67,7 @@ class Newfeedsglobal {
         "image": image,
         "date": date.toIso8601String(),
         "price": price,
+        "score": score,
+        "count": count,
     };
 }

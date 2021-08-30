@@ -457,31 +457,28 @@ class _SearchPage2State extends State<SearchPage2> {
                                                           fontSize: 15),
                                                     ),
                                                   ),
-                                                  Expanded(
-                                                    // flex: 1,
-                                                    child: (dataRecipe[index]
-                                                                .score ==
-                                                            0)
-                                                        ? Container()
-                                                        : Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Icon(
-                                                                Icons.star,
-                                                                color:
-                                                                    Colors.blue,
-                                                                size: 18,
-                                                              ),
-                                                              Text(dataRecipe[
-                                                                          index]
-                                                                      .score
-                                                                      .toString() +
-                                                                  "/5")
-                                                            ],
-                                                          ),
-                                                  ),
+                                                  (dataRecipe[index]
+                                                              .score ==
+                                                          0)
+                                                      ? Container()
+                                                      : Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.star,
+                                                              color:
+                                                                  Colors.blue,
+                                                              size: 18,
+                                                            ),
+                                                            Text(dataRecipe[
+                                                                        index]
+                                                                    .score
+                                                                    .toString() +
+                                                                "/5(${dataRecipe[index].count})")
+                                                          ],
+                                                        ),
                                                 ],
                                               ),
                                             ),

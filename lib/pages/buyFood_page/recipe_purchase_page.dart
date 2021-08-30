@@ -210,7 +210,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                             ),
                             (dataFood.score == null)
                                 ? Container()
-                                : Text(dataFood.score.toString() + "/5")
+                                : Text(dataFood.score.toString() + "/5(${dataFood.count})")
                           ],
                         ),
                       ),

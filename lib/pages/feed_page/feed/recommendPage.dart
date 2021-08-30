@@ -109,18 +109,7 @@ class _RecommendPageState extends State<RecommendPage> {
     }
   }
 
-  List<String> imagList = [
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -218,10 +207,15 @@ class _RecommendPageState extends State<RecommendPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusDirectional.circular(20)),
                 clipBehavior: Clip.antiAlias,
-                child: Image.network(
-                  dataRecommendRecipe.image,
-                  fit: BoxFit.cover,
-                ),
+                  child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/loadGif/loadding.gif',
+                      image: dataRecommendRecipe.image,
+                      fit: BoxFit.cover,
+                    ),
+                // child: Image.network(
+                //   dataRecommendRecipe.image,
+                //   fit: BoxFit.cover,
+                // ),
               ),
             ),
             (dataRecommendRecipe.score == 0)
@@ -256,33 +250,6 @@ class _RecommendPageState extends State<RecommendPage> {
                       ],
                     ),
                   ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: [
-            //       Container(
-            //           height: 30,
-            //           width: 30,
-            //           child: (data_DataAc == null)
-            //               ? (dataRecommendRecipe.price == 0)
-            //                   ? Container()
-            //                   : Image.network(
-            //                       "https://image.flaticon.com/icons/png/512/1177/1177428.png")
-            //               : (checkBuy.indexOf(
-            //                           dataRecommendRecipe.rid.toString()) >=
-            //                       0)
-            //                   ? Image.network(
-            //                       "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-            //                   : (dataRecommendRecipe.userId ==
-            //                               data_DataAc.userId ||
-            //                           (dataRecommendRecipe.price == 0))
-            //                       ? Container()
-            //                       : Image.network(
-            //                           "https://image.flaticon.com/icons/png/512/1177/1177428.png"))
-            //     ],
-            //   ),
-            // ),
             (dataRecommendRecipe.price == 0)
                 ? Container()
                 : Padding(

@@ -309,8 +309,6 @@ class _Feed2PageState extends State<Feed2Page> {
                               }
                             }
                           },
-                          
-
                           child: Card(
                             semanticContainer: true,
                             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -401,6 +399,47 @@ class _Feed2PageState extends State<Feed2Page> {
                                     //     ],
                                     //   ),
                                     // ),
+
+                                    (dummyListDataNewfeedsglobal[index].score ==
+                                            0)
+                                        ? Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 8, 0, 0),
+                                            child: Row(
+                                              // crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Colors.blue,
+                                                  size: 20,
+                                                ),
+                                                SizedBox(
+                                                  width: 1,
+                                                ),
+                                                Text(
+                                                  dummyListDataNewfeedsglobal[
+                                                          index]
+                                                      .score
+                                                      .toString()+"/5",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Text(
+                                                  '(${dummyListDataNewfeedsglobal[
+                                                          index].count})',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                     (dummyListDataNewfeedsglobal[index].price ==
                                             0)
                                         ? Container()

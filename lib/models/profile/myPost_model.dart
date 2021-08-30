@@ -64,22 +64,25 @@ class RecipePost {
         this.date,
         this.price,
         this.score,
+        this.count,
     });
 
     int rid;
     String recipeName;
     String image;
     DateTime date;
-    int price;
+    double price;
     double score;
+    int count;
 
     factory RecipePost.fromJson(Map<String, dynamic> json) => RecipePost(
         rid: json["rid"],
         recipeName: json["recipe_name"],
         image: json["image"],
         date: DateTime.parse(json["date"]),
-        price: json["price"],
+        price: json["price"].toDouble(),
         score: json["score"].toDouble(),
+        count: json["count"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -89,5 +92,6 @@ class RecipePost {
         "date": date.toIso8601String(),
         "price": price,
         "score": score,
+        "count": count,
     };
 }

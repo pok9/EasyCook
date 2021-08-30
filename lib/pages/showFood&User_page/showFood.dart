@@ -727,7 +727,7 @@ class _ShowFoodState extends State<ShowFood> {
                                         SizedBox(
                                           width: 1,
                                         ),
-                                        Text(dataFood.score.toString() + "/5")
+                                        Text(dataFood.score.toString() + "/5 (${dataFood.count})")
                                       ],
                                     ),
                                   ),
