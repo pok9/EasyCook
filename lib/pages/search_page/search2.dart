@@ -402,11 +402,7 @@ class _SearchPage2State extends State<SearchPage2> {
                                                           children: [
                                                             Stack(
                                                               children: [
-                                                                (dataAcUser.userId ==
-                                                                        dataRecipe[index]
-                                                                            .userId)
-                                                                    ? Container()
-                                                                    : CircleAvatar(
+                                                                CircleAvatar(
                                                                         backgroundColor:
                                                                             Colors.white,
                                                                         radius:
