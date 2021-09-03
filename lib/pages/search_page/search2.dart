@@ -402,12 +402,18 @@ class _SearchPage2State extends State<SearchPage2> {
                                                           children: [
                                                             Stack(
                                                               children: [
-                                                                CircleAvatar(
-                                                                        backgroundColor:
-                                                                            Colors.white,
-                                                                        radius:
-                                                                            16,
-                                                                      ),
+                                                                (dataAcUser ==
+                                                                        null)
+                                                                    ? Container()
+                                                                    : (dataAcUser.userId ==
+                                                                            dataRecipe[index].userId)
+                                                                        ? Container()
+                                                                        : CircleAvatar(
+                                                                            backgroundColor:
+                                                                                Colors.white,
+                                                                            radius:
+                                                                                16,
+                                                                          ),
                                                                 Positioned(
                                                                   top: 1,
                                                                   right: 1,
@@ -453,9 +459,7 @@ class _SearchPage2State extends State<SearchPage2> {
                                                           fontSize: 15),
                                                     ),
                                                   ),
-                                                  (dataRecipe[index]
-                                                              .score ==
-                                                          0)
+                                                  (dataRecipe[index].score == 0)
                                                       ? Container()
                                                       : Row(
                                                           crossAxisAlignment:

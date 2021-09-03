@@ -372,8 +372,6 @@ class _Feed2PageState extends State<Feed2Page> {
                                                       .image),
                                               fit: BoxFit.cover)),
                                     ),
-                                    
-
                                     (dummyListDataNewfeedsglobal[index].score ==
                                             0)
                                         ? Container()
@@ -393,9 +391,10 @@ class _Feed2PageState extends State<Feed2Page> {
                                                 ),
                                                 Text(
                                                   dummyListDataNewfeedsglobal[
-                                                          index]
-                                                      .score
-                                                      .toString()+"/5",
+                                                              index]
+                                                          .score
+                                                          .toString() +
+                                                      "/5",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -405,8 +404,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                                   width: 2,
                                                 ),
                                                 Text(
-                                                  '(${dummyListDataNewfeedsglobal[
-                                                          index].count})',
+                                                  '(${dummyListDataNewfeedsglobal[index].count})',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                   ),
@@ -426,12 +424,19 @@ class _Feed2PageState extends State<Feed2Page> {
                                               children: [
                                                 Stack(
                                                   children: [
-                                                  
-                                                        CircleAvatar(
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            radius: 16,
-                                                          ),
+                                                    (dataAcUser == null)
+                                                        ? Container()
+                                                        : (dataAcUser.userId ==
+                                                                dummyListDataNewfeedsglobal[
+                                                                        index]
+                                                                    .userId)
+                                                            ? Container()
+                                                            : CircleAvatar(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                radius: 16,
+                                                              ),
                                                     Positioned(
                                                       top: 1,
                                                       right: 1,
