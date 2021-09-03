@@ -9,6 +9,7 @@ import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/payment_channel.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/channel_Topup/topupCreditCardPage.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/withdraw/withdrawPage.dart';
+import 'package:easy_cook/pages/profile_page/wallet/walletPage.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,6 +103,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   buildSliverAppBar(context) {
     return SliverAppBar(
+      
       title: Text(data_DataAc.aliasName),
       pinned: true,
       floating: false,
@@ -112,6 +114,18 @@ class _ScrollProfilePage2BottomNavbarState extends State
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(context),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => WalletPage()))
+                .then((value) => {
+                      if (token != "" && token != null) {getMyAccounts()}
+                    });
+          },
+          icon: Icon(Icons.account_balance_wallet_outlined),
+        )
+      ],
       bottom: buildFlexibleTooBarWidget(),
     );
   }
@@ -343,93 +357,106 @@ class _ScrollProfilePage2BottomNavbarState extends State
             ),
             (data_DataAc.userStatus == 0)
                 ? Container()
-                : Container(
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 18, right: 18, top: 18, bottom: 18),
-                      child: Container(
-                        // height: 150,
-                        padding: EdgeInsets.only(
-                            left: 18, right: 18, top: 22, bottom: 22),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
-                              fit: BoxFit.cover),
-                        ),
+                : InkWell(
+                    onTap: () {
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WalletPage()))
+                          .then((value) => {
+                                if (token != "" && token != null)
+                                  {getMyAccounts()}
+                              });
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 18, right: 18, top: 18, bottom: 18),
+                        child: Container(
+                          // height: 150,
+                          padding: EdgeInsets.only(
+                              left: 18, right: 18, top: 22, bottom: 22),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
+                                fit: BoxFit.cover),
+                          ),
 
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "กระเป๋าหลัก(\u0E3F)",
-                                  style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.white.withOpacity(.7),
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 12,
-                                ),
-                                Text(
-                                  '${NumberFormat("#,###.##").format(data_DataAc.balance)}',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                ConstrainedBox(
-                                  constraints: BoxConstraints.tightFor(
-                                      width: 100, height: 35),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.white),
-                                    child: Text(
-                                      'เติมเงิน',
-                                      style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    onPressed: () {
-                                      _ctrlPrice.text = "";
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "กระเป๋าหลัก(\u0E3F)",
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.white.withOpacity(.7),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    '${NumberFormat("#,###.##").format(data_DataAc.balance)} ›',
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints.tightFor(
+                                        width: 100, height: 35),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.white),
+                                      child: Text(
+                                        'เติมเงิน',
+                                        style: TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        _ctrlPrice.text = "";
 
-                                      _displayBottomSheet(context, "topup");
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints.tightFor(
-                                      width: 100, height: 35),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.white),
-                                    child: Text(
-                                      'ถอนเงิน',
-                                      style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontWeight: FontWeight.bold),
+                                        _displayBottomSheet(context, "topup");
+                                      },
                                     ),
-                                    onPressed: () {
-                                      _ctrlPrice.text = "";
-                                      _displayBottomSheet(context, "withdraw");
-                                    },
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints.tightFor(
+                                        width: 100, height: 35),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.white),
+                                      child: Text(
+                                        'ถอนเงิน',
+                                        style: TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        _ctrlPrice.text = "";
+                                        _displayBottomSheet(
+                                            context, "withdraw");
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -665,11 +692,21 @@ class _ScrollProfilePage2BottomNavbarState extends State
   }
 
   Widget buildNestedScrollView() {
-    return NestedScrollView(
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return [buildSliverAppBar(context)];
-      },
-      body: buidChildWidget(),
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+           
+          return [buildSliverAppBar(context)];
+        },
+        
+        body: buidChildWidget(),
+        
+      ),
+      drawer: Drawers(
+          token: token,
+          data_MyAccount: data_MyAccount,
+          data_DataAc: data_DataAc,
+        ),
     );
   }
 
