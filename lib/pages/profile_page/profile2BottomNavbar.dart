@@ -33,41 +33,43 @@ class _ScrollProfilePage2BottomNavbarState extends State
   void initState() {
     super.initState();
     tabController = new TabController(length: 2, vsync: this);
-    findUser();
+    // findUser();
   }
 
   String token = ""; //โทเคน
   //ดึง token
-  Future<Null> findUser() async {
+  Future<String> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      token = preferences.getString("tokens");
-      if (token != "" && token != null) {
-        getMyAccounts();
-      }
-    });
+    // setState(() {
+    token = preferences.getString("tokens");
+    //   if (token != "" && token != null) {
+    //     getMyAccounts();
+    //   }
+    // });
+    return token;
   }
 
   //ข้อมูลตัวเอง
   MyAccount data_MyAccount;
   DataMyAccount data_DataAc;
 
-  Future<Null> getMyAccounts() async {
+  Future<DataMyAccount> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
     if (response.statusCode == 200) {
-      if (mounted)
-        setState(() {
-          final String responseString = response.body;
+      // if (mounted)
+      // setState(() {
+      final String responseString = response.body;
 
-          data_MyAccount = myAccountFromJson(responseString);
-          data_DataAc = data_MyAccount.data[0];
+      data_MyAccount = myAccountFromJson(responseString);
+      data_DataAc = data_MyAccount.data[0];
 
-          getMyPost();
-        });
+      // getMyPost();
+      // });
+      return data_DataAc;
     } else {
       return null;
     }
@@ -76,7 +78,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
   //ข้อมูลโพสต์ตัวเอง
   MyPost data_MyPost;
   List<RecipePost> data_RecipePost;
-  Future<Null> getMyPost() async {
+  Future<List<RecipePost>> getMyPost() async {
     String uid = data_DataAc.userId.toString();
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/mypost/" + uid;
@@ -85,16 +87,14 @@ class _ScrollProfilePage2BottomNavbarState extends State
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
     if (response.statusCode == 200) {
-      if (mounted)
-        setState(() {
+      // if (mounted)
+      //   setState(() {
           final String responseString = response.body;
 
           data_MyPost = myPostFromJson(responseString);
           data_RecipePost = data_MyPost.recipePost;
-          // newfeed = newfeedsFollowFromJson(responseString);
-          //  post = newfeed.feeds[0];
-          // dataUser = datas.data[0];
-        });
+        // });
+        return data_RecipePost;
     } else {
       return null;
     }
@@ -112,11 +112,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(context),
       ),
-      // leading: IconButton(
-      //   icon: Icon(Icons.menu),
-      //   tooltip: 'Menu',
-      //   onPressed:() => Scaffold(drawer: Drawer(),),
-      // ),
       bottom: buildFlexibleTooBarWidget(),
     );
   }
@@ -489,15 +484,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                     Spacer(),
                     IconButton(
                         onPressed: () {
-                          // setState(() {
                           Navigator.pop(context);
-
-                          //   if (_ctrlPriceCopy.text == "0.00") {
-                          //     _ctrlPrice.text = "0.00";
-                          //     _selectPrices = "ฟรี";
-                          //     _prices[1] = Price('ระบุราคา');
-                          //   }
-                          // });
                         },
                         icon: Icon(
                           Icons.cancel,
@@ -514,10 +501,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                       LengthLimitingTextInputFormatter(7),
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^(\d+)?\.?\d{0,2}')),
-                      // FilteringTextInputFormatter.allow(RegExp('[1234567890.0]')),
-                      // FilteringTextInputFormatter.deny('..')
-
-                      //   FilteringTextInputFormatter.digitsOnly
                     ],
                     controller: _ctrlPrice,
                     decoration: InputDecoration(
@@ -552,8 +535,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
-                    // padding: EdgeInsets.all(20),
-
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         color: Colors.blue,
@@ -595,22 +576,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                   });
                             }
                           }
-
-                          // setState(() {
-                          //   Navigator.pop(context);
-                          //   _ctrlPriceCopy.text = _ctrlPrice.text;
-                          //   if (_ctrlPriceCopy.text == "0.00" ||
-                          //       _ctrlPriceCopy.text == "" ||
-                          //       double.parse(_ctrlPrice.text) == 0) {
-                          //     _ctrlPrice.text = "0.00";
-                          //     _ctrlPriceCopy.text == "0.00";
-                          //     _selectPrices = "ฟรี";
-                          //     _prices[1] = Price('ระบุราคา');
-                          //   } else {
-                          //     _prices[1] = Price('${_ctrlPrice.text}');
-                          //     _selectPrices = _ctrlPrice.text;
-                          //   }
-                          // });
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
@@ -639,14 +604,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   @override
   Widget build(BuildContext context) {
-    // Building the main body of the page
     return Scaffold(
-      //Pull down to refresh
       body: RefreshIndicator(
-        // Scroll components send ScrollNotification type notification when scrolling
-
         notificationPredicate: (ScrollNotification notifation) {
-          // This property contains information such as current viewport and scroll position.
           ScrollMetrics scrollMetrics = notifation.metrics;
           if (scrollMetrics.minScrollExtent == 0) {
             return true;
@@ -654,42 +614,70 @@ class _ScrollProfilePage2BottomNavbarState extends State
             return false;
           }
         },
-        // pull down the new callback method
         onRefresh: () async {
-          // Simulate network refresh waiting for 2 seconds
           await Future.delayed(Duration(milliseconds: 2000));
-          // Return the value to end refresh
+
           this.findUser();
           return Future.value(true);
         },
+        // child: (token == "")
+        //     ? LoginPage(
+        //         close: 1,
+        //       )
+        //     : data_DataAc == null || data_MyPost == null
+        //         ? Center(
+        //             child: CircularProgressIndicator(),
+        //           )
+        //         : buildNestedScrollView(),
 
-        child: (token == "")
-            ? LoginPage(
-                close: 1,
-              )
-            : data_DataAc == null || data_MyPost == null
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : buildNestedScrollView(),
+        child: FutureBuilder(
+          future: findUser(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return (token == "" || token == null)
+                  ? LoginPage(
+                      close: 1,
+                    )
+                  : FutureBuilder(
+                      future: getMyAccounts(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return FutureBuilder(
+                            future: getMyPost(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                return buildNestedScrollView();
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: Container(),
+                          );
+                        }
+                      },
+                    );
+            } else {
+              return Center(
+                child: Container(),
+              );
+            }
+          },
+        ),
       ),
     );
   }
 
-  // Page destroy the calm life cycle
-  // @override
-  // void dispose() {
-  //   tabController.dispose();
-  // }
-
   Widget buildNestedScrollView() {
-    // Slide view
     return NestedScrollView(
-      // Configure foldable head layout
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [buildSliverAppBar(context)];
       },
-      // The main content of the page
       body: buidChildWidget(),
     );
   }
@@ -702,8 +690,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: data_RecipePost
-              .length, /////////////////////////////////////////////////////////////////
+          itemCount: data_RecipePost.length,
           itemBuilder: (context, index) => Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -731,9 +718,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                           borderRadius: new BorderRadius.circular(24.0),
                           child: Image(
                             fit: BoxFit.cover,
-                            // alignment: Alignment.topRight,
-                            image: NetworkImage(data_RecipePost[index]
-                                .image), ////////////////////////////////////////////////////////
+                            image: NetworkImage(data_RecipePost[index].image),
                           ),
                         ),
                       ),

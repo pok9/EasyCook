@@ -47,7 +47,7 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   PageController pageController = PageController();
-  int pageCount = 3;
+  int pageCount = 2;
 
   @override
   void initState() {
@@ -108,7 +108,7 @@ class _FeedPageState extends State<FeedPage> {
 
           data_MyAccount = myAccountFromJson(responseString);
           data_DataAc = data_MyAccount.data[0];
-          print(data_DataAc.userId);
+
           checkFollowings();
         });
     } else {
@@ -177,7 +177,6 @@ class _FeedPageState extends State<FeedPage> {
         "http://apifood.comsciproject.com/pjPost/recommendRecipe";
 
     final response = await http.get(Uri.parse(apiUrl));
-    // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -394,16 +393,16 @@ class _FeedPageState extends State<FeedPage> {
                       children: [
                         AdsSlideCard(
                           slideImage:
-                              "https://cdn.1112.com/1112/public/images/mobileapp/categories/pizza.png",
+                              "https://pbs.twimg.com/media/ESUlHHKUcAIYNfb.jpg",
                         ),
                         AdsSlideCard(
                           slideImage:
-                              "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/165384.jpg",
+                              "http://i2.wp.com/www.thaismescenter.com/wp-content/uploads/2019/10/74.jpg?resize=660%2C655",
                         ),
                         AdsSlideCard(
                           slideImage:
                               "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/f9f93df5-dfe0-4c78-98ff-a05380282039.jpg",
-                        )
+                        ),
                       ],
                     ),
                     Positioned(
@@ -586,6 +585,42 @@ class _FeedPageState extends State<FeedPage> {
                               })),
 
                   DividerCutom(),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "แนะนำเซฟ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      ],
+                    ),
+                  ),
+
+                  (dataRecommendUser == null || checkFollowing == null)
+                      ? Container(
+                          height: 135,
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Container(
+                              height: 135,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: dataRecommendUser.length,
+                                  itemBuilder: (context, index) {
+                                    return _introduce_safe_Card(
+                                        context,
+                                        dataRecommendUser[index],
+                                        checkFollowing);
+                                  })),
+                        ),
+
+                  DividerCutom(),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
@@ -673,46 +708,6 @@ class _FeedPageState extends State<FeedPage> {
                                     context, dataPopularRecipe_not_free[index]);
                               })),
 
-                  DividerCutom(),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "แนะนำเซฟ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
-                      ],
-                    ),
-                  ),
-
-                  (dataRecommendUser == null || checkFollowing == null)
-                      ? Container(
-                          height: 135,
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Container(
-                              height: 135,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: dataRecommendUser.length,
-                                  itemBuilder: (context, index) {
-                                    return _introduce_safe_Card(
-                                        context,
-                                        dataRecommendUser[index],
-                                        checkFollowing);
-                                  })),
-                        ),
                   // DividerCutom(),
                 ],
               ),
@@ -1060,8 +1055,6 @@ class _FeedPageState extends State<FeedPage> {
                   builder: (context) => ShowFood(dataRecommendRecipe.rid)),
             );
           } else {
-            // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-            // print("dataUser.userId = ${dataUser.userId}");
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -1146,33 +1139,6 @@ class _FeedPageState extends State<FeedPage> {
                       ],
                     ),
                   ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: [
-            //       Container(
-            //           height: 30,
-            //           width: 30,
-            //           child: (data_DataAc == null)
-            //               ? (dataRecommendRecipe.price == 0)
-            //                   ? Container()
-            //                   : Image.network(
-            //                       "https://image.flaticon.com/icons/png/512/1177/1177428.png")
-            //               : (checkBuy.indexOf(
-            //                           dataRecommendRecipe.rid.toString()) >=
-            //                       0)
-            //                   ? Image.network(
-            //                       "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-            //                   : (dataRecommendRecipe.userId ==
-            //                               data_DataAc.userId ||
-            //                           (dataRecommendRecipe.price == 0))
-            //                       ? Container()
-            //                       : Image.network(
-            //                           "https://image.flaticon.com/icons/png/512/1177/1177428.png"))
-            //     ],
-            //   ),
-            // ),
             (dataRecommendRecipe.price == 0)
                 ? Container()
                 : Padding(
@@ -1182,12 +1148,10 @@ class _FeedPageState extends State<FeedPage> {
                       children: [
                         Stack(
                           children: [
-                            (data_DataAc.userId == dataRecommendRecipe.userId)
-                                ? Container()
-                                : CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 16,
-                                  ),
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 16,
+                            ),
                             Positioned(
                               top: 1,
                               right: 1,
@@ -1304,8 +1268,6 @@ class _FeedPageState extends State<FeedPage> {
                     builder: (context) => ShowFood(dataRecommendRecipe.rid)),
               );
             } else {
-              // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-              // print("dataUser.userId = ${dataUser.userId}");
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -1326,8 +1288,6 @@ class _FeedPageState extends State<FeedPage> {
                     builder: (context) => ShowFood(dataRecommendRecipe.rid)),
               );
             } else {
-              // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-              // print("dataUser.userId = ${dataUser.userId}");
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -1499,12 +1459,6 @@ class _FeedPageState extends State<FeedPage> {
               }
             });
           }
-
-          // Navigator.push(context, CupertinoPageRoute(builder: (context) {
-          //   return ProfileUser(
-          //     dataRecommendUser.userId,
-          //   );
-          // }));
         },
         child: Container(
           // height: 500,

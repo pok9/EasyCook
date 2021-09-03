@@ -20,6 +20,7 @@ class RecommendRecipe {
         this.image,
         this.price,
         this.score,
+        this.count,
     });
 
     int rid;
@@ -30,8 +31,9 @@ class RecommendRecipe {
     String recipeName;
     String foodCategory;
     String image;
-    int price;
+    double price;
     double score;
+    int count;
 
     factory RecommendRecipe.fromJson(Map<String, dynamic> json) => RecommendRecipe(
         rid: json["rid"],
@@ -42,8 +44,9 @@ class RecommendRecipe {
         recipeName: json["recipe_name"],
         foodCategory: json["food_category"],
         image: json["image"],
-        price: json["price"],
+        price: json["price"].toDouble(),
         score: json["score"].toDouble(),
+        count: json["count"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -57,5 +60,6 @@ class RecommendRecipe {
         "image": image,
         "price": price,
         "score": score,
+        "count": count,
     };
 }

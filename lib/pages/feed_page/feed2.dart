@@ -372,33 +372,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                                       .image),
                                               fit: BoxFit.cover)),
                                     ),
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(
-                                    //       top: 4, right: 4),
-                                    //   child: Row(
-                                    //     mainAxisAlignment:
-                                    //         MainAxisAlignment.end,
-                                    //     children: [
-                                    //       Stack(
-                                    //         children: [
-                                    //           CircleAvatar(
-                                    //             backgroundColor: Colors.white,
-                                    //             radius: 16,
-                                    //           ),
-                                    //           Positioned(
-                                    //             top: 1,
-                                    //             right: 1,
-                                    //             child: Container(
-                                    //                 height: 30,
-                                    //                 width: 30,
-                                    //                 child: Image.network(
-                                    //                     "https://image.flaticon.com/icons/png/512/1177/1177428.png")),
-                                    //           ),
-                                    //         ],
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
+                                    
 
                                     (dummyListDataNewfeedsglobal[index].score ==
                                             0)
@@ -452,12 +426,8 @@ class _Feed2PageState extends State<Feed2Page> {
                                               children: [
                                                 Stack(
                                                   children: [
-                                                    (dataAcUser.userId ==
-                                                            dummyListDataNewfeedsglobal[
-                                                                    index]
-                                                                .userId)
-                                                        ? Container()
-                                                        : CircleAvatar(
+                                                  
+                                                        CircleAvatar(
                                                             backgroundColor:
                                                                 Colors.white,
                                                             radius: 16,

@@ -330,8 +330,8 @@ class _ManageMembersState extends State<ManageMembers> {
                                     }));
                                   }
                                 },
-                                title: Text(dataUser[index].aliasName),
-                                subtitle: Text(dataUser[index].nameSurname),
+                                title: Text("${dataUser[index].nameSurname}(${dataUser[index].aliasName})"),
+                                subtitle: Text(""),
                                 leading: Container(
                                   height: 40.0,
                                   width: 40.0,
