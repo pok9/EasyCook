@@ -3,6 +3,7 @@ import 'package:easy_cook/models/feed/newfeedsglobal/newfeedsglobal.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
+import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,8 @@ class _Feed2PageState extends State<Feed2Page> {
   }
 
   //ข้อมูลตัวเอง
-  DataMyAccount dataAcUser;
+   MyAccount data_MyAccount;
+  DataMyAccount data_DataAc;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
@@ -89,7 +91,8 @@ class _Feed2PageState extends State<Feed2Page> {
       setState(() {
         final String responseString = response.body;
 
-        dataAcUser = myAccountFromJson(responseString).data[0];
+        data_MyAccount = myAccountFromJson(responseString);
+          data_DataAc = data_MyAccount.data[0];
       });
     } else {
       return null;
@@ -181,6 +184,11 @@ class _Feed2PageState extends State<Feed2Page> {
             child: AppBar(
               title: Text('สูตรล่าสุด'),
             )),
+        drawer: Drawers(
+          token: token,
+          data_MyAccount: data_MyAccount,
+          data_DataAc: data_DataAc,
+        ),
         body: DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -263,7 +271,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                             .rid)),
                               );
                             } else {
-                              if (dataAcUser == null) {
+                              if (data_DataAc == null) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -275,7 +283,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                           )),
                                 );
                               } else {
-                                if (dataAcUser.userId ==
+                                if (data_DataAc.userId ==
                                         dummyListDataNewfeedsglobal[index]
                                             .userId ||
                                     checkBuy.indexOf(
@@ -424,9 +432,9 @@ class _Feed2PageState extends State<Feed2Page> {
                                               children: [
                                                 Stack(
                                                   children: [
-                                                    (dataAcUser == null)
+                                                    (data_DataAc == null)
                                                         ? Container()
-                                                        : (dataAcUser.userId ==
+                                                        : (data_DataAc.userId ==
                                                                 dummyListDataNewfeedsglobal[
                                                                         index]
                                                                     .userId)
@@ -443,11 +451,11 @@ class _Feed2PageState extends State<Feed2Page> {
                                                       child: Container(
                                                         height: 30,
                                                         width: 30,
-                                                        child: (dataAcUser ==
+                                                        child: (data_DataAc ==
                                                                 null)
                                                             ? Image.network(
                                                                 "https://image.flaticon.com/icons/png/512/1177/1177428.png")
-                                                            : (dataAcUser
+                                                            : (data_DataAc
                                                                         .userId ==
                                                                     dummyListDataNewfeedsglobal[
                                                                             index]

@@ -1,6 +1,10 @@
+import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/search_page/category/category.dart';
 import 'package:easy_cook/pages/search_page/search2.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class SearchPage1 extends StatefulWidget {
   // const SearchPage1({ Key? key }) : super(key: key);
@@ -26,6 +30,48 @@ class _SearchPage1State extends State<SearchPage1> {
     'assets/logos/stew.png',
     'assets/logos/fried.png'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    findUser();
+  }
+
+  String token = ""; //โทเคน
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = preferences.getString("tokens");
+      print("Token >>> $token");
+      if (token != "" && token != null) {
+        getMyAccounts();
+      }
+    });
+  }
+
+  //user
+  MyAccount data_MyAccount;
+  DataMyAccount data_DataAc;
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+
+    if (response.statusCode == 200) {
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
+
+          data_MyAccount = myAccountFromJson(responseString);
+          data_DataAc = data_MyAccount.data[0];
+        });
+    } else {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +132,11 @@ class _SearchPage1State extends State<SearchPage1> {
             ],
           ),
         ),
+      ),
+      drawer: Drawers(
+        token: token,
+        data_MyAccount: data_MyAccount,
+        data_DataAc: data_DataAc,
       ),
       body: DefaultTabController(
         length: 2,
