@@ -89,12 +89,12 @@ class _ScrollProfilePage2BottomNavbarState extends State
     if (response.statusCode == 200) {
       // if (mounted)
       //   setState(() {
-          final String responseString = response.body;
+      final String responseString = response.body;
 
-          data_MyPost = myPostFromJson(responseString);
-          data_RecipePost = data_MyPost.recipePost;
-        // });
-        return data_RecipePost;
+      data_MyPost = myPostFromJson(responseString);
+      data_RecipePost = data_MyPost.recipePost;
+      // });
+      return data_RecipePost;
     } else {
       return null;
     }
@@ -648,25 +648,16 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                 (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.hasData) {
                                 return buildNestedScrollView();
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
                               }
+                              return Center(child: CircularProgressIndicator());
                             },
                           );
-                        } else {
-                          return Center(
-                            child: Container(),
-                          );
                         }
+                        return Container();
                       },
                     );
-            } else {
-              return Center(
-                child: Container(),
-              );
             }
+            return Container();
           },
         ),
       ),
