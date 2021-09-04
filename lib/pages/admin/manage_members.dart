@@ -325,7 +325,7 @@ class _ManageMembersState extends State<ManageMembers> {
                                     Navigator.push(context,
                                         CupertinoPageRoute(builder: (context) {
                                       return ProfileUser(
-                                        dataUser[index].userId,
+                                        reqUid: dataUser[index].userId,
                                       );
                                     }));
                                   }

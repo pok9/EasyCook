@@ -524,7 +524,7 @@ class _SearchPage2State extends State<SearchPage2> {
                                 Navigator.push(context,
                                     CupertinoPageRoute(builder: (context) {
                                   return ProfileUser(
-                                    dataUser[index].userId,
+                                    reqUid: dataUser[index].userId,
                                   );
                                 }));
                               } else if (dataAcUser.userId ==
@@ -537,7 +537,7 @@ class _SearchPage2State extends State<SearchPage2> {
                                 Navigator.push(context,
                                     CupertinoPageRoute(builder: (context) {
                                   return ProfileUser(
-                                    dataUser[index].userId,
+                                    reqUid: dataUser[index].userId,
                                   );
                                 }));
                               }

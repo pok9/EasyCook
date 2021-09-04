@@ -245,7 +245,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                               Navigator.push(context,
                                   CupertinoPageRoute(builder: (context) {
                                 return ProfileUser(
-                                  checkFollower.user[index].userId,
+                                  reqUid: checkFollower.user[index].userId,
                                 );
                               }));
                             }
@@ -294,7 +294,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                               Navigator.push(context,
                                   CupertinoPageRoute(builder: (context) {
                                 return ProfileUser(
-                                  checkFollowing.user[index].userId,
+                                  reqUid: checkFollowing.user[index].userId,
                                 );
                               })).then((value) => getFollowerUser());
                             }

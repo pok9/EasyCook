@@ -190,7 +190,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         Navigator.push(context,
                             CupertinoPageRoute(builder: (context) {
                           return ProfileUser(
-                              dataGetNotification[index].fromUserid);
+                              reqUid: dataGetNotification[index].fromUserid,);
                         }));
                       } else if (dataGetNotification[index].status ==
                           "comment") {

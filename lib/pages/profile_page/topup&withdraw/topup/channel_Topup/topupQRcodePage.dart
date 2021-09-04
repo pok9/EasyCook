@@ -63,13 +63,17 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
       TopupQrModel dataTopupQrModel = topupQrModelFromJson(responseString);
       String filename = dataTopupQrModel.filename;
       String imgUrl = dataTopupQrModel.qrCode;
-     
+      // print("imgUrl => ${imgUrl}");
+      downloadFile(filename, imgUrl);
+      // responseImgUrl = await http.get(Uri.parse("https://unsplash.com/photos/iEJVyyevw-U/download?force=true"));
+      
+      // print(responseImgUrl.body);
     
-      // downloadFile(filename, imgUrl);
-      downloadFile("myimage.jpg",
-          "https://unsplash.com/photos/iEJVyyevw-U/download?force=true");
 
-    
+      // downloadFile("myimage.jpg",
+      //     "https://unsplash.com/photos/iEJVyyevw-U/download?force=true");
+
+      // downloadFile(filename, imgUrl);
       print(imgUrl);
     } else {
       return null;
@@ -147,9 +151,9 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
               : (imageFile == null)
                   ? Container()
                   // : Center(child: Text(imageFile.toString()),)
-                  // : Image.asset('assets/topupQRcode/myimage.jpg')
+                  // : Image.file((imageFile))
                   : SvgPicture.asset(
-                      'assets/topupQRcode/qrcode_test.svg',
+                      'assets/topupQRcode/mono-tool-text.svg',
                       height: 50,
                       width: 50,
                       placeholderBuilder: (BuildContext context) => Container(
@@ -161,7 +165,8 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
                             ],
                           )),
                     ),
-         
+          // : Container(child: Image.file(imageFile,fit: BoxFit.cover,))
+          // : Text(responseImgUrl.body)
         ));
   }
 }

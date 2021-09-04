@@ -7,6 +7,7 @@ import 'package:easy_cook/pages/profile_page/topup&withdraw/withdraw/withdrawPag
 import 'package:easy_cook/pages/profile_page/wallet/walletPage.dart';
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
+
+  
   @override
   State<StatefulWidget> createState() {
     return _ScrollProfilePageState();
@@ -184,10 +187,19 @@ class _ScrollProfilePageState extends State
                         //   height: 36,
                         // ),
 
-                        CircleAvatar(
-                          radius: 48,
-                          backgroundImage:
-                              NetworkImage(data_DataAc.profileImage),
+                        InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (_) => ImageDialog(
+                                      image: data_DataAc.profileImage,
+                                    ));
+                          },
+                          child: CircleAvatar(
+                            radius: 48,
+                            backgroundImage:
+                                NetworkImage(data_DataAc.profileImage),
+                          ),
                         ),
                         SizedBox(
                           height: 10,

@@ -56,6 +56,42 @@ final ButtonStyle flatButtonStyle = TextButton.styleFrom(
   backgroundColor: Colors.blue,
 );
 
+class ImageDialog extends StatelessWidget {
+  String image;
+  ImageDialog({this.image});
+  @override
+  Widget build(BuildContext context) {
+    // return Dialog(
+    //   // child: Container(
+    //   //   width: 200,
+    //   //   height: 200,
+    //   //   decoration: BoxDecoration(
+    //   //       image: DecorationImage(
+    //   //           image: ExactAssetImage('assets/topupQRcode/myimage.jpg'),
+    //   //           fit: BoxFit.cover)),
+    //   // ),
+
+    // );
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        // radius: 100,
+        // backgroundImage: NetworkImage(image),
+        child: ClipOval(
+          child: Image.network(
+            image,
+            width: 350,
+            height: 350,
+            fit: BoxFit.cover,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+      ),
+    );
+  }
+}
+
 
 
 

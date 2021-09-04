@@ -13,6 +13,7 @@ import 'package:easy_cook/pages/profile_page/wallet/walletPage.dart';
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,7 +105,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   buildSliverAppBar(context) {
     return SliverAppBar(
-      
       title: Text(data_DataAc.aliasName),
       pinned: true,
       floating: false,
@@ -179,18 +179,27 @@ class _ScrollProfilePage2BottomNavbarState extends State
                     image: DecorationImage(
                         // image: NetworkImage(
                         //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                         image: new NetworkImage(
-                              "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
+                        image: new NetworkImage(
+                            "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 100),
                     child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 48,
-                          backgroundImage:
-                              NetworkImage(data_DataAc.profileImage),
+                        InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (_) => ImageDialog(
+                                      image: data_DataAc.profileImage,
+                                    ));
+                          },
+                          child: CircleAvatar(
+                            radius: 48,
+                            backgroundImage:
+                                NetworkImage(data_DataAc.profileImage),
+                          ),
                         ),
                         SizedBox(
                           height: 10,
@@ -698,18 +707,15 @@ class _ScrollProfilePage2BottomNavbarState extends State
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-           
           return [buildSliverAppBar(context)];
         },
-        
         body: buidChildWidget(),
-        
       ),
       drawer: Drawers(
-          token: token,
-          data_MyAccount: data_MyAccount,
-          data_DataAc: data_DataAc,
-        ),
+        token: token,
+        data_MyAccount: data_MyAccount,
+        data_DataAc: data_DataAc,
+      ),
     );
   }
 
@@ -837,3 +843,5 @@ class _ScrollProfilePage2BottomNavbarState extends State
     );
   }
 }
+
+

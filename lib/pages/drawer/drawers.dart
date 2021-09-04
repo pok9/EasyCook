@@ -11,6 +11,7 @@ import 'package:easy_cook/pages/drawer/switch%20accounts/switch_accountsPage.dar
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/slidepage.dart';
+import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -135,12 +136,21 @@ class _DrawersState extends State<Drawers> {
                               ),
                               borderRadius: BorderRadius.circular(100),
                             ),
-                            child: Center(
-                              child: CircleAvatar(
-                                radius: 39,
-                                backgroundColor: Colors.grey,
-                                backgroundImage: NetworkImage(
-                                    this.widget.data_DataAc.profileImage),
+                            child: InkWell(
+                             onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (_) => ImageDialog(
+                                      image: this.widget.data_DataAc.profileImage,
+                                    ));
+                          },
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 39,
+                                  backgroundColor: Colors.grey,
+                                  backgroundImage: NetworkImage(
+                                      this.widget.data_DataAc.profileImage),
+                                ),
                               ),
                             ),
                           ),

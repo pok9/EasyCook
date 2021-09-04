@@ -1448,7 +1448,10 @@ class _FeedPageState extends State<FeedPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ProfileUser(dataRecommendUser.userId)),
+                  builder: (context) => ProfileUser(
+                        reqUid: dataRecommendUser.userId,
+                        imageHero: dataRecommendUser.profileImage,
+                      )),
             );
           } else if ((data_DataAc.userId == dataRecommendUser.userId)) {
             Navigator.push(context, CupertinoPageRoute(builder: (context) {
@@ -1458,9 +1461,11 @@ class _FeedPageState extends State<FeedPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ProfileUser(dataRecommendUser.userId)),
+                  builder: (context) => ProfileUser(
+                      reqUid: dataRecommendUser.userId,
+                      imageHero: dataRecommendUser.profileImage)),
             ).then((value) {
-              if (token != "" && token != null) {
+              if (value != 0 && token != "" && token != null) {
                 checkFollowings();
               }
             });
@@ -1472,19 +1477,22 @@ class _FeedPageState extends State<FeedPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                children: [
-                  Container(
-                    height: 65.0,
-                    width: 65.0,
-                    decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: new DecorationImage(
-                            fit: BoxFit.cover,
-                            image: new NetworkImage(
-                                dataRecommendUser.profileImage))),
-                  ),
-                ],
+              Hero(
+                tag: dataRecommendUser.profileImage,
+                child: Row(
+                  children: [
+                    Container(
+                      height: 65.0,
+                      width: 65.0,
+                      decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: new DecorationImage(
+                              fit: BoxFit.cover,
+                              image: new NetworkImage(
+                                  dataRecommendUser.profileImage))),
+                    ),
+                  ],
+                ),
               ),
               Row(
                 children: [

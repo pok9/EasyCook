@@ -18,6 +18,10 @@ class Mybuy {
         this.image,
         this.foodCategory,
         this.description,
+        this.userId,
+        this.nameSurname,
+        this.aliasName,
+        this.profileImage,
     });
 
     int bid;
@@ -28,6 +32,10 @@ class Mybuy {
     String image;
     String foodCategory;
     String description;
+    int userId;
+    String nameSurname;
+    String aliasName;
+    String profileImage;
 
     factory Mybuy.fromJson(Map<String, dynamic> json) => Mybuy(
         bid: json["bid"],
@@ -38,6 +46,10 @@ class Mybuy {
         image: json["image"],
         foodCategory: json["food_category"],
         description: json["description"],
+        userId: json["user_ID"],
+        nameSurname: json["name_surname"],
+        aliasName: json["alias_name"],
+        profileImage: json["profile_image"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -49,5 +61,9 @@ class Mybuy {
         "image": image,
         "food_category": foodCategory,
         "description": description,
+        "user_ID": userId,
+        "name_surname": nameSurname,
+        "alias_name": aliasName,
+        "profile_image": profileImage,
     };
 }

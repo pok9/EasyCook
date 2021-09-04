@@ -186,10 +186,11 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                                               image: DecorationImage(
                                                   fit: BoxFit.fill,
                                                   image: NetworkImage(
-                                                      "https://placeimg.com/640/480/any"))),
+                                                      dataMybuy[index].profileImage))),
                                         ),
+                                        SizedBox(width: 5,),
                                         Text(
-                                          "เซฟปก",
+                                          dataMybuy[index].aliasName,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500),
                                         )

@@ -13,6 +13,7 @@ import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportUser.dart';
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/style/utiltties.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,17 +23,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileUser extends StatefulWidget {
   var reqUid;
+  String imageHero;
 
-  ProfileUser(this.reqUid);
+  ProfileUser({this.reqUid, this.imageHero});
 
   @override
-  _ProfileUserState createState() => _ProfileUserState(reqUid);
+  _ProfileUserState createState() => _ProfileUserState();
 }
 
 class _ProfileUserState extends State<ProfileUser> {
-  var reqUid;
-  _ProfileUserState(this.reqUid);
-
   @override
   void initState() {
     super.initState();
@@ -42,7 +41,7 @@ class _ProfileUserState extends State<ProfileUser> {
   String token = ""; //โทเคน
 
   //ดึงข้อมูล Token
-  Future<Null> findUser() async {
+  Future<Null> findUser() async {//1
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (mounted)
       setState(() {
@@ -61,7 +60,7 @@ class _ProfileUserState extends State<ProfileUser> {
   //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)
   MyAccount data_MyAccount;
   DataMyAccount data_DataAc; //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)-คนที่เข้ามาดู
-  Future<Null> getMyAccounts() async {
+  Future<Null> getMyAccounts() async {//2
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
@@ -83,7 +82,7 @@ class _ProfileUserState extends State<ProfileUser> {
   MyPost data_PostUser;
   List<RecipePost> data_RecipePost;
   Future<Null> getPostUser() async {
-    String uid = reqUid.toString();
+    String uid = this.widget.reqUid.toString();
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/mypost/" + uid;
 
@@ -234,7 +233,7 @@ class _ProfileUserState extends State<ProfileUser> {
 
   List<Mybuy> dataMybuy;
   List<String> checkBuy = [];
-  Future<Null> getMybuy() async {
+  Future<Null> getMybuy() async {//3
     checkBuy = [];
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
 
@@ -257,6 +256,7 @@ class _ProfileUserState extends State<ProfileUser> {
     }
   }
 
+  int checkPressCountFollowAndUnFollow = 0;
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -266,6 +266,17 @@ class _ProfileUserState extends State<ProfileUser> {
       appBar: AppBar(
         title: Text(data_PostUser == null ? "" : data_PostUser.aliasName),
         elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            if(checkPressCountFollowAndUnFollow == 0){
+              Navigator.pop(context,checkPressCountFollowAndUnFollow);
+            }else{
+              Navigator.pop(context);
+            }
+            
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         actions: [
           (data_PostUser == null || data_DataAc == null)
               ? Container()
@@ -396,8 +407,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                         image: DecorationImage(
                                             // image: NetworkImage(
                                             //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                                             image: new NetworkImage(
-                              "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
+                                            image: new NetworkImage(
+                                                "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
                                             fit: BoxFit.cover),
                                       ),
                                       child: Padding(
@@ -411,12 +422,37 @@ class _ProfileUserState extends State<ProfileUser> {
                                               height: 10,
                                             ),
 
-                                            CircleAvatar(
-                                              radius: 48,
-                                              backgroundImage: NetworkImage(
-                                                  data_PostUser
-                                                      .profileImage), //////////////////
-                                            ),
+                                            InkWell(
+                                                onTap: () async {
+                                                  await showDialog(
+                                                      context: context,
+                                                      builder: (_) =>
+                                                          ImageDialog(
+                                                            image: data_PostUser
+                                                                .profileImage,
+                                                          ));
+                                                },
+                                                child: (this.widget.imageHero !=
+                                                        null)
+                                                    ? Hero(
+                                                        tag: this
+                                                            .widget
+                                                            .imageHero,
+                                                        child: CircleAvatar(
+                                                          radius: 48,
+                                                          backgroundImage:
+                                                              NetworkImage(this
+                                                                  .widget
+                                                                  .imageHero), //////////////////
+                                                        ),
+                                                      )
+                                                    : CircleAvatar(
+                                                        radius: 48,
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                                data_PostUser
+                                                                    .profileImage), //////////////////
+                                                      )),
                                             SizedBox(
                                               height: 10,
                                             ),
@@ -468,6 +504,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                             Colors.grey,
                                                         color: Colors.blue[400],
                                                         onPressed: () {
+                                                          checkPressCountFollowAndUnFollow++;
                                                           print("ติดตาม");
                                                           manageFollow(
                                                               "fol",
@@ -503,6 +540,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                         color: Colors.grey,
                                                         onPressed: () {
                                                           print("ยกเลิกติดตาม");
+                                                          checkPressCountFollowAndUnFollow++;
                                                           manageFollow(
                                                               "unfol",
                                                               this
@@ -762,16 +800,27 @@ class _ProfileUserState extends State<ProfileUser> {
                                           children: [
                                             Row(
                                               children: [
-                                                new Container(
-                                                  height: 40.0,
-                                                  width: 40.0,
-                                                  decoration: new BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      image: new DecorationImage(
-                                                          fit: BoxFit.fill,
-                                                          image: new NetworkImage(
-                                                              data_PostUser
-                                                                  .profileImage))),
+                                                InkWell(
+                                                  onTap: () async {
+                                                    await showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            ImageDialog(
+                                                              image: data_PostUser
+                                                                  .profileImage,
+                                                            ));
+                                                  },
+                                                  child: new Container(
+                                                    height: 40.0,
+                                                    width: 40.0,
+                                                    decoration: new BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        image: new DecorationImage(
+                                                            fit: BoxFit.fill,
+                                                            image: new NetworkImage(
+                                                                data_PostUser
+                                                                    .profileImage))),
+                                                  ),
                                                 ),
                                                 new SizedBox(
                                                   width: 10.0,
@@ -795,7 +844,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                           if (data_DataAc != null) {
                                             if (data_RecipePost[index].price ==
                                                     0 ||
-                                                reqUid == data_DataAc.userId ||
+                                                this.widget.reqUid ==
+                                                    data_DataAc.userId ||
                                                 checkBuy.indexOf(
                                                         data_RecipePost[index]
                                                             .rid
@@ -914,7 +964,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                                   0)
                                                               ? Image.network(
                                                                   "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                              : (reqUid ==
+                                                              : (this.widget.reqUid ==
                                                                           data_DataAc
                                                                               .userId ||
                                                                       (data_RecipePost[index]
@@ -976,7 +1026,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                                                 .end,
                                                         children: [
                                                           RatingBarIndicator(
-                                                            rating: data_RecipePost[
+                                                            rating:
+                                                                data_RecipePost[
                                                                         index]
                                                                     .score,
                                                             itemBuilder:
