@@ -41,13 +41,13 @@ class _ShowFoodState extends State<ShowFood> {
   var req_rid;
   _ShowFoodState(this.req_rid);
 
-  @override
-  void initState() {
-    super.initState();
-    findUser();
-    getCommentPosts();
-    getPost();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   findUser();
+  //   getCommentPosts();
+  //   getPost();
+  // }
 
   double ratings = 0.0;
   @override
@@ -68,7 +68,8 @@ class _ShowFoodState extends State<ShowFood> {
 
   //แสดงคอมเมนต์
   List<GetCommentPostModel> dataGetCommentPost;
-  Future<Null> getCommentPosts() async {
+  Future<List<GetCommentPostModel>> getCommentPosts() async {
+    //3
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/getComment/" +
             req_rid.toString();
@@ -76,12 +77,11 @@ class _ShowFoodState extends State<ShowFood> {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      // setState(() {
+      final String responseString = response.body;
 
-        dataGetCommentPost =
-            getCommentPostModelFromJson(responseString).reversed.toList();
-      });
+      return getCommentPostModelFromJson(responseString).reversed.toList();
+      // });
     } else {
       return null;
     }
@@ -89,17 +89,18 @@ class _ShowFoodState extends State<ShowFood> {
 
   String token = ""; //โทเคน
   //ดึง token
-  Future<Null> findUser() async {
+  Future<String> findUser() async {
+    //1
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    setState(() {
-      token = preferences.getString("tokens");
+    // setState(() {
 
-      if (token != "" && token != null) {
-        getMyAccounts();
-        getcoreFood();
-      }
-    });
+    //   if (token != "" && token != null) {
+    //     getMyAccounts();
+    //     getcoreFood();
+    //   }
+    // });
+    return preferences.getString("tokens");
   }
 
   //ให้คะแนนสูตรอาหาร
@@ -129,7 +130,8 @@ class _ShowFoodState extends State<ShowFood> {
 
   //แสดงคะแนนที่เรารีวิว
   GetScoreFoodModel dataGetScoreFood;
-  Future<Null> getcoreFood() async {
+  Future<GetScoreFoodModel> getScoreFood() async {
+    //5
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/getMyScore/" +
             req_rid.toString();
@@ -138,11 +140,9 @@ class _ShowFoodState extends State<ShowFood> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      final String responseString = response.body;
 
-        dataGetScoreFood = getScoreFoodModelFromJson(responseString);
-      });
+      return getScoreFoodModelFromJson(responseString);
     } else {
       return null;
     }
@@ -151,19 +151,17 @@ class _ShowFoodState extends State<ShowFood> {
   //user
   MyAccount datas;
   DataMyAccount dataMyAccont;
-  Future<Null> getMyAccounts() async {
+  Future<MyAccount> getMyAccounts() async {
+    //4
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      final String responseString = response.body;
 
-        datas = myAccountFromJson(responseString);
-        dataMyAccont = datas.data[0];
-      });
+      return myAccountFromJson(responseString);
     } else {
       return null;
     }
@@ -176,19 +174,17 @@ class _ShowFoodState extends State<ShowFood> {
   //ข้อมูลวัตถุดิบ
   List<Howto> dataHowto;
   //ดึงข้อมูลสูตรอาหารที่ค้นหา
-  Future<Null> getPost() async {
+  Future<ShowFoods> getPost() async {
+    //2
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/getPost/" + req_rid.toString();
 
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
-        dataFood = showFoodsFromJson(responseString);
-        dataIngredient = dataFood.ingredient;
-        dataHowto = dataFood.howto;
-      });
+      final String responseString = response.body;
+
+      return showFoodsFromJson(responseString);
     } else {
       return null;
     }
@@ -454,285 +450,1203 @@ class _ShowFoodState extends State<ShowFood> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> ingredient =
-        dataIngredient == null ? [] : _ingredientList();
+    return FutureBuilder(
+      future: findUser(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          token = snapshot.data;
+          return FutureBuilder(
+            future: getPost(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                dataFood = snapshot.data;
+                dataIngredient = dataFood.ingredient;
+                dataHowto = dataFood.howto;
+                final List<Widget> ingredient =
+                    dataIngredient == null ? [] : _ingredientList();
 
-    final List<Widget> howto1 = dataHowto == null ? [] : _howtoList1();
-    final List<Widget> howto2 = dataHowto == null ? [] : _howtoList2();
-
-    return dataFood == null
-        ? Material(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: 20),
-                CircularProgressIndicator()
-              ],
-            ),
-          )
-        : SliverFab(
-            floatingWidget: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  child: ClipOval(
-                    child: Image.network(
-                      dataFood.profileImage,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 8.0)),
-                ),
-              ],
-            ),
-            expandedHeight: 256.0,
-            floatingPosition: FloatingPosition(top: -20, left: 150),
-            slivers: [
-              SliverAppBar(
-                title:
-                    Text(dataFood.recipeName + " " + this.req_rid.toString()),
-                actions: [
-                  (dataMyAccont == null || dataFood == null)
-                      ? Container()
-                      : (dataMyAccont.userId != dataFood.userId)
-                          ? (dataMyAccont.userStatus == 0)
-                              ? Container()
-                              : PopupMenuButton(
-                                  child: Center(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(right: 20),
-                                    child: Icon(Icons.more_horiz_outlined),
-                                  )),
-                                  onSelected: (value) {
-                                    if (value == 1) {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return ReportFood();
-                                          }).then((value) async {
-                                        if (value != null) {
-                                          showDialog(
-                                              context: context,
-                                              builder: (contex) {
-                                                return AlertDialog(
-                                                    content: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                        "กรุณารอสักครู่...   "),
-                                                    CircularProgressIndicator()
-                                                  ],
-                                                ));
-                                              });
-
-                                          AddReport dataAddReport =
-                                              await addReport(
-                                                  dataFood.userId.toString(),
-                                                  "food",
-                                                  dataFood.rid.toString(),
-                                                  "รายงานสูตรอาหาร",
-                                                  value[0],
-                                                  value[1]);
-
-                                          Navigator.pop(context);
-                                          String reportText1;
-                                          String reportText2;
-                                          Color color;
-                                          if (dataAddReport.success == 1) {
-                                            reportText1 = "รายงานสำเร็จ";
-                                            reportText2 =
-                                                "ขอบคุณสำหรับการรายงาน";
-                                            color = Colors.green;
-                                          } else {
-                                            reportText1 = "รายงานไม่สำเร็จ";
-                                            reportText2 =
-                                                "โปรดรายงานใหม่ในภายหลัง";
-                                            color = Colors.red;
-                                          }
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                Future.delayed(
-                                                    Duration(
-                                                        milliseconds: 1500),
-                                                    () {
-                                                  Navigator.of(context)
-                                                      .pop(true);
-                                                });
-                                                return alertDialog_successful_or_unsuccessful(
-                                                    reportText1,
-                                                    color,
-                                                    reportText2);
-                                              });
-                                        }
-                                      });
-                                    }
-                                  },
-                                  itemBuilder: (context) {
-                                    return [
-                                      PopupMenuItem(
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.flag,
-                                              color: Colors.black,
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text('รายงานสูตรอาหารนี้'),
-                                          ],
-                                        ),
-                                        value: 1,
-                                      ),
-                                    ];
-                                  })
-                          : PopupMenuButton(
-                              child: Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Icon(Icons.more_horiz_outlined),
-                              )),
-                              onSelected: (value) {
-                                if (value == 0) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditFoodPage(
-                                            rid: dataFood.rid,
-                                            uid: dataFood.userId,
-                                            recipeName: dataFood.recipeName,
-                                            description: dataFood.description,
-                                            imageFood: dataFood.image,
-                                            suitableFor: dataFood.suitableFor,
-                                            takeTime: dataFood.takeTime,
-                                            foodCategory: dataFood.foodCategory,
-                                            price: dataFood.price.toString(),
-                                            dataIngredient: dataIngredient,
-                                            dataHowto: dataHowto,)),
-                                  ).then((value){
-                                    getPost();
-                                  });
-                                } else if (value == 1) {
-                                  showDialog(
-                                    barrierColor: Colors.black26,
-                                    context: context,
-                                    builder: (context) {
-                                      return CustomAlertDialog(
-                                        title: "ลบสูตรอาหาร",
-                                        description:
-                                            "คุณแน่ใจใช่ไหมที่จะลบสูตรอาหารนี้",
-                                        token: this.token,
-                                        recipe_ID: this.req_rid,
-                                      );
-                                    },
-                                  );
+                final List<Widget> howto1 =
+                    dataHowto == null ? [] : _howtoList1();
+                final List<Widget> howto2 =
+                    dataHowto == null ? [] : _howtoList2();
+                return FutureBuilder(
+                  future: getCommentPosts(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      dataGetCommentPost = snapshot.data;
+                      return FutureBuilder(
+                        future: getMyAccounts(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            datas = snapshot.data;
+                            dataMyAccont = datas.data[0];
+                            return FutureBuilder(
+                              future: getScoreFood(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  dataGetScoreFood = snapshot.data;
+                                  return buildBody(ingredient, howto1, howto2);
                                 }
+                                return Center(
+                                    child: CircularProgressIndicator());
                               },
-                              itemBuilder: (context) {
-                                return List.generate(2, (index) {
-                                  return PopupMenuItem(
-                                    value: index,
-                                    child: Text(actionDropdown[index]),
-                                  );
-                                });
-                              },
-                            ),
-                ],
-                pinned: true,
-                expandedHeight: 256.0,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Image.network(
-                    dataFood.image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                            );
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
+                      );
+                    }
+                    return Center(child: CircularProgressIndicator());
+                  },
+                );
+                ;
+              }
+              return Center(child: CircularProgressIndicator());
+            },
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+
+    // return dataFood == null
+    //     ? Material(
+    //         child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           children: <Widget>[
+    //             SizedBox(height: 20),
+    //             CircularProgressIndicator()
+    //           ],
+    //         ),
+    //       )
+
+    // SliverFab(
+    //     floatingWidget: Row(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         Container(
+    //           height: 100,
+    //           width: 100,
+    //           child: ClipOval(
+    //             child: Image.network(
+    //               dataFood.profileImage,
+    //               fit: BoxFit.fill,
+    //             ),
+    //           ),
+    //           decoration: BoxDecoration(
+    //               color: Colors.grey,
+    //               shape: BoxShape.circle,
+    //               border: Border.all(color: Colors.white, width: 8.0)),
+    //         ),
+    //       ],
+    //     ),
+    //     expandedHeight: 256.0,
+    //     floatingPosition: FloatingPosition(top: -20, left: 150),
+    //     slivers: [
+    //       SliverAppBar(
+    //         title:
+    //             Text(dataFood.recipeName + " " + this.req_rid.toString()),
+    //         actions: [
+    //           (dataMyAccont == null || dataFood == null)
+    //               ? Container()
+    //               : (dataMyAccont.userId != dataFood.userId)
+    //                   ? (dataMyAccont.userStatus == 0)
+    //                       ? Container()
+    //                       : PopupMenuButton(
+    //                           child: Center(
+    //                               child: Padding(
+    //                             padding: const EdgeInsets.only(right: 20),
+    //                             child: Icon(Icons.more_horiz_outlined),
+    //                           )),
+    //                           onSelected: (value) {
+    //                             if (value == 1) {
+    //                               showDialog(
+    //                                   context: context,
+    //                                   builder: (BuildContext context) {
+    //                                     return ReportFood();
+    //                                   }).then((value) async {
+    //                                 if (value != null) {
+    //                                   showDialog(
+    //                                       context: context,
+    //                                       builder: (contex) {
+    //                                         return AlertDialog(
+    //                                             content: Row(
+    //                                           mainAxisAlignment:
+    //                                               MainAxisAlignment.center,
+    //                                           children: [
+    //                                             Text(
+    //                                                 "กรุณารอสักครู่...   "),
+    //                                             CircularProgressIndicator()
+    //                                           ],
+    //                                         ));
+    //                                       });
+
+    //                                   AddReport dataAddReport =
+    //                                       await addReport(
+    //                                           dataFood.userId.toString(),
+    //                                           "food",
+    //                                           dataFood.rid.toString(),
+    //                                           "รายงานสูตรอาหาร",
+    //                                           value[0],
+    //                                           value[1]);
+
+    //                                   Navigator.pop(context);
+    //                                   String reportText1;
+    //                                   String reportText2;
+    //                                   Color color;
+    //                                   if (dataAddReport.success == 1) {
+    //                                     reportText1 = "รายงานสำเร็จ";
+    //                                     reportText2 =
+    //                                         "ขอบคุณสำหรับการรายงาน";
+    //                                     color = Colors.green;
+    //                                   } else {
+    //                                     reportText1 = "รายงานไม่สำเร็จ";
+    //                                     reportText2 =
+    //                                         "โปรดรายงานใหม่ในภายหลัง";
+    //                                     color = Colors.red;
+    //                                   }
+    //                                   showDialog(
+    //                                       context: context,
+    //                                       builder: (BuildContext context) {
+    //                                         Future.delayed(
+    //                                             Duration(
+    //                                                 milliseconds: 1500),
+    //                                             () {
+    //                                           Navigator.of(context)
+    //                                               .pop(true);
+    //                                         });
+    //                                         return alertDialog_successful_or_unsuccessful(
+    //                                             reportText1,
+    //                                             color,
+    //                                             reportText2);
+    //                                       });
+    //                                 }
+    //                               });
+    //                             }
+    //                           },
+    //                           itemBuilder: (context) {
+    //                             return [
+    //                               PopupMenuItem(
+    //                                 child: Row(
+    //                                   children: [
+    //                                     Icon(
+    //                                       Icons.flag,
+    //                                       color: Colors.black,
+    //                                     ),
+    //                                     SizedBox(
+    //                                       width: 5,
+    //                                     ),
+    //                                     Text('รายงานสูตรอาหารนี้'),
+    //                                   ],
+    //                                 ),
+    //                                 value: 1,
+    //                               ),
+    //                             ];
+    //                           })
+    //                   : PopupMenuButton(
+    //                       child: Center(
+    //                           child: Padding(
+    //                         padding: const EdgeInsets.only(right: 20),
+    //                         child: Icon(Icons.more_horiz_outlined),
+    //                       )),
+    //                       onSelected: (value) {
+    //                         if (value == 0) {
+    //                           Navigator.push(
+    //                             context,
+    //                             MaterialPageRoute(
+    //                                 builder: (context) => EditFoodPage(
+    //                                     rid: dataFood.rid,
+    //                                     uid: dataFood.userId,
+    //                                     recipeName: dataFood.recipeName,
+    //                                     description: dataFood.description,
+    //                                     imageFood: dataFood.image,
+    //                                     suitableFor: dataFood.suitableFor,
+    //                                     takeTime: dataFood.takeTime,
+    //                                     foodCategory: dataFood.foodCategory,
+    //                                     price: dataFood.price.toString(),
+    //                                     dataIngredient: dataIngredient,
+    //                                     dataHowto: dataHowto,)),
+    //                           ).then((value){
+    //                             getPost();
+    //                           });
+    //                         } else if (value == 1) {
+    //                           showDialog(
+    //                             barrierColor: Colors.black26,
+    //                             context: context,
+    //                             builder: (context) {
+    //                               return CustomAlertDialog(
+    //                                 title: "ลบสูตรอาหาร",
+    //                                 description:
+    //                                     "คุณแน่ใจใช่ไหมที่จะลบสูตรอาหารนี้",
+    //                                 token: this.token,
+    //                                 recipe_ID: this.req_rid,
+    //                               );
+    //                             },
+    //                           );
+    //                         }
+    //                       },
+    //                       itemBuilder: (context) {
+    //                         return List.generate(2, (index) {
+    //                           return PopupMenuItem(
+    //                             value: index,
+    //                             child: Text(actionDropdown[index]),
+    //                           );
+    //                         });
+    //                       },
+    //                     ),
+    //         ],
+    //         pinned: true,
+    //         expandedHeight: 256.0,
+    //         flexibleSpace: FlexibleSpaceBar(
+    //           background: Image.network(
+    //             dataFood.image,
+    //             fit: BoxFit.cover,
+    //           ),
+    //         ),
+    //       ),
+    //       SliverList(
+    //           delegate: SliverChildListDelegate([
+    //         Container(
+    //           color: Color(0xFFf3f5f9),
+    //           child: Column(
+    //             children: [
+    //               Container(height: 50, width: 500, color: Colors.white),
+    //               Card(
+    //                 margin:
+    //                     EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+    //                 //ปรับขอบการ์ด
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(0),
+    //                 ),
+    //                 color: Colors.white,
+    //                 child: Column(
+    //                   children: [
+    //                     Padding(
+    //                       padding: const EdgeInsets.all(8.0),
+    //                       child: Row(
+    //                         mainAxisAlignment: MainAxisAlignment.center,
+    //                         children: [
+    //                           Text(dataFood.aliasName,
+    //                               style: TextStyle(
+    //                                 fontWeight: FontWeight.normal,
+    //                                 fontFamily: 'OpenSans',
+    //                                 fontSize: 20,
+    //                                 color: Colors.black,
+    //                                 decoration: TextDecoration.none,
+    //                               )),
+    //                         ],
+    //                       ),
+    //                     ),
+    //                     Padding(
+    //                       padding: const EdgeInsets.all(8.0),
+    //                       child: Row(
+    //                         children: [
+    //                           Expanded(
+    //                             child: Text(
+    //                               dataFood.description,
+    //                               textAlign: TextAlign.justify,
+    //                               style: TextStyle(
+    //                                 fontWeight: FontWeight.normal,
+    //                                 fontFamily: 'OpenSans',
+    //                                 fontSize: 15,
+    //                                 color: Colors.black,
+    //                                 decoration: TextDecoration.none,
+    //                               ),
+    //                             ),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ),
+    //                     Divider(
+    //                       thickness: 1,
+    //                       color: Colors.grey,
+    //                     ),
+    //                     (dataFood.score == null)
+    //                         ? Container()
+    //                         : Padding(
+    //                             padding: const EdgeInsets.all(8.0),
+    //                             child: Row(
+    //                               crossAxisAlignment:
+    //                                   CrossAxisAlignment.end,
+    //                               children: [
+    //                                 Icon(
+    //                                   Icons.star,
+    //                                   color: Colors.blue,
+    //                                   size: 17,
+    //                                 ),
+    //                                 SizedBox(
+    //                                   width: 1,
+    //                                 ),
+    //                                 Text(dataFood.score.toString() + "/5 (${dataFood.count})")
+    //                               ],
+    //                             ),
+    //                           ),
+    //                     Text(
+    //                       dataFood.recipeName,
+    //                       style: TextStyle(
+    //                         fontWeight: FontWeight.normal,
+    //                         fontFamily: 'OpenSans',
+    //                         fontSize: 25,
+    //                         color: Colors.black,
+    //                         decoration: TextDecoration.none,
+    //                       ),
+    //                     ),
+    //                     Padding(
+    //                       padding: const EdgeInsets.all(16.0),
+    //                       child: Container(
+    //                         width: 300,
+    //                         height: 200,
+    //                         child: ClipRRect(
+    //                           borderRadius: new BorderRadius.circular(24.0),
+    //                           child: Image(
+    //                             fit: BoxFit.contain,
+    //                             image: NetworkImage(dataFood.image),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                     Divider(
+    //                       thickness: 1,
+    //                       color: Colors.grey.shade400,
+    //                     ),
+    //                     Row(
+    //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //                       children: [
+    //                         Column(
+    //                           children: [
+    //                             Icon(
+    //                               Icons.person,
+    //                               color: Colors.grey,
+    //                               size: 30.0,
+    //                             ),
+    //                             SizedBox(
+    //                               height: 5,
+    //                             ),
+    //                             Text(
+    //                               dataFood.suitableFor,
+    //                               style: TextStyle(
+    //                                 fontWeight: FontWeight.normal,
+    //                                 fontFamily: 'OpenSans',
+    //                                 fontSize: 12,
+    //                                 color: Colors.grey.shade600,
+    //                                 decoration: TextDecoration.none,
+    //                               ),
+    //                             ),
+    //                           ],
+    //                         ),
+    //                         Column(
+    //                           children: [
+    //                             Icon(
+    //                               Icons.watch_later_outlined,
+    //                               color: Colors.grey,
+    //                               size: 30.0,
+    //                             ),
+    //                             SizedBox(
+    //                               height: 5,
+    //                             ),
+    //                             Text(
+    //                               dataFood.takeTime,
+    //                               style: TextStyle(
+    //                                 fontWeight: FontWeight.normal,
+    //                                 fontFamily: 'OpenSans',
+    //                                 fontSize: 12,
+    //                                 color: Colors.grey.shade600,
+    //                                 decoration: TextDecoration.none,
+    //                               ),
+    //                             ),
+    //                           ],
+    //                         ),
+    //                         Column(
+    //                           children: [
+    //                             Icon(
+    //                               Icons.food_bank,
+    //                               color: Colors.grey,
+    //                               size: 30.0,
+    //                             ),
+    //                             SizedBox(
+    //                               height: 5,
+    //                             ),
+    //                             Text(
+    //                               dataFood.foodCategory,
+    //                               style: TextStyle(
+    //                                 fontWeight: FontWeight.normal,
+    //                                 fontFamily: 'OpenSans',
+    //                                 fontSize: 12,
+    //                                 color: Colors.grey.shade600,
+    //                                 decoration: TextDecoration.none,
+    //                               ),
+    //                             ),
+    //                           ],
+    //                         ),
+    //                       ],
+    //                     ),
+    //                     SizedBox(
+    //                       height: 5,
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //               SizedBox(
+    //                 height: 5,
+    //               ),
+    //               Card(
+    //                 margin:
+    //                     EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+    //                 //ปรับขอบการ์ด
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(0),
+    //                 ),
+    //                 color: Colors.white,
+    //                 child: Column(
+    //                   children: [
+    //                     Row(
+    //                       children: [
+    //                         Padding(
+    //                           padding: const EdgeInsets.only(left: 10),
+    //                           child: Text(
+    //                             "ส่วนผสม",
+    //                             style: TextStyle(
+    //                               fontWeight: FontWeight.normal,
+    //                               fontFamily: 'OpenSans',
+    //                               fontSize: 25,
+    //                               color: Colors.black,
+    //                               decoration: TextDecoration.none,
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                     SizedBox(
+    //                       height: 15,
+    //                     ),
+    //                     ListView(
+    //                       padding: EdgeInsets.all(0),
+    //                       shrinkWrap: true,
+    //                       physics: NeverScrollableScrollPhysics(),
+    //                       children: ingredient,
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //               SizedBox(
+    //                 height: 5,
+    //               ),
+    //               Card(
+    //                 margin:
+    //                     EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+    //                 //ปรับขอบการ์ด
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(0),
+    //                 ),
+    //                 color: Colors.white,
+    //                 child: Column(
+    //                   children: [
+    //                     Container(
+    //                       height: 50,
+    //                       // color: Colors.white,
+    //                       child: Row(
+    //                         mainAxisAlignment:
+    //                             MainAxisAlignment.spaceBetween,
+    //                         children: [
+    //                           Padding(
+    //                             padding: const EdgeInsets.only(left: 10),
+    //                             child: Text(
+    //                               "วิธีทำ",
+    //                               style: TextStyle(
+    //                                 fontWeight: FontWeight.normal,
+    //                                 fontFamily: 'OpenSans',
+    //                                 fontSize: 25,
+    //                                 color: Colors.black,
+    //                                 decoration: TextDecoration.none,
+    //                               ),
+    //                             ),
+    //                           ),
+    //                           Padding(
+    //                             padding: const EdgeInsets.all(4.0),
+    //                             child: ToggleButtons(
+    //                               children: <Widget>[
+    //                                 Icon(Icons.image),
+    //                                 Icon(Icons.list),
+    //                                 Icon(Icons.list_alt),
+    //                               ],
+    //                               onPressed: (int index) {
+    //                                 setState(() {
+    //                                   _isSelected[0] = false;
+    //                                   _isSelected[1] = false;
+    //                                   _isSelected[2] = false;
+    //                                   _isSelected[index] =
+    //                                       !_isSelected[index];
+
+    //                                   indexHowTo = index;
+    //                                 });
+    //                               },
+    //                               isSelected: _isSelected,
+    //                               borderColor: Colors.grey,
+    //                               color: Colors.grey,
+    //                               selectedColor: Colors.white,
+    //                               fillColor: Colors.blue,
+    //                               selectedBorderColor: Colors.grey,
+    //                               borderRadius:
+    //                                   BorderRadius.all(Radius.circular(10)),
+    //                             ),
+    //                           )
+    //                         ],
+    //                       ),
+    //                     ),
+    //                     SizedBox(
+    //                       height: 5,
+    //                     ),
+    //                     ListView(
+    //                       padding: EdgeInsets.all(0),
+    //                       shrinkWrap: true,
+    //                       physics: NeverScrollableScrollPhysics(),
+    //                       children: (indexHowTo == 0) ? howto1 : howto2,
+    //                     )
+    //                   ],
+    //                 ),
+    //               ),
+    //               SizedBox(
+    //                 height: 5,
+    //               ),
+    //               Card(
+    //                 margin:
+    //                     EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+    //                 //ปรับขอบการ์ด
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(0),
+    //                 ),
+    //                 color: Colors.white,
+    //                 child: Column(
+    //                   children: [
+    //                     Padding(
+    //                       padding: const EdgeInsets.all(8.0),
+    //                       child: Row(
+    //                         children: [
+    //                           Text(
+    //                             "ให้คะแนน & แสดงความคิดเห็น",
+    //                             style: TextStyle(
+    //                                 color: Colors.black,
+    //                                 fontSize: 20,
+    //                                 fontWeight: FontWeight.bold),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ),
+    //                     SizedBox(
+    //                       height: 10,
+    //                     ),
+    //                     RatingBar.builder(
+    //                       initialRating: (dataGetScoreFood == null)
+    //                           ? 0
+    //                           : dataGetScoreFood.score,
+    //                       minRating: 0.5,
+    //                       direction: Axis.horizontal,
+    //                       allowHalfRating: true,
+    //                       itemCount: 5,
+    //                       itemPadding:
+    //                           EdgeInsets.symmetric(horizontal: 4.0),
+    //                       itemBuilder: (context, _) => Icon(
+    //                         Icons.star,
+    //                         // color: Colors.amber,
+    //                         color: Colors.blue,
+    //                       ),
+    //                       onRatingUpdate: (rating) async {
+    //                         if (token == "") {
+    //                           showDialog(
+    //                               context: context,
+    //                               builder: (_) {
+    //                                 return LoginPage();
+    //                               }).then((value) {
+    //                             if (value != null) {
+    //                               this.findUser();
+    //                             }
+
+    //                             // Navigator.pop(context);
+    //                           });
+    //                         } else {
+    //                           ratings = rating;
+    //                           ScoreFoodInputModel scoreFoodInputModel =
+    //                               await scoreFoodInput(rating, token);
+    //                         }
+    //                       },
+    //                     ),
+    //                     Divider(
+    //                       indent: 60,
+    //                       endIndent: 60,
+    //                       color: Colors.teal.shade100,
+    //                       thickness: 1.0,
+    //                     ),
+    //                     Column(
+    //                       children: [
+    //                         (dataGetCommentPost == null)
+    //                             ? Container()
+    //                             : (dataGetCommentPost.length == 0)
+    //                                 ? Container()
+    //                                 : Padding(
+    //                                     padding:
+    //                                         const EdgeInsets.only(left: 8),
+    //                                     child: Row(
+    //                                       children: [
+    //                                         TextButton(
+    //                                             onPressed: () {
+    //                                               if (dataMyAccont ==
+    //                                                   null) {
+    //                                                 showDialog(
+    //                                                     context: context,
+    //                                                     builder: (_) {
+    //                                                       return LoginPage();
+    //                                                     }).then((value) {
+    //                                                   if (value != null) {
+    //                                                     this.findUser();
+    //                                                   }
+
+    //                                                   // Navigator.pop(context);
+    //                                                 });
+    //                                               } else {
+    //                                                 Navigator.push(
+    //                                                     context,
+    //                                                     MaterialPageRoute(
+    //                                                         builder: (context) =>
+    //                                                             CommentFood(
+    //                                                               autoFocus:
+    //                                                                   false,
+    //                                                               dataFood:
+    //                                                                   dataFood,
+    //                                                             ))).then(
+    //                                                     (value) => this
+    //                                                         .getCommentPosts());
+    //                                               }
+    //                                             },
+    //                                             child: Text(
+    //                                                 "ดูความเห็นทั้งหมด")),
+    //                                       ],
+    //                                     ),
+    //                                   ),
+    //                         (token == "")
+    //                             ? Container()
+    //                             : (dataMyAccont == null ||
+    //                                     dataGetCommentPost == null)
+    //                                 ? Center(
+    //                                     child: CircularProgressIndicator())
+    //                                 : ListView.builder(
+    //                                     padding: EdgeInsets.only(top: 0),
+    //                                     shrinkWrap: true,
+    //                                     physics:
+    //                                         NeverScrollableScrollPhysics(),
+    //                                     itemCount: (dataGetCommentPost ==
+    //                                             null)
+    //                                         ? 0
+    //                                         : dataGetCommentPost.length > 3
+    //                                             ? 3
+    //                                             : dataGetCommentPost.length,
+    //                                     itemBuilder: (context, index) {
+    //                                       return ListTile(
+    //                                         isThreeLine: true,
+    //                                         leading: CircleAvatar(
+    //                                           backgroundImage: NetworkImage(
+    //                                               dataGetCommentPost[index]
+    //                                                   .profileImage),
+    //                                         ),
+    //                                         title: Padding(
+    //                                           padding:
+    //                                               const EdgeInsets.fromLTRB(
+    //                                                   0, 10, 0, 0),
+    //                                           child: Text(
+    //                                             dataGetCommentPost[index]
+    //                                                 .aliasName,
+    //                                             style: TextStyle(
+    //                                                 fontWeight:
+    //                                                     FontWeight.bold,
+    //                                                 color: (dataGetCommentPost[
+    //                                                                 index]
+    //                                                             .userStatus ==
+    //                                                         0)
+    //                                                     ? Colors.red
+    //                                                     : (dataGetCommentPost[
+    //                                                                     index]
+    //                                                                 .userId ==
+    //                                                             dataMyAccont
+    //                                                                 .userId)
+    //                                                         ? Colors.blue
+    //                                                         : Colors.black),
+    //                                           ),
+    //                                         ),
+    //                                         subtitle: Text(
+    //                                           '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+    //                                           textAlign: TextAlign.justify,
+    //                                           style: TextStyle(
+    //                                             fontWeight:
+    //                                                 FontWeight.normal,
+    //                                             fontFamily: 'OpenSans',
+    //                                             fontSize: 12,
+    //                                             color: Colors.black,
+    //                                             decoration:
+    //                                                 TextDecoration.none,
+    //                                           ),
+    //                                         ),
+    //                                         dense: true,
+    //                                         // trailing: Text('Horse'),
+    //                                       );
+    //                                     }),
+    //                       ],
+    //                     ),
+    //                     Padding(
+    //                       padding: const EdgeInsets.all(5),
+    //                       child: Row(
+    //                         mainAxisAlignment: MainAxisAlignment.center,
+    //                         children: [
+    //                           (dataMyAccont == null)
+    //                               ? CircleAvatar(
+    //                                   child:
+    //                                       Icon(Icons.account_box_outlined),
+    //                                 )
+    //                               : CircleAvatar(
+    //                                   backgroundImage: NetworkImage(
+    //                                       dataMyAccont.profileImage),
+    //                                 ),
+    //                           SizedBox(
+    //                             width: 5,
+    //                           ),
+    //                           ElevatedButton(
+    //                             style: ElevatedButton.styleFrom(
+    //                               side: BorderSide(
+    //                                   width: 2, color: Colors.blue),
+    //                               primary: Colors.white,
+    //                               shape: RoundedRectangleBorder(
+    //                                   borderRadius:
+    //                                       BorderRadius.circular(30)),
+    //                             ),
+    //                             onPressed: () {
+    //                               if (dataMyAccont == null) {
+    //                                 showDialog(
+    //                                     context: context,
+    //                                     builder: (_) {
+    //                                       return LoginPage();
+    //                                     }).then((value) {
+    //                                   if (value != null) {
+    //                                     this.findUser();
+    //                                   }
+
+    //                                   // Navigator.pop(context);
+    //                                 });
+    //                               } else {
+    //                                 Navigator.push(
+    //                                     context,
+    //                                     MaterialPageRoute(
+    //                                         builder: (context) =>
+    //                                             CommentFood(
+    //                                               autoFocus: true,
+    //                                               dataFood: dataFood,
+    //                                             ))).then(
+    //                                     (value) => this.getCommentPosts());
+    //                               }
+    //                             },
+    //                             child: Container(
+    //                               width: MediaQuery.of(context).size.width -
+    //                                   100,
+    //                               height: 50,
+    //                               child: Row(
+    //                                 children: [
+    //                                   Center(
+    //                                       child: Text(
+    //                                     'แสดงความคิดเห็น...',
+    //                                     style: TextStyle(
+    //                                         color: Colors.black54,
+    //                                         fontSize: 16),
+    //                                   )),
+    //                                 ],
+    //                               ),
+    //                             ),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         )
+    //       ]))
+    //     ],
+    //   );
+  }
+
+  Widget buildBody(
+      List<Widget> ingredient, List<Widget> howto1, List<Widget> howto2) {
+    return SliverFab(
+      floatingWidget: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 100,
+            width: 100,
+            child: ClipOval(
+              child: Image.network(
+                dataFood.profileImage,
+                fit: BoxFit.fill,
               ),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Container(
-                  color: Color(0xFFf3f5f9),
+            ),
+            decoration: BoxDecoration(
+                color: Colors.grey,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 8.0)),
+          ),
+        ],
+      ),
+      expandedHeight: 256.0,
+      floatingPosition: FloatingPosition(top: -20, left: 150),
+      slivers: [
+        SliverAppBar(
+          title: Text(dataFood.recipeName + " " + this.req_rid.toString()),
+          actions: [
+            (dataMyAccont.userId != dataFood.userId)
+                ? (dataMyAccont.userStatus == 0)
+                    ? Container()
+                    : PopupMenuButton(
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: Icon(Icons.more_horiz_outlined),
+                        )),
+                        onSelected: (value) {
+                          if (value == 1) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ReportFood();
+                                }).then((value) async {
+                              if (value != null) {
+                                showDialog(
+                                    context: context,
+                                    builder: (contex) {
+                                      return AlertDialog(
+                                          content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text("กรุณารอสักครู่...   "),
+                                          CircularProgressIndicator()
+                                        ],
+                                      ));
+                                    });
+
+                                AddReport dataAddReport = await addReport(
+                                    dataFood.userId.toString(),
+                                    "food",
+                                    dataFood.rid.toString(),
+                                    "รายงานสูตรอาหาร",
+                                    value[0],
+                                    value[1]);
+
+                                Navigator.pop(context);
+                                String reportText1;
+                                String reportText2;
+                                Color color;
+                                if (dataAddReport.success == 1) {
+                                  reportText1 = "รายงานสำเร็จ";
+                                  reportText2 = "ขอบคุณสำหรับการรายงาน";
+                                  color = Colors.green;
+                                } else {
+                                  reportText1 = "รายงานไม่สำเร็จ";
+                                  reportText2 = "โปรดรายงานใหม่ในภายหลัง";
+                                  color = Colors.red;
+                                }
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      Future.delayed(
+                                          Duration(milliseconds: 1500), () {
+                                        Navigator.of(context).pop(true);
+                                      });
+                                      return alertDialog_successful_or_unsuccessful(
+                                          reportText1, color, reportText2);
+                                    });
+                              }
+                            });
+                          }
+                        },
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.flag,
+                                    color: Colors.black,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('รายงานสูตรอาหารนี้'),
+                                ],
+                              ),
+                              value: 1,
+                            ),
+                          ];
+                        })
+                : PopupMenuButton(
+                    child: Center(
+                        child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Icon(Icons.more_horiz_outlined),
+                    )),
+                    onSelected: (value) {
+                      if (value == 0) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditFoodPage(
+                                    rid: dataFood.rid,
+                                    uid: dataFood.userId,
+                                    recipeName: dataFood.recipeName,
+                                    description: dataFood.description,
+                                    imageFood: dataFood.image,
+                                    suitableFor: dataFood.suitableFor,
+                                    takeTime: dataFood.takeTime,
+                                    foodCategory: dataFood.foodCategory,
+                                    price: dataFood.price.toString(),
+                                    dataIngredient: dataIngredient,
+                                    dataHowto: dataHowto,
+                                  )),
+                        ).then((value) {
+                          getPost();
+                        });
+                      } else if (value == 1) {
+                        showDialog(
+                          barrierColor: Colors.black26,
+                          context: context,
+                          builder: (context) {
+                            return CustomAlertDialog(
+                              title: "ลบสูตรอาหาร",
+                              description: "คุณแน่ใจใช่ไหมที่จะลบสูตรอาหารนี้",
+                              token: this.token,
+                              recipe_ID: this.req_rid,
+                            );
+                          },
+                        );
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return List.generate(2, (index) {
+                        return PopupMenuItem(
+                          value: index,
+                          child: Text(actionDropdown[index]),
+                        );
+                      });
+                    },
+                  ),
+          ],
+          pinned: true,
+          expandedHeight: 256.0,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Image.network(
+              dataFood.image,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SliverList(
+            delegate: SliverChildListDelegate([
+          Container(
+            color: Color(0xFFf3f5f9),
+            child: Column(
+              children: [
+                Container(height: 50, width: 500, color: Colors.white),
+                Card(
+                  margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                  //ปรับขอบการ์ด
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  color: Colors.white,
                   child: Column(
                     children: [
-                      Container(height: 50, width: 500, color: Colors.white),
-                      Card(
-                        margin:
-                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                        //ปรับขอบการ์ด
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        color: Colors.white,
-                        child: Column(
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
+                            Text(dataFood.aliasName,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                dataFood.description,
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        color: Colors.grey,
+                      ),
+                      (dataFood.score == null)
+                          ? Container()
+                          : Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text(dataFood.aliasName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: 'OpenSans',
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                        decoration: TextDecoration.none,
-                                      )),
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.blue,
+                                    size: 17,
+                                  ),
+                                  SizedBox(
+                                    width: 1,
+                                  ),
+                                  Text(dataFood.score.toString() +
+                                      "/5 (${dataFood.count})")
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      dataFood.description,
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: 'OpenSans',
-                                        fontSize: 15,
-                                        color: Colors.black,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                      Text(
+                        dataFood.recipeName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'OpenSans',
+                          fontSize: 25,
+                          color: Colors.black,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          width: 300,
+                          height: 200,
+                          child: ClipRRect(
+                            borderRadius: new BorderRadius.circular(24.0),
+                            child: Image(
+                              fit: BoxFit.contain,
+                              image: NetworkImage(dataFood.image),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        color: Colors.grey.shade400,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Icon(
+                                Icons.person,
+                                color: Colors.grey,
+                                size: 30.0,
                               ),
-                            ),
-                            Divider(
-                              thickness: 1,
-                              color: Colors.grey,
-                            ),
-                            (dataFood.score == null)
-                                ? Container()
-                                : Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Icon(
-                                          Icons.star,
-                                          color: Colors.blue,
-                                          size: 17,
-                                        ),
-                                        SizedBox(
-                                          width: 1,
-                                        ),
-                                        Text(dataFood.score.toString() + "/5 (${dataFood.count})")
-                                      ],
-                                    ),
-                                  ),
-                            Text(
-                              dataFood.recipeName,
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                dataFood.suitableFor,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Icon(
+                                Icons.watch_later_outlined,
+                                color: Colors.grey,
+                                size: 30.0,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                dataFood.takeTime,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Icon(
+                                Icons.food_bank,
+                                color: Colors.grey,
+                                size: 30.0,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                dataFood.foodCategory,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Card(
+                  margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                  //ปรับขอบการ์ด
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              "ส่วนผสม",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontFamily: 'OpenSans',
@@ -741,216 +1655,79 @@ class _ShowFoodState extends State<ShowFood> {
                                 decoration: TextDecoration.none,
                               ),
                             ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      ListView(
+                        padding: EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: ingredient,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Card(
+                  margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                  //ปรับขอบการ์ด
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 50,
+                        // color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Container(
-                                width: 300,
-                                height: 200,
-                                child: ClipRRect(
-                                  borderRadius: new BorderRadius.circular(24.0),
-                                  child: Image(
-                                    fit: BoxFit.contain,
-                                    image: NetworkImage(dataFood.image),
-                                  ),
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                "วิธีทำ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none,
                                 ),
                               ),
                             ),
-                            Divider(
-                              thickness: 1,
-                              color: Colors.grey.shade400,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.person,
-                                      color: Colors.grey,
-                                      size: 30.0,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      dataFood.suitableFor,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: 'OpenSans',
-                                        fontSize: 12,
-                                        color: Colors.grey.shade600,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.watch_later_outlined,
-                                      color: Colors.grey,
-                                      size: 30.0,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      dataFood.takeTime,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: 'OpenSans',
-                                        fontSize: 12,
-                                        color: Colors.grey.shade600,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.food_bank,
-                                      color: Colors.grey,
-                                      size: 30.0,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      dataFood.foodCategory,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: 'OpenSans',
-                                        fontSize: 12,
-                                        color: Colors.grey.shade600,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Card(
-                        margin:
-                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                        //ปรับขอบการ์ด
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    "ส่วนผสม",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 25,
-                                      color: Colors.black,
-                                      decoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            ListView(
-                              padding: EdgeInsets.all(0),
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: ingredient,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Card(
-                        margin:
-                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                        //ปรับขอบการ์ด
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 50,
-                              // color: Colors.white,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      "วิธีทำ",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: 'OpenSans',
-                                        fontSize: 25,
-                                        color: Colors.black,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: ToggleButtons(
-                                      children: <Widget>[
-                                        Icon(Icons.image),
-                                        Icon(Icons.list),
-                                        Icon(Icons.list_alt),
-                                      ],
-                                      onPressed: (int index) {
-                                        setState(() {
-                                          _isSelected[0] = false;
-                                          _isSelected[1] = false;
-                                          _isSelected[2] = false;
-                                          _isSelected[index] =
-                                              !_isSelected[index];
-
-                                          indexHowTo = index;
-                                        });
-                                      },
-                                      isSelected: _isSelected,
-                                      borderColor: Colors.grey,
-                                      color: Colors.grey,
-                                      selectedColor: Colors.white,
-                                      fillColor: Colors.blue,
-                                      selectedBorderColor: Colors.grey,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                  )
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: ToggleButtons(
+                                children: <Widget>[
+                                  Icon(Icons.image),
+                                  Icon(Icons.list),
+                                  Icon(Icons.list_alt),
                                 ],
+                                onPressed: (int index) {
+                                  setState(() {
+                                    _isSelected[0] = false;
+                                    _isSelected[1] = false;
+                                    _isSelected[2] = false;
+                                    _isSelected[index] = !_isSelected[index];
+
+                                    indexHowTo = index;
+                                  });
+                                },
+                                isSelected: _isSelected,
+                                borderColor: Colors.grey,
+                                color: Colors.grey,
+                                selectedColor: Colors.white,
+                                fillColor: Colors.blue,
+                                selectedBorderColor: Colors.grey,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
                               ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            ListView(
-                              padding: EdgeInsets.all(0),
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: (indexHowTo == 0) ? howto1 : howto2,
                             )
                           ],
                         ),
@@ -958,50 +1735,208 @@ class _ShowFoodState extends State<ShowFood> {
                       SizedBox(
                         height: 5,
                       ),
-                      Card(
-                        margin:
-                            EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                        //ปรับขอบการ์ด
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        color: Colors.white,
-                        child: Column(
+                      ListView(
+                        padding: EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: (indexHowTo == 0) ? howto1 : howto2,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Card(
+                  margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                  //ปรับขอบการ์ด
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "ให้คะแนน & แสดงความคิดเห็น",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                            Text(
+                              "ให้คะแนน & แสดงความคิดเห็น",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      RatingBar.builder(
+                        initialRating: (dataGetScoreFood == null)
+                            ? 0
+                            : dataGetScoreFood.score,
+                        minRating: 0.5,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          // color: Colors.amber,
+                          color: Colors.blue,
+                        ),
+                        onRatingUpdate: (rating) async {
+                          if (token == "") {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return LoginPage();
+                                }).then((value) {
+                              if (value != null) {
+                                this.findUser();
+                              }
+
+                              // Navigator.pop(context);
+                            });
+                          } else {
+                            ratings = rating;
+                            ScoreFoodInputModel scoreFoodInputModel =
+                                await scoreFoodInput(rating, token);
+                          }
+                        },
+                      ),
+                      Divider(
+                        indent: 60,
+                        endIndent: 60,
+                        color: Colors.teal.shade100,
+                        thickness: 1.0,
+                      ),
+                      Column(
+                        children: [
+                          (dataGetCommentPost.length == 0)
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Row(
+                                    children: [
+                                      TextButton(
+                                          onPressed: () {
+                                            if (dataMyAccont == null) {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return LoginPage();
+                                                  }).then((value) {
+                                                if (value != null) {
+                                                  this.findUser();
+                                                }
+
+                                                // Navigator.pop(context);
+                                              });
+                                            } else {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CommentFood(
+                                                            autoFocus: false,
+                                                            dataFood: dataFood,
+                                                          ))).then((value) =>
+                                                  this.getCommentPosts());
+                                            }
+                                          },
+                                          child: Text("ดูความเห็นทั้งหมด")),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                          (token == "")
+                              ? Container()
+                              : (dataMyAccont == null ||
+                                      dataGetCommentPost == null)
+                                  ? Center(child: CircularProgressIndicator())
+                                  : ListView.builder(
+                                      padding: EdgeInsets.only(top: 0),
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: (dataGetCommentPost == null)
+                                          ? 0
+                                          : dataGetCommentPost.length > 3
+                                              ? 3
+                                              : dataGetCommentPost.length,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          isThreeLine: true,
+                                          leading: CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                dataGetCommentPost[index]
+                                                    .profileImage),
+                                          ),
+                                          title: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0, 10, 0, 0),
+                                            child: Text(
+                                              dataGetCommentPost[index]
+                                                  .aliasName,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      (dataGetCommentPost[index]
+                                                                  .userStatus ==
+                                                              0)
+                                                          ? Colors.red
+                                                          : (dataGetCommentPost[
+                                                                          index]
+                                                                      .userId ==
+                                                                  dataMyAccont
+                                                                      .userId)
+                                                              ? Colors.blue
+                                                              : Colors.black),
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                            '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                                            textAlign: TextAlign.justify,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                              decoration: TextDecoration.none,
+                                            ),
+                                          ),
+                                          dense: true,
+                                          // trailing: Text('Horse'),
+                                        );
+                                      }),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            (dataMyAccont == null)
+                                ? CircleAvatar(
+                                    child: Icon(Icons.account_box_outlined),
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(dataMyAccont.profileImage),
+                                  ),
                             SizedBox(
-                              height: 10,
+                              width: 5,
                             ),
-                            RatingBar.builder(
-                              initialRating: (dataGetScoreFood == null)
-                                  ? 0
-                                  : dataGetScoreFood.score,
-                              minRating: 0.5,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 4.0),
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                // color: Colors.amber,
-                                color: Colors.blue,
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                side: BorderSide(width: 2, color: Colors.blue),
+                                primary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
                               ),
-                              onRatingUpdate: (rating) async {
-                                if (token == "") {
+                              onPressed: () {
+                                if (dataMyAccont == null) {
                                   showDialog(
                                       context: context,
                                       builder: (_) {
@@ -1014,201 +1949,29 @@ class _ShowFoodState extends State<ShowFood> {
                                     // Navigator.pop(context);
                                   });
                                 } else {
-                                  ratings = rating;
-                                  ScoreFoodInputModel scoreFoodInputModel =
-                                      await scoreFoodInput(rating, token);
+                                  Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => CommentFood(
+                                                    autoFocus: true,
+                                                    dataFood: dataFood,
+                                                  )))
+                                      .then((value) => this.getCommentPosts());
                                 }
                               },
-                            ),
-                            Divider(
-                              indent: 60,
-                              endIndent: 60,
-                              color: Colors.teal.shade100,
-                              thickness: 1.0,
-                            ),
-                            Column(
-                              children: [
-                                (dataGetCommentPost == null)
-                                    ? Container()
-                                    : (dataGetCommentPost.length == 0)
-                                        ? Container()
-                                        : Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 8),
-                                            child: Row(
-                                              children: [
-                                                TextButton(
-                                                    onPressed: () {
-                                                      if (dataMyAccont ==
-                                                          null) {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (_) {
-                                                              return LoginPage();
-                                                            }).then((value) {
-                                                          if (value != null) {
-                                                            this.findUser();
-                                                          }
-
-                                                          // Navigator.pop(context);
-                                                        });
-                                                      } else {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    CommentFood(
-                                                                      autoFocus:
-                                                                          false,
-                                                                      dataFood:
-                                                                          dataFood,
-                                                                    ))).then(
-                                                            (value) => this
-                                                                .getCommentPosts());
-                                                      }
-                                                    },
-                                                    child: Text(
-                                                        "ดูความเห็นทั้งหมด")),
-                                              ],
-                                            ),
-                                          ),
-                                (token == "")
-                                    ? Container()
-                                    : (dataMyAccont == null ||
-                                            dataGetCommentPost == null)
-                                        ? Center(
-                                            child: CircularProgressIndicator())
-                                        : ListView.builder(
-                                            padding: EdgeInsets.only(top: 0),
-                                            shrinkWrap: true,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            itemCount: (dataGetCommentPost ==
-                                                    null)
-                                                ? 0
-                                                : dataGetCommentPost.length > 3
-                                                    ? 3
-                                                    : dataGetCommentPost.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                isThreeLine: true,
-                                                leading: CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      dataGetCommentPost[index]
-                                                          .profileImage),
-                                                ),
-                                                title: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 10, 0, 0),
-                                                  child: Text(
-                                                    dataGetCommentPost[index]
-                                                        .aliasName,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: (dataGetCommentPost[
-                                                                        index]
-                                                                    .userStatus ==
-                                                                0)
-                                                            ? Colors.red
-                                                            : (dataGetCommentPost[
-                                                                            index]
-                                                                        .userId ==
-                                                                    dataMyAccont
-                                                                        .userId)
-                                                                ? Colors.blue
-                                                                : Colors.black),
-                                                  ),
-                                                ),
-                                                subtitle: Text(
-                                                  '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                                                  textAlign: TextAlign.justify,
-                                                  style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 12,
-                                                    color: Colors.black,
-                                                    decoration:
-                                                        TextDecoration.none,
-                                                  ),
-                                                ),
-                                                dense: true,
-                                                // trailing: Text('Horse'),
-                                              );
-                                            }),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  (dataMyAccont == null)
-                                      ? CircleAvatar(
-                                          child:
-                                              Icon(Icons.account_box_outlined),
-                                        )
-                                      : CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              dataMyAccont.profileImage),
-                                        ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      side: BorderSide(
-                                          width: 2, color: Colors.blue),
-                                      primary: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                    ),
-                                    onPressed: () {
-                                      if (dataMyAccont == null) {
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) {
-                                              return LoginPage();
-                                            }).then((value) {
-                                          if (value != null) {
-                                            this.findUser();
-                                          }
-
-                                          // Navigator.pop(context);
-                                        });
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CommentFood(
-                                                      autoFocus: true,
-                                                      dataFood: dataFood,
-                                                    ))).then(
-                                            (value) => this.getCommentPosts());
-                                      }
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          100,
-                                      height: 50,
-                                      child: Row(
-                                        children: [
-                                          Center(
-                                              child: Text(
-                                            'แสดงความคิดเห็น...',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 16),
-                                          )),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              child: Container(
+                                width: MediaQuery.of(context).size.width - 100,
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Center(
+                                        child: Text(
+                                      'แสดงความคิดเห็น...',
+                                      style: TextStyle(
+                                          color: Colors.black54, fontSize: 16),
+                                    )),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -1216,10 +1979,13 @@ class _ShowFoodState extends State<ShowFood> {
                       ),
                     ],
                   ),
-                )
-              ]))
-            ],
-          );
+                ),
+              ],
+            ),
+          )
+        ]))
+      ],
+    );
   }
 }
 

@@ -6,6 +6,7 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/pages/drawer/notification_page/notification.dart';
+import 'package:easy_cook/pages/drawer/setting/chooseSettingPage.dart';
 import 'package:easy_cook/pages/drawer/switch%20accounts/switch_accountsPage.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
@@ -112,8 +113,10 @@ class _DrawersState extends State<Drawers> {
                     child: DrawerHeader(
                       decoration: BoxDecoration(
                         image: DecorationImage(
+                          // image: new NetworkImage(
+                          //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                           image: new NetworkImage(
-                              "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                              "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -313,12 +316,14 @@ class _DrawersState extends State<Drawers> {
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
-                      // style: TextStyle(
-                      //     fontWeight: FontWeight.w300,
-                      //     fontSize: 23,
-                      //     color: Colors.black)
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChooseSettingPage()),
+                      );
+                    },
                   ),
                   ListTile(
                     leading: Icon(

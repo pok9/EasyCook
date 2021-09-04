@@ -5,6 +5,7 @@ import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/payment_channel.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/withdraw/withdrawPage.dart';
 import 'package:easy_cook/pages/profile_page/wallet/walletPage.dart';
+import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

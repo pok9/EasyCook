@@ -10,7 +10,7 @@ import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/profile_page/profile2BottomNavbar.dart';
 
 import 'package:easy_cook/pages/search_page/search1.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/test.dart';
 

@@ -10,6 +10,7 @@ import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/payment_channe
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/channel_Topup/topupCreditCardPage.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/withdraw/withdrawPage.dart';
 import 'package:easy_cook/pages/profile_page/wallet/walletPage.dart';
+import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/cupertino.dart';
@@ -176,8 +177,10 @@ class _ScrollProfilePage2BottomNavbarState extends State
                   height: 390,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                        // image: NetworkImage(
+                        //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                         image: new NetworkImage(
+                              "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -680,11 +683,11 @@ class _ScrollProfilePage2BottomNavbarState extends State
                             },
                           );
                         }
-                        return Container();
+                        return Center(child: CircularProgressIndicator());
                       },
                     );
             }
-            return Container();
+            return Center(child: CircularProgressIndicator());
           },
         ),
       ),

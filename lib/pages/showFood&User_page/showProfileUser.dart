@@ -11,6 +11,7 @@ import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportUser.dart';
+import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -393,8 +394,10 @@ class _ProfileUserState extends State<ProfileUser> {
                                       height: deviceSize.height * 0.4,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            image: NetworkImage(
-                                                "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                                            // image: NetworkImage(
+                                            //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                                             image: new NetworkImage(
+                              "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
                                             fit: BoxFit.cover),
                                       ),
                                       child: Padding(
