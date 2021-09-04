@@ -3,7 +3,6 @@ import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 
-
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class _CategoryState extends State<Category> {
     setState(() {
       token = preferences.getString("tokens");
 
-      if (token != "") {
+      if (token != "" || token != null) {
         getMyAccounts();
         getMybuy();
       }
@@ -185,7 +184,11 @@ class _CategoryState extends State<Category> {
                                                   req_rid:
                                                       categoryFood[index].rid,
                                                 )),
-                                      );
+                                      ).then((value) {
+                                        if (token != "" || token == null) {
+                                          getMybuy();
+                                        }
+                                      });
                                     }
                                   },
                                   child: Container(

@@ -108,7 +108,7 @@ class _Feed2PageState extends State<Feed2Page> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("responseFeed_follow = " + response.statusCode.toString());
+    
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -116,7 +116,6 @@ class _Feed2PageState extends State<Feed2Page> {
 
           dataMybuy = mybuyFromJson(responseString);
           for (var item in dataMybuy) {
-            print(item.recipeId);
             checkBuy.add(item.recipeId.toString());
           }
         });

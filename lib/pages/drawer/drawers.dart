@@ -116,7 +116,7 @@ class _DrawersState extends State<Drawers> {
                           // image: new NetworkImage(
                           //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                           image: new NetworkImage(
-                              "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
+                              "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -199,10 +199,7 @@ class _DrawersState extends State<Drawers> {
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
-                      // style: TextStyle(
-                      //     fontWeight: FontWeight.w300,
-                      //     fontSize: 23,
-                      //     color: Colors.black)
+                     
                     ),
                     onTap: () {
                       Navigator.push(

@@ -876,7 +876,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       new BorderRadius.circular(
-                                                          24.0),
+                                                          10.0),
                                                   child: Image(
                                                     fit: BoxFit.cover,
                                                     // alignment: Alignment.topRight,
@@ -937,7 +937,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       new BorderRadius.circular(
-                                                          24.0),
+                                                          10.0),
                                                   gradient: LinearGradient(
                                                     colors: [
                                                       Colors.black,

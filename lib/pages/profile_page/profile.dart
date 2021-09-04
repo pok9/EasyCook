@@ -832,7 +832,7 @@ class _ScrollProfilePageState extends State
                               width: deviceSize.width,
                               height: 300,
                               child: ClipRRect(
-                                borderRadius: new BorderRadius.circular(24.0),
+                                borderRadius: new BorderRadius.circular(10.0),
                                 child: Image(
                                   fit: BoxFit.cover,
                                   // alignment: Alignment.topRight,
@@ -850,7 +850,7 @@ class _ScrollProfilePageState extends State
                               height: 60.0,
                               width: deviceSize.width,
                               decoration: BoxDecoration(
-                                borderRadius: new BorderRadius.circular(24.0),
+                                borderRadius: new BorderRadius.circular(10.0),
                                 gradient: LinearGradient(
                                   colors: [
                                     Colors.black,

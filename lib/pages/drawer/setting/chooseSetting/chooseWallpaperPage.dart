@@ -9,8 +9,8 @@ class _ChooseWallpaperPageState extends State<ChooseWallpaperPage> {
   List<String> imgWallaper = [
     'https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg',
     'https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711',
-    'https://images.pexels.com/photos/844297/pexels-photo-844297.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
     'https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+    'https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif'
   ];
 
   int id = 0;
@@ -57,7 +57,6 @@ class _ChooseWallpaperPageState extends State<ChooseWallpaperPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Radio(
-                          
                           value: index,
                           groupValue: id,
                           onChanged: (value) {
@@ -66,7 +65,6 @@ class _ChooseWallpaperPageState extends State<ChooseWallpaperPage> {
                             });
                           },
                           activeColor: Colors.white,
-                          
                         ),
                       ],
                     ),

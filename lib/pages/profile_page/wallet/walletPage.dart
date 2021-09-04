@@ -104,7 +104,7 @@ class _WalletPageState extends State<WalletPage> {
                                             height: 12,
                                           ),
                                           Text(
-                                            '${NumberFormat("#,###.##").format(data_DataAc.balance)} ›',
+                                            '${NumberFormat("#,###.##").format(data_DataAc.balance)}',
                                             style: TextStyle(
                                                 fontSize: 24,
                                                 color: Colors.white,

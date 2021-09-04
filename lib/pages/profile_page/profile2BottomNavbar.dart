@@ -180,7 +180,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         // image: NetworkImage(
                         //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                          image: new NetworkImage(
-                              "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
+                              "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -384,7 +384,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                                 image: NetworkImage(
-                                    "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
+                                    "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
                                 fit: BoxFit.cover),
                           ),
 
@@ -746,7 +746,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         width: deviceSize.width,
                         height: 300,
                         child: ClipRRect(
-                          borderRadius: new BorderRadius.circular(24.0),
+                          borderRadius: new BorderRadius.circular(10.0),
                           child: Image(
                             fit: BoxFit.cover,
                             image: NetworkImage(data_RecipePost[index].image),
@@ -762,7 +762,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         height: 60.0,
                         width: deviceSize.width,
                         decoration: BoxDecoration(
-                          borderRadius: new BorderRadius.circular(24.0),
+                          borderRadius: new BorderRadius.circular(10.0),
                           gradient: LinearGradient(
                             colors: [
                               Colors.black,
