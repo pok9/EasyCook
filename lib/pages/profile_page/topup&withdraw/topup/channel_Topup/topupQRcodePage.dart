@@ -8,6 +8,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,15 +68,14 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
       // print("imgUrl => ${imgUrl}");
       downloadFile(filename, imgUrl);
       // responseImgUrl = await http.get(Uri.parse("https://unsplash.com/photos/iEJVyyevw-U/download?force=true"));
-      
+
       // print(responseImgUrl.body);
-    
 
       // downloadFile("myimage.jpg",
       //     "https://unsplash.com/photos/iEJVyyevw-U/download?force=true");
 
       // downloadFile(filename, imgUrl);
-      print(imgUrl);
+      // print(imgUrl);
     } else {
       return null;
     }
@@ -82,6 +83,7 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
 
   File imageFile;
 
+  String QRimage1, QRimage2, QRimage3, QRimage4;
   Future<void> downloadFile(String filename, String imgUrl) async {
     Dio dio = Dio();
     var dir = await getApplicationDocumentsDirectory();
@@ -100,14 +102,42 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
       print(e);
     }
 
-    setState(() {
-      downloading = false;
-      progressString = "Completed";
-      imageFile = File("${dir.path}/${filename}");
+    downloading = false;
+    progressString = "Completed";
+    imageFile = File("${dir.path}/${filename}");
 
-      print(imageFile.runtimeType);
-      print(imageFile.path);
+    imageFile.readAsString().then((String contents) {
+      // print(contents);
+
+      int indexBase64 = contents.indexOf('base64,');
+      print('indexBase64, = $indexBase64');
+      int indexBase64End = contents.indexOf('/>', indexBase64);
+      print('indexBase64End, = $indexBase64End');
+      QRimage1 = contents.substring(indexBase64 + 7, indexBase64End - 2);
+
+      indexBase64 = contents.indexOf('base64,', indexBase64End);
+      print('indexBase64, = $indexBase64');
+      indexBase64End = contents.indexOf('/>', indexBase64);
+      print('indexBase64End, = $indexBase64End');
+      QRimage2 = contents.substring(indexBase64 + 7, indexBase64End - 2);
+
+      indexBase64 = contents.indexOf('base64,', indexBase64End);
+      print('indexBase64, = $indexBase64');
+      indexBase64End = contents.indexOf('/>', indexBase64);
+      print('indexBase64End, = $indexBase64End');
+      QRimage3 = contents.substring(indexBase64 + 7, indexBase64End - 2);
+      QRimage3 = QRimage3.replaceAll("&#43;", "+");
+
+      indexBase64 = contents.indexOf('base64,', indexBase64End);
+      print('indexBase64, = $indexBase64');
+      indexBase64End = contents.indexOf('/>', indexBase64);
+      print('indexBase64End, = $indexBase64End');
+      QRimage4 = contents.substring(indexBase64 + 7, indexBase64End - 2);
+
+      setState(() {});
     });
+
+    // print(imageFile);
 
     print("Download completed");
   }
@@ -118,14 +148,6 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
         appBar: AppBar(
           title: Text('QR เติมเงิน'),
         ),
-        // body: (imageFile == null)
-        //     ? Container()
-        //     : SvgPicture.asset(
-        //         "/data/user/0/com.example.easy_cook/app_flutter/qrcode_test.svg",
-        //         placeholderBuilder: (BuildContext context) => Container(
-        //             padding: const EdgeInsets.all(30.0),
-        //             child: const CircularProgressIndicator()),
-        //       ),
         body: Center(
           child: downloading
               ? Container(
@@ -141,32 +163,117 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
                           height: 10,
                         ),
                         Text(
-                          "Downloading File $progressString",
+                          "กำลังโหลดรูปภาพ $progressString",
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
                   ),
                 )
-              : (imageFile == null)
+              : (QRimage1 == null && QRimage2 == null)
                   ? Container()
-                  // : Center(child: Text(imageFile.toString()),)
-                  // : Image.file((imageFile))
-                  : SvgPicture.asset(
-                      'assets/topupQRcode/mono-tool-text.svg',
-                      height: 50,
-                      width: 50,
-                      placeholderBuilder: (BuildContext context) => Container(
-                          padding: const EdgeInsets.all(30.0),
-                          child: Column(
-                            children: [
-                              Text(imageFile.path),
-                              const CircularProgressIndicator(),
-                            ],
-                          )),
+
+                  // : ListView(children: [Text(subText)],)
+
+                  : ListView(
+                      children: [
+                        DisplayPictureScreen(
+                          imageAnalysed: QRimage1,
+                          index: 1,
+                        ),
+                        DisplayPictureScreen(
+                          imageAnalysed: QRimage2,
+                          index: 2,
+                        ),
+                        DisplayPictureScreen(
+                          imageAnalysed: QRimage3,
+                          index: 3,
+                        ),
+                        // RaisedButton(onPressed: () {
+                        //   _save();
+                        // })
+                        Container(
+                            margin: const EdgeInsets.all(5),
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                _save();
+                              },
+                              label: Text('ดาวน์โหลด QR Code'),
+                              icon: Icon(Icons.download),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                              ),
+                            )),
+                      ],
                     ),
-          // : Container(child: Image.file(imageFile,fit: BoxFit.cover,))
-          // : Text(responseImgUrl.body)
         ));
+  }
+
+  _save() async {
+    final directory = await getApplicationDocumentsDirectory();
+    File fileImg = File('${directory.path}/testImage3.jpg');
+
+    Uint8List bytes = fileImg.readAsBytesSync();
+
+    final result = await ImageGallerySaver.saveImage(Uint8List.fromList(bytes),
+        quality: 60, name: "QrCode_${DateTime.now().millisecondsSinceEpoch}");
+    print(result);
+   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("ดาวน์โหลด QR Code เสร็จแล้ว"),
+    ));
+  }
+}
+
+class DisplayPictureScreen extends StatefulWidget {
+  final String imageAnalysed;
+  final int index;
+  const DisplayPictureScreen({Key key, this.imageAnalysed, this.index})
+      : super(key: key);
+
+  @override
+  _DisplayPictureScreenState createState() => _DisplayPictureScreenState();
+}
+
+class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
+  File fileImg;
+  bool isLoading = true;
+
+  void writeFile() async {
+    final decodedBytes = base64Decode(widget.imageAnalysed);
+    final directory = await getApplicationDocumentsDirectory();
+    fileImg = File('${directory.path}/testImage${this.widget.index}.jpg');
+    print(fileImg.path);
+    fileImg.writeAsBytesSync(List.from(decodedBytes));
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      writeFile();
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size sizeScreen = MediaQuery.of(context).size;
+    return isLoading
+        ? Center(child: CircularProgressIndicator())
+        : (this.widget.index == 2)
+            ? Container(
+                width: sizeScreen.width,
+                height: 100,
+                child: Image.file(fileImg))
+            : Padding(
+                padding: (this.widget.index == 1)
+                    ? const EdgeInsets.fromLTRB(8, 8, 8, 0)
+                    : const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                child: Image.file(fileImg),
+              );
   }
 }
