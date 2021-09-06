@@ -518,6 +518,9 @@ class _SearchPage2State extends State<SearchPage2> {
                       child: ListView.builder(
                         itemCount: (dataUser == null) ? 0 : dataUser.length,
                         itemBuilder: (context, index) {
+                           if(dataUser[index].accessStatus == 0){
+                                return Container();
+                              }else
                           return GestureDetector(
                             onTap: () {
                               if (token == "") {

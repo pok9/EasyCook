@@ -10,9 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SwitchAccountsPage extends StatefulWidget {
-
- 
-
   @override
   _SwitchAccountsPageState createState() => _SwitchAccountsPageState();
 }
@@ -79,8 +76,23 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
 
     for (int i = 0; i < listEmail.length; i++) {
       LoginModel login = await logins_StringList(listEmail[i], listPassword[i]);
-      data_DataAc_StringList = await getMyAccounts_StringList(login.token);
-      ListData_DataAc.add(data_DataAc_StringList);
+      print("login ==>> ${login.success}");
+      if (login.success == 1) {
+        data_DataAc_StringList = await getMyAccounts_StringList(login.token);
+        ListData_DataAc.add(data_DataAc_StringList);
+      } else {
+        int index = listEmail.indexOf(listEmail[i]);
+        print("index => $index");
+        if (index > -1) {
+          listEmail.removeAt(index);
+          preferences.setStringList("listEmail", listEmail);
+          print("listEmail =>  ${listEmail}");
+          List<String> listPassword = preferences.getStringList("listPassword");
+          listPassword.removeAt(index);
+          preferences.setStringList("listPassword", listPassword);
+          print("listPassword =>  ${listPassword}");
+        }
+      }
     }
     setState(() {});
   }
@@ -204,7 +216,10 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
                   showDialog(
                       context: context,
                       builder: (_) {
-                        return LoginPage(closeFacebook: 0,token: token,);
+                        return LoginPage(
+                          closeFacebook: 0,
+                          token: token,
+                        );
                       });
                 },
               )
@@ -293,11 +308,12 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
 
     print(jsonEncode(data));
 
-    final response =
-        await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
-      "Authorization": "Bearer ${this.token}",
-      "Content-Type": "application/json"
-    });
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer ${this.token}",
+          "Content-Type": "application/json"
+        });
     print("responseUpdateTokenFirebase = ${response.statusCode}");
     print("response.body = ${response.body}");
   }

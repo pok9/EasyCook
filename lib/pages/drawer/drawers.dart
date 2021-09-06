@@ -136,21 +136,12 @@ class _DrawersState extends State<Drawers> {
                               ),
                               borderRadius: BorderRadius.circular(100),
                             ),
-                            child: InkWell(
-                             onTap: () async {
-                            await showDialog(
-                                context: context,
-                                builder: (_) => ImageDialog(
-                                      image: this.widget.data_DataAc.profileImage,
-                                    ));
-                          },
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 39,
-                                  backgroundColor: Colors.grey,
-                                  backgroundImage: NetworkImage(
-                                      this.widget.data_DataAc.profileImage),
-                                ),
+                            child: Center(
+                              child: CircleAvatar(
+                                radius: 39,
+                                backgroundColor: Colors.grey,
+                                backgroundImage: NetworkImage(
+                                    this.widget.data_DataAc.profileImage),
                               ),
                             ),
                           ),

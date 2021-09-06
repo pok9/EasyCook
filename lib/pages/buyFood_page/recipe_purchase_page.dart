@@ -6,8 +6,11 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model/getCommentPost_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -308,6 +311,33 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                   : dataGetCommentPost.length,
                           itemBuilder: (context, index) {
                             return ListTile(
+                              onTap: (){
+                                 if (myDataUser == null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileUser(
+                                            reqUid: dataGetCommentPost[index]
+                                                .userId,
+                                          )),
+                                );
+                              } else if ((myDataUser.userId ==
+                                  dataGetCommentPost[index].userId)) {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfilePage();
+                                }));
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileUser(
+                                            reqUid: dataGetCommentPost[index]
+                                                .userId,
+                                          )),
+                                );
+                              }
+                              },
                               isThreeLine: true,
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(

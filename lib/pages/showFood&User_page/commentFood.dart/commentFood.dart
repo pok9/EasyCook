@@ -9,7 +9,10 @@ import 'package:easy_cook/models/showfood/commentFood_model/deleteComment_model.
 import 'package:easy_cook/models/showfood/commentFood_model/getCommentPost_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportComment.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -241,6 +244,33 @@ class _CommentFoodState extends State<CommentFood> {
                             : dataGetCommentPost.length,
                         itemBuilder: (context, index) {
                           return ListTile(
+                            onTap: () {
+                              if (data_DataAc == null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileUser(
+                                            reqUid: dataGetCommentPost[index]
+                                                .userId,
+                                          )),
+                                );
+                              } else if ((data_DataAc.userId ==
+                                  dataGetCommentPost[index].userId)) {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfilePage();
+                                }));
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileUser(
+                                            reqUid: dataGetCommentPost[index]
+                                                .userId,
+                                          )),
+                                );
+                              }
+                            },
                             isThreeLine: true,
                             leading: CircleAvatar(
                               backgroundImage: NetworkImage(
@@ -493,6 +523,17 @@ class _CommentFoodState extends State<CommentFood> {
               padding: EdgeInsets.all(5),
               child: Row(
                 children: [
+                  (data_DataAc == null)
+                      ? CircleAvatar(
+                          child: Icon(Icons.account_box_outlined),
+                        )
+                      : CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(data_DataAc.profileImage),
+                        ),
+                  SizedBox(
+                    width: 5,
+                  ),
                   Expanded(
                       child: TextFormField(
                     onChanged: (value) {

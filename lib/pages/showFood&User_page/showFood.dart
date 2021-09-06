@@ -11,15 +11,18 @@ import 'package:easy_cook/models/showfood/scoreFood/scoreFoodInputModel.dart';
 
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/commentFood.dart/commentFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportFood.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mime/mime.dart';
@@ -1867,6 +1870,41 @@ class _ShowFoodState extends State<ShowFood> {
                                               : dataGetCommentPost.length,
                                       itemBuilder: (context, index) {
                                         return ListTile(
+                                          onTap: () {
+                                            if (dataMyAccont == null) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProfileUser(
+                                                          reqUid:
+                                                              dataGetCommentPost[
+                                                                      index]
+                                                                  .userId,
+                                                        )),
+                                              );
+                                            } else if ((dataMyAccont.userId ==
+                                                dataGetCommentPost[index]
+                                                    .userId)) {
+                                              Navigator.push(context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) {
+                                                return ProfilePage();
+                                              }));
+                                            } else {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProfileUser(
+                                                          reqUid:
+                                                              dataGetCommentPost[
+                                                                      index]
+                                                                  .userId,
+                                                        )),
+                                              );
+                                            }
+                                          },
                                           isThreeLine: true,
                                           leading: CircleAvatar(
                                             backgroundImage: NetworkImage(

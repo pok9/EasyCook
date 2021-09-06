@@ -65,7 +65,7 @@ class _ManageMembersState extends State<ManageMembers> {
   //ข้อมูลผู้ใช้
   List<DataUser> dataUser;
   Future<Null> getSearchUserNames(String userName) async {
-    print("55556656565656565656565656665656");
+    
     dataUser = [];
     final String apiUrl =
         "http://apifood.comsciproject.com/pjUsers/searchUser/" + userName;
@@ -313,75 +313,87 @@ class _ManageMembersState extends State<ManageMembers> {
                             shrinkWrap: true,
                             itemCount: (dataUser == null) ? 0 : dataUser.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {
-                                  if (dataMyAccount.userId ==
-                                      dataUser[index].userId) {
-                                    Navigator.push(context,
-                                        CupertinoPageRoute(builder: (context) {
-                                      return ProfilePage();
-                                    }));
-                                  } else {
-                                    Navigator.push(context,
-                                        CupertinoPageRoute(builder: (context) {
-                                      return ProfileUser(
-                                        reqUid: dataUser[index].userId,
-                                      );
-                                    }));
-                                  }
-                                },
-                                title: Text("${dataUser[index].nameSurname}(${dataUser[index].aliasName})"),
-                                subtitle: Text(""),
-                                leading: Container(
-                                  height: 40.0,
-                                  width: 40.0,
-                                  decoration: new BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: new DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: new NetworkImage(
-                                              dataUser[index].profileImage))),
-                                ),
-                                trailing: (dataMyAccount.userId ==
-                                        dataUser[index].userId)
-                                    ? null
-                                    : OutlinedButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            barrierColor: Colors.black26,
-                                            context: context,
-                                            builder: (context) {
-                                              return CustomAlertDialog(
-                                                title: "จัดการสมาชิก",
-                                                description:
-                                                    "คุณแน่ใจใช่ไหมที่จะจัดการสมาชิกนี้",
-                                                token: token,
-                                                uid: dataUser[index].userId,
-                                                image: dataUser[index]
-                                                    .profileImage,
-                                                aliasName:
-                                                    dataUser[index].aliasName,
-                                                nameSurname:
-                                                    dataUser[index].nameSurname,
-                                                getSearchUserNames:
-                                                    getSearchUserNames(
-                                                        searchUser),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Text(
-                                          'Ban',
-                                          style: TextStyle(color: Colors.white),
+                              if (dataUser[index].accessStatus == 0) {
+                                return Container();
+                              } else
+                                return ListTile(
+                                  onTap: () {
+                                    if (dataMyAccount.userId ==
+                                        dataUser[index].userId) {
+                                      Navigator.push(context,
+                                          CupertinoPageRoute(
+                                              builder: (context) {
+                                        return ProfilePage();
+                                      }));
+                                    } else {
+                                      Navigator.push(context,
+                                          CupertinoPageRoute(
+                                              builder: (context) {
+                                        return ProfileUser(
+                                          reqUid: dataUser[index].userId,
+                                        );
+                                      }));
+                                    }
+                                  },
+                                  title: Text(
+                                      "${dataUser[index].nameSurname}(${dataUser[index].aliasName})"),
+                                  subtitle: Text(dataUser[index].email),
+                                  leading: Container(
+                                    height: 40.0,
+                                    width: 40.0,
+                                    decoration: new BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: new DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: new NetworkImage(
+                                                dataUser[index].profileImage))),
+                                  ),
+                                  trailing: (dataMyAccount.userId ==
+                                          dataUser[index].userId)
+                                      ? null
+                                      : OutlinedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              barrierColor: Colors.black26,
+                                              context: context,
+                                              builder: (context) {
+                                                return CustomAlertDialog(
+                                                  title: "จัดการสมาชิก",
+                                                  description:
+                                                      "คุณแน่ใจใช่ไหมที่จะจัดการสมาชิกนี้",
+                                                  token: token,
+                                                  uid: dataUser[index].userId,
+                                                  image: dataUser[index]
+                                                      .profileImage,
+                                                  aliasName:
+                                                      dataUser[index].aliasName,
+                                                  nameSurname: dataUser[index]
+                                                      .nameSurname,
+                                                  email: dataUser[index].email,
+                                                  getSearchUserNames:
+                                                      getSearchUserNames(
+                                                          searchUser),
+                                                );
+                                              },
+                                            ).then((value){
+                                              getSearchUserNames(searchUser);
+                                              setState(() {});
+                                            });
+                                            
+                                          },
+                                          child: Text(
+                                            'Ban',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          style: OutlinedButton.styleFrom(
+                                            primary: Colors.black,
+                                            backgroundColor: Colors.red,
+                                            side: BorderSide(
+                                                width: 0, color: Colors.grey),
+                                          ),
                                         ),
-                                        style: OutlinedButton.styleFrom(
-                                          primary: Colors.black,
-                                          backgroundColor: Colors.red,
-                                          side: BorderSide(
-                                              width: 0, color: Colors.grey),
-                                        ),
-                                      ),
-                              );
+                                );
                             },
                           ),
                         ),
@@ -505,9 +517,10 @@ class CustomAlertDialog extends StatefulWidget {
       this.image,
       this.aliasName,
       this.nameSurname,
+      this.email,
       this.getSearchUserNames});
 
-  final String title, description, token, image, aliasName, nameSurname;
+  final String title, description, token, image, aliasName, nameSurname, email;
   final int uid;
 
   final Future<Null> getSearchUserNames;
@@ -572,6 +585,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           SizedBox(height: 15),
           Text(this.widget.aliasName),
           Text(this.widget.nameSurname),
+          Text(this.widget.email),
           SizedBox(height: 15),
           Text(
             "${widget.description}",
