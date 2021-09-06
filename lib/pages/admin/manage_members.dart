@@ -65,7 +65,6 @@ class _ManageMembersState extends State<ManageMembers> {
   //ข้อมูลผู้ใช้
   List<DataUser> dataUser;
   Future<Null> getSearchUserNames(String userName) async {
-    
     dataUser = [];
     final String apiUrl =
         "http://apifood.comsciproject.com/pjUsers/searchUser/" + userName;
@@ -73,12 +72,13 @@ class _ManageMembersState extends State<ManageMembers> {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-        // dataRecipe = searchRecipeNameFromJson(responseString).data;
-        dataUser = searchUserNameFromJson(responseString).data;
-      });
+          // dataRecipe = searchRecipeNameFromJson(responseString).data;
+          dataUser = searchUserNameFromJson(responseString).data;
+        });
     } else {
       // flag = true;
       return null;
@@ -375,11 +375,30 @@ class _ManageMembersState extends State<ManageMembers> {
                                                           searchUser),
                                                 );
                                               },
-                                            ).then((value){
-                                              getSearchUserNames(searchUser);
-                                              setState(() {});
+                                            ).then((value) {
+                                              if (value != null) {
+                                                for (var item in dataUser) {
+                                                  print(item.email);
+                                                }
+                                                print("=====================");
+                                                dataUser.removeWhere(
+                                                    (element) =>
+                                                        element.email ==
+                                                        dataUser[index].email);
+                                                for (var item in dataUser) {
+                                                  print(item.email);
+                                                }
+                                                print("=====================");
+                                                // print(dataUser.length);
+                                                if (mounted) {
+                                                  setState(() {});
+                                                }
+                                              }
+
+                                              // print("555555BBBB");
+                                              // getSearchUserNames(searchUser);
+                                              // if (mounted) setState(() {});
                                             });
-                                            
                                           },
                                           child: Text(
                                             'Ban',
@@ -536,7 +555,6 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
       "user_ID": uid,
     };
 
-    print(jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
@@ -544,6 +562,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           "Content-Type": "application/json"
         });
 
+    print(response.body);
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -601,7 +620,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
             child: InkWell(
               highlightColor: Colors.grey[200],
               onTap: () async {
-                Navigator.pop(context);
+                Navigator.pop(context, "success");
 
                 showDialog(
                   context: context,

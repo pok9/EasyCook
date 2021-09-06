@@ -80,7 +80,7 @@ class _Feed2PageState extends State<Feed2Page> {
   }
 
   //ข้อมูลตัวเอง
-   MyAccount data_MyAccount;
+  MyAccount data_MyAccount;
   DataMyAccount data_DataAc;
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
@@ -93,7 +93,7 @@ class _Feed2PageState extends State<Feed2Page> {
         final String responseString = response.body;
 
         data_MyAccount = myAccountFromJson(responseString);
-          data_DataAc = data_MyAccount.data[0];
+        data_DataAc = data_MyAccount.data[0];
       });
     } else {
       return null;
@@ -108,7 +108,7 @@ class _Feed2PageState extends State<Feed2Page> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    
+
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -192,7 +192,8 @@ class _Feed2PageState extends State<Feed2Page> {
         body: DefaultTabController(
           length: 2,
           child: Scaffold(
-            backgroundColor: Color(0xFFf3f5f9),
+            // backgroundColor: Color(0xFFf3f5f9),
+            backgroundColor: Colors.white,
             appBar: new PreferredSize(
               preferredSize: Size.fromHeight(40),
               child: new Container(
@@ -231,7 +232,7 @@ class _Feed2PageState extends State<Feed2Page> {
                       controller: _scrollController,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        mainAxisExtent: 300,
+                        mainAxisExtent: 260,
                         maxCrossAxisExtent:
                             (deviceSize.width > 400) ? 250 : 200,
                       ),
@@ -317,52 +318,10 @@ class _Feed2PageState extends State<Feed2Page> {
                               }
                             }
                           },
-                          child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          new Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: new NetworkImage(
-                                                        dummyListDataNewfeedsglobal[
-                                                                index]
-                                                            .profileImage))),
-                                          ),
-                                        ],
-                                      ),
-                                      new SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Expanded(
-                                        child: new Text(
-                                          dummyListDataNewfeedsglobal[index]
-                                              .aliasName,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          icon: Icon(Icons.more_vert),
-                                          onPressed: () {
-                                            // print("more_vert" + index.toString());
-                                          })
-                                    ],
-                                  ),
-                                ),
                                 Stack(
                                   children: [
                                     Container(
@@ -380,46 +339,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                                       .image),
                                               fit: BoxFit.cover)),
                                     ),
-                                    (dummyListDataNewfeedsglobal[index].score ==
-                                            0)
-                                        ? Container()
-                                        : Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                8, 8, 0, 0),
-                                            child: Row(
-                                              // crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.blue,
-                                                  size: 20,
-                                                ),
-                                                SizedBox(
-                                                  width: 1,
-                                                ),
-                                                Text(
-                                                  dummyListDataNewfeedsglobal[
-                                                              index]
-                                                          .score
-                                                          .toString() +
-                                                      "/5",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Text(
-                                                  '(${dummyListDataNewfeedsglobal[index].count})',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                   
                                     (dummyListDataNewfeedsglobal[index].price ==
                                             0)
                                         ? Container()
@@ -479,6 +399,85 @@ class _Feed2PageState extends State<Feed2Page> {
                                   ],
                                 ),
                                 Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(4, 4, 4, 0),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          new Container(
+                                            height: 20.0,
+                                            width: 20.0,
+                                            decoration: new BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: new DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: new NetworkImage(
+                                                        dummyListDataNewfeedsglobal[
+                                                                index]
+                                                            .profileImage))),
+                                          ),
+                                        ],
+                                      ),
+                                      new SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Expanded(
+                                        child: new Text(
+                                          dummyListDataNewfeedsglobal[index]
+                                              .aliasName,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                       (dummyListDataNewfeedsglobal[index].score ==
+                                            0)
+                                        ? Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 8, 0, 0),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Colors.blue,
+                                                  size: 15,
+                                                ),
+                                                SizedBox(
+                                                  width: 1,
+                                                ),
+                                                Text(
+                                                  dummyListDataNewfeedsglobal[
+                                                              index]
+                                                          .score
+                                                          .toString() +
+                                                      "/5",
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Text(
+                                                  '(${dummyListDataNewfeedsglobal[index].count})',
+                                                  style: TextStyle(
+                                                     fontSize: 10,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -494,7 +493,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                           textAlign: TextAlign.justify,
                                           style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 20),
+                                              fontSize: 15),
                                         ),
                                       ),
                                     ],
@@ -503,11 +502,6 @@ class _Feed2PageState extends State<Feed2Page> {
                                 Expanded(child: Container()),
                               ],
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            elevation: 5,
-                            // margin: EdgeInsets.all(10),
                           ),
                         );
                       }),
