@@ -9,6 +9,7 @@ import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -232,7 +233,7 @@ class _Feed2PageState extends State<Feed2Page> {
                       controller: _scrollController,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        mainAxisExtent: 260,
+                        mainAxisExtent: 250,
                         maxCrossAxisExtent:
                             (deviceSize.width > 400) ? 250 : 200,
                       ),
@@ -319,7 +320,7 @@ class _Feed2PageState extends State<Feed2Page> {
                             }
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
                             child: Column(
                               children: [
                                 Stack(
@@ -491,9 +492,11 @@ class _Feed2PageState extends State<Feed2Page> {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.justify,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15),
+                                          // style: TextStyle(
+                                            
+                                          //     color: Colors.black,
+                                          //     fontSize: 15),
+                                          style: GoogleFonts.lato(fontSize: 15),
                                         ),
                                       ),
                                     ],
@@ -602,7 +605,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                GoogleFonts.lato(),
                                           ),
                                           SizedBox(
                                             width: 5,
