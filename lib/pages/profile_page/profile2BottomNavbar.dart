@@ -143,15 +143,23 @@ class _ScrollProfilePage2BottomNavbarState extends State
             controller: tabController,
             tabs: <Widget>[
               Tab(
-                child: Text(
-                  "อาหาร",
-                  style: TextStyle(color: Colors.black),
+                // child: Text(
+                //   "อาหาร",
+                //   style: TextStyle(color: Colors.black),
+                // ),
+                child: Icon(
+                  Icons.food_bank_outlined,
+                  color: Colors.blue,
                 ),
               ),
               Tab(
-                child: Text(
-                  "SnapFood",
-                  style: TextStyle(color: Colors.black),
+                // child: Text(
+                //   "SnapFood",
+                //   style: TextStyle(color: Colors.black),
+                // ),
+                child: Icon(
+                  Icons.photo_camera_back_outlined,
+                  color: Colors.blue,
                 ),
               ),
             ],
@@ -180,7 +188,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         // image: NetworkImage(
                         //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                         image: new NetworkImage(
-                            "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
+                            "https://wallpapercave.com/wp/wp2757967.gif"),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -393,7 +401,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                                 image: NetworkImage(
-                                    "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
+                                    "https://wallpapercave.com/wp/wp2757967.gif"),
                                 fit: BoxFit.cover),
                           ),
 
@@ -725,6 +733,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
       controller: tabController,
       children: <Widget>[
         ListView.builder(
+          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: data_RecipePost.length,
@@ -835,13 +844,25 @@ class _ScrollProfilePage2BottomNavbarState extends State
         GridView.count(
           padding: EdgeInsets.zero,
           crossAxisCount: 3,
-          children: Colors.primaries.map((color) {
-            return Container(color: color, height: 150.0);
+          crossAxisSpacing: 1,
+          mainAxisSpacing: 1,
+          // maxCrossAxisExtent: 200.0,
+
+          children: data_RecipePost.map((data) {
+            return Container(
+              width: deviceSize.width,
+              height: 300,
+              child: ClipRRect(
+                borderRadius: new BorderRadius.circular(0.0),
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(data.image),
+                ),
+              ),
+            );
           }).toList(),
         ),
       ],
     );
   }
 }
-
-
