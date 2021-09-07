@@ -89,6 +89,29 @@ class _DrawersState extends State<Drawers> {
     });
   }
 
+
+  Future<Null> getMyAccounts() async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer ${this.widget.token}"});
+
+    if (response.statusCode == 200) {
+      // if (mounted)
+      setState(() {
+      final String responseString = response.body;
+
+      this.widget.data_MyAccount = myAccountFromJson(responseString);
+      this.widget.data_DataAc = this.widget.data_MyAccount.data[0];
+
+      // getMyPost();
+      });
+
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -116,8 +139,7 @@ class _DrawersState extends State<Drawers> {
                         image: DecorationImage(
                           // image: new NetworkImage(
                           //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                          image: new NetworkImage(
-                              "https://cutewallpaper.org/21/gif-wallpaper-anime/Pin-by-Buu-Dang-on-iPhone-6S-Plus-Wallpapers-Must-to-Have-in-.gif"),
+                          image: AssetImage('${this.widget.data_DataAc.wallpaper}'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -320,7 +342,9 @@ class _DrawersState extends State<Drawers> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ChooseSettingPage()),
-                      );
+                      ).then((value) => {
+                        getMyAccounts()
+                      });
                     },
                   ),
                   ListTile(

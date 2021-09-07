@@ -41,7 +41,8 @@ class _ProfileUserState extends State<ProfileUser> {
   String token = ""; //โทเคน
 
   //ดึงข้อมูล Token
-  Future<Null> findUser() async {//1
+  Future<Null> findUser() async {
+    //1
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (mounted)
       setState(() {
@@ -60,7 +61,8 @@ class _ProfileUserState extends State<ProfileUser> {
   //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)
   MyAccount data_MyAccount;
   DataMyAccount data_DataAc; //ข้อมูลของเรา(ข้อมูลเข้าสู่ระบบ)-คนที่เข้ามาดู
-  Future<Null> getMyAccounts() async {//2
+  Future<Null> getMyAccounts() async {
+    //2
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
     final response = await http
@@ -233,7 +235,8 @@ class _ProfileUserState extends State<ProfileUser> {
 
   List<Mybuy> dataMybuy;
   List<String> checkBuy = [];
-  Future<Null> getMybuy() async {//3
+  Future<Null> getMybuy() async {
+    //3
     checkBuy = [];
     final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
 
@@ -264,16 +267,20 @@ class _ProfileUserState extends State<ProfileUser> {
       // Persistent AppBar that never scrolls
       backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
-        title: Text(data_PostUser == null ? "" : data_PostUser.aliasName),
+      // flexibleSpace: Container(
+      //   decoration: BoxDecoration(
+      //     image: DecorationImage(image: NetworkImage('https://media4.giphy.com/media/QVI76pRcwyrZlBwUpU/200w.webp?cid=ecf05e47nkfvwzl8s2kc7d99vh35o7rj8fysks84vggixccu&rid=200w.webp&ct=g'),fit: BoxFit.cover)
+      //   ),
+      // ),
+        title: Text(data_PostUser == null ? "" : data_PostUser.aliasName  +data_PostUser.userId.toString()),
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
-            if(checkPressCountFollowAndUnFollow == 0){
-              Navigator.pop(context,checkPressCountFollowAndUnFollow);
-            }else{
+            if (checkPressCountFollowAndUnFollow == 0) {
+              Navigator.pop(context, checkPressCountFollowAndUnFollow);
+            } else {
               Navigator.pop(context);
             }
-            
           },
           icon: Icon(Icons.arrow_back),
         ),
@@ -405,10 +412,9 @@ class _ProfileUserState extends State<ProfileUser> {
                                       height: deviceSize.height * 0.4,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            // image: NetworkImage(
-                                            //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                                            image: new NetworkImage(
-                                                "https://cdnb.artstation.com/p/assets/images/images/024/538/827/original/pixel-jeff-clipa-s.gif?1582740711"),
+                                            image: (data_PostUser.wallpaper == null) ? AssetImage(
+                                                'assets/wallpapers/default.jpg') : AssetImage(
+                                                '${data_PostUser.wallpaper}'),
                                             fit: BoxFit.cover),
                                       ),
                                       child: Padding(

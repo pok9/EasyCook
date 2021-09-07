@@ -175,8 +175,7 @@ class _ScrollProfilePageState extends State
                   height: 390,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
+                        image: AssetImage('${data_DataAc.wallpaper}'),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -395,8 +394,7 @@ class _ScrollProfilePageState extends State
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
+                                image: AssetImage('${data_DataAc.wallpaper}'),
                                 fit: BoxFit.cover),
                           ),
 

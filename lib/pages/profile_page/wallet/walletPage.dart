@@ -79,8 +79,7 @@ class _WalletPageState extends State<WalletPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://png.pngtree.com/thumb_back/fw800/back_our/20190628/ourmid/pngtree-blue-background-with-geometric-forms-image_280879.jpg"),
+                                        image: AssetImage('${data_DataAc.wallpaper}'),
                                         fit: BoxFit.cover),
                                   ),
 

@@ -109,6 +109,8 @@ dependencies:
   transparent_image: ^2.0.0
   
   image_gallery_saver: ^1.6.9
+
+  fluttertoast: ^8.0.8
   
   
 
@@ -143,6 +145,7 @@ flutter:
     - assets/logos/
     - assets/loadGif/
     - assets/topupQRcode/
+    - assets/wallpapers/
     # - assets/logos/facebook.jpg
     # - assets/logos/drink.png
     # - assets/logos/vegetables.png

@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/profile/myPost_model.dart';
@@ -49,6 +49,10 @@ class _ScrollProfilePage2BottomNavbarState extends State
     //     getMyAccounts();
     //   }
     // });
+    if (token == null) {
+      token = "";
+    }
+    print(token);
     return token;
   }
 
@@ -187,8 +191,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
                     image: DecorationImage(
                         // image: NetworkImage(
                         //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                        image: new NetworkImage(
-                            "https://wallpapercave.com/wp/wp2757967.gif"),
+                        // image: new NetworkImage(
+                        //     "https://c.tenor.com/0DbmgOWBjjkAAAAC/rain-heavy.gif"),
+                        image: AssetImage('${data_DataAc.wallpaper}'),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -400,8 +405,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://wallpapercave.com/wp/wp2757967.gif"),
+                                image: AssetImage('${data_DataAc.wallpaper}'),
                                 fit: BoxFit.cover),
                           ),
 

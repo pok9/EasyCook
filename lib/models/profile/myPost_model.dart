@@ -15,6 +15,7 @@ class MyPost {
         this.aliasName,
         this.userStatus,
         this.profileImage,
+        this.wallpaper,
         this.countPost,
         this.countFollower,
         this.countFollowing,
@@ -26,6 +27,7 @@ class MyPost {
     String aliasName;
     int userStatus;
     String profileImage;
+    String wallpaper;
     int countPost;
     int countFollower;
     int countFollowing;
@@ -37,6 +39,7 @@ class MyPost {
         aliasName: json["alias_name"],
         userStatus: json["user_status"],
         profileImage: json["profile_image"],
+        wallpaper: json["wallpaper"],
         countPost: json["countPost"],
         countFollower: json["countFollower"],
         countFollowing: json["countFollowing"],
@@ -49,6 +52,7 @@ class MyPost {
         "alias_name": aliasName,
         "user_status": userStatus,
         "profile_image": profileImage,
+        "wallpaper": wallpaper,
         "countPost": countPost,
         "countFollower": countFollower,
         "countFollowing": countFollowing,

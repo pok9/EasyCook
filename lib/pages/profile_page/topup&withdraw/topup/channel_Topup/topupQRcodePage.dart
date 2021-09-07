@@ -51,7 +51,7 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
     final String apiUrl = "https://apifood.comsciproject.com/pjUsers/topup_qr";
 
     // List<st>
-    var data = {"amount": 50};
+    var data = {"amount": this.widget.amount_to_fill};
 
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),

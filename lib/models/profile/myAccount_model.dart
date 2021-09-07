@@ -11,28 +11,19 @@ String myAccountToJson(MyAccount data) => json.encode(data.toJson());
 class MyAccount {
     MyAccount({
         this.success,
-        this.message,
         this.data,
     });
 
     int success;
-    String message;
     List<DataMyAccount> data;
 
     factory MyAccount.fromJson(Map<String, dynamic> json) => MyAccount(
         success: json["success"],
-        message: json["message"],
-        // data: json["data"] != null ? new List<DataMyAccount>.from( json["data"].map((x) => DataMyAccount.fromJson(x))) : List<DataMyAccount>()
         data: List<DataMyAccount>.from(json["data"].map((x) => DataMyAccount.fromJson(x))),
-    
-    
-    
-    
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
-        "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
     };
 }
@@ -48,6 +39,7 @@ class DataMyAccount {
         this.accessStatus,
         this.balance,
         this.profileImage,
+        this.wallpaper,
     });
 
     int userId;
@@ -59,6 +51,7 @@ class DataMyAccount {
     int accessStatus;
     double balance;
     String profileImage;
+    String wallpaper;
 
     factory DataMyAccount.fromJson(Map<String, dynamic> json) => DataMyAccount(
         userId: json["user_ID"],
@@ -70,6 +63,7 @@ class DataMyAccount {
         accessStatus: json["access_status"],
         balance: json["balance"].toDouble(),
         profileImage: json["profile_image"],
+        wallpaper: json["wallpaper"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -82,5 +76,6 @@ class DataMyAccount {
         "access_status": accessStatus,
         "balance": balance,
         "profile_image": profileImage,
+        "wallpaper": wallpaper,
     };
 }
