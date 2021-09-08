@@ -492,25 +492,24 @@ class _ShowFoodState extends State<ShowFood> {
                                   dataGetScoreFood = snapshot.data;
                                   return buildBody(ingredient, howto1, howto2);
                                 }
-                                return Center(
-                                    child: CircularProgressIndicator());
+                                return Scaffold(body: Center(child: CircularProgressIndicator(),));
                               },
                             );
                           }
-                          return Center(child: CircularProgressIndicator());
+                          return Scaffold(body: Center(child: CircularProgressIndicator(),));
                         },
                       );
                     }
-                    return Center(child: CircularProgressIndicator());
+                    return Scaffold(body: Center(child: CircularProgressIndicator(),));
                   },
                 );
                 ;
               }
-              return Center(child: CircularProgressIndicator());
+              return Scaffold(body: Center(child: CircularProgressIndicator(),));
             },
           );
         }
-        return Center(child: CircularProgressIndicator());
+        return Scaffold(body: Center(child: CircularProgressIndicator(),));
       },
     );
 

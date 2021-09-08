@@ -119,9 +119,10 @@ dev_dependencies:
     sdk: flutter
   
 flutter_native_splash:
-  color: "#42a5f5"
-  image: assets/splash/logo.jpg
-  android_gravity: fill
+  color: "FFFFFF"
+  image: assets/splash/Easy_Cook.png
+  android_disable_fullscreen: true
+  # android_gravity: fill
 
 flutter_icons:
   android: true
