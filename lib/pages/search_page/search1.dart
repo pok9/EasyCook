@@ -15,20 +15,20 @@ class SearchPage1 extends StatefulWidget {
 
 class _SearchPage1State extends State<SearchPage1> {
   var menuFood = [
-    'เมนูน้ำ',
-    'เมนูต้ม',
-    'เมนูสุขภาพ',
-    'เมนูนึ่ง',
-    'เมนูตุ๋น',
-    'เมนูทอด'
+    "เมนูน้ำ",
+    "เมนูต้ม",
+    "เมนูสุขภาพ",
+    "เมนูนึ่ง",
+    "เมนูตุ๋น",
+    "เมนูทอด",
   ];
   var iconFood = [
-    'assets/logos/drink.png',
-    'assets/logos/pot.png',
-    'assets/logos/vegetables.png',
-    'assets/logos/steam.png',
-    'assets/logos/stew.png',
-    'assets/logos/fried.png'
+    "https://cdn-icons-png.flaticon.com/512/4913/4913194.png",
+    "https://cdn-icons-png.flaticon.com/512/3063/3063364.png",
+    "https://cdn-icons-png.flaticon.com/512/5601/5601409.png",
+    "https://cdn-icons-png.flaticon.com/512/3063/3063360.png",
+    "https://cdn-icons-png.flaticon.com/512/1302/1302319.png",
+    "https://cdn-icons-png.flaticon.com/512/1143/1143203.png",
   ];
 
   @override
@@ -173,30 +173,6 @@ class _SearchPage1State extends State<SearchPage1> {
             children: <Widget>[
               ListView(
                 children: [
-                  dividerTextCustom("ส่วนผสม"),
-                  Container(
-                    height: 75,
-                    child: Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        crossAxisCount: 5,
-                        children: [
-                          MenuFeature(
-                            iconAsset:
-                                "https://image.flaticon.com/icons/png/128/5019/5019495.png",
-                            name: "เมนูน้ำ",
-                          ),
-                          MenuFeature(
-                            iconAsset:
-                                "https://image.flaticon.com/icons/png/128/5019/5019495.png",
-                            name: "เมนูสุขภาพ",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   dividerTextCustom("หมวดหมู่"),
                   Container(
                     height: 150,
@@ -206,121 +182,10 @@ class _SearchPage1State extends State<SearchPage1> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           crossAxisCount: 5,
-                          children: List.generate(6, (index) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.black,
-                                      backgroundImage:
-                                          AssetImage(iconFood[index]),
-                                    ),
-                                  ),
-                                  Text(
-                                    menuFood[index],
-                                    // style: Theme.of(context).textTheme.headline5,
-                                  ),
-                                ],
-                              ),
-                            );
-                          })),
-                    ),
-                  ),
-                  dividerTextCustom("หมวดหมู่"),
-                  Container(
-                    height: 75,
-                    child: Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: GridView.count(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          crossAxisCount: 5,
-                          children: List.generate(1, (index) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.black,
-                                      backgroundImage:
-                                          AssetImage(iconFood[index]),
-                                    ),
-                                  ),
-                                  Text(
-                                    menuFood[index],
-                                    // style: Theme.of(context).textTheme.headline5,
-                                  ),
-                                ],
-                              ),
-                            );
-                          })),
-                    ),
-                  ),
-                  dividerTextCustom("หมวดหมู่"),
-                  Container(
-                    height: 150,
-                    child: Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: GridView.count(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          crossAxisCount: 5,
-                          children: List.generate(6, (index) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.black,
-                                      backgroundImage:
-                                          AssetImage(iconFood[index]),
-                                    ),
-                                  ),
-                                  Text(
-                                    menuFood[index],
-                                    // style: Theme.of(context).textTheme.headline5,
-                                  ),
-                                ],
-                              ),
-                            );
-                          })),
-                    ),
-                  ),
-                  dividerTextCustom("หมวดหมู่"),
-                  Container(
-                    height: 150,
-                    child: Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: GridView.count(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          crossAxisCount: 5,
-                          children: List.generate(6, (index) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    child: CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.black,
-                                      backgroundImage:
-                                          AssetImage(iconFood[index]),
-                                    ),
-                                  ),
-                                  Text(
-                                    menuFood[index],
-                                    // style: Theme.of(context).textTheme.headline5,
-                                  ),
-                                ],
-                              ),
+                          children: List.generate(menuFood.length, (index) {
+                            return MenuFeature(
+                              iconAsset: iconFood[index],
+                              name: menuFood[index],
                             );
                           })),
                     ),

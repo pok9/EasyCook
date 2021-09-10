@@ -213,7 +213,8 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                             ),
                             (dataFood.score == null)
                                 ? Container()
-                                : Text(dataFood.score.toString() + "/5(${dataFood.count})")
+                                : Text(dataFood.score.toString() +
+                                    "/5(${dataFood.count})")
                           ],
                         ),
                       ),
@@ -275,16 +276,20 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                           ],
                         ),
                       ),
-                      (dataGetCommentPost.isEmpty)
+                      (dataGetCommentPost == null)
                           ? Container()
-                          : Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child: Divider(
-                                thickness: 1,
-                              ),
-                            ),
-                      (dataGetCommentPost.isEmpty)
+                          : (dataGetCommentPost.isEmpty)
+                              ? Container()
+                              : Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Divider(
+                                    thickness: 1,
+                                  ),
+                                ),
+                     (dataGetCommentPost == null)
                           ? Container()
+                          : (dataGetCommentPost.isEmpty)
+                              ? Container()
                           : Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
@@ -311,32 +316,32 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                   : dataGetCommentPost.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              onTap: (){
-                                 if (myDataUser == null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProfileUser(
-                                            reqUid: dataGetCommentPost[index]
-                                                .userId,
-                                          )),
-                                );
-                              } else if ((myDataUser.userId ==
-                                  dataGetCommentPost[index].userId)) {
-                                Navigator.push(context,
-                                    CupertinoPageRoute(builder: (context) {
-                                  return ProfilePage();
-                                }));
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProfileUser(
-                                            reqUid: dataGetCommentPost[index]
-                                                .userId,
-                                          )),
-                                );
-                              }
+                              onTap: () {
+                                if (myDataUser == null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileUser(
+                                              reqUid: dataGetCommentPost[index]
+                                                  .userId,
+                                            )),
+                                  );
+                                } else if ((myDataUser.userId ==
+                                    dataGetCommentPost[index].userId)) {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfilePage();
+                                  }));
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileUser(
+                                              reqUid: dataGetCommentPost[index]
+                                                  .userId,
+                                            )),
+                                  );
+                                }
                               },
                               isThreeLine: true,
                               leading: CircleAvatar(

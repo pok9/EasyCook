@@ -120,9 +120,8 @@ class _ChooseWallpaperPageState extends State<ChooseWallpaperPage> {
 
                               // });
                               id = index;
-                              updateWallpaper(imgWallaper[index]);
-
                               setState(() {});
+                              updateWallpaper(imgWallaper[index]);
                             },
                             child: Stack(
                               children: [
@@ -153,9 +152,9 @@ class _ChooseWallpaperPageState extends State<ChooseWallpaperPage> {
                                         value: index,
                                         groupValue: id,
                                         onChanged: (value) {
-                                          // setState(() {
-                                          //   id = index;
-                                          // });
+                                          id = index;
+                                          setState(() {});
+                                          updateWallpaper(imgWallaper[index]);
                                         },
                                         activeColor: Colors.white,
                                       ),

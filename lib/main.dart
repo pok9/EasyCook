@@ -22,7 +22,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel',
-    'High Importance Notifications', 
+    'High Importance Notifications',
     'This channel is used for important notifications.',
     importance: Importance.high);
 
@@ -50,7 +50,11 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return MaterialApp(
-      home: SlidePage(flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,channel: channel, ),
+      home: SlidePage(
+        flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
+        channel: channel,
+      ),
+    
       routes: {
         '/register-page': (context) => RegisterPage(),
         '/register2-page': (context) => RegisterPage2(),

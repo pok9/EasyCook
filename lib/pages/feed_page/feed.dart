@@ -1150,7 +1150,10 @@ class _FeedPageState extends State<FeedPage> {
                         Stack(
                           children: [
                             (data_DataAc == null)
-                                ? Container()
+                                ? CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 16,
+                                      )
                                 : (data_DataAc.userId ==
                                         dataRecommendRecipe.userId)
                                     ? Container()

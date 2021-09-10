@@ -103,6 +103,7 @@ class _ShowFoodState extends State<ShowFood> {
     //     getcoreFood();
     //   }
     // });
+
     return preferences.getString("tokens");
   }
 
@@ -481,6 +482,13 @@ class _ShowFoodState extends State<ShowFood> {
                         future: getMyAccounts(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Scaffold(
+                                body: Center(
+                              child: CircularProgressIndicator(),
+                            ));
+                          }
                           if (snapshot.hasData) {
                             datas = snapshot.data;
                             dataMyAccont = datas.data[0];
@@ -492,24 +500,36 @@ class _ShowFoodState extends State<ShowFood> {
                                   dataGetScoreFood = snapshot.data;
                                   return buildBody(ingredient, howto1, howto2);
                                 }
-                                return Scaffold(body: Center(child: CircularProgressIndicator(),));
+                                return Scaffold(
+                                    body: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
                               },
                             );
                           }
-                          return Scaffold(body: Center(child: CircularProgressIndicator(),));
+                          return buildBody(ingredient, howto1, howto2);
                         },
                       );
                     }
-                    return Scaffold(body: Center(child: CircularProgressIndicator(),));
+                    return Scaffold(
+                        body: Center(
+                      child: CircularProgressIndicator(),
+                    ));
                   },
                 );
                 ;
               }
-              return Scaffold(body: Center(child: CircularProgressIndicator(),));
+              return Scaffold(
+                  body: Center(
+                child: CircularProgressIndicator(),
+              ));
             },
           );
         }
-        return Scaffold(body: Center(child: CircularProgressIndicator(),));
+        return Scaffold(
+            body: Center(
+          child: CircularProgressIndicator(),
+        ));
       },
     );
 
@@ -1304,9 +1324,93 @@ class _ShowFoodState extends State<ShowFood> {
         SliverAppBar(
           title: Text(dataFood.recipeName + " " + this.req_rid.toString()),
           actions: [
-            (dataMyAccont.userId != dataFood.userId)
-                ? (dataMyAccont.userStatus == 0)
-                    ? Container()
+            (dataMyAccont == null || dataFood == null)
+                ? Container()
+                : (dataMyAccont.userId != dataFood.userId)
+                    ? (dataMyAccont.userStatus == 0)
+                        ? Container()
+                        : PopupMenuButton(
+                            child: Center(
+                                child: Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Icon(Icons.more_horiz_outlined),
+                            )),
+                            onSelected: (value) {
+                              if (value == 1) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ReportFood();
+                                    }).then((value) async {
+                                  if (value != null) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (contex) {
+                                          return AlertDialog(
+                                              content: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text("กรุณารอสักครู่...   "),
+                                              CircularProgressIndicator()
+                                            ],
+                                          ));
+                                        });
+
+                                    AddReport dataAddReport = await addReport(
+                                        dataFood.userId.toString(),
+                                        "food",
+                                        dataFood.rid.toString(),
+                                        "รายงานสูตรอาหาร",
+                                        value[0],
+                                        value[1]);
+
+                                    Navigator.pop(context);
+                                    String reportText1;
+                                    String reportText2;
+                                    Color color;
+                                    if (dataAddReport.success == 1) {
+                                      reportText1 = "รายงานสำเร็จ";
+                                      reportText2 = "ขอบคุณสำหรับการรายงาน";
+                                      color = Colors.green;
+                                    } else {
+                                      reportText1 = "รายงานไม่สำเร็จ";
+                                      reportText2 = "โปรดรายงานใหม่ในภายหลัง";
+                                      color = Colors.red;
+                                    }
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          Future.delayed(
+                                              Duration(milliseconds: 1500), () {
+                                            Navigator.of(context).pop(true);
+                                          });
+                                          return alertDialog_successful_or_unsuccessful(
+                                              reportText1, color, reportText2);
+                                        });
+                                  }
+                                });
+                              }
+                            },
+                            itemBuilder: (context) {
+                              return [
+                                PopupMenuItem(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.flag,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text('รายงานสูตรอาหารนี้'),
+                                    ],
+                                  ),
+                                  value: 1,
+                                ),
+                              ];
+                            })
                     : PopupMenuButton(
                         child: Center(
                             child: Padding(
@@ -1314,132 +1418,51 @@ class _ShowFoodState extends State<ShowFood> {
                           child: Icon(Icons.more_horiz_outlined),
                         )),
                         onSelected: (value) {
-                          if (value == 1) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ReportFood();
-                                }).then((value) async {
-                              if (value != null) {
-                                showDialog(
-                                    context: context,
-                                    builder: (contex) {
-                                      return AlertDialog(
-                                          content: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text("กรุณารอสักครู่...   "),
-                                          CircularProgressIndicator()
-                                        ],
-                                      ));
-                                    });
-
-                                AddReport dataAddReport = await addReport(
-                                    dataFood.userId.toString(),
-                                    "food",
-                                    dataFood.rid.toString(),
-                                    "รายงานสูตรอาหาร",
-                                    value[0],
-                                    value[1]);
-
-                                Navigator.pop(context);
-                                String reportText1;
-                                String reportText2;
-                                Color color;
-                                if (dataAddReport.success == 1) {
-                                  reportText1 = "รายงานสำเร็จ";
-                                  reportText2 = "ขอบคุณสำหรับการรายงาน";
-                                  color = Colors.green;
-                                } else {
-                                  reportText1 = "รายงานไม่สำเร็จ";
-                                  reportText2 = "โปรดรายงานใหม่ในภายหลัง";
-                                  color = Colors.red;
-                                }
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      Future.delayed(
-                                          Duration(milliseconds: 1500), () {
-                                        Navigator.of(context).pop(true);
-                                      });
-                                      return alertDialog_successful_or_unsuccessful(
-                                          reportText1, color, reportText2);
-                                    });
-                              }
+                          if (value == 0) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditFoodPage(
+                                        rid: dataFood.rid,
+                                        uid: dataFood.userId,
+                                        recipeName: dataFood.recipeName,
+                                        description: dataFood.description,
+                                        imageFood: dataFood.image,
+                                        suitableFor: dataFood.suitableFor,
+                                        takeTime: dataFood.takeTime,
+                                        foodCategory: dataFood.foodCategory,
+                                        price: dataFood.price.toString(),
+                                        dataIngredient: dataIngredient,
+                                        dataHowto: dataHowto,
+                                      )),
+                            ).then((value) {
+                              getPost();
                             });
+                          } else if (value == 1) {
+                            showDialog(
+                              barrierColor: Colors.black26,
+                              context: context,
+                              builder: (context) {
+                                return CustomAlertDialog(
+                                  title: "ลบสูตรอาหาร",
+                                  description:
+                                      "คุณแน่ใจใช่ไหมที่จะลบสูตรอาหารนี้",
+                                  token: this.token,
+                                  recipe_ID: this.req_rid,
+                                );
+                              },
+                            );
                           }
                         },
                         itemBuilder: (context) {
-                          return [
-                            PopupMenuItem(
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.flag,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text('รายงานสูตรอาหารนี้'),
-                                ],
-                              ),
-                              value: 1,
-                            ),
-                          ];
-                        })
-                : PopupMenuButton(
-                    child: Center(
-                        child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Icon(Icons.more_horiz_outlined),
-                    )),
-                    onSelected: (value) {
-                      if (value == 0) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditFoodPage(
-                                    rid: dataFood.rid,
-                                    uid: dataFood.userId,
-                                    recipeName: dataFood.recipeName,
-                                    description: dataFood.description,
-                                    imageFood: dataFood.image,
-                                    suitableFor: dataFood.suitableFor,
-                                    takeTime: dataFood.takeTime,
-                                    foodCategory: dataFood.foodCategory,
-                                    price: dataFood.price.toString(),
-                                    dataIngredient: dataIngredient,
-                                    dataHowto: dataHowto,
-                                  )),
-                        ).then((value) {
-                          getPost();
-                        });
-                      } else if (value == 1) {
-                        showDialog(
-                          barrierColor: Colors.black26,
-                          context: context,
-                          builder: (context) {
-                            return CustomAlertDialog(
-                              title: "ลบสูตรอาหาร",
-                              description: "คุณแน่ใจใช่ไหมที่จะลบสูตรอาหารนี้",
-                              token: this.token,
-                              recipe_ID: this.req_rid,
+                          return List.generate(2, (index) {
+                            return PopupMenuItem(
+                              value: index,
+                              child: Text(actionDropdown[index]),
                             );
-                          },
-                        );
-                      }
-                    },
-                    itemBuilder: (context) {
-                      return List.generate(2, (index) {
-                        return PopupMenuItem(
-                          value: index,
-                          child: Text(actionDropdown[index]),
-                        );
-                      });
-                    },
-                  ),
+                          });
+                        },
+                      ),
           ],
           pinned: true,
           expandedHeight: 256.0,

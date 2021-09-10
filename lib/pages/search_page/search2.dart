@@ -405,7 +405,12 @@ class _SearchPage2State extends State<SearchPage2> {
                                                               children: [
                                                                 (dataAcUser ==
                                                                         null)
-                                                                    ? Container()
+                                                                    ? CircleAvatar(
+                                                                        backgroundColor:
+                                                                            Colors.white,
+                                                                        radius:
+                                                                            16,
+                                                                      )
                                                                     : (dataAcUser.userId ==
                                                                             dataRecipe[index].userId)
                                                                         ? Container()
@@ -518,48 +523,48 @@ class _SearchPage2State extends State<SearchPage2> {
                       child: ListView.builder(
                         itemCount: (dataUser == null) ? 0 : dataUser.length,
                         itemBuilder: (context, index) {
-                           if(dataUser[index].accessStatus == 0){
-                                return Container();
-                              }else
-                          return GestureDetector(
-                            onTap: () {
-                              if (token == "") {
-                                Navigator.push(context,
-                                    CupertinoPageRoute(builder: (context) {
-                                  return ProfileUser(
-                                    reqUid: dataUser[index].userId,
-                                  );
-                                }));
-                              } else if (dataAcUser.userId ==
-                                  dataUser[index].userId) {
-                                Navigator.push(context,
-                                    CupertinoPageRoute(builder: (context) {
-                                  return ProfilePage();
-                                }));
-                              } else {
-                                Navigator.push(context,
-                                    CupertinoPageRoute(builder: (context) {
-                                  return ProfileUser(
-                                    reqUid: dataUser[index].userId,
-                                  );
-                                }));
-                              }
-                            },
-                            child: ListTile(
-                              title: Text(dataUser[index].aliasName),
-                              subtitle: Text(dataUser[index].nameSurname),
-                              leading: Container(
-                                height: 40.0,
-                                width: 40.0,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: new NetworkImage(
-                                            dataUser[index].profileImage))),
+                          if (dataUser[index].accessStatus == 0) {
+                            return Container();
+                          } else
+                            return GestureDetector(
+                              onTap: () {
+                                if (token == "") {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfileUser(
+                                      reqUid: dataUser[index].userId,
+                                    );
+                                  }));
+                                } else if (dataAcUser.userId ==
+                                    dataUser[index].userId) {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfilePage();
+                                  }));
+                                } else {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfileUser(
+                                      reqUid: dataUser[index].userId,
+                                    );
+                                  }));
+                                }
+                              },
+                              child: ListTile(
+                                title: Text(dataUser[index].aliasName),
+                                subtitle: Text(dataUser[index].nameSurname),
+                                leading: Container(
+                                  height: 40.0,
+                                  width: 40.0,
+                                  decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: new DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: new NetworkImage(
+                                              dataUser[index].profileImage))),
+                                ),
                               ),
-                            ),
-                          );
+                            );
                         },
                       ),
                     ),

@@ -21,6 +21,7 @@ class CategoryModel {
         this.image,
         this.price,
         this.score,
+        this.count,
     });
 
     int rid;
@@ -32,8 +33,9 @@ class CategoryModel {
     String foodCategory;
     String description;
     String image;
-    int price;
+    double price;
     double score;
+    int count;
 
     factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         rid: json["rid"],
@@ -45,8 +47,9 @@ class CategoryModel {
         foodCategory: json["food_category"],
         description: json["description"],
         image: json["image"],
-        price: json["price"],
+        price: json["price"].toDouble(),
         score: json["score"].toDouble(),
+        count: json["count"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -61,5 +64,6 @@ class CategoryModel {
         "image": image,
         "price": price,
         "score": score,
+        "count": count,
     };
 }

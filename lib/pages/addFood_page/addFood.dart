@@ -1364,7 +1364,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
       const Category('เมนูต้ม'),
       const Category('เมนูสุขภาพ'),
       const Category('เมนูนึ่ง'),
-      const Category('เมนูตุ่น'),
+      const Category('เมนูตุ๋น'),
       const Category('เมนูทอด'),
     ];
 

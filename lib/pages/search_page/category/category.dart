@@ -37,7 +37,8 @@ class _CategoryState extends State<Category> {
     setState(() {
       token = preferences.getString("tokens");
 
-      if (token != "" || token != null) {
+      print(token);
+      if (token != "") {
         getMyAccounts();
         getMybuy();
       }
@@ -120,21 +121,14 @@ class _CategoryState extends State<Category> {
 
   @override
   Widget build(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
     return (this.widget.categoryName == "" ||
             this.widget.categoryFoodImage == "" ||
-            categoryFood == null ||
-            datas == null)
+            categoryFood == null)
         ? Material(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // Text(
-                //   "Initialization",
-                //   style: TextStyle(
-                //     fontSize: 32,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
                 SizedBox(height: 20),
                 CircularProgressIndicator()
               ],
@@ -162,13 +156,8 @@ class _CategoryState extends State<Category> {
                               child: Card(
                                 child: InkWell(
                                   onTap: () {
-                                    if (categoryFood[index].price == 0 ||
-                                        categoryFood[index].userId ==
-                                            dataUser.userId ||
-                                        checkBuy.indexOf(categoryFood[index]
-                                                .rid
-                                                .toString()) >=
-                                            0) {
+                                    if (categoryFood[index].price == 0) {
+                                      print(categoryFood[index].rid);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -176,209 +165,339 @@ class _CategoryState extends State<Category> {
                                                 categoryFood[index].rid)),
                                       );
                                     } else {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RecipePurchasePage(
-                                                  req_rid:
-                                                      categoryFood[index].rid,
-                                                )),
-                                      ).then((value) {
-                                        if (token != "" || token == null) {
-                                          getMybuy();
+                                      if (dataUser == null) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RecipePurchasePage(
+                                                    req_rid:
+                                                        categoryFood[index].rid,
+                                                  )),
+                                        );
+                                      } else {
+                                        if (dataUser.userId ==
+                                                categoryFood[index].userId ||
+                                            checkBuy.indexOf(categoryFood[index]
+                                                    .rid
+                                                    .toString()) >=
+                                                0) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => ShowFood(
+                                                    categoryFood[index].rid)),
+                                          );
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RecipePurchasePage(
+                                                      req_rid:
+                                                          categoryFood[index]
+                                                              .rid,
+                                                    )),
+                                          );
                                         }
-                                      });
+                                      }
                                     }
                                   },
-                                  child: Container(
-                                    height: 200,
-                                    child: Column(
-                                      children: [
-                                        Row(
+                                  child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 16, 16, 0),
+                                        child: Column(
                                           children: [
-                                            Expanded(
-                                              child: Container(
-                                                color: Colors.white,
-                                                height: 200,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(4, 4, 0, 0),
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Expanded(
-                                                                child: Text(
-                                                                  categoryFood[
-                                                                          index]
-                                                                      .recipeName,
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          15),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          (categoryFood[index]
-                                                                      .price ==
-                                                                  0)
-                                                              ? Container()
-                                                              : (categoryFood[index]
-                                                                          .userId ==
-                                                                      dataUser
-                                                                          .userId)
-                                                                  ? Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          top:
-                                                                              5),
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Expanded(
-                                                                              child: Text("สูตรของเรา", maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blue)))
-                                                                        ],
-                                                                      ),
-                                                                    )
-                                                                  : (checkBuy.indexOf(categoryFood[index]
-                                                                              .rid
-                                                                              .toString()) >=
-                                                                          0)
-                                                                      ? Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.only(top: 5),
-                                                                          child:
-                                                                              Row(
-                                                                            children: [
-                                                                              Expanded(child: Text("ซื้อสูตรนี้ไปแล้ว", maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.greenAccent)))
-                                                                            ],
-                                                                          ),
-                                                                        )
-                                                                      : Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.only(top: 5),
-                                                                          child:
-                                                                              Row(
-                                                                            children: [
-                                                                              Expanded(child: Text("\฿${numberFormat.format(categoryFood[index].price)}", maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.red)))
-                                                                            ],
-                                                                          ),
-                                                                        )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(4, 0, 4, 0),
-                                                      child: Divider(
-                                                        height: 1,
-                                                        thickness: 1,
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                            child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Text(
-                                                            categoryFood[index]
-                                                                .description,
-                                                            maxLines: 4,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                          ),
-                                                        ))
-                                                      ],
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(4, 0, 4, 0),
-                                                      child: Divider(
-                                                        height: 1,
-                                                        thickness: 1,
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(4, 0, 0, 8),
-                                                      child: Row(
-                                                        children: [
-                                                          CircleAvatar(
-                                                            backgroundImage:
-                                                                NetworkImage(
-                                                                    categoryFood[
-                                                                            index]
-                                                                        .profileImage),
-                                                            radius: 15,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Expanded(
-                                                            child: Text(
-                                                              categoryFood[
-                                                                      index]
-                                                                  .aliasName,
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                color: Colors.white,
-                                                height: 200,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Hero(
-                                                    tag:
-                                                        categoryFood[index].rid,
-                                                    child: Image.network(
-                                                      categoryFood[index].image,
+                                            Stack(
+                                              children: [
+                                                Container(
+                                                  width: deviceSize.width,
+                                                  height: 220,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(15.0),
+                                                    child: Image(
                                                       fit: BoxFit.cover,
+                                                      // alignment: Alignment.topRight,
+                                                      image: NetworkImage(
+                                                          categoryFood[index]
+                                                              .image), ////////////////////////////////////////////////////////
                                                     ),
                                                   ),
                                                 ),
+                                                (categoryFood[index].price == 0)
+                                                    ? Container()
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 8,
+                                                                right: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Stack(
+                                                              children: [
+                                                               
+                                                                (dataUser ==
+                                                                        null)
+                                                                    ?  CircleAvatar(
+                                                                            backgroundColor:
+                                                                                Colors.white,
+                                                                            radius:
+                                                                                16,
+                                                                          )
+                                                                    : (dataUser.userId ==
+                                                                            categoryFood[index].userId)
+                                                                        ? Container()
+                                                                        : CircleAvatar(
+                                                                            backgroundColor:
+                                                                                Colors.white,
+                                                                            radius:
+                                                                                16,
+                                                                          ),
+                                                                Positioned(
+                                                                  top: 1,
+                                                                  right: 1,
+                                                                  child:
+                                                                      Container(
+                                                                    height: 30,
+                                                                    width: 30,
+                                                                    child: 
+                                                                    (dataUser ==
+                                                                            null)
+                                                                        ? Image.network(
+                                                                            "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                        : (dataUser.userId ==
+                                                                                categoryFood[index].userId)
+                                                                            ? Container()
+                                                                            : (checkBuy.indexOf(categoryFood[index].rid.toString()) >= 0)
+                                                                                ? Image.network("https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                                                : Image.network("https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8, bottom: 8),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: Text(
+                                                      categoryFood[index]
+                                                          .recipeName,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                    ),
+                                                  ),
+                                                  (categoryFood[index].score == 0)
+                                                      ? Container()
+                                                      : Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.star,
+                                                              color:
+                                                                  Colors.blue,
+                                                              size: 18,
+                                                            ),
+                                                            Text(categoryFood[
+                                                                        index]
+                                                                    .score
+                                                                    .toString() +
+                                                                "/5(${categoryFood[index].count})")
+                                                          ],
+                                                        ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                              child: Row(
+                                                children: [
+                                                  new Container(
+                                                    height: 30.0,
+                                                    width: 30.0,
+                                                    decoration: new BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        image: new DecorationImage(
+                                                            fit: BoxFit.fill,
+                                                            image: new NetworkImage(
+                                                                categoryFood[index]
+                                                                    .profileImage))),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(categoryFood[index]
+                                                          .nameSurname +
+                                                      "(${categoryFood[index].aliasName})")
+                                                ],
                                               ),
                                             ),
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                                        ),
+                                      ),
+                                  // child: Container(
+                                  //   height: 200,
+                                  //   child: Column(
+                                  //     children: [
+                                  //       Row(
+                                  //         children: [
+                                  //           Expanded(
+                                  //             child: Container(
+                                  //               color: Colors.white,
+                                  //               height: 200,
+                                  //               child: Column(
+                                  //                 mainAxisAlignment:
+                                  //                     MainAxisAlignment
+                                  //                         .spaceBetween,
+                                  //                 children: [
+                                  //                   Padding(
+                                  //                     padding: const EdgeInsets
+                                  //                         .fromLTRB(4, 4, 0, 0),
+                                  //                     child: Column(
+                                  //                       children: [
+                                  //                         Row(
+                                  //                           children: [
+                                  //                             Expanded(
+                                  //                               child: Text(
+                                  //                                 categoryFood[
+                                  //                                         index]
+                                  //                                     .recipeName,
+                                  //                                 maxLines: 1,
+                                  //                                 overflow:
+                                  //                                     TextOverflow
+                                  //                                         .ellipsis,
+                                  //                                 textAlign:
+                                  //                                     TextAlign
+                                  //                                         .left,
+                                  //                                 style: TextStyle(
+                                  //                                     fontWeight:
+                                  //                                         FontWeight
+                                  //                                             .bold,
+                                  //                                     fontSize:
+                                  //                                         15),
+                                  //                               ),
+                                  //                             )
+                                  //                           ],
+                                  //                         ),
+                                  //                       ],
+                                  //                     ),
+                                  //                   ),
+                                  //                   Padding(
+                                  //                     padding: const EdgeInsets
+                                  //                         .fromLTRB(4, 0, 4, 0),
+                                  //                     child: Divider(
+                                  //                       height: 1,
+                                  //                       thickness: 1,
+                                  //                     ),
+                                  //                   ),
+                                  //                   Row(
+                                  //                     children: [
+                                  //                       Expanded(
+                                  //                           child: Padding(
+                                  //                         padding:
+                                  //                             const EdgeInsets
+                                  //                                 .all(4.0),
+                                  //                         child: Text(
+                                  //                           categoryFood[index]
+                                  //                               .description,
+                                  //                           maxLines: 4,
+                                  //                           overflow:
+                                  //                               TextOverflow
+                                  //                                   .ellipsis,
+                                  //                           textAlign:
+                                  //                               TextAlign.left,
+                                  //                         ),
+                                  //                       ))
+                                  //                     ],
+                                  //                   ),
+                                  //                   Padding(
+                                  //                     padding: const EdgeInsets
+                                  //                         .fromLTRB(4, 0, 4, 0),
+                                  //                     child: Divider(
+                                  //                       height: 1,
+                                  //                       thickness: 1,
+                                  //                     ),
+                                  //                   ),
+                                  //                   Padding(
+                                  //                     padding: const EdgeInsets
+                                  //                         .fromLTRB(4, 0, 0, 8),
+                                  //                     child: Row(
+                                  //                       children: [
+                                  //                         CircleAvatar(
+                                  //                           backgroundImage:
+                                  //                               NetworkImage(
+                                  //                                   categoryFood[
+                                  //                                           index]
+                                  //                                       .profileImage),
+                                  //                           radius: 15,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: 5,
+                                  //                         ),
+                                  //                         Expanded(
+                                  //                           child: Text(
+                                  //                             categoryFood[
+                                  //                                     index]
+                                  //                                 .aliasName,
+                                  //                             maxLines: 1,
+                                  //                             overflow:
+                                  //                                 TextOverflow
+                                  //                                     .ellipsis,
+                                  //                             textAlign:
+                                  //                                 TextAlign
+                                  //                                     .left,
+                                  //                           ),
+                                  //                         )
+                                  //                       ],
+                                  //                     ),
+                                  //                   )
+                                  //                 ],
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //           Expanded(
+                                  //             child: Container(
+                                  //               color: Colors.white,
+                                  //               height: 200,
+                                  //               child: Padding(
+                                  //                 padding:
+                                  //                     const EdgeInsets.all(8.0),
+                                  //                 child: Hero(
+                                  //                   tag:
+                                  //                       categoryFood[index].rid,
+                                  //                   child: Image.network(
+                                  //                     categoryFood[index].image,
+                                  //                     fit: BoxFit.cover,
+                                  //                   ),
+                                  //                 ),
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // ),
                                 ),
                               ),
                             ))))

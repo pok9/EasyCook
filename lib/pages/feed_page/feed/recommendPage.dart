@@ -53,7 +53,7 @@ class _RecommendPageState extends State<RecommendPage> {
 
           data_MyAccount = myAccountFromJson(responseString);
           data_DataAc = data_MyAccount.data[0];
-          print(data_DataAc.userId);
+
           // checkFollowings();
         });
     } else {
@@ -110,8 +110,6 @@ class _RecommendPageState extends State<RecommendPage> {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,8 +158,6 @@ class _RecommendPageState extends State<RecommendPage> {
                   builder: (context) => ShowFood(dataRecommendRecipe.rid)),
             );
           } else {
-            // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
-            // print("dataUser.userId = ${dataUser.userId}");
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -208,11 +204,11 @@ class _RecommendPageState extends State<RecommendPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusDirectional.circular(20)),
                 clipBehavior: Clip.antiAlias,
-                  child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/loadGif/loadding.gif',
-                      image: dataRecommendRecipe.image,
-                      fit: BoxFit.cover,
-                    ),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/loadGif/loadding.gif',
+                  image: dataRecommendRecipe.image,
+                  fit: BoxFit.cover,
+                ),
                 // child: Image.network(
                 //   dataRecommendRecipe.image,
                 //   fit: BoxFit.cover,
@@ -260,12 +256,18 @@ class _RecommendPageState extends State<RecommendPage> {
                       children: [
                         Stack(
                           children: [
-                            (data_DataAc.userId == dataRecommendRecipe.userId)
-                                ? Container()
-                                : CircleAvatar(
+                            (data_DataAc == null)
+                                ? CircleAvatar(
                                     backgroundColor: Colors.white,
                                     radius: 16,
-                                  ),
+                                  )
+                                : (data_DataAc.userId ==
+                                        dataRecommendRecipe.userId)
+                                    ? Container()
+                                    : CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 16,
+                                      ),
                             Positioned(
                               top: 1,
                               right: 1,

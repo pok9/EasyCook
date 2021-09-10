@@ -257,13 +257,7 @@ class _Feed2PageState extends State<Feed2Page> {
                         }
                         return InkWell(
                           onTap: () {
-                            print(deviceSize.width);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           ShowFood(dataNewfeedsglobal[index].rid)),
-                            // );
+                          
                             if (dummyListDataNewfeedsglobal[index].price == 0) {
                               Navigator.push(
                                 context,
@@ -354,7 +348,12 @@ class _Feed2PageState extends State<Feed2Page> {
                                                 Stack(
                                                   children: [
                                                     (data_DataAc == null)
-                                                        ? Container()
+                                                        ?  CircleAvatar(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                radius: 16,
+                                                              )
                                                         : (data_DataAc.userId ==
                                                                 dummyListDataNewfeedsglobal[
                                                                         index]
