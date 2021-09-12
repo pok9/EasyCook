@@ -257,7 +257,6 @@ class _Feed2PageState extends State<Feed2Page> {
                         }
                         return InkWell(
                           onTap: () {
-                          
                             if (dummyListDataNewfeedsglobal[index].price == 0) {
                               Navigator.push(
                                 context,
@@ -265,7 +264,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                     builder: (context) => ShowFood(
                                         dummyListDataNewfeedsglobal[index]
                                             .rid)),
-                              );
+                              ).then((value) => {getNewfeedsglobal()});
                             } else {
                               if (data_DataAc == null) {
                                 Navigator.push(
@@ -277,7 +276,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                                         index]
                                                     .rid,
                                           )),
-                                );
+                                ).then((value) => {getNewfeedsglobal()});
                               } else {
                                 if (data_DataAc.userId ==
                                         dummyListDataNewfeedsglobal[index]
@@ -293,7 +292,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                         builder: (context) => ShowFood(
                                             dummyListDataNewfeedsglobal[index]
                                                 .rid)),
-                                  );
+                                  ).then((value) => {getNewfeedsglobal()});
                                 } else {
                                   Navigator.push(
                                     context,
@@ -307,7 +306,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                             )),
                                   ).then((value) => {
                                         if (token != "" && token != null)
-                                          {getMybuy()}
+                                          {getMybuy(), getNewfeedsglobal()}
                                       });
                                 }
                               }
@@ -334,7 +333,6 @@ class _Feed2PageState extends State<Feed2Page> {
                                                       .image),
                                               fit: BoxFit.cover)),
                                     ),
-                                   
                                     (dummyListDataNewfeedsglobal[index].price ==
                                             0)
                                         ? Container()
@@ -348,12 +346,11 @@ class _Feed2PageState extends State<Feed2Page> {
                                                 Stack(
                                                   children: [
                                                     (data_DataAc == null)
-                                                        ?  CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                radius: 16,
-                                                              )
+                                                        ? CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            radius: 16,
+                                                          )
                                                         : (data_DataAc.userId ==
                                                                 dummyListDataNewfeedsglobal[
                                                                         index]
@@ -432,48 +429,51 @@ class _Feed2PageState extends State<Feed2Page> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                       (dummyListDataNewfeedsglobal[index].score ==
-                                            0)
-                                        ? Container()
-                                        : Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                8, 8, 0, 0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.blue,
-                                                  size: 15,
-                                                ),
-                                                SizedBox(
-                                                  width: 1,
-                                                ),
-                                                Text(
-                                                  dummyListDataNewfeedsglobal[
-                                                              index]
-                                                          .score
-                                                          .toString() +
-                                                      "/5",
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Text(
-                                                  '(${dummyListDataNewfeedsglobal[index].count})',
-                                                  style: TextStyle(
-                                                     fontSize: 10,
-                                                    color: Colors.black,
+                                      (dummyListDataNewfeedsglobal[index]
+                                                  .score ==
+                                              0)
+                                          ? Container()
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      8, 8, 0, 0),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.blue,
+                                                    size: 15,
                                                   ),
-                                                ),
-                                              ],
+                                                  SizedBox(
+                                                    width: 1,
+                                                  ),
+                                                  Text(
+                                                    dummyListDataNewfeedsglobal[
+                                                                index]
+                                                            .score
+                                                            .toString() +
+                                                        "/5",
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 2,
+                                                  ),
+                                                  Text(
+                                                    '(${dummyListDataNewfeedsglobal[index].count})',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
                                     ],
                                   ),
                                 ),
@@ -492,7 +492,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.justify,
                                           // style: TextStyle(
-                                            
+
                                           //     color: Colors.black,
                                           //     fontSize: 15),
                                           style: GoogleFonts.lato(fontSize: 15),
@@ -603,8 +603,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
-                                            style:
-                                                GoogleFonts.lato(),
+                                            style: GoogleFonts.lato(),
                                           ),
                                           SizedBox(
                                             width: 5,

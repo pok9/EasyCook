@@ -12,6 +12,7 @@ import 'package:easy_cook/pages/addFood_page/addImage.dart';
 import 'package:easy_cook/pages/addFood_page/addImageOrVideo.dart';
 import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/video_items.dart';
+import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -89,7 +90,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/addIngredientsArray";
 
-
     // List<st>
     var data = {
       "recipe_ID": recipe_ID,
@@ -97,7 +97,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
       "amount": amount,
       "step": step
     };
-    
+
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
@@ -154,7 +154,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/addHowtoArray";
 
-    
     var data = {
       "recipe_ID": recipe_ID,
       "description": description,
@@ -163,7 +162,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
       "type_file": type_file
     };
 
-   
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
@@ -195,10 +193,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
   }
   //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/
 
-  TextEditingController _ctrlPrice = TextEditingController()
-    ..text = '0.00'; //ราคา
+  TextEditingController _ctrlPrice = TextEditingController(); //ราคา
 
-  TextEditingController _ctrlPriceCopy = TextEditingController()..text = '0.00';
+  TextEditingController _ctrlPriceCopy = TextEditingController();
 
   //########################################################################################################/
 
@@ -258,7 +255,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
             Expanded(
               child: TextField(
                 controller: ctl_ingredient_row[displayNumber - 1][0],
-               
                 decoration: InputDecoration(
                   contentPadding:
                       new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
@@ -283,7 +279,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
             Expanded(
               child: TextField(
                 controller: ctl_ingredient_row[displayNumber - 1][1],
-                
                 decoration: InputDecoration(
                   contentPadding:
                       new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
@@ -307,7 +302,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   if (ctl_ingredient_row.length == 0) {
                     this.ingredient_row = 1;
                   }
-                 
                 });
               },
             )
@@ -425,8 +419,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
-                    
-
                       howto_row--;
                       ctl_howto_row.remove(controller2);
                       imageHowto.remove(imageHowto[displayNumber - 1]);
@@ -434,7 +426,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       if (ctl_howto_row.length == 0) {
                         howto_row = 1;
                       }
-                      
+
                       setState(() {});
                     },
                   ),
@@ -547,7 +539,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                               TextButton(
                                                                 onPressed: () {
                                                                   setState(() {
-                                                                   
                                                                     imageHowto[
                                                                         displayNumber -
                                                                             1] = File(
@@ -674,7 +665,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
     var screen = MediaQuery.of(context).size; //ขนาดของหน้าจอ
 
     final List<Widget> ingredient = _buildListingredient();
-    
 
     final List<Widget> howto = _buildhowto();
 
@@ -821,8 +811,13 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   if (postsData.success == 1 &&
                       ingredientsData.success == 1 &&
                       howtoData.success == 1) {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/slide-page', (route) => false);
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     context, '/slide-page', (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => SlidePage()),
+                        ModalRoute.withName('/'));
                   }
                 }
                 setState(() {});
@@ -1578,7 +1573,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30))),
-                    labelText: 'ราคา',
+                    labelText: '0.00',
                   ),
                   autofocus: false,
                 ),
