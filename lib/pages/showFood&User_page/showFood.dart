@@ -46,10 +46,10 @@ class _ShowFoodState extends State<ShowFood> {
 
   // @override
   // void initState() {
-  //   super.initState();
+  //   //   super.initState();
   //   findUser();
-  //   getCommentPosts();
-  //   getPost();
+  //   //   getCommentPosts();
+  //   //   getPost();
   // }
 
   double ratings = 0.0;
@@ -97,13 +97,15 @@ class _ShowFoodState extends State<ShowFood> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     // setState(() {
-
     //   if (token != "" && token != null) {
     //     getMyAccounts();
     //     getcoreFood();
     //   }
+
+    // token = preferences.getString("tokens");
     // });
 
+    print(preferences.getString("tokens"));
     return preferences.getString("tokens");
   }
 
@@ -277,10 +279,14 @@ class _ShowFoodState extends State<ShowFood> {
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 10,
-                  child: Text("$i"),
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: CircleAvatar(
+                    radius: 10,
+                    child: Text("$i"),
+                  ),
                 ),
                 SizedBox(
                   width: 5,
@@ -366,10 +372,14 @@ class _ShowFoodState extends State<ShowFood> {
 
       return ListTile(
         title: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 10,
-              child: Text("$i"),
+            Padding(
+              padding: const EdgeInsets.only(top: 1),
+              child: CircleAvatar(
+                radius: 10,
+                child: Text("$i"),
+              ),
             ),
             SizedBox(
               width: 5,
@@ -454,9 +464,89 @@ class _ShowFoodState extends State<ShowFood> {
 
   @override
   Widget build(BuildContext context) {
+    // return FutureBuilder(
+    //   future: findUser(),
+    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //     if (snapshot.hasData) {
+    //       token = snapshot.data;
+    //       return FutureBuilder(
+    //         future: getPost(),
+    //         builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //           if (snapshot.hasData) {
+    //             dataFood = snapshot.data;
+    //             dataIngredient = dataFood.ingredient;
+    //             dataHowto = dataFood.howto;
+    //             final List<Widget> ingredient =
+    //                 dataIngredient == null ? [] : _ingredientList();
+
+    //             final List<Widget> howto1 =
+    //                 dataHowto == null ? [] : _howtoList1();
+    //             final List<Widget> howto2 =
+    //                 dataHowto == null ? [] : _howtoList2();
+    //             return FutureBuilder(
+    //               future: getCommentPosts(),
+    //               builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //                 if (snapshot.hasData) {
+    //                   dataGetCommentPost = snapshot.data;
+    //                   return FutureBuilder(
+    //                     future: getMyAccounts(),
+    //                     builder:
+    //                         (BuildContext context, AsyncSnapshot snapshot) {
+    //                       if (snapshot.connectionState ==
+    //                           ConnectionState.waiting) {
+    //                         return Scaffold(
+    //                             body: Center(
+    //                           child: CircularProgressIndicator(),
+    //                         ));
+    //                       }
+    //                       if (snapshot.hasData) {
+    //                         datas = snapshot.data;
+    //                         dataMyAccont = datas.data[0];
+    //                         return FutureBuilder(
+    //                           future: getScoreFood(),
+    //                           builder: (BuildContext context,
+    //                               AsyncSnapshot snapshot) {
+    //                             if (snapshot.hasData) {
+    //                               dataGetScoreFood = snapshot.data;
+    //                               return buildBody(ingredient, howto1, howto2);
+    //                             }
+    //                             return Scaffold(
+    //                                 body: Center(
+    //                               child: CircularProgressIndicator(),
+    //                             ));
+    //                           },
+    //                         );
+    //                       }
+    //                       return buildBody(ingredient, howto1, howto2);
+    //                     },
+    //                   );
+    //                 }
+    //                 return Scaffold(
+    //                     body: Center(
+    //                   child: CircularProgressIndicator(),
+    //                 ));
+    //               },
+    //             );
+    //             ;
+    //           }
+    //           return Scaffold(
+    //               body: Center(
+    //             child: CircularProgressIndicator(),
+    //           ));
+    //         },
+    //       );
+    //     }
+    //     return Scaffold(
+    //         body: Center(
+    //       child: CircularProgressIndicator(),
+    //     ));
+    //   },
+    // );
+
     return FutureBuilder(
       future: findUser(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
+        getScoreFood();
         if (snapshot.hasData) {
           token = snapshot.data;
           return FutureBuilder(
@@ -466,70 +556,78 @@ class _ShowFoodState extends State<ShowFood> {
                 dataFood = snapshot.data;
                 dataIngredient = dataFood.ingredient;
                 dataHowto = dataFood.howto;
+
                 final List<Widget> ingredient =
                     dataIngredient == null ? [] : _ingredientList();
-
                 final List<Widget> howto1 =
                     dataHowto == null ? [] : _howtoList1();
                 final List<Widget> howto2 =
                     dataHowto == null ? [] : _howtoList2();
                 return FutureBuilder(
-                  future: getCommentPosts(),
+                  future: getScoreFood(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
-                      dataGetCommentPost = snapshot.data;
+                      dataGetScoreFood = snapshot.data;
                       return FutureBuilder(
-                        future: getMyAccounts(),
+                        future: getCommentPosts(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Scaffold(
-                                body: Center(
-                              child: CircularProgressIndicator(),
-                            ));
-                          }
                           if (snapshot.hasData) {
-                            datas = snapshot.data;
-                            dataMyAccont = datas.data[0];
+                            dataGetCommentPost = snapshot.data;
                             return FutureBuilder(
-                              future: getScoreFood(),
+                              future: getMyAccounts(),
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  dataGetScoreFood = snapshot.data;
+                                if (snapshot.hasData == true) {
+                                  print(
+                                      "snapshot.hasData => ${snapshot.hasData}");
+                                  datas = snapshot.data;
+                                  dataMyAccont = datas.data[0];
                                   return buildBody(ingredient, howto1, howto2);
                                 }
+
+                                if (snapshot.hasData == false) {
+                                  return buildBody(ingredient, howto1, howto2);
+                                }
+
                                 return Scaffold(
-                                    body: Center(
-                                  child: CircularProgressIndicator(),
-                                ));
+                                  body: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
                               },
                             );
                           }
-                          return buildBody(ingredient, howto1, howto2);
+                          return Scaffold(
+                            body: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
                         },
                       );
                     }
                     return Scaffold(
-                        body: Center(
-                      child: CircularProgressIndicator(),
-                    ));
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
                   },
                 );
-                ;
               }
+
               return Scaffold(
-                  body: Center(
-                child: CircularProgressIndicator(),
-              ));
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             },
           );
         }
         return Scaffold(
-            body: Center(
-          child: CircularProgressIndicator(),
-        ));
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       },
     );
 
@@ -544,7 +642,7 @@ class _ShowFoodState extends State<ShowFood> {
     //         ),
     //       )
 
-    // SliverFab(
+    // : SliverFab(
     //     floatingWidget: Row(
     //       mainAxisAlignment: MainAxisAlignment.center,
     //       children: [
@@ -1840,136 +1938,148 @@ class _ShowFoodState extends State<ShowFood> {
                       ),
                       Column(
                         children: [
-                          (dataGetCommentPost.length == 0)
+                          (dataGetCommentPost == null)
                               ? Container()
-                              : Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Row(
-                                    children: [
-                                      TextButton(
-                                          onPressed: () {
-                                            if (dataMyAccont == null) {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (_) {
-                                                    return LoginPage();
-                                                  }).then((value) {
-                                                if (value != null) {
-                                                  this.findUser();
-                                                }
+                              : (dataGetCommentPost.length == 0)
+                                  ? Container()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Row(
+                                        children: [
+                                          TextButton(
+                                              onPressed: () {
+                                                if (dataMyAccont == null) {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return LoginPage();
+                                                      }).then((value) {
+                                                    if (value != null) {
+                                                      this.findUser();
+                                                    }
 
-                                                // Navigator.pop(context);
-                                              });
-                                            } else {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CommentFood(
-                                                            autoFocus: false,
-                                                            dataFood: dataFood,
-                                                          ))).then((value) =>
-                                                  this.getCommentPosts());
-                                            }
-                                          },
-                                          child: Text("ดูความเห็นทั้งหมด")),
-                                    ],
+                                                    // Navigator.pop(context);
+                                                  });
+                                                } else {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CommentFood(
+                                                                autoFocus:
+                                                                    false,
+                                                                dataFood:
+                                                                    dataFood,
+                                                              ))).then(
+                                                      (value) => this
+                                                          .getCommentPosts());
+                                                }
+                                              },
+                                              child: Text("ดูความเห็นทั้งหมด")),
+                                        ],
+                                      ),
+                                    ),
+
+                          ListView.builder(
+                              padding: EdgeInsets.only(top: 0),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: (dataGetCommentPost == null)
+                                  ? 0
+                                  : dataGetCommentPost.length > 3
+                                      ? 3
+                                      : dataGetCommentPost.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  isThreeLine: true,
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        dataGetCommentPost[index].profileImage),
                                   ),
-                                ),
-                          (token == "")
-                              ? Container()
-                              : (dataMyAccont == null ||
-                                      dataGetCommentPost == null)
-                                  ? Center(child: CircularProgressIndicator())
-                                  : ListView.builder(
-                                      padding: EdgeInsets.only(top: 0),
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: (dataGetCommentPost == null)
-                                          ? 0
-                                          : dataGetCommentPost.length > 3
-                                              ? 3
-                                              : dataGetCommentPost.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          onTap: () {
-                                            if (dataMyAccont == null) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProfileUser(
-                                                          reqUid:
-                                                              dataGetCommentPost[
-                                                                      index]
-                                                                  .userId,
-                                                        )),
-                                              );
-                                            } else if ((dataMyAccont.userId ==
-                                                dataGetCommentPost[index]
-                                                    .userId)) {
-                                              Navigator.push(context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) {
-                                                return ProfilePage();
-                                              }));
-                                            } else {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProfileUser(
-                                                          reqUid:
-                                                              dataGetCommentPost[
-                                                                      index]
-                                                                  .userId,
-                                                        )),
-                                              );
-                                            }
-                                          },
-                                          isThreeLine: true,
-                                          leading: CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                dataGetCommentPost[index]
-                                                    .profileImage),
-                                          ),
-                                          title: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 10, 0, 0),
-                                            child: Text(
-                                              dataGetCommentPost[index]
-                                                  .aliasName,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color:
-                                                      (dataGetCommentPost[index]
-                                                                  .userStatus ==
-                                                              0)
-                                                          ? Colors.red
-                                                          : (dataGetCommentPost[
-                                                                          index]
-                                                                      .userId ==
-                                                                  dataMyAccont
-                                                                      .userId)
-                                                              ? Colors.blue
-                                                              : Colors.black),
-                                            ),
-                                          ),
-                                          subtitle: Text(
-                                            '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 12,
-                                              color: Colors.black,
-                                              decoration: TextDecoration.none,
-                                            ),
-                                          ),
-                                          dense: true,
-                                          // trailing: Text('Horse'),
-                                        );
-                                      }),
+                                  title: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                    child: Text(
+                                      dataGetCommentPost[index].aliasName,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: (dataGetCommentPost[index]
+                                                      .userStatus ==
+                                                  0)
+                                              ? Colors.red
+                                              : (dataMyAccont == null)
+                                                  ? Colors.black
+                                                  : (dataGetCommentPost[index]
+                                                              .userId ==
+                                                          dataMyAccont.userId)
+                                                      ? Colors.blue
+                                                      : Colors.black),
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                                    textAlign: TextAlign.justify,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                  ),
+                                  dense: true,
+                                  // trailing: Text('Horse'),
+                                );
+                              }),
+                          // ListView.builder(
+                          //     padding: EdgeInsets.only(top: 0),
+                          //     shrinkWrap: true,
+                          //     physics: NeverScrollableScrollPhysics(),
+                          //     itemCount: (dataGetCommentPost == null)
+                          //         ? 0
+                          //         : dataGetCommentPost.length > 3
+                          //             ? 3
+                          //             : dataGetCommentPost.length,
+                          //     itemBuilder: (context, index) {
+                          //       return ListTile(
+                          //         isThreeLine: true,
+                          //         leading: CircleAvatar(
+                          //           backgroundImage: NetworkImage(
+                          //               dataGetCommentPost[index].profileImage),
+                          //         ),
+                          //         title: Padding(
+                          //           padding:
+                          //               const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          //           child: Text(
+                          //             dataGetCommentPost[index].aliasName,
+                          //             style: TextStyle(
+                          //                 fontWeight: FontWeight.bold,
+                          //                 color: (dataGetCommentPost[index]
+                          //                             .userStatus ==
+                          //                         0)
+                          //                     ? Colors.red
+                          //                     : (dataGetCommentPost[index]
+                          //                                 .userId ==
+                          //                             dataMyAccont.userId)
+                          //                         ? Colors.blue
+                          //                         : Colors.black),
+                          //           ),
+                          //         ),
+                          //         subtitle: Text(
+                          //           '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                          //           textAlign: TextAlign.justify,
+                          //           style: TextStyle(
+                          //             fontWeight: FontWeight.normal,
+                          //             fontFamily: 'OpenSans',
+                          //             fontSize: 12,
+                          //             color: Colors.black,
+                          //             decoration: TextDecoration.none,
+                          //           ),
+                          //         ),
+                          //         dense: true,
+                          //         // trailing: Text('Horse'),
+                          //       );
+                          //     })
                         ],
                       ),
                       Padding(

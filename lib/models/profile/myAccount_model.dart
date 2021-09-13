@@ -11,19 +11,24 @@ String myAccountToJson(MyAccount data) => json.encode(data.toJson());
 class MyAccount {
     MyAccount({
         this.success,
+        this.message,
         this.data,
+      
     });
 
     int success;
+    String message;
     List<DataMyAccount> data;
 
     factory MyAccount.fromJson(Map<String, dynamic> json) => MyAccount(
         success: json["success"],
+        message: json["message"],
         data: List<DataMyAccount>.from(json["data"].map((x) => DataMyAccount.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
+        "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
     };
 }
