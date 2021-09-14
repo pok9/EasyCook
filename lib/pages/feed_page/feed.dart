@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollowing_model.dart';
 import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/feed/newfeedsglobal/newfeedsglobal.dart';
@@ -371,7 +372,23 @@ class _FeedPageState extends State<FeedPage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(
-          title: Text('Easy Cook'),
+          title: DefaultTextStyle(
+            style: const TextStyle(
+              fontSize: 20.0,
+            ),
+            child: AnimatedTextKit(
+              animatedTexts: [
+                TyperAnimatedText('Easy Cook'),
+                TypewriterAnimatedText('Easy Cook'),
+                WavyAnimatedText('Easy Cook'),
+                // WavyAnimatedText('ชุมชนของคนรักการทําอาหาร'),
+              ],
+              isRepeatingAnimation: true,
+              onTap: () {
+                print("Tap Event");
+              },
+            ),
+          ),
         ),
       ),
       drawer: Drawers(
@@ -1151,9 +1168,9 @@ class _FeedPageState extends State<FeedPage> {
                           children: [
                             (data_DataAc == null)
                                 ? CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 16,
-                                      )
+                                    backgroundColor: Colors.white,
+                                    radius: 16,
+                                  )
                                 : (data_DataAc.userId ==
                                         dataRecommendRecipe.userId)
                                     ? Container()

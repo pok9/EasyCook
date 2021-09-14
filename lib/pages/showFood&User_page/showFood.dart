@@ -213,7 +213,9 @@ class _ShowFoodState extends State<ShowFood> {
 
     i = 0;
 
-    return controllers.map<Widget>((List<TextEditingController> controller) {
+    return 
+    
+    controllers.map<Widget>((List<TextEditingController> controller) {
       int displayNumber = i;
       i++;
 
@@ -1534,7 +1536,9 @@ class _ShowFoodState extends State<ShowFood> {
                                         dataHowto: dataHowto,
                                       )),
                             ).then((value) {
-                              getPost();
+                              setState(() {
+                                getPost();
+                              });
                             });
                           } else if (value == 1) {
                             showDialog(
@@ -1764,6 +1768,7 @@ class _ShowFoodState extends State<ShowFood> {
                   color: Colors.white,
                   child: Column(
                     children: [
+                      
                       Row(
                         children: [
                           Padding(

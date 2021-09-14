@@ -1,4 +1,6 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/profile/wallet/my_his_topup_model.dart';
+import 'package:easy_cook/models/profile/wallet/my_his_withdraw_model.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/payment_channel.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/withdraw/withdrawPage.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +48,60 @@ class _WalletPageState extends State<WalletPage> {
     }
   }
 
+  List<MyHisWithdrawModel> data_my_his_withdraw;
+  Future<List<MyHisWithdrawModel>> getMy_his_withdraw() async {
+    final String apiUrl =
+        "https://apifood.comsciproject.com/pjUsers/my_his_withdraw";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+
+    if (response.statusCode == 200) {
+      // if (mounted)
+      // setState(() {
+      final String responseString = response.body;
+
+      // data_MyAccount = myAccountFromJson(responseString);
+      // data_DataAc = data_MyAccount.data[0];
+
+      // getMyPost();
+      // });
+
+      print(responseString);
+
+      return myHisWithdrawModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  List<MyHisTopupModel> data_my_his_topup;
+  Future<List<MyHisTopupModel>> getMy_his_topup() async {
+    final String apiUrl =
+        "https://apifood.comsciproject.com/pjUsers/my_his_topup";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+
+    if (response.statusCode == 200) {
+      // if (mounted)
+      // setState(() {
+      final String responseString = response.body;
+
+      // data_MyAccount = myAccountFromJson(responseString);
+      // data_DataAc = data_MyAccount.data[0];
+
+      // getMyPost();
+      // });
+
+      print(responseString);
+
+      return myHisTopupModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,110 +119,151 @@ class _WalletPageState extends State<WalletPage> {
                 if (snapshot.hasData) {
                   data_MyAccount = snapshot.data;
                   data_DataAc = data_MyAccount.data[0];
-                  return ListView(
-                    children: [
-                      (data_DataAc.userStatus == 0)
-                          ? Container()
-                          : Container(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 18, right: 18, top: 18, bottom: 18),
-                                child: Container(
-                                  // height: 150,
-                                  padding: EdgeInsets.only(
-                                      left: 18, right: 18, top: 22, bottom: 22),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                        image: AssetImage('${data_DataAc.wallpaper}'),
-                                        fit: BoxFit.cover),
-                                  ),
+                  return FutureBuilder(
+                    future: getMy_his_withdraw(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        data_my_his_withdraw = snapshot.data;
+                        return FutureBuilder(
+                          future: getMy_his_topup(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              data_my_his_withdraw = snapshot.data;
+                              return ListView(
+                          children: [
+                            (data_DataAc.userStatus == 0)
+                                ? Container()
+                                : Container(
+                                    color: Colors.white,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18,
+                                          right: 18,
+                                          top: 18,
+                                          bottom: 18),
+                                      child: Container(
+                                        // height: 150,
+                                        padding: EdgeInsets.only(
+                                            left: 18,
+                                            right: 18,
+                                            top: 22,
+                                            bottom: 22),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  '${data_DataAc.wallpaper}'),
+                                              fit: BoxFit.cover),
+                                        ),
 
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "กระเป๋าหลัก(\u0E3F)",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white
-                                                    .withOpacity(.7),
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          SizedBox(
-                                            height: 12,
-                                          ),
-                                          Text(
-                                            '${NumberFormat("#,###.##").format(data_DataAc.balance)}',
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w800),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    width: 100, height: 35),
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.white),
-                                              child: Text(
-                                                'เติมเงิน',
-                                                style: TextStyle(
-                                                    color: Colors.blueAccent,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              onPressed: () {
-                                                _ctrlPrice.text = "";
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "กระเป๋าหลัก(\u0E3F)",
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: Colors.white
+                                                          .withOpacity(.7),
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                SizedBox(
+                                                  height: 12,
+                                                ),
+                                                Text(
+                                                  '${NumberFormat("#,###.##").format(data_DataAc.balance)}',
+                                                  style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w800),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                ConstrainedBox(
+                                                  constraints:
+                                                      BoxConstraints.tightFor(
+                                                          width: 100,
+                                                          height: 35),
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            primary:
+                                                                Colors.white),
+                                                    child: Text(
+                                                      'เติมเงิน',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.blueAccent,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    onPressed: () {
+                                                      _ctrlPrice.text = "";
 
-                                                _displayBottomSheet(
-                                                    context, "topup");
-                                              },
+                                                      _displayBottomSheet(
+                                                          context, "topup");
+                                                    },
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                ConstrainedBox(
+                                                  constraints:
+                                                      BoxConstraints.tightFor(
+                                                          width: 100,
+                                                          height: 35),
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            primary:
+                                                                Colors.white),
+                                                    child: Text(
+                                                      'ถอนเงิน',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.blueAccent,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    onPressed: () {
+                                                      _ctrlPrice.text = "";
+                                                      _displayBottomSheet(
+                                                          context, "withdraw");
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    width: 100, height: 35),
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.white),
-                                              child: Text(
-                                                'ถอนเงิน',
-                                                style: TextStyle(
-                                                    color: Colors.blueAccent,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              onPressed: () {
-                                                _ctrlPrice.text = "";
-                                                _displayBottomSheet(
-                                                    context, "withdraw");
-                                              },
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                    ],
+                          ],
+                        );
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
                   );
                 }
                 return Center(
@@ -344,5 +441,4 @@ class _WalletPageState extends State<WalletPage> {
           ),
         ));
   }
-
 }
