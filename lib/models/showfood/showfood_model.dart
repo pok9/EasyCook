@@ -26,7 +26,7 @@ class ShowFoods {
         this.ingredient,
         this.howto,
         this.score,
-           this.count,
+        this.count,
         this.comment,
     });
 
@@ -45,9 +45,9 @@ class ShowFoods {
     double price;
     List<Ingredient> ingredient;
     List<Howto> howto;
-    dynamic score;
+    double score;
     int count;
-    List<dynamic> comment;
+    List<Comment> comment;
 
     factory ShowFoods.fromJson(Map<String, dynamic> json) => ShowFoods(
         rid: json["rid"],
@@ -65,9 +65,9 @@ class ShowFoods {
         price: json["price"].toDouble(),
         ingredient: List<Ingredient>.from(json["ingredient"].map((x) => Ingredient.fromJson(x))),
         howto: List<Howto>.from(json["howto"].map((x) => Howto.fromJson(x))),
-        score: json["score"],
+        score: json["score"].toDouble(),
         count: json["count"],
-        comment: List<dynamic>.from(json["comment"].map((x) => x)),
+        comment: List<Comment>.from(json["comment"].map((x) => Comment.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -88,7 +88,51 @@ class ShowFoods {
         "howto": List<dynamic>.from(howto.map((x) => x.toJson())),
         "score": score,
         "count": count,
-        "comment": List<dynamic>.from(comment.map((x) => x)),
+        "comment": List<dynamic>.from(comment.map((x) => x.toJson())),
+    };
+}
+
+class Comment {
+    Comment({
+        this.userId,
+        this.nameSurname,
+        this.aliasName,
+        this.profileImage,
+        this.cid,
+        this.recipeId,
+        this.commentDetail,
+        this.datetime,
+    });
+
+    int userId;
+    String nameSurname;
+    String aliasName;
+    String profileImage;
+    int cid;
+    int recipeId;
+    String commentDetail;
+    DateTime datetime;
+
+    factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+        userId: json["user_ID"],
+        nameSurname: json["name_surname"],
+        aliasName: json["alias_name"],
+        profileImage: json["profile_image"],
+        cid: json["cid"],
+        recipeId: json["recipe_ID"],
+        commentDetail: json["commentDetail"],
+        datetime: DateTime.parse(json["datetime"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "user_ID": userId,
+        "name_surname": nameSurname,
+        "alias_name": aliasName,
+        "profile_image": profileImage,
+        "cid": cid,
+        "recipe_ID": recipeId,
+        "commentDetail": commentDetail,
+        "datetime": datetime.toIso8601String(),
     };
 }
 

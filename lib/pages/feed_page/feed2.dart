@@ -397,8 +397,9 @@ class _Feed2PageState extends State<Feed2Page> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(4, 4, 4, 0),
+                                      const EdgeInsets.fromLTRB(4, 2, 4, 0),
                                   child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Column(
                                         children: [

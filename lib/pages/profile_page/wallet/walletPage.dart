@@ -3,6 +3,7 @@ import 'package:easy_cook/models/profile/wallet/my_his_topup_model.dart';
 import 'package:easy_cook/models/profile/wallet/my_his_withdraw_model.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/payment_channel.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/withdraw/withdrawPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,68 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
+  ScrollController _scrollController = ScrollController();
+  int _currentMax;
+
+  List dummyList = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // dummyList = List.generate(10, (index) => "Item : ${index + 1}");
+    _scrollController.addListener(() {
+      print(
+          "_scrollController.position.pixels = ${_scrollController.position.pixels}");
+      print(
+          '_scrollController.position.maxScrollExtent = ${_scrollController.position.maxScrollExtent}');
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMoreList();
+      }
+    });
+
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent) {
+    //     _getMoreList();
+    //   }
+    // });
+  }
+
+  // _getMoreList() {
+  //   _currentMax = dummyList.length;
+  //   print("Get More List");
+  //   for (int i = _currentMax; i < _currentMax + 10; i++) {
+  //     dummyList.add("Item : ${i + 1}");
+  //   }
+  //   _currentMax = _currentMax + 10;
+  //   setState(() {});
+  // }
+
+  _getMoreList() {
+    print("Get More List");
+    _currentMax = dummyListDataListWithdrawTopup.length;
+
+    if ((dataListWithdrawTopup.length -
+            dummyListDataListWithdrawTopup.length) >=
+        4) {
+      for (int i = dummyListDataListWithdrawTopup.length;
+          i < _currentMax + 4;
+          i++) {
+        dummyListDataListWithdrawTopup.add(dataListWithdrawTopup[i]);
+      }
+    } else {
+      for (int i = dummyListDataListWithdrawTopup.length;
+          i < dataListWithdrawTopup.length;
+          i++) {
+        dummyListDataListWithdrawTopup.add(dataListWithdrawTopup[i]);
+      }
+    }
+
+    setState(() {});
+  }
+
   String token = ""; //โทเคน
   Future<String> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -102,8 +165,10 @@ class _WalletPageState extends State<WalletPage> {
     }
   }
 
+  List dataListWithdrawTopup = [];
+  List dummyListDataListWithdrawTopup = [];
   Future<List> getListWithdrawTopup() async {
-    List dataListWithdrawTopup = [];
+    dataListWithdrawTopup = [];
     for (int i = 0; i < data_my_his_withdraw.length; i++) {
       dataListWithdrawTopup.add(data_my_his_withdraw[i]);
     }
@@ -121,16 +186,12 @@ class _WalletPageState extends State<WalletPage> {
     for (int i = 0; i < dataListWithdrawTopup.length; i++) {
       Duration difference = DateTime.now()
           .difference(DateTime.parse("${dataListWithdrawTopup[i].datetime}"));
-      print(
-          "${dataListWithdrawTopup[i].datetime} ${difference.inMilliseconds}");
     }
 
     selectionSort(dataListWithdrawTopup);
     for (int i = 0; i < dataListWithdrawTopup.length; i++) {
       Duration difference = DateTime.now()
           .difference(DateTime.parse("${dataListWithdrawTopup[i].datetime}"));
-      print(
-          "${dataListWithdrawTopup[i].datetime} ${difference.inMilliseconds}");
     }
     return dataListWithdrawTopup;
   }
@@ -159,21 +220,6 @@ class _WalletPageState extends State<WalletPage> {
     }
 
     // return array;
-  }
-
-  String getTimeDifferenceFromNow(DateTime dateTime) {
-    Duration difference = DateTime.now().difference(dateTime);
-    if (difference.inSeconds < 5) {
-      return "เมื่อสักครู่";
-    } else if (difference.inMinutes < 1) {
-      return "${difference.inSeconds}วินาทีที่แล้ว";
-    } else if (difference.inHours < 1) {
-      return "${difference.inMinutes}นาทีที่แล้ว";
-    } else if (difference.inHours < 24) {
-      return "${difference.inHours} ชั่วโมงที่แล้ว";
-    } else {
-      return "${difference.inDays} วันที่แล้ว";
-    }
   }
 
   String dateEdit(String date) {
@@ -207,9 +253,9 @@ class _WalletPageState extends State<WalletPage> {
     Map<String, String> map = {
       'successful': "สำเร็จ",
       'request': "กำลังตรวจสอบ",
-      'pending' : "รอดำเนินการ",
-      'Promptpay' : "พร้อมเพย์",
-      'Visa' : "วีซ่า",
+      'pending': "รอดำเนินการ",
+      'Promptpay': "พร้อมเพย์",
+      'Visa': "วีซ่า",
     };
     return map[data];
   }
@@ -218,8 +264,7 @@ class _WalletPageState extends State<WalletPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "กระเป๋าตัง ${getTimeDifferenceFromNow(DateTime.parse('2021-09-14T10:33:59.000Z'))}"),
+        title: Text("กระเป๋าตัง"),
       ),
       body: FutureBuilder(
         future: findUser(),
@@ -248,7 +293,37 @@ class _WalletPageState extends State<WalletPage> {
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasData) {
+                                    dataListWithdrawTopup = snapshot.data;
+                                    if (dummyListDataListWithdrawTopup.length <
+                                        10) {
+                                      _currentMax =
+                                          dummyListDataListWithdrawTopup.length;
+
+                                      if ((dataListWithdrawTopup.length -
+                                              dummyListDataListWithdrawTopup
+                                                  .length) >=
+                                          10) {
+                                        for (int i =
+                                                dummyListDataListWithdrawTopup
+                                                    .length;
+                                            i < _currentMax + 10;
+                                            i++) {
+                                          dummyListDataListWithdrawTopup
+                                              .add(dataListWithdrawTopup[i]);
+                                        }
+                                      } else {
+                                        for (int i =
+                                                dummyListDataListWithdrawTopup
+                                                    .length;
+                                            i < dataListWithdrawTopup.length;
+                                            i++) {
+                                          dummyListDataListWithdrawTopup
+                                              .add(dataListWithdrawTopup[i]);
+                                        }
+                                      }
+                                    }
                                     return ListView(
+                                      controller: _scrollController,
                                       children: [
                                         (data_DataAc.userStatus == 0)
                                             ? Container()
@@ -407,16 +482,28 @@ class _WalletPageState extends State<WalletPage> {
                                                     ),
                                                   ),
                                                   ListView.builder(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    itemCount:
-                                                        snapshot.data.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      try {
-                                                        snapshot
-                                                            .data[index].wid;
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      itemCount:
+                                                          dummyListDataListWithdrawTopup
+                                                                  .length +
+                                                              1,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        if (index ==
+                                                            dataListWithdrawTopup
+                                                                .length) {
+                                                          return Container();
+                                                        }
+                                                        if (index ==
+                                                            dummyListDataListWithdrawTopup
+                                                                .length) {
+                                                          return CupertinoActivityIndicator();
+                                                        }
+
+                                                        try {
+                                                        dummyListDataListWithdrawTopup[index].wid;
                                                         return Padding(
                                                           padding:
                                                               const EdgeInsets
@@ -441,12 +528,12 @@ class _WalletPageState extends State<WalletPage> {
                                                                     TextSpan>[
                                                                   TextSpan(
                                                                     text:
-                                                                        '${checkStatus(snapshot.data[index].status)}',
+                                                                        '${checkStatus(dummyListDataListWithdrawTopup[index].status)}',
                                                                     style: TextStyle(
-                                                                      
+
                                                                         fontSize:
                                                                             18,
-                                                                        color: (snapshot.data[index].status == "request" ||snapshot.data[index].status == "pending") ? Colors
+                                                                        color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
                                                                             .grey.shade600 : Colors
                                                                             .green),
                                                                   ),
@@ -461,18 +548,18 @@ class _WalletPageState extends State<WalletPage> {
                                                                   CrossAxisAlignment
                                                                       .end,
                                                               children: [
-                                                                
+
                                                                 Text(
-                                                                  "-${snapshot.data[index].amount}",
+                                                                  "-${dummyListDataListWithdrawTopup[index].amount}",
                                                                   style: TextStyle(
-                                                                      color: (snapshot.data[index].status == "request" ||snapshot.data[index].status == "pending") ? Colors
+                                                                      color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
                                                                             .grey.shade600 : Colors
                                                                             .red,
                                                                       fontSize:
                                                                           20),
                                                                 ),
                                                                 Text(dateEdit(
-                                                                    "${snapshot.data[index].datetime}")),
+                                                                    "${dummyListDataListWithdrawTopup[index].datetime}")),
                                                               ],
                                                             ),
                                                           ),
@@ -486,7 +573,7 @@ class _WalletPageState extends State<WalletPage> {
                                                             title: RichText(
                                                               text: TextSpan(
                                                                 text:
-                                                                    'ฝากเงิน(${checkStatus('${snapshot.data[index].brand}')}) - ',
+                                                                    'ฝากเงิน(${checkStatus('${dummyListDataListWithdrawTopup[index].brand}')}) - ',
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         18.0,
@@ -496,12 +583,12 @@ class _WalletPageState extends State<WalletPage> {
                                                                     TextSpan>[
                                                                   TextSpan(
                                                                     text:
-                                                                        '${checkStatus(snapshot.data[index].status)}',
+                                                                        '${checkStatus(dummyListDataListWithdrawTopup[index].status)}',
                                                                     style: TextStyle(
-                                                                      
+
                                                                         fontSize:
                                                                             18,
-                                                                        color: (snapshot.data[index].status == "request" ||snapshot.data[index].status == "pending") ? Colors
+                                                                        color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
                                                                             .grey.shade600 : Colors
                                                                             .green),
                                                                   ),
@@ -517,23 +604,149 @@ class _WalletPageState extends State<WalletPage> {
                                                                       .end,
                                                               children: [
                                                                 Text(
-                                                                  "+${snapshot.data[index].amount}",
+                                                                  "+${dummyListDataListWithdrawTopup[index].amount}",
                                                                   style: TextStyle(
-                                                                      color: (snapshot.data[index].status == "request" || snapshot.data[index].status == "pending") ? Colors
+                                                                      color: (dummyListDataListWithdrawTopup[index].status == "request" || dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
                                                                             .grey.shade600 : Colors
                                                                             .green,
                                                                       fontSize:
                                                                           20),
                                                                 ),
                                                                 Text(dateEdit(
-                                                                    "${snapshot.data[index].datetime}")),
+                                                                    "${dummyListDataListWithdrawTopup[index].datetime}")),
                                                               ],
                                                             ),
                                                           ),
                                                         );
                                                       }
-                                                    },
-                                                  )
+                                                      })
+                                                  // ListView.builder(
+                                                  //   shrinkWrap: true,
+                                                  //   physics:
+                                                  //       const NeverScrollableScrollPhysics(),
+                                                  //   itemCount:
+                                                  //       dummyListDataNewfeedsglobal.length,
+                                                  //   itemBuilder:
+                                                  //       (context, index) {
+                                                  //     try {
+                                                  //       dummyListDataNewfeedsglobal[index].wid;
+                                                  //       return Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .all(8.0),
+                                                  //         child: ListTile(
+                                                  //           // title: Text(
+                                                  //           //   "ถอนเงิน - ${checkStatus(snapshot
+                                                  //           // .data[index].status)}",
+                                                  //           //   style: TextStyle(
+                                                  //           //       fontSize: 18),
+                                                  //           // ),
+                                                  //           title: RichText(
+                                                  //             text: TextSpan(
+                                                  //               text:
+                                                  //                   'ถอนเงิน - ',
+                                                  //               style: TextStyle(
+                                                  //                   fontSize:
+                                                  //                       18.0,
+                                                  //                   color: Colors
+                                                  //                       .black),
+                                                  //               children: <
+                                                  //                   TextSpan>[
+                                                  //                 TextSpan(
+                                                  //                   text:
+                                                  //                       '${checkStatus(dummyListDataNewfeedsglobal[index].status)}',
+                                                  //                   style: TextStyle(
+
+                                                  //                       fontSize:
+                                                  //                           18,
+                                                  //                       color: (dummyListDataNewfeedsglobal[index].status == "request" ||dataListWithdrawTopup[index].status == "pending") ? Colors
+                                                  //                           .grey.shade600 : Colors
+                                                  //                           .green),
+                                                  //                 ),
+                                                  //               ],
+                                                  //             ),
+                                                  //           ),
+                                                  //           trailing: Column(
+                                                  //             mainAxisAlignment:
+                                                  //                 MainAxisAlignment
+                                                  //                     .end,
+                                                  //             crossAxisAlignment:
+                                                  //                 CrossAxisAlignment
+                                                  //                     .end,
+                                                  //             children: [
+
+                                                  //               Text(
+                                                  //                 "-${dummyListDataNewfeedsglobal[index].amount}",
+                                                  //                 style: TextStyle(
+                                                  //                     color: (dummyListDataNewfeedsglobal[index].status == "request" ||dummyListDataNewfeedsglobal[index].status == "pending") ? Colors
+                                                  //                           .grey.shade600 : Colors
+                                                  //                           .red,
+                                                  //                     fontSize:
+                                                  //                         20),
+                                                  //               ),
+                                                  //               Text(dateEdit(
+                                                  //                   "${dummyListDataNewfeedsglobal[index].datetime}")),
+                                                  //             ],
+                                                  //           ),
+                                                  //         ),
+                                                  //       );
+                                                  //     } catch (e) {
+                                                  //       return Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .all(8.0),
+                                                  //         child: ListTile(
+                                                  //           title: RichText(
+                                                  //             text: TextSpan(
+                                                  //               text:
+                                                  //                   'ฝากเงิน(${checkStatus('${dummyListDataNewfeedsglobal[index].brand}')}) - ',
+                                                  //               style: TextStyle(
+                                                  //                   fontSize:
+                                                  //                       18.0,
+                                                  //                   color: Colors
+                                                  //                       .black),
+                                                  //               children: <
+                                                  //                   TextSpan>[
+                                                  //                 TextSpan(
+                                                  //                   text:
+                                                  //                       '${checkStatus(dummyListDataNewfeedsglobal[index].status)}',
+                                                  //                   style: TextStyle(
+
+                                                  //                       fontSize:
+                                                  //                           18,
+                                                  //                       color: (dummyListDataNewfeedsglobal[index].status == "request" ||dummyListDataNewfeedsglobal[index].status == "pending") ? Colors
+                                                  //                           .grey.shade600 : Colors
+                                                  //                           .green),
+                                                  //                 ),
+                                                  //               ],
+                                                  //             ),
+                                                  //           ),
+                                                  //           trailing: Column(
+                                                  //             mainAxisAlignment:
+                                                  //                 MainAxisAlignment
+                                                  //                     .end,
+                                                  //                     crossAxisAlignment:
+                                                  //                 CrossAxisAlignment
+                                                  //                     .end,
+                                                  //             children: [
+                                                  //               Text(
+                                                  //                 "+${dummyListDataNewfeedsglobal[index].amount}",
+                                                  //                 style: TextStyle(
+                                                  //                     color: (dummyListDataNewfeedsglobal[index].status == "request" || dummyListDataNewfeedsglobal[index].status == "pending") ? Colors
+                                                  //                           .grey.shade600 : Colors
+                                                  //                           .green,
+                                                  //                     fontSize:
+                                                  //                         20),
+                                                  //               ),
+                                                  //               Text(dateEdit(
+                                                  //                   "${dummyListDataNewfeedsglobal[index].datetime}")),
+                                                  //             ],
+                                                  //           ),
+                                                  //         ),
+                                                  //       );
+                                                  //     }
+                                                  //   },
+                                                  // )
                                                 ],
                                               ),
                                       ],
@@ -687,7 +900,7 @@ class _WalletPageState extends State<WalletPage> {
                                           )),
                                 ).then((value) => {
                                       if (token != "" && token != null)
-                                        {getMyAccounts()}
+                                        {setState(() {})}
                                     });
                               }
                             } else if (select == 'withdraw') {
@@ -703,7 +916,7 @@ class _WalletPageState extends State<WalletPage> {
                                         )),
                               ).then((value) => {
                                     if (token != "" && token != null)
-                                      {getMyAccounts()}
+                                      {setState(() {})}
                                   });
                             }
                           }

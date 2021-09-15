@@ -87,6 +87,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
+        print(responseString);
         dataFood = showFoodsFromJson(responseString);
       });
     } else {
@@ -112,6 +113,21 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
       });
     } else {
       return null;
+    }
+  }
+
+   String getTimeDifferenceFromNow(DateTime dateTime) {
+    Duration difference = DateTime.now().difference(dateTime);
+    if (difference.inSeconds < 5) {
+      return "เมื่อสักครู่";
+    } else if (difference.inMinutes < 1) {
+      return "${difference.inSeconds} วินาที";
+    } else if (difference.inHours < 1) {
+      return "${difference.inMinutes} นาที";
+    } else if (difference.inHours < 24) {
+      return "${difference.inHours} ชั่วโมง";
+    } else {
+      return "${difference.inDays} วัน";
     }
   }
 
@@ -357,17 +373,28 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                       color: Colors.black),
                                 ),
                               ),
-                              subtitle: Text(
-                                '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
+                              subtitle: RichText(
+                                    text: TextSpan(
+                                      text:
+                                          '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.none,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 12.0,
+                                          color: Colors.grey.shade600),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text:
+                                              '${dataGetCommentPost[index].commentDetail}',
+                                          style: TextStyle(
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 12,
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                               dense: true,
                               // trailing: Text('Horse'),
                             );

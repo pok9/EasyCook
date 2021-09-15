@@ -218,6 +218,21 @@ class _CommentFoodState extends State<CommentFood> {
     );
   }
 
+  String getTimeDifferenceFromNow(DateTime dateTime) {
+    Duration difference = DateTime.now().difference(dateTime);
+    if (difference.inSeconds < 5) {
+      return "เมื่อสักครู่";
+    } else if (difference.inMinutes < 1) {
+      return "${difference.inSeconds} วินาที";
+    } else if (difference.inHours < 1) {
+      return "${difference.inMinutes} นาที";
+    } else if (difference.inHours < 24) {
+      return "${difference.inHours} ชั่วโมง";
+    } else {
+      return "${difference.inDays} วัน";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,17 +307,39 @@ class _CommentFoodState extends State<CommentFood> {
                                             : Colors.black),
                               ),
                             ),
-                            subtitle: Text(
-                              '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                              // textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'OpenSans',
-                                fontSize: 12,
-                                color: Colors.black,
-                                decoration: TextDecoration.none,
-                              ),
-                            ),
+                            subtitle: RichText(
+                                    text: TextSpan(
+                                      text:
+                                          '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.none,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 12.0,
+                                          color: Colors.grey.shade600),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text:
+                                              '${dataGetCommentPost[index].commentDetail}',
+                                          style: TextStyle(
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 12,
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                            // subtitle: Text(
+                            //   '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
+                            //   // textAlign: TextAlign.left,
+                            //   style: TextStyle(
+                            //     fontWeight: FontWeight.normal,
+                            //     fontFamily: 'OpenSans',
+                            //     fontSize: 12,
+                            //     color: Colors.black,
+                            //     decoration: TextDecoration.none,
+                            //   ),
+                            // ),
                             dense: true,
                             trailing: (data_DataAc == null)
                                 ? null
