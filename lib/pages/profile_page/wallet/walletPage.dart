@@ -499,7 +499,12 @@ class _WalletPageState extends State<WalletPage> {
                                                         if (index ==
                                                             dummyListDataListWithdrawTopup
                                                                 .length) {
-                                                          return CupertinoActivityIndicator();
+                                                          return Column(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            children: [
+                                                              CupertinoActivityIndicator(),
+                                                            ],
+                                                          );
                                                         }
 
                                                         try {
@@ -532,7 +537,7 @@ class _WalletPageState extends State<WalletPage> {
                                                                     style: TextStyle(
 
                                                                         fontSize:
-                                                                            18,
+                                                                            15,
                                                                         color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
                                                                             .grey.shade600 : Colors
                                                                             .green),
@@ -576,7 +581,7 @@ class _WalletPageState extends State<WalletPage> {
                                                                     'ฝากเงิน(${checkStatus('${dummyListDataListWithdrawTopup[index].brand}')}) - ',
                                                                 style: TextStyle(
                                                                     fontSize:
-                                                                        18.0,
+                                                                        15.0,
                                                                     color: Colors
                                                                         .black),
                                                                 children: <

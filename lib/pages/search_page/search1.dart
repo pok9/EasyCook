@@ -174,22 +174,20 @@ class _SearchPage1State extends State<SearchPage1> {
               ListView(
                 children: [
                   dividerTextCustom("หมวดหมู่"),
-                  Container(
-                    height: 150,
-                    child: Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: GridView.count(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          crossAxisCount: 5,
-                          children: List.generate(menuFood.length, (index) {
-                            return MenuFeature(
-                              iconAsset: iconFood[index],
-                              name: menuFood[index],
-                            );
-                          })),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: GridView.count(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 5,
+                        children: List.generate(menuFood.length, (index) {
+                          return MenuFeature(
+                            iconAsset: iconFood[index],
+                            name: menuFood[index],
+                          );
+                        })),
                   ),
+                  
                 ],
               ),
               new Column(
@@ -258,8 +256,8 @@ class MenuFeature extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              width: 50,
-              height: 50,
+              width: 30,
+              height: 30,
               child: Image.network(iconAsset),
             ),
             Text(

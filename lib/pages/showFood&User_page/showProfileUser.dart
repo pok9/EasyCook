@@ -400,7 +400,7 @@ class _ProfileUserState extends State<ProfileUser> {
                       delegate: SliverChildListDelegate([
                         Container(
                             // color: Colors.amber,
-                            height: 314,
+                            // height: 314,
                             child: Column(
                               children: [
                                 Column(
@@ -409,7 +409,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: deviceSize.height * 0.4,
+                                      height: deviceSize.height * 0.45,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: (data_PostUser.wallpaper == null) ? AssetImage(

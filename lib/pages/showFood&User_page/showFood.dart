@@ -145,10 +145,22 @@ class _ShowFoodState extends State<ShowFood> {
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
-      return getScoreFoodModelFromJson(responseString);
+      print(responseString);
+
+      try {
+        print(true);
+        dataGetScoreFood = getScoreFoodModelFromJson(responseString);
+      } catch (e) {
+        print(false);
+
+        dataGetScoreFood.score = 0.0;
+      }
+
+      return dataGetScoreFood;
     } else {
       return null;
     }
@@ -557,11 +569,10 @@ class _ShowFoodState extends State<ShowFood> {
     //     ));
     //   },
     // );
-
+    Size sizeScreen = MediaQuery.of(context).size;
     return FutureBuilder(
       future: findUser(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        getScoreFood();
         if (snapshot.hasData) {
           token = snapshot.data;
           return FutureBuilder(
@@ -581,8 +592,8 @@ class _ShowFoodState extends State<ShowFood> {
                 return FutureBuilder(
                   future: getScoreFood(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      dataGetScoreFood = snapshot.data;
+                    if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.done) {
+                      
                       return FutureBuilder(
                         future: getCommentPosts(),
                         builder:
@@ -598,11 +609,13 @@ class _ShowFoodState extends State<ShowFood> {
                                       "snapshot.hasData => ${snapshot.hasData}");
                                   datas = snapshot.data;
                                   dataMyAccont = datas.data[0];
-                                  return buildBody(ingredient, howto1, howto2);
+                                  return buildBody(
+                                      ingredient, howto1, howto2, sizeScreen);
                                 }
 
                                 if (snapshot.hasData == false) {
-                                  return buildBody(ingredient, howto1, howto2);
+                                  return buildBody(
+                                      ingredient, howto1, howto2, sizeScreen);
                                 }
 
                                 return Scaffold(
@@ -647,8 +660,8 @@ class _ShowFoodState extends State<ShowFood> {
     );
   }
 
-  Widget buildBody(
-      List<Widget> ingredient, List<Widget> howto1, List<Widget> howto2) {
+  Widget buildBody(List<Widget> ingredient, List<Widget> howto1,
+      List<Widget> howto2, Size sizeScreen) {
     return SliverFab(
       floatingWidget: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -665,12 +678,13 @@ class _ShowFoodState extends State<ShowFood> {
             decoration: BoxDecoration(
                 color: Colors.grey,
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 8.0)),
+                border: Border.all(color: Colors.white, width: 4.0)),
           ),
         ],
       ),
       expandedHeight: 256.0,
-      floatingPosition: FloatingPosition(top: -20, left: 150),
+      floatingPosition:
+          FloatingPosition(top: -20, left: (sizeScreen.width - 50) / 2.35),
       slivers: [
         SliverAppBar(
           title: Text(dataFood.recipeName + " " + this.req_rid.toString()),
