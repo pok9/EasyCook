@@ -17,8 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
-
-  
   @override
   State<StatefulWidget> createState() {
     return _ScrollProfilePageState();
@@ -114,16 +112,18 @@ class _ScrollProfilePageState extends State
         background: buildFlexibleSpaceWidget(),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WalletPage()))
-                .then((value) => {
-                      if (token != "" && token != null) {getMyAccounts()}
-                    });
-          },
-          icon: Icon(Icons.account_balance_wallet_outlined),
-        )
+        (data_DataAc.userStatus == 1)
+            ? IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => WalletPage()))
+                      .then((value) => {
+                            if (token != "" && token != null) {getMyAccounts()}
+                          });
+                },
+                icon: Icon(Icons.account_balance_wallet_outlined),
+              )
+            : Container(),
       ],
       bottom: buildFlexibleTooBarWidget(),
     );
@@ -141,15 +141,23 @@ class _ScrollProfilePageState extends State
             controller: tabController,
             tabs: <Widget>[
               Tab(
-                child: Text(
-                  "อาหาร",
-                  style: TextStyle(color: Colors.black),
+                // child: Text(
+                //   "อาหาร",
+                //   style: TextStyle(color: Colors.black),
+                // ),
+                child: Icon(
+                  Icons.food_bank_outlined,
+                  color: Colors.blue,
                 ),
               ),
               Tab(
-                child: Text(
-                  "body",
-                  style: TextStyle(color: Colors.black),
+                // child: Text(
+                //   "SnapFood",
+                //   style: TextStyle(color: Colors.black),
+                // ),
+                child: Icon(
+                  Icons.photo_camera_back_outlined,
+                  color: Colors.blue,
                 ),
               ),
             ],
@@ -672,36 +680,7 @@ class _ScrollProfilePageState extends State
         ));
   }
 
-  // buildHeader() {
-  //   return Container(
-  //     width: double.infinity,
-  //     padding: EdgeInsets.only(left: 10),
-  //     height: 38,
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       border: Border.all(color: Colors.white),
-  //       borderRadius: BorderRadius.circular(30),
-  //     ),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Icon(
-  //           Icons.search_rounded,
-  //           size: 18,
-  //         ),
-  //         SizedBox(
-  //           width: 4,
-  //         ),
-  //         Text(
-  //           "search for",
-  //           style: TextStyle(
-  //             fontSize: 14,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -729,16 +708,6 @@ class _ScrollProfilePageState extends State
           return Future.value(true);
         },
         child: data_DataAc == null || data_MyPost == null
-            // ? Container(
-            //     child: AlertDialog(
-            //         content: Row(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Text("กรุณารอสักครู่...   "),
-            //         CircularProgressIndicator()
-            //       ],
-            //     )),
-            //   )
             ? Center(
                 child: CircularProgressIndicator(),
               )
@@ -746,12 +715,6 @@ class _ScrollProfilePageState extends State
       ),
     );
   }
-
-  // Page destroy the calm life cycle
-  // @override
-  // void dispose() {
-  //   tabController.dispose();
-  // }
 
   Widget buildNestedScrollView() {
     // Slide view
@@ -776,16 +739,6 @@ class _ScrollProfilePageState extends State
           itemCount: data_RecipePost
               .length, /////////////////////////////////////////////////////////////////
           itemBuilder: (context, index) => index < 0
-              // ? new SizedBox(
-              //     child: AlertDialog(
-              //         content: Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         Text("กรุณารอสักครู่...   "),
-              //         CircularProgressIndicator()
-              //       ],
-              //     )),
-              //   )
               ? Center(
                   child: CircularProgressIndicator(),
                 )
@@ -794,37 +747,6 @@ class _ScrollProfilePageState extends State
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    //1st row
-                    // Padding(
-                    //   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 8.0),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Row(
-                    //         children: [
-                    //           new Container(
-                    //             height: 40.0,
-                    //             width: 40.0,
-                    //             decoration: new BoxDecoration(
-                    //                 shape: BoxShape.circle,
-                    //                 image: new DecorationImage(
-                    //                     fit: BoxFit.fill,
-                    //                     image: new NetworkImage(
-                    //                         data_DataAc.profileImage))),
-                    //           ),
-                    //           new SizedBox(
-                    //             width: 10.0,
-                    //           ),
-                    //           new Text(
-                    //             data_DataAc.aliasName,
-                    //             style: TextStyle(fontWeight: FontWeight.bold),
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    //2nd row
                     GestureDetector(
                       onTap: () {
                         print("up $index");
@@ -923,59 +845,49 @@ class _ScrollProfilePageState extends State
                         ],
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 0),
-                    //   child: Text(
-                    //     data_RecipePost[index].recipeName,
-                    //     style: TextStyle(fontSize: 20),
-                    //   ),
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.fromLTRB(15.0, 8, 8.0, 16.0),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Row(
-                    //         children: [
-                    //           new Container(
-                    //             height: 30.0,
-                    //             width: 30.0,
-                    //             decoration: new BoxDecoration(
-                    //                 shape: BoxShape.circle,
-                    //                 image: new DecorationImage(
-                    //                     fit: BoxFit.fill,
-                    //                     image: new NetworkImage(data_DataAc
-                    //                         .profileImage))), /////////////////////////////////////////////////
-                    //           ),
-                    //           new SizedBox(
-                    //             width: 10.0,
-                    //           ),
-                    //           new Text(
-                    //             data_DataAc
-                    //                 .aliasName, //////////////////////////////////////////////////
-                    //             style: TextStyle(fontWeight: FontWeight.normal),
-                    //           )
-                    //         ],
-                    //       ),
-                    //       // new IconButton(
-                    //       //     icon: Icon(Icons.more_vert),
-                    //       //     onPressed: () {
-                    //       //       print("more_vert" + index.toString());
-                    //       //     })
-                    //     ],
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 16,
                     )
                   ],
                 ),
         ),
+        // GridView.count(
+        //   padding: EdgeInsets.zero,
+        //   crossAxisCount: 3,
+        //   children: Colors.primaries.map((color) {
+        //     return Container(color: color, height: 150.0);
+        //   }).toList(),
+        // ),
         GridView.count(
           padding: EdgeInsets.zero,
           crossAxisCount: 3,
-          children: Colors.primaries.map((color) {
-            return Container(color: color, height: 150.0);
+          crossAxisSpacing: 1,
+          mainAxisSpacing: 1,
+          // maxCrossAxisExtent: 200.0,
+
+          children: data_RecipePost.map((data) {
+            return InkWell(
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return ShowFood(data.rid);
+                })).then((value) {
+                  if (token != "" && token != null) {
+                    findUser();
+                  }
+                });
+              },
+              child: Container(
+                width: deviceSize.width,
+                height: 300,
+                child: ClipRRect(
+                  borderRadius: new BorderRadius.circular(0.0),
+                  child: Image(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(data.image),
+                  ),
+                ),
+              ),
+            );
           }).toList(),
         ),
       ],

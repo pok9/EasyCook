@@ -120,16 +120,18 @@ class _ScrollProfilePage2BottomNavbarState extends State
         background: buildFlexibleSpaceWidget(context),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WalletPage()))
-                .then((value) => {
-                      if (token != "" && token != null) {getMyAccounts()}
-                    });
-          },
-          icon: Icon(Icons.account_balance_wallet_outlined),
-        )
+        (data_DataAc.userStatus == 1)
+            ? IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => WalletPage()))
+                      .then((value) => {
+                            if (token != "" && token != null) {getMyAccounts()}
+                          });
+                },
+                icon: Icon(Icons.account_balance_wallet_outlined),
+              )
+            : Container(),
       ],
       bottom: buildFlexibleTooBarWidget(),
     );
@@ -671,16 +673,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
           this.findUser();
           return Future.value(true);
         },
-        // child: (token == "")
-        //     ? LoginPage(
-        //         close: 1,
-        //       )
-        //     : data_DataAc == null || data_MyPost == null
-        //         ? Center(
-        //             child: CircularProgressIndicator(),
-        //           )
-        //         : buildNestedScrollView(),
-
         child: FutureBuilder(
           future: findUser(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -723,7 +715,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
         },
         body: buidChildWidget(),
       ),
-     
       drawer: Drawers(
         token: token,
         data_MyAccount: data_MyAccount,
@@ -738,7 +729,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
       controller: tabController,
       children: <Widget>[
         ListView.builder(
-          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 8, 0, 70),
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: data_RecipePost.length,
@@ -847,21 +838,32 @@ class _ScrollProfilePage2BottomNavbarState extends State
           ),
         ),
         GridView.count(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.only(bottom: 70),
           crossAxisCount: 3,
           crossAxisSpacing: 1,
           mainAxisSpacing: 1,
           // maxCrossAxisExtent: 200.0,
 
           children: data_RecipePost.map((data) {
-            return Container(
-              width: deviceSize.width,
-              height: 300,
-              child: ClipRRect(
-                borderRadius: new BorderRadius.circular(0.0),
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(data.image),
+            return InkWell(
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return ShowFood(data.rid);
+                })).then((value) {
+                  if (token != "" && token != null) {
+                    findUser();
+                  }
+                });
+              },
+              child: Container(
+                width: deviceSize.width,
+                height: 300,
+                child: ClipRRect(
+                  borderRadius: new BorderRadius.circular(0.0),
+                  child: Image(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(data.image),
+                  ),
                 ),
               ),
             );

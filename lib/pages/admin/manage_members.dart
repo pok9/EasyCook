@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:easy_cook/models/admin/manage_members_model.dart';
+import 'package:easy_cook/models/admin/notification/api_notificationModel.dart';
+import 'package:easy_cook/models/admin/notification/getAllTokenNotiModel.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/report/getAllReport_model.dart';
 import 'package:easy_cook/models/search/searchUsername_model.dart';
@@ -9,6 +11,7 @@ import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +40,7 @@ class _ManageMembersState extends State<ManageMembers> {
       if (token != "" && token != null) {
         getMyAccounts();
         getAllReport();
+        getAllTokenNoti();
       }
     });
   }
@@ -127,6 +131,54 @@ class _ManageMembersState extends State<ManageMembers> {
   }
 
   String typeReportName;
+
+  var _ctrlNoti = TextEditingController(); //อธิบายสูตรอาหาร
+  bool clear_ctrlNoti = true;
+
+  //ฟั่งชั่นgetTokenNoti ที่ผ้ใช้ login
+  GetAllTokenNotiModel dataAllTokenNoti;
+  Future<Null> getAllTokenNoti() async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/getAllTokenNoti";
+
+    final response = await http.get(
+      Uri.parse(apiUrl),
+    );
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+        dataAllTokenNoti = getAllTokenNotiModelFromJson(responseString);
+      });
+    } else {
+      return null;
+    }
+  }
+
+  Future<ApiNotificationModel> addIngredients(String body) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjNoti/api_notification";
+
+    // List<st>
+    var data = {
+      "token_noti": dataAllTokenNoti.tokenNoti,
+      "title": "Easy Food",
+      "body": body,
+      "state": "multiple"
+    };
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return apiNotificationModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +187,7 @@ class _ManageMembersState extends State<ManageMembers> {
         title: Text('จัดการสมาชิก'),
       ),
       body: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: new PreferredSize(
             preferredSize: Size.fromHeight(40),
@@ -152,16 +204,23 @@ class _ManageMembersState extends State<ManageMembers> {
                       // ),
                       tabs: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
                           child: new Text(
                             "รายงาน",
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
                           child: new Text(
                             "จัดการสมาชิก",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                          child: new Text(
+                            "แจ้งเตือนแอป",
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
@@ -419,6 +478,128 @@ class _ManageMembersState extends State<ManageMembers> {
                       ],
                     ),
                   ),
+            Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                    child: TextFormField(
+                      controller: _ctrlNoti,
+                      // maxLength: 60,
+                      minLines: 10,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        suffixIcon: (clear_ctrlNoti)
+                            ? null
+                            : Padding(
+                                padding: const EdgeInsets.only(bottom: 170),
+                                child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _ctrlNoti.text = "";
+                                      clear_ctrlNoti = true;
+                                    });
+                                  },
+                                  icon: Icon(Icons.clear),
+                                ),
+                              ),
+                        filled: true,
+                        fillColor: Color(0xfff3f3f4),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: "แจ้งเตือนแอป",
+                        hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.length > 0) {
+                            clear_ctrlNoti = false;
+                          } else {
+                            clear_ctrlNoti = true;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: 50.0,
+                    child: GestureDetector(
+                      onTap: () async {
+                        showDialog(
+                            context: context,
+                            builder: (contex) {
+                              return AlertDialog(
+                                  content: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("กรุณารอสักครู่...   "),
+                                  CircularProgressIndicator()
+                                ],
+                              ));
+                            });
+                        ApiNotificationModel apiNotificationModel =
+                            await addIngredients(_ctrlNoti.text);
+                        Navigator.pop(context);
+                        _ctrlNoti.text = "";
+
+                        if (apiNotificationModel.success == 1) {
+                          Fluttertoast.showToast(
+                              msg: "ส่งแจ้งเตือนเรียบร้อย",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "มีข้อผิดพลาดโปรดส่งใหม่ในภายหลัง",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                        // print(
+                        //     "apiNotificationModel.success => ${apiNotificationModel.success}");
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0xFFF05A22),
+                            style: BorderStyle.solid,
+                            width: 1.0,
+                          ),
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Center(
+                              child: Text(
+                                "ส่งแจ้งเตือน",
+                                style: TextStyle(
+                                  color: Color(0xFFF05A22),
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
           ]),
         ),
       ),

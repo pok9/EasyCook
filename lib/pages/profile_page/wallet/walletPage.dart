@@ -259,6 +259,7 @@ class _WalletPageState extends State<WalletPage> {
     };
     return map[data];
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -625,164 +626,38 @@ class _WalletPageState extends State<WalletPage> {
                                                         );
                                                       }
                                                       })
-                                                  // ListView.builder(
-                                                  //   shrinkWrap: true,
-                                                  //   physics:
-                                                  //       const NeverScrollableScrollPhysics(),
-                                                  //   itemCount:
-                                                  //       dummyListDataNewfeedsglobal.length,
-                                                  //   itemBuilder:
-                                                  //       (context, index) {
-                                                  //     try {
-                                                  //       dummyListDataNewfeedsglobal[index].wid;
-                                                  //       return Padding(
-                                                  //         padding:
-                                                  //             const EdgeInsets
-                                                  //                 .all(8.0),
-                                                  //         child: ListTile(
-                                                  //           // title: Text(
-                                                  //           //   "ถอนเงิน - ${checkStatus(snapshot
-                                                  //           // .data[index].status)}",
-                                                  //           //   style: TextStyle(
-                                                  //           //       fontSize: 18),
-                                                  //           // ),
-                                                  //           title: RichText(
-                                                  //             text: TextSpan(
-                                                  //               text:
-                                                  //                   'ถอนเงิน - ',
-                                                  //               style: TextStyle(
-                                                  //                   fontSize:
-                                                  //                       18.0,
-                                                  //                   color: Colors
-                                                  //                       .black),
-                                                  //               children: <
-                                                  //                   TextSpan>[
-                                                  //                 TextSpan(
-                                                  //                   text:
-                                                  //                       '${checkStatus(dummyListDataNewfeedsglobal[index].status)}',
-                                                  //                   style: TextStyle(
-
-                                                  //                       fontSize:
-                                                  //                           18,
-                                                  //                       color: (dummyListDataNewfeedsglobal[index].status == "request" ||dataListWithdrawTopup[index].status == "pending") ? Colors
-                                                  //                           .grey.shade600 : Colors
-                                                  //                           .green),
-                                                  //                 ),
-                                                  //               ],
-                                                  //             ),
-                                                  //           ),
-                                                  //           trailing: Column(
-                                                  //             mainAxisAlignment:
-                                                  //                 MainAxisAlignment
-                                                  //                     .end,
-                                                  //             crossAxisAlignment:
-                                                  //                 CrossAxisAlignment
-                                                  //                     .end,
-                                                  //             children: [
-
-                                                  //               Text(
-                                                  //                 "-${dummyListDataNewfeedsglobal[index].amount}",
-                                                  //                 style: TextStyle(
-                                                  //                     color: (dummyListDataNewfeedsglobal[index].status == "request" ||dummyListDataNewfeedsglobal[index].status == "pending") ? Colors
-                                                  //                           .grey.shade600 : Colors
-                                                  //                           .red,
-                                                  //                     fontSize:
-                                                  //                         20),
-                                                  //               ),
-                                                  //               Text(dateEdit(
-                                                  //                   "${dummyListDataNewfeedsglobal[index].datetime}")),
-                                                  //             ],
-                                                  //           ),
-                                                  //         ),
-                                                  //       );
-                                                  //     } catch (e) {
-                                                  //       return Padding(
-                                                  //         padding:
-                                                  //             const EdgeInsets
-                                                  //                 .all(8.0),
-                                                  //         child: ListTile(
-                                                  //           title: RichText(
-                                                  //             text: TextSpan(
-                                                  //               text:
-                                                  //                   'ฝากเงิน(${checkStatus('${dummyListDataNewfeedsglobal[index].brand}')}) - ',
-                                                  //               style: TextStyle(
-                                                  //                   fontSize:
-                                                  //                       18.0,
-                                                  //                   color: Colors
-                                                  //                       .black),
-                                                  //               children: <
-                                                  //                   TextSpan>[
-                                                  //                 TextSpan(
-                                                  //                   text:
-                                                  //                       '${checkStatus(dummyListDataNewfeedsglobal[index].status)}',
-                                                  //                   style: TextStyle(
-
-                                                  //                       fontSize:
-                                                  //                           18,
-                                                  //                       color: (dummyListDataNewfeedsglobal[index].status == "request" ||dummyListDataNewfeedsglobal[index].status == "pending") ? Colors
-                                                  //                           .grey.shade600 : Colors
-                                                  //                           .green),
-                                                  //                 ),
-                                                  //               ],
-                                                  //             ),
-                                                  //           ),
-                                                  //           trailing: Column(
-                                                  //             mainAxisAlignment:
-                                                  //                 MainAxisAlignment
-                                                  //                     .end,
-                                                  //                     crossAxisAlignment:
-                                                  //                 CrossAxisAlignment
-                                                  //                     .end,
-                                                  //             children: [
-                                                  //               Text(
-                                                  //                 "+${dummyListDataNewfeedsglobal[index].amount}",
-                                                  //                 style: TextStyle(
-                                                  //                     color: (dummyListDataNewfeedsglobal[index].status == "request" || dummyListDataNewfeedsglobal[index].status == "pending") ? Colors
-                                                  //                           .grey.shade600 : Colors
-                                                  //                           .green,
-                                                  //                     fontSize:
-                                                  //                         20),
-                                                  //               ),
-                                                  //               Text(dateEdit(
-                                                  //                   "${dummyListDataNewfeedsglobal[index].datetime}")),
-                                                  //             ],
-                                                  //           ),
-                                                  //         ),
-                                                  //       );
-                                                  //     }
-                                                  //   },
-                                                  // )
+                                                 
                                                 ],
                                               ),
                                       ],
                                     );
                                   }
                                   return Center(
-                                    child: CircularProgressIndicator(),
+                                    child: CupertinoActivityIndicator(),
                                   );
                                 },
                               );
                             }
                             return Center(
-                              child: CircularProgressIndicator(),
+                              child: CupertinoActivityIndicator(),
                             );
                           },
                         );
                       }
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       );
                     },
                   );
                 }
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: CupertinoActivityIndicator(),
                 );
               },
             );
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: CupertinoActivityIndicator(),
           );
         },
       ),

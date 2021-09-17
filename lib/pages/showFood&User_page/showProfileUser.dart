@@ -267,12 +267,14 @@ class _ProfileUserState extends State<ProfileUser> {
       // Persistent AppBar that never scrolls
       backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
-      // flexibleSpace: Container(
-      //   decoration: BoxDecoration(
-      //     image: DecorationImage(image: NetworkImage('https://media4.giphy.com/media/QVI76pRcwyrZlBwUpU/200w.webp?cid=ecf05e47nkfvwzl8s2kc7d99vh35o7rj8fysks84vggixccu&rid=200w.webp&ct=g'),fit: BoxFit.cover)
-      //   ),
-      // ),
-        title: Text(data_PostUser == null ? "" : data_PostUser.aliasName  +data_PostUser.userId.toString()),
+        // flexibleSpace: Container(
+        //   decoration: BoxDecoration(
+        //     image: DecorationImage(image: NetworkImage('https://media4.giphy.com/media/QVI76pRcwyrZlBwUpU/200w.webp?cid=ecf05e47nkfvwzl8s2kc7d99vh35o7rj8fysks84vggixccu&rid=200w.webp&ct=g'),fit: BoxFit.cover)
+        //   ),
+        // ),
+        title: Text(data_PostUser == null
+            ? ""
+            : data_PostUser.aliasName + data_PostUser.userId.toString()),
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
@@ -402,98 +404,128 @@ class _ProfileUserState extends State<ProfileUser> {
                             // color: Colors.amber,
                             // height: 314,
                             child: Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: deviceSize.height * 0.45,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: (data_PostUser.wallpaper == null) ? AssetImage(
-                                                'assets/wallpapers/default.jpg') : AssetImage(
+                                Container(
+                                  height: deviceSize.height * 0.45,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: (data_PostUser.wallpaper == null)
+                                            ? AssetImage(
+                                                'assets/wallpapers/default.jpg')
+                                            : AssetImage(
                                                 '${data_PostUser.wallpaper}'),
-                                            fit: BoxFit.cover),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Column(
-                                          children: [
-                                            // SizedBox(
-                                            //   height: 36,
-                                            // ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Column(
+                                      children: [
+                                        // SizedBox(
+                                        //   height: 36,
+                                        // ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
 
-                                            InkWell(
-                                                onTap: () async {
-                                                  await showDialog(
+                                        InkWell(
+                                            onTap: () async {
+                                              await showDialog(
+                                                  context: context,
+                                                  builder: (_) => ImageDialog(
+                                                        image: data_PostUser
+                                                            .profileImage,
+                                                      ));
+                                            },
+                                            child: (this.widget.imageHero !=
+                                                    null)
+                                                ? Hero(
+                                                    tag: this.widget.imageHero,
+                                                    child: CircleAvatar(
+                                                      radius: 48,
+                                                      backgroundImage:
+                                                          NetworkImage(this
+                                                              .widget
+                                                              .imageHero), //////////////////
+                                                    ),
+                                                  )
+                                                : CircleAvatar(
+                                                    radius: 48,
+                                                    backgroundImage: NetworkImage(
+                                                        data_PostUser
+                                                            .profileImage), //////////////////
+                                                  )),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          data_PostUser.aliasName,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        Text(
+                                          data_PostUser.nameSurname,
+                                          style: TextStyle(
+                                              color: Colors.white60,
+                                              fontSize: 15),
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        (checkFollowers == null)
+                                            ? MaterialButton(
+                                                splashColor: Colors.grey,
+                                                color: Colors.blue[400],
+                                                onPressed: () {
+                                                  print("login");
+                                                  showDialog(
                                                       context: context,
-                                                      builder: (_) =>
-                                                          ImageDialog(
-                                                            image: data_PostUser
-                                                                .profileImage,
-                                                          ));
+                                                      builder: (_) {
+                                                        return LoginPage();
+                                                      }).then((value) {
+                                                    findUser();
+                                                    // Navigator.pop(context);
+                                                  });
                                                 },
-                                                child: (this.widget.imageHero !=
-                                                        null)
-                                                    ? Hero(
-                                                        tag: this
-                                                            .widget
-                                                            .imageHero,
-                                                        child: CircleAvatar(
-                                                          radius: 48,
-                                                          backgroundImage:
-                                                              NetworkImage(this
-                                                                  .widget
-                                                                  .imageHero), //////////////////
-                                                        ),
-                                                      )
-                                                    : CircleAvatar(
-                                                        radius: 48,
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                data_PostUser
-                                                                    .profileImage), //////////////////
-                                                      )),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              data_PostUser.aliasName,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
-                                            ),
-                                            SizedBox(
-                                              height: 3,
-                                            ),
-                                            Text(
-                                              data_PostUser.nameSurname,
-                                              style: TextStyle(
-                                                  color: Colors.white60,
-                                                  fontSize: 15),
-                                            ),
-                                            SizedBox(
-                                              height: 7,
-                                            ),
-                                            (checkFollowers == null)
+                                                child: Text(
+                                                  'ติดตาม',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                shape: StadiumBorder(),
+                                              )
+                                            : (checkFollowers.checkFollower ==
+                                                    0)
                                                 ? MaterialButton(
                                                     splashColor: Colors.grey,
                                                     color: Colors.blue[400],
                                                     onPressed: () {
-                                                      print("login");
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (_) {
-                                                            return LoginPage();
-                                                          }).then((value) {
-                                                        findUser();
-                                                        // Navigator.pop(context);
-                                                      });
+                                                      checkPressCountFollowAndUnFollow++;
+                                                      print("ติดตาม");
+                                                      manageFollow(
+                                                          "fol",
+                                                          this
+                                                              .data_PostUser
+                                                              .userId);
+
+                                                      insertNotificationData(
+                                                          data_PostUser.userId
+                                                              .toString(),
+                                                          data_DataAc.aliasName,
+                                                          "ได้ติดตามคุณ",
+                                                          null,
+                                                          data_DataAc.userId
+                                                              .toString(),
+                                                          "follow");
+
+                                                      // _ProfileUserState(this.reqUid);
                                                     },
                                                     child: Text(
                                                       'ติดตาม',
@@ -502,253 +534,200 @@ class _ProfileUserState extends State<ProfileUser> {
                                                     ),
                                                     shape: StadiumBorder(),
                                                   )
-                                                : (checkFollowers
-                                                            .checkFollower ==
-                                                        0)
-                                                    ? MaterialButton(
-                                                        splashColor:
-                                                            Colors.grey,
-                                                        color: Colors.blue[400],
-                                                        onPressed: () {
-                                                          checkPressCountFollowAndUnFollow++;
-                                                          print("ติดตาม");
-                                                          manageFollow(
-                                                              "fol",
-                                                              this
-                                                                  .data_PostUser
-                                                                  .userId);
-
-                                                          insertNotificationData(
-                                                              data_PostUser
-                                                                  .userId
-                                                                  .toString(),
-                                                              data_DataAc
-                                                                  .aliasName,
-                                                              "ได้ติดตามคุณ",
-                                                              null,
-                                                              data_DataAc.userId
-                                                                  .toString(),
-                                                              "follow");
-
-                                                          // _ProfileUserState(this.reqUid);
-                                                        },
-                                                        child: Text(
-                                                          'ติดตาม',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        shape: StadiumBorder(),
-                                                      )
-                                                    : MaterialButton(
-                                                        splashColor:
-                                                            Colors.grey,
-                                                        color: Colors.grey,
-                                                        onPressed: () {
-                                                          print("ยกเลิกติดตาม");
-                                                          checkPressCountFollowAndUnFollow++;
-                                                          manageFollow(
-                                                              "unfol",
-                                                              this
-                                                                  .data_PostUser
-                                                                  .userId);
-                                                        },
-                                                        child: Text(
-                                                          'กำลังติดตาม',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        shape: StadiumBorder(),
-                                                      ),
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                            Expanded(child: Container()),
-                                            Container(
-                                              height: 64,
-                                              color:
-                                                  Colors.black.withOpacity(0.4),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  Container(
-                                                    width: 110,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'โพสต์',
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white70,
-                                                              fontSize: 12),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-                                                        Text(
-                                                          data_PostUser
-                                                              .countPost
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                : MaterialButton(
+                                                    splashColor: Colors.grey,
+                                                    color: Colors.grey,
+                                                    onPressed: () {
+                                                      print("ยกเลิกติดตาม");
+                                                      checkPressCountFollowAndUnFollow++;
+                                                      manageFollow(
+                                                          "unfol",
+                                                          this
+                                                              .data_PostUser
+                                                              .userId);
+                                                    },
+                                                    child: Text(
+                                                      'กำลังติดตาม',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
                                                     ),
+                                                    shape: StadiumBorder(),
                                                   ),
-                                                  Container(
-                                                    width: 110,
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        if (token == "") {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder: (_) {
-                                                                return LoginPage();
-                                                              }).then((value) {
-                                                            findUser();
-                                                            // Navigator.pop(context);
-                                                          });
-                                                        } else {
-                                                          print("ติดตาม");
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ShowFollowerAndFollowing(
-                                                                          index:
-                                                                              0,
-                                                                          id: this
-                                                                              .data_PostUser
-                                                                              .userId,
-                                                                          name: this
-                                                                              .data_PostUser
-                                                                              .aliasName,
-                                                                        )),
-                                                          );
-                                                        }
-                                                      },
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            'ติดตาม',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white70,
-                                                                fontSize: 12),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 4,
-                                                          ),
-                                                          Text(
-                                                            data_PostUser
-                                                                .countFollower
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: 110,
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        if (token == "") {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder: (_) {
-                                                                return LoginPage();
-                                                              }).then((value) {
-                                                            findUser();
-                                                            // Navigator.pop(context);
-                                                          });
-                                                        } else {
-                                                          print("กำลังติดตาม");
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ShowFollowerAndFollowing(
-                                                                          index:
-                                                                              1,
-                                                                          id: this
-                                                                              .data_PostUser
-                                                                              .userId,
-                                                                          name: this
-                                                                              .data_PostUser
-                                                                              .aliasName,
-                                                                        )),
-                                                          );
-                                                        }
-                                                      },
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            'กำลังติดตาม',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white70,
-                                                                fontSize: 12),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 4,
-                                                          ),
-                                                          Text(
-                                                            data_PostUser
-                                                                .countFollowing
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                        SizedBox(
+                                          height: 4,
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Expanded(child: Container()),
+                                        Container(
+                                          height: 64,
+                                          color: Colors.black.withOpacity(0.4),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Container(
+                                                width: 110,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'โพสต์',
+                                                      style: TextStyle(
+                                                          color: Colors.white70,
+                                                          fontSize: 12),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 4,
+                                                    ),
+                                                    Text(
+                                                      data_PostUser.countPost
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 110,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    if (token == "") {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (_) {
+                                                            return LoginPage();
+                                                          }).then((value) {
+                                                        findUser();
+                                                        // Navigator.pop(context);
+                                                      });
+                                                    } else {
+                                                      print("ติดตาม");
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ShowFollowerAndFollowing(
+                                                                  index: 0,
+                                                                  id: this
+                                                                      .data_PostUser
+                                                                      .userId,
+                                                                  name: this
+                                                                      .data_PostUser
+                                                                      .aliasName,
+                                                                )),
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        'ติดตาม',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white70,
+                                                            fontSize: 12),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 4,
+                                                      ),
+                                                      Text(
+                                                        data_PostUser
+                                                            .countFollower
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 110,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    if (token == "") {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (_) {
+                                                            return LoginPage();
+                                                          }).then((value) {
+                                                        findUser();
+                                                        // Navigator.pop(context);
+                                                      });
+                                                    } else {
+                                                      print("กำลังติดตาม");
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ShowFollowerAndFollowing(
+                                                                  index: 1,
+                                                                  id: this
+                                                                      .data_PostUser
+                                                                      .userId,
+                                                                  name: this
+                                                                      .data_PostUser
+                                                                      .aliasName,
+                                                                )),
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        'กำลังติดตาม',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white70,
+                                                            fontSize: 12),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 4,
+                                                      ),
+                                                      Text(
+                                                        data_PostUser
+                                                            .countFollowing
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ],
-                            ))
+                            ),
+                          ],
+                        ))
                       ]),
                     ),
                   ];
@@ -760,15 +739,23 @@ class _ProfileUserState extends State<ProfileUser> {
                     TabBar(
                       tabs: [
                         Tab(
-                          child: Text(
-                            "อาหาร",
-                            style: TextStyle(color: Colors.black),
+                          // child: Text(
+                          //   "อาหาร",
+                          //   style: TextStyle(color: Colors.black),
+                          // ),
+                          child: Icon(
+                            Icons.food_bank_outlined,
+                            color: Colors.blue,
                           ),
                         ),
                         Tab(
-                          child: Text(
-                            "body",
-                            style: TextStyle(color: Colors.black),
+                          // child: Text(
+                          //   "SnapFood",
+                          //   style: TextStyle(color: Colors.black),
+                          // ),
+                          child: Icon(
+                            Icons.photo_camera_back_outlined,
+                            color: Colors.blue,
                           ),
                         ),
                       ],
@@ -1082,8 +1069,81 @@ class _ProfileUserState extends State<ProfileUser> {
                           GridView.count(
                             padding: EdgeInsets.zero,
                             crossAxisCount: 3,
-                            children: Colors.primaries.map((color) {
-                              return Container(color: color, height: 150.0);
+                            crossAxisSpacing: 1,
+                            mainAxisSpacing: 1,
+                            // maxCrossAxisExtent: 200.0,
+
+                            children: data_RecipePost.map((data) {
+                              return InkWell(
+                                onTap: () {
+                                  print(data.price);
+                                  if (data_DataAc != null) {
+                                    if (data.price == 0 ||
+                                        this.widget.reqUid ==
+                                            data_DataAc.userId ||
+                                        checkBuy.indexOf(data.rid.toString()) >=
+                                            0) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShowFood(data.rid)),
+                                      );
+                                    } else {
+                                      // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+                                      // print("dataUser.userId = ${dataUser.userId}");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecipePurchasePage(
+                                                  req_rid: data.rid,
+                                                )),
+                                      ).then((value) {
+                                        if (token != "" && token != null) {
+                                          getMybuy();
+                                        }
+                                      });
+                                    }
+                                  } else {
+                                    if (data.price == 0) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShowFood(data.rid)),
+                                      );
+                                    } else {
+                                      // print("dataRecommendRecipe.userId = ${dataRecommendRecipe.userId}");
+                                      // print("dataUser.userId = ${dataUser.userId}");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecipePurchasePage(
+                                                  req_rid: data.rid,
+                                                )),
+                                      ).then((value) {
+                                        if (token != "" && token != null) {
+                                          getMybuy();
+                                        }
+                                      });
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  width: deviceSize.width,
+                                  height: 300,
+                                  child: ClipRRect(
+                                    borderRadius:
+                                        new BorderRadius.circular(0.0),
+                                    child: Image(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(data.image),
+                                    ),
+                                  ),
+                                ),
+                              );
                             }).toList(),
                           ),
                         ],
