@@ -32,6 +32,7 @@ import 'package:easy_cook/style/utiltties.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -397,343 +398,406 @@ class _FeedPageState extends State<FeedPage> {
         data_DataAc: data_DataAc,
       ),
 
-      body: RefreshIndicator(
-        onRefresh: findUser,
-        child: Container(
-          child: ListView(
-            children: [
-              LimitedBox(
-                maxHeight: 250,
-                child: Stack(
-                  children: [
-                    PageView(
-                      controller: pageController,
-                      children: [
-                        AdsSlideCard(
-                          slideImage:
-                              "https://pbs.twimg.com/media/ESUlHHKUcAIYNfb.jpg",
-                        ),
-                        AdsSlideCard(
-                          slideImage:
-                              "http://i2.wp.com/www.thaismescenter.com/wp-content/uploads/2019/10/74.jpg?resize=660%2C655",
-                        ),
-                        AdsSlideCard(
-                          slideImage:
-                              "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/f9f93df5-dfe0-4c78-98ff-a05380282039.jpg",
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 18.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Center(
-                        child: SlideIndicator(
-                          pageController: pageController,
+      body: OfflineBuilder(
+        connectivityBuilder: (
+          BuildContext context,
+          ConnectivityResult connectivity,
+          Widget child,
+        ) {
+          final bool connected = connectivity != ConnectivityResult.none;
+          return (connected)
+              ? body(context)
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                height: 100,
+                                width: 100,
+                                child: Image.asset(
+                                    'assets/images/hambergerGray.png'))
+                          ],
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.count(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisCount: 4,
-                  children: [
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019495.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019428.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019512.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019453.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019437.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/512/5019/5019349.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5019/5019501.png",
-                      name: "test",
-                    ),
-                    MenuFeature(
-                      iconAsset:
-                          "https://image.flaticon.com/icons/png/128/5018/5018006.png",
-                      name: "test",
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "คุณออฟไลน์อยู่",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "ตรวจสอบการเชื่อมต่อของคุณ",
+                            style: TextStyle(fontSize: 15),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Text(
+              'There are no bottons to push :)',
+            ),
+            new Text(
+              'Just turn off your internet.',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  RefreshIndicator body(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: findUser,
+      child: Container(
+        child: ListView(
+          children: [
+            LimitedBox(
+              maxHeight: 250,
+              child: Stack(
                 children: [
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหารยอดนิยม1",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      ],
-                    ),
+                  PageView(
+                    controller: pageController,
+                    children: [
+                      AdsSlideCard(
+                        slideImage:
+                            "https://pbs.twimg.com/media/ESUlHHKUcAIYNfb.jpg",
+                      ),
+                      AdsSlideCard(
+                        slideImage:
+                            "http://i2.wp.com/www.thaismescenter.com/wp-content/uploads/2019/10/74.jpg?resize=660%2C655",
+                      ),
+                      AdsSlideCard(
+                        slideImage:
+                            "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/f9f93df5-dfe0-4c78-98ff-a05380282039.jpg",
+                      ),
+                    ],
                   ),
-                  Container(
-                      height: 300,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return _foodCard_1(context);
-                          })),
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหารยอดนิยม2",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
-                      ],
+                  Positioned(
+                    bottom: 18.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Center(
+                      child: SlideIndicator(
+                        pageController: pageController,
+                      ),
                     ),
-                  ),
-                  Container(
-                      height: 300,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return _foodCard_2(context);
-                          })),
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "วัตถุดิบแนะนำยอดนิยม",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                        // Text(
-                        //   "ดูทั้งหมด",
-                        //   style: TextStyle(
-                        //       fontSize: 20, fontWeight: FontWeight.normal),
-                        // ),
-                      ],
-                    ),
-                  ),
-                  ingredients(),
-
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "แนะนำสูตรอาหาร",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RecommendPage()),
-                              );
-                            },
-                            icon: Icon(Icons.arrow_forward_rounded,
-                                color: Colors.indigo))
-                      ],
-                    ),
-                  ),
-
-                  (dataRecommendRecipe == null)
-                      ? Container(
-                          height: 329,
-                        )
-                      : Container(
-                          height: 300,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: dataRecommendRecipe.length,
-                              itemBuilder: (context, index) {
-                                return _recommendRecipeCard(
-                                    context, dataRecommendRecipe[index]);
-                              })),
-
-                  DividerCutom(),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "แนะนำเซฟ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      ],
-                    ),
-                  ),
-
-                  (dataRecommendUser == null || checkFollowing == null)
-                      ? Container(
-                          height: 135,
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Container(
-                              height: 135,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: dataRecommendUser.length,
-                                  itemBuilder: (context, index) {
-                                    return _introduce_safe_Card(
-                                        context,
-                                        dataRecommendUser[index],
-                                        checkFollowing);
-                                  })),
-                        ),
-
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหาร ยอดนิยม",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      ],
-                    ),
-                  ),
-                  (dataPopularRecipe_free_and_not_free == null)
-                      ? Container(
-                          height: 329,
-                        )
-                      : Container(
-                          height: 329,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount:
-                                  dataPopularRecipe_free_and_not_free.length,
-                              itemBuilder: (context, index) {
-                                return _popular_recipe(context,
-                                    dataPopularRecipe_free_and_not_free[index]);
-                              })),
-
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหารฟรี ยอดนิยม",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      ],
-                    ),
-                  ),
-                  (dataPopularRecipe_free == null)
-                      ? Container(
-                          height: 329,
-                        )
-                      : Container(
-                          height: 329,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: dataPopularRecipe_free.length,
-                              itemBuilder: (context, index) {
-                                return _popular_recipe(
-                                    context, dataPopularRecipe_free[index]);
-                              })),
-
-                  DividerCutom(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "สูตรอาหารไม่ฟรี ยอดนิยม",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                      ],
-                    ),
-                  ),
-                  (dataPopularRecipe_not_free == null)
-                      ? Container(
-                          height: 329,
-                        )
-                      : Container(
-                          height: 329,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: dataPopularRecipe_not_free.length,
-                              itemBuilder: (context, index) {
-                                return _popular_recipe(
-                                    context, dataPopularRecipe_not_free[index]);
-                              })),
-
-                  // DividerCutom(),
+                  )
                 ],
               ),
-              SizedBox(
-                height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: 4,
+                children: [
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/128/5019/5019495.png",
+                    name: "test",
+                  ),
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/128/5019/5019428.png",
+                    name: "test",
+                  ),
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/128/5019/5019512.png",
+                    name: "test",
+                  ),
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/128/5019/5019453.png",
+                    name: "test",
+                  ),
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/128/5019/5019437.png",
+                    name: "test",
+                  ),
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/512/5019/5019349.png",
+                    name: "test",
+                  ),
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/128/5019/5019501.png",
+                    name: "test",
+                  ),
+                  MenuFeature(
+                    iconAsset:
+                        "https://image.flaticon.com/icons/png/128/5018/5018006.png",
+                    name: "test",
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "สูตรอาหารยอดนิยม1",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                    ],
+                  ),
+                ),
+                Container(
+                    height: 300,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return _foodCard_1(context);
+                        })),
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "สูตรอาหารยอดนิยม2",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      // Text(
+                      //   "ดูทั้งหมด",
+                      //   style: TextStyle(
+                      //       fontSize: 20, fontWeight: FontWeight.normal),
+                      // ),
+                    ],
+                  ),
+                ),
+                Container(
+                    height: 300,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return _foodCard_2(context);
+                        })),
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "วัตถุดิบแนะนำยอดนิยม",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      // Text(
+                      //   "ดูทั้งหมด",
+                      //   style: TextStyle(
+                      //       fontSize: 20, fontWeight: FontWeight.normal),
+                      // ),
+                    ],
+                  ),
+                ),
+                ingredients(),
+
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "แนะนำสูตรอาหาร",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RecommendPage()),
+                            );
+                          },
+                          icon: Icon(Icons.arrow_forward_rounded,
+                              color: Colors.indigo))
+                    ],
+                  ),
+                ),
+
+                (dataRecommendRecipe == null)
+                    ? Container(
+                        height: 329,
+                      )
+                    : Container(
+                        height: 300,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: dataRecommendRecipe.length,
+                            itemBuilder: (context, index) {
+                              return _recommendRecipeCard(
+                                  context, dataRecommendRecipe[index]);
+                            })),
+
+                DividerCutom(),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "แนะนำเซฟ",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                    ],
+                  ),
+                ),
+
+                (dataRecommendUser == null || checkFollowing == null)
+                    ? Container(
+                        height: 135,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Container(
+                            height: 135,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: dataRecommendUser.length,
+                                itemBuilder: (context, index) {
+                                  return _introduce_safe_Card(context,
+                                      dataRecommendUser[index], checkFollowing);
+                                })),
+                      ),
+
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "สูตรอาหาร ยอดนิยม",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                    ],
+                  ),
+                ),
+                (dataPopularRecipe_free_and_not_free == null)
+                    ? Container(
+                        height: 329,
+                      )
+                    : Container(
+                        height: 329,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                dataPopularRecipe_free_and_not_free.length,
+                            itemBuilder: (context, index) {
+                              return _popular_recipe(context,
+                                  dataPopularRecipe_free_and_not_free[index]);
+                            })),
+
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "สูตรอาหารฟรี ยอดนิยม",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                    ],
+                  ),
+                ),
+                (dataPopularRecipe_free == null)
+                    ? Container(
+                        height: 329,
+                      )
+                    : Container(
+                        height: 329,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: dataPopularRecipe_free.length,
+                            itemBuilder: (context, index) {
+                              return _popular_recipe(
+                                  context, dataPopularRecipe_free[index]);
+                            })),
+
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "สูตรอาหารไม่ฟรี ยอดนิยม",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                    ],
+                  ),
+                ),
+                (dataPopularRecipe_not_free == null)
+                    ? Container(
+                        height: 329,
+                      )
+                    : Container(
+                        height: 329,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: dataPopularRecipe_not_free.length,
+                            itemBuilder: (context, index) {
+                              return _popular_recipe(
+                                  context, dataPopularRecipe_not_free[index]);
+                            })),
+
+                // DividerCutom(),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+          ],
         ),
       ),
     );

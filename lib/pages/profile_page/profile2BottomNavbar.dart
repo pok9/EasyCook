@@ -17,6 +17,7 @@ import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -673,38 +674,103 @@ class _ScrollProfilePage2BottomNavbarState extends State
           this.findUser();
           return Future.value(true);
         },
-        child: FutureBuilder(
-          future: findUser(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return (token == "" || token == null)
-                  ? LoginPage(
-                      close: 1,
-                    )
-                  : FutureBuilder(
-                      future: getMyAccounts(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          return FutureBuilder(
-                            future: getMyPost(),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasData) {
-                                return buildNestedScrollView();
-                              }
-                              return Center(child: CircularProgressIndicator());
-                            },
-                          );
-                        }
-                        return Center(child: CircularProgressIndicator());
-                      },
-                    );
-            }
-            return Center(child: CircularProgressIndicator());
-          },
+        child: OfflineBuilder(
+        connectivityBuilder: (
+          BuildContext context,
+          ConnectivityResult connectivity,
+          Widget child,
+        ) {
+          final bool connected = connectivity != ConnectivityResult.none;
+          return (connected)
+              ? body()
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                height: 100,
+                                width: 100,
+                                child: Image.asset(
+                                    'assets/images/hambergerGray.png'))
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "คุณออฟไลน์อยู่",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "ตรวจสอบการเชื่อมต่อของคุณ",
+                            style: TextStyle(fontSize: 15),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Text(
+              'There are no bottons to push :)',
+            ),
+            new Text(
+              'Just turn off your internet.',
+            ),
+          ],
         ),
       ),
+      ),
     );
+  }
+
+  FutureBuilder<String> body() {
+    return FutureBuilder(
+        future: findUser(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return (token == "" || token == null)
+                ? LoginPage(
+                    close: 1,
+                  )
+                : FutureBuilder(
+                    future: getMyAccounts(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return FutureBuilder(
+                          future: getMyPost(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              return buildNestedScrollView();
+                            }
+                            return Center(child: CircularProgressIndicator());
+                          },
+                        );
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    },
+                  );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      );
   }
 
   Widget buildNestedScrollView() {
