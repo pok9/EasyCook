@@ -460,7 +460,7 @@ class _ManageMembersState extends State<ManageMembers> {
                                             });
                                           },
                                           child: Text(
-                                            'Ban',
+                                            'แบน!',
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
@@ -544,6 +544,7 @@ class _ManageMembersState extends State<ManageMembers> {
                             await addIngredients(_ctrlNoti.text);
                         Navigator.pop(context);
                         _ctrlNoti.text = "";
+                        clear_ctrlNoti = true;
 
                         if (apiNotificationModel.success == 1) {
                           Fluttertoast.showToast(
@@ -564,6 +565,10 @@ class _ManageMembersState extends State<ManageMembers> {
                               textColor: Colors.white,
                               fontSize: 16.0);
                         }
+
+                        setState(() {
+                          
+                        });
                         // print(
                         //     "apiNotificationModel.success => ${apiNotificationModel.success}");
                       },

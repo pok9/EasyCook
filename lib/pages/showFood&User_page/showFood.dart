@@ -1,7 +1,9 @@
 import 'dart:convert';
 // import 'dart:ffi';
 
+import 'package:easy_cook/models/category/category_model.dart';
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
+import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/report/addReport/addReport_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model/getCommentPost_model.dart';
@@ -10,6 +12,7 @@ import 'package:easy_cook/models/showfood/scoreFood/getScoreFoodModel.dart';
 import 'package:easy_cook/models/showfood/scoreFood/scoreFoodInputModel.dart';
 
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/commentFood.dart/commentFood.dart';
@@ -203,6 +206,52 @@ class _ShowFoodState extends State<ShowFood> {
       final String responseString = response.body;
 
       return showFoodsFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  List<CategoryModel> categoryFood;
+  Future<List<CategoryModel>> getCategoryFood() async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjPost/searchWithCategory/" +
+            dataFood.foodCategory;
+
+    final response = await http.get(Uri.parse(apiUrl));
+    print("response = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      if (responseString.contains("message")) {
+        categoryFood = [];
+      } else {
+        categoryFood = categoryModelFromJson(responseString);
+      }
+      return categoryFood;
+    } else {
+      return null;
+    }
+  }
+
+  List<Mybuy> dataMybuy;
+  List<String> checkBuy = [];
+  Future<List<String>> getMybuy() async {
+    checkBuy = [];
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    print("responseFeed_follow = " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      dataMybuy = mybuyFromJson(responseString);
+      for (var item in dataMybuy) {
+        print(item.recipeId);
+        checkBuy.add(item.recipeId.toString());
+      }
+
+      return checkBuy;
     } else {
       return null;
     }
@@ -491,90 +540,14 @@ class _ShowFoodState extends State<ShowFood> {
 
   @override
   Widget build(BuildContext context) {
-    // return FutureBuilder(
-    //   future: findUser(),
-    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //     if (snapshot.hasData) {
-    //       token = snapshot.data;
-    //       return FutureBuilder(
-    //         future: getPost(),
-    //         builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //           if (snapshot.hasData) {
-    //             dataFood = snapshot.data;
-    //             dataIngredient = dataFood.ingredient;
-    //             dataHowto = dataFood.howto;
-    //             final List<Widget> ingredient =
-    //                 dataIngredient == null ? [] : _ingredientList();
-
-    //             final List<Widget> howto1 =
-    //                 dataHowto == null ? [] : _howtoList1();
-    //             final List<Widget> howto2 =
-    //                 dataHowto == null ? [] : _howtoList2();
-    //             return FutureBuilder(
-    //               future: getCommentPosts(),
-    //               builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //                 if (snapshot.hasData) {
-    //                   dataGetCommentPost = snapshot.data;
-    //                   return FutureBuilder(
-    //                     future: getMyAccounts(),
-    //                     builder:
-    //                         (BuildContext context, AsyncSnapshot snapshot) {
-    //                       if (snapshot.connectionState ==
-    //                           ConnectionState.waiting) {
-    //                         return Scaffold(
-    //                             body: Center(
-    //                           child: CircularProgressIndicator(),
-    //                         ));
-    //                       }
-    //                       if (snapshot.hasData) {
-    //                         datas = snapshot.data;
-    //                         dataMyAccont = datas.data[0];
-    //                         return FutureBuilder(
-    //                           future: getScoreFood(),
-    //                           builder: (BuildContext context,
-    //                               AsyncSnapshot snapshot) {
-    //                             if (snapshot.hasData) {
-    //                               dataGetScoreFood = snapshot.data;
-    //                               return buildBody(ingredient, howto1, howto2);
-    //                             }
-    //                             return Scaffold(
-    //                                 body: Center(
-    //                               child: CircularProgressIndicator(),
-    //                             ));
-    //                           },
-    //                         );
-    //                       }
-    //                       return buildBody(ingredient, howto1, howto2);
-    //                     },
-    //                   );
-    //                 }
-    //                 return Scaffold(
-    //                     body: Center(
-    //                   child: CircularProgressIndicator(),
-    //                 ));
-    //               },
-    //             );
-    //             ;
-    //           }
-    //           return Scaffold(
-    //               body: Center(
-    //             child: CircularProgressIndicator(),
-    //           ));
-    //         },
-    //       );
-    //     }
-    //     return Scaffold(
-    //         body: Center(
-    //       child: CircularProgressIndicator(),
-    //     ));
-    //   },
-    // );
     Size sizeScreen = MediaQuery.of(context).size;
+
     return FutureBuilder(
       future: findUser(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           token = snapshot.data;
+          
           return FutureBuilder(
             future: getPost(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -582,7 +555,10 @@ class _ShowFoodState extends State<ShowFood> {
                 dataFood = snapshot.data;
                 dataIngredient = dataFood.ingredient;
                 dataHowto = dataFood.howto;
-
+getCategoryFood();
+          if (token != "" && token != null) {
+            getMybuy();
+          }
                 final List<Widget> ingredient =
                     dataIngredient == null ? [] : _ingredientList();
                 final List<Widget> howto1 =
@@ -592,8 +568,8 @@ class _ShowFoodState extends State<ShowFood> {
                 return FutureBuilder(
                   future: getScoreFood(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.done) {
-                      
+                    if (snapshot.connectionState == ConnectionState.waiting ||
+                        snapshot.connectionState == ConnectionState.done) {
                       return FutureBuilder(
                         future: getCommentPosts(),
                         builder:
@@ -609,8 +585,41 @@ class _ShowFoodState extends State<ShowFood> {
                                       "snapshot.hasData => ${snapshot.hasData}");
                                   datas = snapshot.data;
                                   dataMyAccont = datas.data[0];
+
+                                  // return FutureBuilder(
+                                  //   future:getCategoryFood(),
+                                  //   builder: (BuildContext context,
+                                  //       AsyncSnapshot snapshot) {
+                                  //     if (snapshot.hasData == true) {
+                                  //       categoryFood = snapshot.data;
+                                  //       return FutureBuilder(
+                                  //   future: getMybuy(),
+                                  //   builder: (BuildContext context,
+                                  //       AsyncSnapshot snapshot) {
+                                  //     if (snapshot.hasData == true) {
+                                  //       checkBuy = snapshot.data;
                                   return buildBody(
                                       ingredient, howto1, howto2, sizeScreen);
+                                  //     }
+
+                                  //     return Scaffold(
+                                  //       body: Center(
+                                  //         child:
+                                  //             CircularProgressIndicator(),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  // );
+                                  //     }
+
+                                  //     return Scaffold(
+                                  //       body: Center(
+                                  //         child:
+                                  //             CircularProgressIndicator(),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  // );
                                 }
 
                                 if (snapshot.hasData == false) {
@@ -1248,7 +1257,6 @@ class _ShowFoodState extends State<ShowFood> {
                                         ],
                                       ),
                                     ),
-
                           ListView.builder(
                               padding: EdgeInsets.only(top: 0),
                               shrinkWrap: true,
@@ -1322,55 +1330,6 @@ class _ShowFoodState extends State<ShowFood> {
                                   // trailing: Text('Horse'),
                                 );
                               }),
-                          // ListView.builder(
-                          //     padding: EdgeInsets.only(top: 0),
-                          //     shrinkWrap: true,
-                          //     physics: NeverScrollableScrollPhysics(),
-                          //     itemCount: (dataGetCommentPost == null)
-                          //         ? 0
-                          //         : dataGetCommentPost.length > 3
-                          //             ? 3
-                          //             : dataGetCommentPost.length,
-                          //     itemBuilder: (context, index) {
-                          //       return ListTile(
-                          //         isThreeLine: true,
-                          //         leading: CircleAvatar(
-                          //           backgroundImage: NetworkImage(
-                          //               dataGetCommentPost[index].profileImage),
-                          //         ),
-                          //         title: Padding(
-                          //           padding:
-                          //               const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          //           child: Text(
-                          //             dataGetCommentPost[index].aliasName,
-                          //             style: TextStyle(
-                          //                 fontWeight: FontWeight.bold,
-                          //                 color: (dataGetCommentPost[index]
-                          //                             .userStatus ==
-                          //                         0)
-                          //                     ? Colors.red
-                          //                     : (dataGetCommentPost[index]
-                          //                                 .userId ==
-                          //                             dataMyAccont.userId)
-                          //                         ? Colors.blue
-                          //                         : Colors.black),
-                          //           ),
-                          //         ),
-                          //         subtitle: Text(
-                          //           '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
-                          //           textAlign: TextAlign.justify,
-                          //           style: TextStyle(
-                          //             fontWeight: FontWeight.normal,
-                          //             fontFamily: 'OpenSans',
-                          //             fontSize: 12,
-                          //             color: Colors.black,
-                          //             decoration: TextDecoration.none,
-                          //           ),
-                          //         ),
-                          //         dense: true,
-                          //         // trailing: Text('Horse'),
-                          //       );
-                          //     })
                         ],
                       ),
                       Padding(
@@ -1441,11 +1400,290 @@ class _ShowFoodState extends State<ShowFood> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 5,
+                ),
+                Card(
+                  margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                  //ปรับขอบการ์ด
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "หมวดหมู่ที่คล้ายกัน",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            // (categoryFood == null)
+                            //     ? Text(categoryFood.toString())
+                            //     : Text(categoryFood[0].recipeName)
+                            
+                          ],
+                        ),
+                      ),
+                      (categoryFood == null)
+                                ? Container(
+                                    height: 329,
+                                  )
+                                // : Container(
+                                //     height: 300,
+                                //     child: ListView.builder(
+                                //         scrollDirection: Axis.horizontal,
+                                //         shrinkWrap: true,
+                                //         physics: NeverScrollableScrollPhysics(),
+                                //         itemCount: categoryFood.length,
+                                //         itemBuilder: (context, index) {
+                                //           return Padding(
+                                //             padding: const EdgeInsets.all(8.0),
+                                //             child: Container(width: 50,height: 50,color: Colors.black,),
+                                //           );
+                                //         }),
+                                //   ),
+                            : Container(
+                                height: 300,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                      // scrollDirection: Axis.vertical,
+                                    itemCount: categoryFood.length,
+                                    itemBuilder: (context, index) {
+                                      return _recommendRecipeCard(
+                                          context, categoryFood[index]);
+                                    })),
+                    ],
+                  ),
+                )
               ],
             ),
           )
         ]))
       ],
+    );
+  }
+
+  Widget _recommendRecipeCard(context, CategoryModel dataRecommendRecipe) {
+    return InkWell(
+      onTap: () {
+        if (dataMyAccont != null) {
+          if (dataRecommendRecipe.price == 0 ||
+              dataRecommendRecipe.userId == dataMyAccont.userId ||
+              checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecipePurchasePage(
+                        req_rid: dataRecommendRecipe.rid,
+                      )),
+            ).then((value) {
+              if (token != "" && token != null) {
+                getMybuy();
+              }
+            });
+          }
+        } else {
+          if (dataRecommendRecipe.price == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecipePurchasePage(
+                        req_rid: dataRecommendRecipe.rid,
+                      )),
+            ).then((value) {
+              if (token != "" && token != null) {
+                getMybuy();
+              }
+            });
+          }
+        }
+      },
+      child: Container(
+        width: 230,
+        child: Stack(
+          children: [
+            Container(
+              // height: 500,
+              height: 300,
+              width: 230,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.circular(20)),
+                clipBehavior: Clip.antiAlias,
+                child: Image.network(
+                  dataRecommendRecipe.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            (dataRecommendRecipe.score == 0)
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.blue,
+                          size: 20,
+                        ),
+                        SizedBox(
+                          width: 1,
+                        ),
+                        Text(
+                          dataRecommendRecipe.score.toString(),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          '(4)',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            (dataRecommendRecipe.price == 0)
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(top: 16, right: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Stack(
+                          children: [
+                            (dataMyAccont == null)
+                                ? CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 16,
+                                  )
+                                : (dataMyAccont.userId ==
+                                        dataRecommendRecipe.userId)
+                                    ? Container()
+                                    : CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 16,
+                                      ),
+                            Positioned(
+                              top: 1,
+                              right: 1,
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                child: (dataMyAccont == null)
+                                    ? Image.network(
+                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                    : (dataMyAccont.userId ==
+                                            dataRecommendRecipe.userId)
+                                        ? Container()
+                                        : (checkBuy.indexOf(dataRecommendRecipe
+                                                    .rid
+                                                    .toString()) >=
+                                                0)
+                                            ? Image.network(
+                                                "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                            : Image.network(
+                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Text(
+                  //       "testasdjasjdknkjaskdnjkasndkj",
+                  //       style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),
+                  //     ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          dataRecommendRecipe.recipeName,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            // margin: EdgeInsets.all(100.0),
+                            height: 32.0,
+                            width: 32.0,
+                            decoration: BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                          ),
+                          Positioned(
+                            top: 1,
+                            right: 1,
+                            child: new Container(
+                              height: 30.0,
+                              width: 30.0,
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: new NetworkImage(
+                                          dataRecommendRecipe.profileImage))),
+                            ),
+                          ),
+                        ],
+                      ),
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                      new Text(
+                        dataRecommendRecipe.aliasName,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

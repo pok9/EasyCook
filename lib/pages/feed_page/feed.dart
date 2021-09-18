@@ -34,6 +34,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -464,6 +465,7 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   RefreshIndicator body(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
     return RefreshIndicator(
       onRefresh: findUser,
       child: Container(
@@ -503,56 +505,57 @@ class _FeedPageState extends State<FeedPage> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: 4,
-                children: [
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/128/5019/5019495.png",
-                    name: "test",
-                  ),
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/128/5019/5019428.png",
-                    name: "test",
-                  ),
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/128/5019/5019512.png",
-                    name: "test",
-                  ),
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/128/5019/5019453.png",
-                    name: "test",
-                  ),
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/128/5019/5019437.png",
-                    name: "test",
-                  ),
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/512/5019/5019349.png",
-                    name: "test",
-                  ),
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/128/5019/5019501.png",
-                    name: "test",
-                  ),
-                  MenuFeature(
-                    iconAsset:
-                        "https://image.flaticon.com/icons/png/128/5018/5018006.png",
-                    name: "test",
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: GridView.count(
+            //     shrinkWrap: true,
+            //     physics: NeverScrollableScrollPhysics(),
+            //     crossAxisCount: 4,
+            //     children: [
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/128/5019/5019495.png",
+            //         name: "test",
+            //       ),
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/128/5019/5019428.png",
+            //         name: "test",
+            //       ),
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/128/5019/5019512.png",
+            //         name: "test",
+            //       ),
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/128/5019/5019453.png",
+            //         name: "test",
+            //       ),
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/128/5019/5019437.png",
+            //         name: "test",
+            //       ),
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/512/5019/5019349.png",
+            //         name: "test",
+            //       ),
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/128/5019/5019501.png",
+            //         name: "test",
+            //       ),
+            //       MenuFeature(
+            //         iconAsset:
+            //             "https://image.flaticon.com/icons/png/128/5018/5018006.png",
+            //         name: "test",
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -628,6 +631,370 @@ class _FeedPageState extends State<FeedPage> {
                   ),
                 ),
                 ingredients(),
+
+                DividerCutom(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    children: [
+                      Text(
+                        "swipe",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                (dataRecommendRecipe == null)
+                    ? Container(
+                        // height: 0,
+                        height: 0,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Container(
+                          padding: EdgeInsets.zero,
+                          height: deviceSize.height * 0.6,
+                          // height: deviceSize.height,
+                          child: TinderSwapCard(
+                            totalNum: dataRecommendRecipe.length,
+                            maxHeight: deviceSize.height * 0.5,
+                            minHeight: deviceSize.height * 0.39,
+                            maxWidth: deviceSize.width ,
+                            minWidth: deviceSize.width * 0.4,
+
+                            // maxHeight: deviceSize.height * 0.7,
+                            // minHeight: deviceSize.height * 0.2,
+                            // maxWidth: deviceSize.width,
+                            // minWidth: deviceSize.width * 0.5,
+
+                            // maxHeight: deviceSize.height * 0.75,
+                            // minHeight: deviceSize.height * 0.6,
+                            // maxWidth: deviceSize.width,
+                            // minWidth: deviceSize.width * 0.75,
+                            cardBuilder: (context, index) => InkWell(
+                              onTap: () {
+                                if (data_DataAc != null) {
+                                  if (dataRecommendRecipe[index].price == 0 ||
+                                      dataRecommendRecipe[index].userId ==
+                                          data_DataAc.userId ||
+                                      checkBuy.indexOf(
+                                              dataRecommendRecipe[index]
+                                                  .rid
+                                                  .toString()) >=
+                                          0) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ShowFood(
+                                              dataRecommendRecipe[index].rid)),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RecipePurchasePage(
+                                                req_rid:
+                                                    dataRecommendRecipe[index]
+                                                        .rid,
+                                              )),
+                                    ).then((value) {
+                                      if (token != "" && token != null) {
+                                        getMybuy();
+                                      }
+                                    });
+                                  }
+                                } else {
+                                  if (dataRecommendRecipe[index].price == 0) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ShowFood(
+                                              dataRecommendRecipe[index].rid)),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RecipePurchasePage(
+                                                req_rid:
+                                                    dataRecommendRecipe[index]
+                                                        .rid,
+                                              )),
+                                    ).then((value) {
+                                      if (token != "" && token != null) {
+                                        getMybuy();
+                                      }
+                                    });
+                                  }
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          blurRadius: 5,
+                                          spreadRadius: 2)
+                                    ]),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        width: deviceSize.width,
+                                        height: deviceSize.height,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    dataRecommendRecipe[index]
+                                                        .image),
+                                                fit: BoxFit.cover)),
+                                      ),
+                                      // Container(
+                                      //   width: deviceSize.width,
+                                      //   height: deviceSize.height,
+                                      //   decoration: BoxDecoration(
+                                      //       gradient: LinearGradient(
+                                      //           colors: [
+                                      //         Colors.black.withOpacity(0.25),
+                                      //         Colors.black.withOpacity(0)
+                                      //       ],
+                                      //           end: Alignment.topCenter,
+                                      //           begin: Alignment.bottomCenter)),
+                                      //   child: Column(
+                                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                                      //     mainAxisAlignment: MainAxisAlignment.end,
+                                      //     children: [
+                                      //       Row(
+                                      //         children: [
+                                      //           Container(
+                                      //             width: deviceSize.width * 0.72,
+                                      //             child: Column(
+                                      //               children: [
+                                      //                 Row(
+                                      //                   children: [
+                                      //                     Text(
+                                      //                       dataRecommendRecipe[index]
+                                      //                           .recipeName,
+                                      //                       style: TextStyle(
+                                      //                           fontSize: 24,
+                                      //                           color: Colors.white,
+                                      //                           fontWeight:
+                                      //                               FontWeight.bold),
+                                      //                     ),
+                                      //                     SizedBox(width: 10,),
+                                      //                    Text(
+                                      //                       dataRecommendRecipe[index]
+                                      //                           .recipeName,
+                                      //                       style: TextStyle(
+                                      //                           fontSize: 24,
+                                      //                           color: Colors.white,
+                                      //                           fontWeight:
+                                      //                               FontWeight.bold),
+                                      //                     ),
+                                      //                   ],
+                                      //                 )
+                                      //               ],
+                                      //             ),
+                                      //           )
+                                      //         ],
+                                      //       )
+                                      //     ],
+                                      //   ),
+                                      // )
+                                      (dataRecommendRecipe[index].score == 0)
+                                          ? Container()
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      16, 16, 0, 0),
+                                              child: Row(
+                                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.blue,
+                                                    size: 20,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 1,
+                                                  ),
+                                                  Text(
+                                                    dataRecommendRecipe[index]
+                                                        .score
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 2,
+                                                  ),
+                                                  Text(
+                                                    '(4)',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                      (dataRecommendRecipe[index].price == 0)
+                                          ? Container()
+                                          : Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 16, right: 16),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Stack(
+                                                    children: [
+                                                      (data_DataAc == null)
+                                                          ? CircleAvatar(
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              radius: 16,
+                                                            )
+                                                          : (data_DataAc
+                                                                      .userId ==
+                                                                  dataRecommendRecipe[
+                                                                          index]
+                                                                      .userId)
+                                                              ? Container()
+                                                              : CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  radius: 16,
+                                                                ),
+                                                      Positioned(
+                                                        top: 1,
+                                                        right: 1,
+                                                        child: Container(
+                                                          height: 30,
+                                                          width: 30,
+                                                          child: (data_DataAc ==
+                                                                  null)
+                                                              ? Image.network(
+                                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                              : (data_DataAc
+                                                                          .userId ==
+                                                                      dataRecommendRecipe[
+                                                                              index]
+                                                                          .userId)
+                                                                  ? Container()
+                                                                  : (checkBuy.indexOf(dataRecommendRecipe[index]
+                                                                              .rid
+                                                                              .toString()) >=
+                                                                          0)
+                                                                      ? Image.network(
+                                                                          "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                                      : Image.network(
+                                                                          "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Text(
+                                            //       "testasdjasjdknkjaskdnjkasndkj",
+                                            //       style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),
+                                            //     ),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    dataRecommendRecipe[index]
+                                                        .recipeName,
+                                                    maxLines: 3,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 25),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Stack(
+                                                  children: [
+                                                    Container(
+                                                      // margin: EdgeInsets.all(100.0),
+                                                      height: 32.0,
+                                                      width: 32.0,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          shape:
+                                                              BoxShape.circle),
+                                                    ),
+                                                    Positioned(
+                                                      top: 1,
+                                                      right: 1,
+                                                      child: new Container(
+                                                        height: 30.0,
+                                                        width: 30.0,
+                                                        decoration: new BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            image: new DecorationImage(
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                                image: new NetworkImage(
+                                                                    dataRecommendRecipe[
+                                                                            index]
+                                                                        .profileImage))),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                new SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                new Text(
+                                                  dataRecommendRecipe[index]
+                                                      .aliasName,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
 
                 DividerCutom(),
                 Padding(
