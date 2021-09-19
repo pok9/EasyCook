@@ -62,7 +62,12 @@ class _VideoItemsState extends State<VideoItems> {
     } else if((widget.addfood_showfood == 1)){
       widget.videoPlayerController?.dispose();
     }else if(widget.addfood_showfood == 2){//editFood
-      widget.videoPlayerController.pause();
+      try {
+        widget.videoPlayerController.pause();
+        
+      } catch (e) {
+        print(e);
+      }
     }
 
     _chewieController?.dispose();

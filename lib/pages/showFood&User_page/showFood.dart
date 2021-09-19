@@ -533,9 +533,38 @@ class _ShowFoodState extends State<ShowFood> {
       return "${difference.inMinutes} นาที";
     } else if (difference.inHours < 24) {
       return "${difference.inHours} ชั่วโมง";
-    } else {
+    } else if (difference.inDays < 8){
       return "${difference.inDays} วัน";
+    } else {
+      return "${dateEdit(dateTime.toString())}";
     }
+  }
+
+  String dateEdit(String date) {
+    //data
+    Map<String, String> map = {
+      '01': "ม.ค.",
+      '02': "ก.พ.",
+      '03': "มี.ค.",
+      '04': "เม.ย.",
+      '05': "พ.ค.",
+      '06': "มิ.ย.",
+      '07': "ก.ค.",
+      '08': "ส.ค.",
+      '09': "ก.ย.",
+      '10': "ต.ค.",
+      '11': "พ.ย.",
+      '12': "ธ.ค."
+    };
+    List<String> dateTimeSp = date.split(" ");
+    List<String> dateSp = dateTimeSp[0].split("-");
+
+    //time
+    List timeSp = dateTimeSp[1].split(".");
+    List time = timeSp[0].split(":");
+
+    String text = "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
+    return text;
   }
 
   @override
