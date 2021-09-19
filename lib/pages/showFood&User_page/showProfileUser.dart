@@ -260,6 +260,9 @@ class _ProfileUserState extends State<ProfileUser> {
   }
 
   int checkPressCountFollowAndUnFollow = 0;
+
+
+  
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;

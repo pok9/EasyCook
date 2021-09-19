@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/models/report/addReport/addreportImage_model.dart';
-import 'package:easy_cook/pages/addFood_page/addImage.dart';
+import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -52,6 +55,63 @@ class _ReportCommentState extends State<ReportComment> {
       return addReportImageModelFromJson(responseString).path;
     } else {
       return null;
+    }
+  }
+
+
+  final picker = ImagePicker();
+  File imageFile;
+
+  pickCropImage() async {
+    FilePickerResult result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      imageFile = File(file.path);
+      cropImage();
+    } else {}
+  }
+
+  captureImage() async {
+    var image = await picker.getImage(source: ImageSource.camera);
+
+    if (image != null) {
+      imageFile = File(image.path);
+      cropImage();
+    }
+  }
+
+  cropImage() async {
+    File croppedFile = await ImageCropper.cropImage(
+        aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
+        sourcePath: imageFile.path,
+        // aspectRatioPresets: [
+        //   CropAspectRatioPreset.square,
+        //   CropAspectRatioPreset.ratio3x2,
+        //   CropAspectRatioPreset.original,
+        //   CropAspectRatioPreset.ratio4x3,
+        //   CropAspectRatioPreset.ratio16x9
+        // ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop',
+          toolbarColor: Color(0xffc69f50),
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: true,
+          // hideBottomControls: true,
+        ));
+    if (croppedFile != null) {
+      setState(() {
+        imageFile = croppedFile;
+        AddImage addImageModels = new AddImage(File(imageFile.path));
+
+        image = addImageModels; 
+        // this.addImageProfile = [];
+        // this.addImageProfile.add(addImageModels);
+        // this._imageProfile = "";
+      });
     }
   }
 
@@ -187,16 +247,45 @@ class _ReportCommentState extends State<ReportComment> {
                                   color: Colors.grey.shade700,
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) =>
-                                            new AddImagePage()),
-                                  ).then((value) {
-                                    if (value != null) {
-                                      image = value;
-                                      setState(() {});
-                                    }
+                                  // Navigator.push(
+                                  //   context,
+                                  //   new MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           new AddImagePage()),
+                                  // ).then((value) {
+                                  //   if (value != null) {
+                                  //     image = value;
+                                  //     setState(() {});
+                                  //   }
+                                  // });
+                                  showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        ListTile(
+                                          leading: new Icon(
+                                              Icons.photo_camera_back,
+                                              color: Colors.blue),
+                                          title: new Text('รูปภาพในมือถือ'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            pickCropImage();
+                                          },
+                                        ),
+                                        ListTile(
+                                          leading: new Icon(
+                                              Icons.camera_alt_outlined,
+                                              color: Colors.blue),
+                                          title: new Text('ถ่ายรูปภาพ'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            captureImage();
+                                          },
+                                        ),
+                                      ],
+                                    );
                                   });
                                 }),
                           )

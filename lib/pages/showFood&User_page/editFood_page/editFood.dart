@@ -5,12 +5,15 @@ import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
 import 'package:easy_cook/models/showfood/editFood/editImageFoodModel.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
-import 'package:easy_cook/pages/addFood_page/addImage.dart';
-import 'package:easy_cook/pages/addFood_page/addImageOrVideo.dart';
+import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
+import 'package:easy_cook/pages/addFood_page/xxx_addImageOrVideo.dart';
 import 'package:easy_cook/style/utiltties.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
@@ -334,19 +337,82 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                       color: Colors.grey.shade700,
                                     ),
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                            builder: (context) =>
-                                                new AddImageOrViderPage()),
-                                      ).then((value) {
-                                        if (value != null) {
-                                          imageHowto[displayNumber - 1] =
-                                              value.image;
+                                      // Navigator.push(
+                                      //   context,
+                                      //   new MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           new AddImageOrViderPage()),
+                                      // ).then((value) {
+                                      //   if (value != null) {
+                                      //     imageHowto[displayNumber - 1] =
+                                      //         value.image;
 
-                                          setState(() {});
-                                        }
-                                      });
+                                      //     setState(() {});
+                                      //   }
+                                      // });
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                ListTile(
+                                                  leading: new Icon(
+                                                    Icons.photo_camera_back,
+                                                    color: Colors.blue,
+                                                  ),
+                                                  title: new Text(
+                                                      'รูปภาพในมือถือ'),
+                                                  onTap: () async {
+                                                    Navigator.pop(context);
+                                                    pickCropImage(
+                                                        imageHowto,
+                                                        "addPictueHowto",
+                                                        displayNumber - 1);
+                                                  },
+                                                ),
+                                                ListTile(
+                                                  leading: new Icon(
+                                                      Icons.camera_alt_outlined,
+                                                      color: Colors.blue),
+                                                  title: new Text('ถ่ายรูปภาพ'),
+                                                  onTap: () async {
+                                                    Navigator.pop(context);
+                                                    captureImage(
+                                                        imageHowto,
+                                                        "addPictueHowto",
+                                                        displayNumber - 1);
+                                                  },
+                                                ),
+                                                ListTile(
+                                                  leading: new Icon(
+                                                      Icons
+                                                          .video_collection_outlined,
+                                                      color: Colors.blue),
+                                                  title: new Text(
+                                                      'เพิ่ม วิดีโอ จากคลัง'),
+                                                  onTap: () async {
+                                                    Navigator.pop(context);
+                                                    pickCropVideo(imageHowto,
+                                                        displayNumber - 1);
+                                                  },
+                                                ),
+                                                ListTile(
+                                                  leading: new Icon(
+                                                      Icons
+                                                          .video_camera_back_outlined,
+                                                      color: Colors.blue),
+                                                  title: new Text('ถ่ายวิดีโอ'),
+                                                  onTap: () async {
+                                                    Navigator.pop(context);
+
+                                                    captureVideo(imageHowto,
+                                                        displayNumber - 1);
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          });
                                     }),
                               ),
                             ))
@@ -446,21 +512,110 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                 onPressed: (int index) {
                                                   setState(() {
                                                     if (index == 0) {
-                                                      Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                new AddImageOrViderPage()),
-                                                      ).then((value) {
-                                                        if (value != null) {
-                                                          setState(() {
-                                                            imageHowto[
-                                                                displayNumber -
-                                                                    1] = value
-                                                                .image;
+                                                      // Navigator.push(
+                                                      //   context,
+                                                      //   new MaterialPageRoute(
+                                                      //       builder: (context) =>
+                                                      //           new AddImageOrViderPage()),
+                                                      // ).then((value) {
+                                                      //   if (value != null) {
+                                                      //     setState(() {
+                                                      //       imageHowto[
+                                                      //           displayNumber -
+                                                      //               1] = value
+                                                      //           .image;
+                                                      //     });
+                                                      //   }
+                                                      // });
+                                                      showModalBottomSheet(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: <
+                                                                  Widget>[
+                                                                ListTile(
+                                                                  leading:
+                                                                      new Icon(
+                                                                    Icons
+                                                                        .photo_camera_back,
+                                                                    color: Colors
+                                                                        .blue,
+                                                                  ),
+                                                                  title: new Text(
+                                                                      'รูปภาพในมือถือ'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    pickCropImage(
+                                                                        imageHowto,
+                                                                        "addPictueHowto",
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                                ListTile(
+                                                                  leading: new Icon(
+                                                                      Icons
+                                                                          .camera_alt_outlined,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  title: new Text(
+                                                                      'ถ่ายรูปภาพ'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    captureImage(
+                                                                        imageHowto,
+                                                                        "addPictueHowto",
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                                ListTile(
+                                                                  leading: new Icon(
+                                                                      Icons
+                                                                          .video_collection_outlined,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  title: new Text(
+                                                                      'เพิ่ม วิดีโอ จากคลัง'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    pickCropVideo(
+                                                                        imageHowto,
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                                ListTile(
+                                                                  leading: new Icon(
+                                                                      Icons
+                                                                          .video_camera_back_outlined,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  title: new Text(
+                                                                      'ถ่ายวิดีโอ'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+
+                                                                    captureVideo(
+                                                                        imageHowto,
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            );
                                                           });
-                                                        }
-                                                      });
                                                     } else if (index == 1) {
                                                       showDialog(
                                                           context: context,
@@ -720,7 +875,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
         });
-    
+
     print("responsEeditHowto => ${response.body}");
   }
 
@@ -764,6 +919,107 @@ class _EditFoodPageState extends State<EditFoodPage> {
             ],
           ));
         });
+  }
+
+  final picker = ImagePicker();
+  File imageFile;
+
+  pickCropImage(var addImageModel, String mode, int index) async {
+    FilePickerResult result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      imageFile = File(file.path);
+      cropImage(addImageModel, mode, index);
+    } else {}
+  }
+
+  captureImage(var addImageModel, String mode, int index) async {
+    var image = await picker.getImage(source: ImageSource.camera);
+
+    if (image != null) {
+      imageFile = File(image.path);
+      cropImage(addImageModel, mode, index);
+    }
+  }
+
+  cropImage(var addImageModel, String mode, int index) async {
+    File croppedFile = await ImageCropper.cropImage(
+        aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
+        sourcePath: imageFile.path,
+        // aspectRatioPresets: [
+        //   CropAspectRatioPreset.square,
+        //   CropAspectRatioPreset.ratio3x2,
+        //   CropAspectRatioPreset.original,
+        //   CropAspectRatioPreset.ratio4x3,
+        //   CropAspectRatioPreset.ratio16x9
+        // ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop',
+          toolbarColor: Color(0xffc69f50),
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: true,
+          // hideBottomControls: true,
+        ));
+    if (croppedFile != null) {
+      setState(() {
+        imageFile = croppedFile;
+        AddImage addImageModels = new AddImage(File(imageFile.path));
+        // Navigator.pop(context, addImage);
+
+        setState(() {
+          // // addImage.removeAt(0);
+          // if(addImage.isEmpty){
+          //   addImage.add(addImageModel);
+          // }else{
+          //   addImage[0] = addImageModel;
+          // }
+
+          print(mode);
+          if (mode == "addPictue") {
+            addImage = [];
+            addImage.add(addImageModels);
+          } else if (mode == "editPictue") {
+            if (addImageModels != null) {
+              if (_imageFood != null) {
+                _imageFood = null;
+              }
+              addImage = [];
+
+              addImage.add(addImageModels);
+            }
+          } else if (mode == "addPictueHowto") {
+            addImageModel[index] = addImageModels.image;
+          }
+        });
+      });
+    }
+  }
+
+  pickCropVideo(var addImageModel, int index) async {
+    FilePickerResult result =
+        await FilePicker.platform.pickFiles(type: FileType.video);
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      AddImage addImage = new AddImage(File(file.path));
+      addImageModel[index] = addImage.image;
+    }
+
+    setState(() {});
+  }
+
+  captureVideo(var addImageModel, int index) async {
+    var image = await picker.getVideo(source: ImageSource.camera);
+
+    AddImage addImage = new AddImage(File(image.path));
+    addImageModel[index] = addImage.image;
+
+    setState(() {});
   }
 
   @override
@@ -1020,17 +1276,49 @@ class _EditFoodPageState extends State<EditFoodPage> {
                             icon: Icon(Icons.camera_alt),
                             label: Text('รูปภาพอาหาร'),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => new AddImagePage()),
-                              ).then((value) {
-                                if (value != null) {
-                                  setState(() {
-                                    addImage.add(value);
+                              // Navigator.push(
+                              //   context,
+                              //   new MaterialPageRoute(
+                              //       builder: (context) => new AddImagePage()),
+                              // ).then((value) {
+                              //   if (value != null) {
+                              //     setState(() {
+                              //       addImage.add(value);
+                              //     });
+                              //   }
+                              // });
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        ListTile(
+                                          leading: new Icon(
+                                              Icons.photo_camera_back,
+                                              color: Colors.blue),
+                                          title: new Text('รูปภาพในมือถือ'),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                            pickCropImage(
+                                                addImage, "editPictue", 0);
+                                          },
+                                        ),
+                                        ListTile(
+                                          leading: new Icon(
+                                              Icons.camera_alt_outlined,
+                                              color: Colors.blue),
+                                          title: new Text('ถ่ายรูปภาพ'),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                            captureImage(
+                                                addImage, "editPictue", 0);
+                                            // captureImage();
+                                          },
+                                        ),
+                                      ],
+                                    );
                                   });
-                                }
-                              });
                             },
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
@@ -1085,22 +1373,55 @@ class _EditFoodPageState extends State<EditFoodPage> {
                           onPressed: (int index) {
                             setState(() {
                               if (index == 0) {
-                                Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) => new AddImagePage()),
-                                ).then((value) {
-                                  if (value != null) {
-                                    if (_imageFood != null) {
-                                      _imageFood = null;
-                                    } else {
-                                      addImage.removeAt(0);
-                                    }
-                                    setState(() {
-                                      addImage.add(value);
+                                // Navigator.push(
+                                //   context,
+                                //   new MaterialPageRoute(
+                                //       builder: (context) => new AddImagePage()),
+                                // ).then((value) {
+                                //   if (value != null) {
+                                //     if (_imageFood != null) {
+                                //       _imageFood = null;
+                                //     } else {
+                                //       addImage.removeAt(0);
+                                //     }
+                                //     setState(() {
+                                //       addImage.add(value);
+                                //     });
+                                //   }
+                                // });
+
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          ListTile(
+                                            leading: new Icon(
+                                                Icons.photo_camera_back,
+                                                color: Colors.blue),
+                                            title: new Text('รูปภาพในมือถือ'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              pickCropImage(
+                                                  addImage, "editPictue", 0);
+                                            },
+                                          ),
+                                          ListTile(
+                                            leading: new Icon(
+                                                Icons.camera_alt_outlined,
+                                                color: Colors.blue),
+                                            title: new Text('ถ่ายรูปภาพ'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              captureImage(
+                                                  addImage, "editPictue", 0);
+                                              // captureImage();
+                                            },
+                                          ),
+                                        ],
+                                      );
                                     });
-                                  }
-                                });
                               } else if (index == 1) {
                                 showDialog(
                                     context: context,

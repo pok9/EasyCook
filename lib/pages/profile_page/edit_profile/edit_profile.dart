@@ -15,7 +15,7 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import '../../addFood_page/addImage.dart';
+import '../../addFood_page/xxx_addImage.dart';
 
 class EditProfilePage extends StatefulWidget {
   // EditProfilePage({Key key}) : super(key: key);
@@ -428,7 +428,7 @@ class CustomDialog extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      "ไม่ใช่",
+                      "อยู่หน้านี้ต่อ",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -437,7 +437,7 @@ class CustomDialog extends StatelessWidget {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },
-                    child: Text("ใช่"),
+                    child: Text("ออกไปหน้าอื่น"),
                   ),
                 ],
               ),
