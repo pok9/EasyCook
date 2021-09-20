@@ -20,6 +20,7 @@ import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportFood.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
@@ -33,6 +34,8 @@ import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 import 'package:http/http.dart' as http;
+import 'package:story_view/controller/story_controller.dart';
+import 'package:story_view/widgets/story_view.dart';
 import 'package:video_player/video_player.dart';
 
 class ShowFood extends StatefulWidget {
@@ -59,7 +62,9 @@ class _ShowFoodState extends State<ShowFood> {
   double ratings = 0.0;
   @override
   void dispose() {
-    super.dispose();
+    
+    storyController.dispose();
+   
     if (token != "") {
       if (dataFood.userId != dataMyAccont.userId && ratings != 0.0) {
         insertNotificationData(
@@ -71,6 +76,7 @@ class _ShowFoodState extends State<ShowFood> {
             "scorefood");
       }
     }
+    super.dispose();
   }
 
   //แสดงคอมเมนต์
@@ -466,6 +472,65 @@ class _ShowFoodState extends State<ShowFood> {
     }).toList(); // แปลงเป็นlist
   }
 
+  // final StoryController storyController = StoryController();
+  List<StoryItem> _howtoList3() {
+    List<List<TextEditingController>> controllers2 =
+        <List<TextEditingController>>[];
+    int i;
+    if (0 < dataHowto.length) {
+      for (i = 0; i < dataHowto.length; i++) {
+        var ctl = <TextEditingController>[];
+        ctl.add(TextEditingController());
+
+        controllers2.add(ctl);
+      }
+    }
+
+    i = 0;
+
+    return controllers2
+        .map<StoryItem>((List<TextEditingController> controller) {
+      int displayNumber = i;
+      i++;
+
+      return (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
+          ? StoryItem.inlineImage(
+              url: "${dataHowto[displayNumber].pathFile}",
+              controller: storyController,
+              caption: Text(
+                "${dataHowto[displayNumber].description}",
+                style: TextStyle(
+                  color: Colors.white,
+                  backgroundColor: Colors.black54,
+                  fontSize: 17,
+                ),
+              ),
+            )
+          : StoryItem.pageVideo(
+              "${dataHowto[displayNumber].pathFile}",
+              controller: storyController,
+              caption:"${dataHowto[displayNumber].description}");
+      // return ListTile(
+      //   title: Row(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: [
+      //       Padding(
+      //         padding: const EdgeInsets.only(top: 1),
+      //         child: CircleAvatar(
+      //           radius: 10,
+      //           child: Text("$i"),
+      //         ),
+      //       ),
+      //       SizedBox(
+      //         width: 5,
+      //       ),
+      //       Expanded(child: Text(dataHowto[displayNumber].description)),
+      //     ],
+      //   ),
+      // );
+    }).toList(); // แปลงเป็นlist
+  }
+
   Future<Null> insertNotificationData(
     String my_ID,
     String state,
@@ -582,6 +647,7 @@ class _ShowFoodState extends State<ShowFood> {
     return text;
   }
 
+  final StoryController storyController = StoryController();
   @override
   Widget build(BuildContext context) {
     Size sizeScreen = MediaQuery.of(context).size;
@@ -609,6 +675,9 @@ class _ShowFoodState extends State<ShowFood> {
                     dataHowto == null ? [] : _howtoList1();
                 final List<Widget> howto2 =
                     dataHowto == null ? [] : _howtoList2();
+                final List<StoryItem> howto3 =
+                    dataHowto == null ? [] : _howtoList3();
+
                 return FutureBuilder(
                   future: getScoreFood(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -642,8 +711,8 @@ class _ShowFoodState extends State<ShowFood> {
                                   //       AsyncSnapshot snapshot) {
                                   //     if (snapshot.hasData == true) {
                                   //       checkBuy = snapshot.data;
-                                  return buildBody(
-                                      ingredient, howto1, howto2, sizeScreen);
+                                  return buildBody(ingredient, howto1, howto2,
+                                      howto3, sizeScreen);
                                   //     }
 
                                   //     return Scaffold(
@@ -667,8 +736,8 @@ class _ShowFoodState extends State<ShowFood> {
                                 }
 
                                 if (snapshot.hasData == false) {
-                                  return buildBody(
-                                      ingredient, howto1, howto2, sizeScreen);
+                                  return buildBody(ingredient, howto1, howto2,
+                                      howto3, sizeScreen);
                                 }
 
                                 return Scaffold(
@@ -714,7 +783,7 @@ class _ShowFoodState extends State<ShowFood> {
   }
 
   Widget buildBody(List<Widget> ingredient, List<Widget> howto1,
-      List<Widget> howto2, Size sizeScreen) {
+      List<Widget> howto2, List<StoryItem> howto3, Size sizeScreen) {
     return SliverFab(
       floatingWidget: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -1226,12 +1295,72 @@ class _ShowFoodState extends State<ShowFood> {
                       SizedBox(
                         height: 5,
                       ),
-                      ListView(
-                        padding: EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: (indexHowTo == 0) ? howto1 : howto2,
-                      )
+                      (indexHowTo < 2)
+                          ? ListView(
+                              padding: EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              children: (indexHowTo == 0) ? howto1 : howto2,
+                            )
+                          : Container(
+                              height: 300,
+                              child: StoryView(
+                                storyItems: howto3,
+                                // [
+                                //   StoryItem.text(
+                                //     title:
+                                //         "I guess you'd love to see more of our food. That's great.",
+                                //     backgroundColor: Colors.blue,
+                                //   ),
+                                //   StoryItem.text(
+                                //     title: "Nice!\n\nTap to continue.",
+                                //     backgroundColor: Colors.red,
+                                //     textStyle: TextStyle(
+                                //       fontFamily: 'Dancing',
+                                //       fontSize: 40,
+                                //     ),
+                                //   ),
+                                //   StoryItem.pageImage(
+                                //     url:
+                                //         "https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg",
+                                //     caption: "Still sampling",
+                                //     controller: storyController,
+                                //   ),
+                                //   StoryItem.pageImage(
+                                //       url:
+                                //           "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif",
+                                //       caption: "Working with gifs",
+                                //       controller: storyController),
+                                //   StoryItem.pageImage(
+                                //     url:
+                                //         "https://media.giphy.com/media/XcA8krYsrEAYXKf4UQ/giphy.gif",
+                                //     caption: "Hello, from the other side",
+                                //     controller: storyController,
+                                //   ),
+                                //   StoryItem.pageImage(
+                                //     url:
+                                //         "https://media.giphy.com/media/XcA8krYsrEAYXKf4UQ/giphy.gif",
+                                //     caption: "Hello, from the other side2",
+                                //     controller: storyController,
+                                //   ),
+                                //   StoryItem.pageVideo(
+                                //       "https://apifood.comsciproject.com/uploadHowto/2021-09-12T134134081Z-00223-6.mp4",
+                                //       controller: storyController,
+                                //       caption: "Hektas, sektas and skatad"),
+                                // ],
+                                onStoryShow: (s) {
+                                  print("Showing a story");
+                                },
+                                onComplete: () {
+                                  print("Completed a cycle");
+                                },
+                                progressPosition: ProgressPosition.bottom,
+                                repeat: false,
+                                
+                                // inline: true,
+                                controller: storyController,
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -1570,7 +1699,6 @@ class _ShowFoodState extends State<ShowFood> {
           trimCollapsedText: 'อ่านเพิ่มเติม',
           trimExpandedText: 'อ่านน้อยลง',
           style: TextStyle(
-            
             fontWeight: FontWeight.normal,
             fontFamily: 'OpenSans',
             fontSize: 15,

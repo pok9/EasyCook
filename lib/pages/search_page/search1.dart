@@ -1,11 +1,15 @@
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
+import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/search_page/category/category.dart';
 import 'package:easy_cook/pages/search_page/search2.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFoodStory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:story_view/controller/story_controller.dart';
+import 'package:story_view/widgets/story_view.dart';
 
 class SearchPage1 extends StatefulWidget {
   // const SearchPage1({ Key? key }) : super(key: key);
@@ -74,6 +78,7 @@ class _SearchPage1State extends State<SearchPage1> {
     }
   }
 
+  final StoryController controller = StoryController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,67 +176,67 @@ class _SearchPage1State extends State<SearchPage1> {
             ),
           ),
           body: OfflineBuilder(
-        connectivityBuilder: (
-          BuildContext context,
-          ConnectivityResult connectivity,
-          Widget child,
-        ) {
-          final bool connected = connectivity != ConnectivityResult.none;
-          return (connected)
-              ? body()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                height: 100,
-                                width: 100,
-                                child: Image.asset(
-                                    'assets/images/hambergerGray.png'))
-                          ],
-                        ),
-                      ),
-                      Row(
+            connectivityBuilder: (
+              BuildContext context,
+              ConnectivityResult connectivity,
+              Widget child,
+            ) {
+              final bool connected = connectivity != ConnectivityResult.none;
+              return (connected)
+                  ? body()
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "คุณออฟไลน์อยู่",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image.asset(
+                                        'assets/images/hambergerGray.png'))
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "คุณออฟไลน์อยู่",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "ตรวจสอบการเชื่อมต่อของคุณ",
+                                style: TextStyle(fontSize: 15),
+                              )
+                            ],
                           )
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "ตรวจสอบการเชื่อมต่อของคุณ",
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                );
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              'There are no bottons to push :)',
+                    );
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Text(
+                  'There are no bottons to push :)',
+                ),
+                new Text(
+                  'Just turn off your internet.',
+                ),
+              ],
             ),
-            new Text(
-              'Just turn off your internet.',
-            ),
-          ],
-        ),
-      ),
+          ),
         ),
       ),
     );
@@ -239,31 +244,31 @@ class _SearchPage1State extends State<SearchPage1> {
 
   TabBarView body() {
     return new TabBarView(
-          children: <Widget>[
-            ListView(
-              children: [
-                dividerTextCustom("หมวดหมู่"),
-                Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: GridView.count(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      crossAxisCount: 5,
-                      children: List.generate(menuFood.length, (index) {
-                        return MenuFeature(
-                          iconAsset: iconFood[index],
-                          name: menuFood[index],
-                        );
-                      })),
-                ),
-                
-              ],
+      children: <Widget>[
+        ListView(
+          children: [
+            dividerTextCustom("หมวดหมู่"),
+            Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: GridView.count(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  crossAxisCount: 5,
+                  children: List.generate(menuFood.length, (index) {
+                    return MenuFeature(
+                      iconAsset: iconFood[index],
+                      name: menuFood[index],
+                    );
+                  })),
             ),
-            new Column(
-              children: <Widget>[new Text("Cart Page")],
-            )
           ],
-        );
+        ),
+        new Column(
+          children: <Widget>[new Text("Cart Page")],
+        )
+        
+      ],
+    );
   }
 
   Padding dividerTextCustom(String text) {

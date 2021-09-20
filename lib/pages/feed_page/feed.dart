@@ -26,6 +26,7 @@ import 'package:easy_cook/pages/profile_page/profile.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
@@ -38,7 +39,7 @@ import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+// import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -311,8 +312,8 @@ class _FeedPageState extends State<FeedPage> {
   TextEditingController _ctrlPassword = TextEditingController(); // password
   final _formKey = GlobalKey<FormState>();
 
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
+  // final RoundedLoadingButtonController _btnController =
+  //     RoundedLoadingButtonController();
 
   //จัดการติดตามหรือยกเลิกติดตาม
   Future<Null> manageFollow(String state, int following_ID) async {
@@ -1500,11 +1501,20 @@ class _FeedPageState extends State<FeedPage> {
           if (dataRecommendRecipe.price == 0 ||
               dataRecommendRecipe.userId == data_DataAc.userId ||
               checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            );
+                showDialog(
+                context: context,
+                builder: (_) {
+                  return ShowFoodStory(
+                    rid: dataRecommendRecipe.rid,
+                  );
+                }).then((value) {
+              // findUser();
+            });
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+            // );
           } else {
             Navigator.push(
               context,
@@ -1520,11 +1530,20 @@ class _FeedPageState extends State<FeedPage> {
           }
         } else {
           if (dataRecommendRecipe.price == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            );
+            showDialog(
+                context: context,
+                builder: (_) {
+                  return ShowFoodStory(
+                    rid: dataRecommendRecipe.rid,
+                  );
+                }).then((value) {
+              // findUser();
+            });
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => ShowFood(dataRecommendRecipe.rid)),
+            // );
           } else {
             Navigator.push(
               context,

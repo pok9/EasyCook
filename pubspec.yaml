@@ -38,13 +38,13 @@ dependencies:
   # chewie: ^0.12.2
   # video_player: ^1.0.1
   chewie: ^1.2.2
-  video_player: ^2.1.14
+  video_player: ^2.2.4
   
   flutter_typeahead: ^3.1.0
   font_awesome_flutter: ^9.0.0
   image_picker: ^0.7.4
   # image_picker: ^0.6.7+22
-  rxdart: ^0.25.0
+  
   # image_picker: ^0.7.3
   # file_picker: ^3.0.0
   # loading: ^1.0.2 #test
@@ -61,8 +61,8 @@ dependencies:
   sliver_fab: ^1.0.0
 
   rflutter_alert: ^1.0.3
-  # rounded_loading_button: ^2.0.3
-  rounded_loading_button: ^1.0.18
+  
+ 
 
   # reorderables: ^0.4.1
   implicitly_animated_reorderable_list: ^0.4.0
@@ -120,7 +120,12 @@ dependencies:
   flutter_tindercard: ^0.2.0
   
   readmore: ^2.1.0
- 
+
+  # story_view: ^0.9.3
+  story_view: ^0.13.1
+
+  # rxdart: ^0.25.0
+  # rounded_loading_button: ^1.0.18
 
 dev_dependencies:
   flutter_test:
