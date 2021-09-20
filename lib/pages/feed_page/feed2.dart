@@ -4,8 +4,10 @@ import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
@@ -177,6 +179,34 @@ class _Feed2PageState extends State<Feed2Page> {
     }
   }
 
+  String dateEdit(String date) {
+    //data
+    Map<String, String> map = {
+      '01': "มกราคม",
+      '02': "กุมภาพันธ์",
+      '03': "มีนาคม",
+      '04': "เมษายน",
+      '05': "พฤษภาคม",
+      '06': "มิถุนายน",
+      '07': "กรกฎาคม",
+      '08': "สิงหาคม",
+      '09': "กันยายน",
+      '10': "ตุลาคม",
+      '11': "พฤศจิกายน",
+      '12': "ธันวาคม"
+    };
+    List<String> dateTimeSp = date.split(" ");
+    List<String> dateSp = dateTimeSp[0].split("-");
+
+    //time
+    List timeSp = dateTimeSp[1].split(".");
+    List time = timeSp[0].split(":");
+
+    String text =
+        "${dateSp[2]} ${map[dateSp[1]]} เวลา ${time[0]}:${time[1]} น.";
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -228,532 +258,588 @@ class _Feed2PageState extends State<Feed2Page> {
               ),
             ),
             body: OfflineBuilder(
-        connectivityBuilder: (
-          BuildContext context,
-          ConnectivityResult connectivity,
-          Widget child,
-        ) {
-          final bool connected = connectivity != ConnectivityResult.none;
-          return (connected)
-              ? body(deviceSize, context)
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
+              connectivityBuilder: (
+                BuildContext context,
+                ConnectivityResult connectivity,
+                Widget child,
+              ) {
+                final bool connected = connectivity != ConnectivityResult.none;
+                return (connected)
+                    ? body(deviceSize, context)
+                    : Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                                height: 100,
-                                width: 100,
-                                child: Image.asset(
-                                    'assets/images/hambergerGray.png'))
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      height: 100,
+                                      width: 100,
+                                      child: Image.asset(
+                                          'assets/images/hambergerGray.png'))
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "คุณออฟไลน์อยู่",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "ตรวจสอบการเชื่อมต่อของคุณ",
+                                  style: TextStyle(fontSize: 15),
+                                )
+                              ],
+                            )
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "คุณออฟไลน์อยู่",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "ตรวจสอบการเชื่อมต่อของคุณ",
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      )
-                    ],
+                      );
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Text(
+                    'There are no bottons to push :)',
                   ),
-                );
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              'There are no bottons to push :)',
+                  new Text(
+                    'Just turn off your internet.',
+                  ),
+                ],
+              ),
             ),
-            new Text(
-              'Just turn off your internet.',
-            ),
-          ],
-        ),
-      ),
           ),
         ));
   }
 
   TabBarView body(Size deviceSize, BuildContext context) {
     return TabBarView(children: [
-            (dataNewfeedsglobal == null)
-                ? Center(child: CircularProgressIndicator())
-                : GridView.builder(
-                    controller: _scrollController,
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      mainAxisExtent: 250,
-                      maxCrossAxisExtent:
-                          (deviceSize.width > 400) ? 250 : 200,
-                    ),
-                    itemCount:
-                        ((dummyListDataNewfeedsglobal.length + 1) % 2 != 0)
-                            ? dummyListDataNewfeedsglobal.length
-                            : dummyListDataNewfeedsglobal.length + 1,
-                    itemBuilder: (BuildContext ctx, index) {
-                      if (index == dataNewfeedsglobal.length) {
-                        return Center(
-                          child: Container(),
-                        );
+      (dataNewfeedsglobal == null)
+          ? Center(child: CircularProgressIndicator())
+          : GridView.builder(
+              controller: _scrollController,
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                mainAxisExtent: 250,
+                maxCrossAxisExtent: (deviceSize.width > 400) ? 250 : 200,
+              ),
+              itemCount: ((dummyListDataNewfeedsglobal.length + 1) % 2 != 0)
+                  ? dummyListDataNewfeedsglobal.length
+                  : dummyListDataNewfeedsglobal.length + 1,
+              itemBuilder: (BuildContext ctx, index) {
+                if (index == dataNewfeedsglobal.length) {
+                  return Center(
+                    child: Container(),
+                  );
+                }
+                if (index == dummyListDataNewfeedsglobal.length) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Center(child: CupertinoActivityIndicator()),
+                    ],
+                  );
+                }
+                return InkWell(
+                  onTap: () {
+                    if (dummyListDataNewfeedsglobal[index].price == 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ShowFood(
+                                dummyListDataNewfeedsglobal[index].rid)),
+                      ).then((value) => {getNewfeedsglobal()});
+                    } else {
+                      if (data_DataAc == null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RecipePurchasePage(
+                                    req_rid:
+                                        dummyListDataNewfeedsglobal[index].rid,
+                                  )),
+                        ).then((value) => {getNewfeedsglobal()});
+                      } else {
+                        if (data_DataAc.userId ==
+                                dummyListDataNewfeedsglobal[index].userId ||
+                            checkBuy.indexOf(dummyListDataNewfeedsglobal[index]
+                                    .rid
+                                    .toString()) >=
+                                0) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShowFood(
+                                    dummyListDataNewfeedsglobal[index].rid)),
+                          ).then((value) => {getNewfeedsglobal()});
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RecipePurchasePage(
+                                      req_rid:
+                                          dummyListDataNewfeedsglobal[index]
+                                              .rid,
+                                    )),
+                          ).then((value) => {
+                                if (token != "" && token != null)
+                                  {getMybuy(), getNewfeedsglobal()}
+                              });
+                        }
                       }
-                      if (index == dummyListDataNewfeedsglobal.length) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+                    child: Column(
+                      children: [
+                        Stack(
                           children: [
-                            Center(child: CupertinoActivityIndicator()),
+                            Container(
+                              height: 170,
+                              // width: 250,
+
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  // borderRadius: BorderRadius.circular(50),
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          dummyListDataNewfeedsglobal[index]
+                                              .image),
+                                      fit: BoxFit.cover)),
+                            ),
+                            (dummyListDataNewfeedsglobal[index].price == 0)
+                                ? Container()
+                                : Padding(
+                                    padding:
+                                        const EdgeInsets.only(top: 8, right: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            (data_DataAc == null)
+                                                ? CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    radius: 16,
+                                                  )
+                                                : (data_DataAc.userId ==
+                                                        dummyListDataNewfeedsglobal[
+                                                                index]
+                                                            .userId)
+                                                    ? Container()
+                                                    : CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        radius: 16,
+                                                      ),
+                                            Positioned(
+                                              top: 1,
+                                              right: 1,
+                                              child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                child: (data_DataAc == null)
+                                                    ? Image.network(
+                                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                    : (data_DataAc.userId ==
+                                                            dummyListDataNewfeedsglobal[
+                                                                    index]
+                                                                .userId)
+                                                        ? Container()
+                                                        : (checkBuy.indexOf(
+                                                                    dummyListDataNewfeedsglobal[
+                                                                            index]
+                                                                        .rid
+                                                                        .toString()) >=
+                                                                0)
+                                                            ? Image.network(
+                                                                "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                            : Image.network(
+                                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
                           ],
-                        );
-                      }
-                      return InkWell(
-                        onTap: () {
-                           SnackBar(
-                                                                      duration: Duration(
-                                                                          milliseconds:
-                                                                              1400),
-                                                                      content:
-                                                                          const Text(
-                                                                              'ลบความคิดเห็นแล้ว'),
-                                                                    );
-                          if (dummyListDataNewfeedsglobal[index].price == 0) {
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                children: [
+                                  new Container(
+                                    height: 20.0,
+                                    width: 20.0,
+                                    decoration: new BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: new DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: new NetworkImage(
+                                                dummyListDataNewfeedsglobal[
+                                                        index]
+                                                    .profileImage))),
+                                  ),
+                                ],
+                              ),
+                              new SizedBox(
+                                width: 10.0,
+                              ),
+                              Expanded(
+                                child: new Text(
+                                  dummyListDataNewfeedsglobal[index].aliasName,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.normal),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              (dummyListDataNewfeedsglobal[index].score == 0)
+                                  ? Container()
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 8, 0, 0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.blue,
+                                            size: 15,
+                                          ),
+                                          SizedBox(
+                                            width: 1,
+                                          ),
+                                          Text(
+                                            dummyListDataNewfeedsglobal[index]
+                                                    .score
+                                                    .toString() +
+                                                "/5",
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 2,
+                                          ),
+                                          Text(
+                                            '(${dummyListDataNewfeedsglobal[index].count})',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  dummyListDataNewfeedsglobal[index].recipeName,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.justify,
+                                  // style: TextStyle(
+
+                                  //     color: Colors.black,
+                                  //     fontSize: 15),
+                                  style: GoogleFonts.lato(fontSize: 15),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+      (newFeedsFollow == null)
+          ? Container()
+          : ListView.builder(
+              itemCount: newFeedsFollow.feed.length,
+              itemBuilder: (context, index) => index < 0
+                  ? new SizedBox(
+                      child: AlertDialog(
+                          content: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("กรุณารอสักครู่...   "),
+                          CircularProgressIndicator()
+                        ],
+                      )),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        if (newFeedsFollow.feed[index].price == 0) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShowFood(
+                                    newFeedsFollow.feed[index].rid)),
+                          ).then((value) => {getNewfeedsglobal()});
+                        } else {
+                          if (data_DataAc == null) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ShowFood(
-                                      dummyListDataNewfeedsglobal[index]
-                                          .rid)),
+                                  builder: (context) => RecipePurchasePage(
+                                        req_rid:
+                                            newFeedsFollow.feed[index]
+                                                .rid,
+                                      )),
                             ).then((value) => {getNewfeedsglobal()});
                           } else {
-                            if (data_DataAc == null) {
+                            if (data_DataAc.userId ==
+                                    newFeedsFollow.feed[index].userId ||
+                                checkBuy.indexOf(
+                                        newFeedsFollow.feed[index]
+                                            .rid
+                                            .toString()) >=
+                                    0) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ShowFood(
+                                        newFeedsFollow.feed[index]
+                                            .rid)),
+                              ).then((value) => {getNewfeedsglobal()});
+                            } else {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => RecipePurchasePage(
                                           req_rid:
-                                              dummyListDataNewfeedsglobal[
-                                                      index]
+                                              newFeedsFollow.feed[index]
                                                   .rid,
                                         )),
-                              ).then((value) => {getNewfeedsglobal()});
-                            } else {
-                              if (data_DataAc.userId ==
-                                      dummyListDataNewfeedsglobal[index]
-                                          .userId ||
-                                  checkBuy.indexOf(
-                                          dummyListDataNewfeedsglobal[index]
-                                              .rid
-                                              .toString()) >=
-                                      0) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ShowFood(
-                                          dummyListDataNewfeedsglobal[index]
-                                              .rid)),
-                                ).then((value) => {getNewfeedsglobal()});
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          RecipePurchasePage(
-                                            req_rid:
-                                                dummyListDataNewfeedsglobal[
-                                                        index]
-                                                    .rid,
-                                          )),
-                                ).then((value) => {
-                                      if (token != "" && token != null)
-                                        {getMybuy(), getNewfeedsglobal()}
-                                    });
-                              }
+                              ).then((value) => {
+                                    if (token != "" && token != null)
+                                      {getMybuy(), getNewfeedsglobal()}
+                                  });
                             }
                           }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+                        }
+                      },
+                      child: Container(
+                        // height: 500,
+                        width: 280,
+                        child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: Column(
                             children: [
-                              Stack(
-                                children: [
-                                  Container(
-                                    height: 170,
-                                    // width: 250,
-
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(5),
-                                        // borderRadius: BorderRadius.circular(50),
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                dummyListDataNewfeedsglobal[
-                                                        index]
-                                                    .image),
-                                            fit: BoxFit.cover)),
-                                  ),
-                                  (dummyListDataNewfeedsglobal[index].price ==
-                                          0)
-                                      ? Container()
-                                      : Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, right: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Stack(
-                                                children: [
-                                                  (data_DataAc == null)
-                                                      ? CircleAvatar(
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          radius: 16,
-                                                        )
-                                                      : (data_DataAc.userId ==
-                                                              dummyListDataNewfeedsglobal[
-                                                                      index]
-                                                                  .userId)
-                                                          ? Container()
-                                                          : CircleAvatar(
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .white,
-                                                              radius: 16,
-                                                            ),
-                                                  Positioned(
-                                                    top: 1,
-                                                    right: 1,
-                                                    child: Container(
-                                                      height: 30,
-                                                      width: 30,
-                                                      child: (data_DataAc ==
-                                                              null)
-                                                          ? Image.network(
-                                                              "https://image.flaticon.com/icons/png/512/1177/1177428.png")
-                                                          : (data_DataAc
-                                                                      .userId ==
-                                                                  dummyListDataNewfeedsglobal[
-                                                                          index]
-                                                                      .userId)
-                                                              ? Container()
-                                                              : (checkBuy.indexOf(dummyListDataNewfeedsglobal[index]
-                                                                          .rid
-                                                                          .toString()) >=
-                                                                      0)
-                                                                  ? Image.network(
-                                                                      "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                  : Image.network(
-                                                                      "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                ],
-                              ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(4, 2, 4, 0),
+                                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        new Container(
-                                          height: 20.0,
-                                          width: 20.0,
-                                          decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: new NetworkImage(
-                                                      dummyListDataNewfeedsglobal[
-                                                              index]
-                                                          .profileImage))),
-                                        ),
-                                      ],
-                                    ),
-                                    new SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Expanded(
-                                      child: new Text(
-                                        dummyListDataNewfeedsglobal[index]
-                                            .aliasName,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.normal),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    (dummyListDataNewfeedsglobal[index]
-                                                .score ==
-                                            0)
-                                        ? Container()
-                                        : Padding(
-                                            padding:
-                                                const EdgeInsets.fromLTRB(
-                                                    8, 8, 0, 0),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.blue,
-                                                  size: 15,
-                                                ),
-                                                SizedBox(
-                                                  width: 1,
-                                                ),
-                                                Text(
-                                                  dummyListDataNewfeedsglobal[
-                                                              index]
-                                                          .score
-                                                          .toString() +
-                                                      "/5",
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Text(
-                                                  '(${dummyListDataNewfeedsglobal[index].count})',
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(
-                                      child: Text(
-                                        dummyListDataNewfeedsglobal[index]
-                                            .recipeName,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.justify,
-                                        // style: TextStyle(
-
-                                        //     color: Colors.black,
-                                        //     fontSize: 15),
-                                        style: GoogleFonts.lato(fontSize: 15),
+                                    InkWell(
+                                      onTap: (){
+                                        if (token == "") {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfileUser(
+                                      reqUid: newFeedsFollow.feed[index].userId,
+                                    );
+                                  }));
+                                } else if (data_DataAc.userId ==
+                                    newFeedsFollow.feed[index].userId) {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfilePage();
+                                  }));
+                                } else {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfileUser(
+                                      reqUid: newFeedsFollow.feed[index].userId,
+                                    );
+                                  }));
+                                }
+                                      },
+                                      child: Row(
+                                        children: [
+                                          new Container(
+                                            height: 30.0,
+                                            width: 30.0,
+                                            decoration: new BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: new DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: new NetworkImage(
+                                                        newFeedsFollow.feed[index]
+                                                            .profileImage))),
+                                          ),
+                                          new SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0, 8, 0, 8),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                new Text(
+                                                  newFeedsFollow
+                                                      .feed[index].aliasName,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                new Text(
+                                                  dateEdit(newFeedsFollow
+                                                      .feed[index].date
+                                                      .toString()),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 12),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
                                       ),
+                                    ),
+                                    
+                                    // IconButton(
+                                    //     icon: Icon(Icons.more_vert),
+                                    //     onPressed: () {
+                                    //       // print("more_vert" + index.toString());
+                                    //     })
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      newFeedsFollow.feed[index].recipeName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: GoogleFonts.lato(),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
                                     ),
                                   ],
                                 ),
                               ),
-                              Expanded(child: Container()),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-            (newFeedsFollow == null)
-                ? Container()
-                : ListView.builder(
-                    itemCount: newFeedsFollow.feed.length,
-                    itemBuilder: (context, index) => index < 0
-                        ? new SizedBox(
-                            child: AlertDialog(
-                                content: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("กรุณารอสักครู่...   "),
-                                CircularProgressIndicator()
-                              ],
-                            )),
-                          )
-                        : Container(
-                            // height: 500,
-                            width: 280,
-                            child: Card(
-                              semanticContainer: true,
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              child: Column(
+                              Stack(
                                 children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            new Container(
-                                              height: 30.0,
-                                              width: 30.0,
-                                              decoration: new BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: new DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      image: new NetworkImage(
-                                                          newFeedsFollow
-                                                              .feed[index]
-                                                              .profileImage))),
-                                            ),
-                                            new SizedBox(
-                                              width: 10.0,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 8, 0, 8),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  new Text(
-                                                    newFeedsFollow.feed[index]
-                                                        .aliasName,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  new Text(
-                                                    newFeedsFollow
-                                                        .feed[index].date
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight
-                                                            .normal),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        IconButton(
-                                            icon: Icon(Icons.more_vert),
-                                            onPressed: () {
-                                              // print("more_vert" + index.toString());
-                                            })
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          newFeedsFollow
-                                              .feed[index].recipeName,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: GoogleFonts.lato(),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "4.2",
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 10),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.star,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              size: 12.0,
-                                            ),
-                                            Icon(
-                                              Icons.star,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              size: 12.0,
-                                            ),
-                                            Icon(
-                                              Icons.star,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              size: 12.0,
-                                            ),
-                                            Icon(
-                                              Icons.star_half,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              size: 12.0,
-                                            ),
-                                            Icon(
-                                              Icons.star_border,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              size: 12.0,
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          "(12)",
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 10),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                   Container(
                                     height: 310,
                                     // width: 500,
                                     decoration: BoxDecoration(
                                         // borderRadius: BorderRadius.circular(50),
                                         image: DecorationImage(
-                                            image: NetworkImage(newFeedsFollow
-                                                .feed[index].image),
+                                            image: NetworkImage(
+                                                newFeedsFollow.feed[index].image),
                                             fit: BoxFit.cover)),
                                   ),
+                                  (newFeedsFollow.feed[index].price == 0)
+                                ? Container()
+                                : Padding(
+                                    padding:
+                                        const EdgeInsets.only(top: 8, right: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            (data_DataAc == null)
+                                                ? CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    radius: 16,
+                                                  )
+                                                : (data_DataAc.userId ==
+                                                        newFeedsFollow.feed[index]
+                                                            .userId)
+                                                    ? Container()
+                                                    : CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        radius: 16,
+                                                      ),
+                                            Positioned(
+                                              top: 1,
+                                              right: 1,
+                                              child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                child: (data_DataAc == null)
+                                                    ? Image.network(
+                                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                    : (data_DataAc.userId ==
+                                                            newFeedsFollow.feed[index]
+                                                                .userId)
+                                                        ? Container()
+                                                        : (checkBuy.indexOf(
+                                                                    newFeedsFollow.feed[index]
+                                                                        .rid
+                                                                        .toString()) >=
+                                                                0)
+                                                            ? Image.network(
+                                                                "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                            : Image.network(
+                                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              elevation: 5,
-                              margin: EdgeInsets.all(10),
-                            ),
+                            ],
                           ),
-                  )
-          ]);
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          elevation: 5,
+                          margin: EdgeInsets.all(10),
+                        ),
+                      ),
+                    ),
+            )
+    ]);
   }
 }
