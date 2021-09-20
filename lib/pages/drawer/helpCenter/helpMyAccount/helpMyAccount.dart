@@ -28,34 +28,7 @@ class HelpMyAccount extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              ListTile(
-                leading: Icon(
-                  Icons.account_box_outlined,
-                  color: Colors.blue,
-                  size: 25,
-                ),
-                title: Text(
-                  'ลืมรหัสผ่าน',
-                  style: GoogleFonts.kanit(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w300,
-                  ),
-
-                  //     color: Colors.black)
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Colors.blue,
-                ),
-                onTap: () {
-                  print("ลืมรหัสผ่าน");
-                  //  Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //                 builder: (context) => HelpMyAccount()),
-                  //           );
-                },
-              ),
+              
               ListTile(
                 leading: Icon(
                   Icons.account_box_outlined,

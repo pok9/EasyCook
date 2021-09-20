@@ -876,7 +876,7 @@ class _FeedPageState extends State<FeedPage> {
                                                     width: 2,
                                                   ),
                                                   Text(
-                                                    '(4)',
+                                                    '(${dataRecommendRecipe[index].count})',
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                     ),
@@ -1582,7 +1582,7 @@ class _FeedPageState extends State<FeedPage> {
                           width: 2,
                         ),
                         Text(
-                          '(4)',
+                          '(${dataRecommendRecipe.count})',
                           style: TextStyle(
                             color: Colors.white,
                           ),

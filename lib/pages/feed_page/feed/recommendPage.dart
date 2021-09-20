@@ -239,7 +239,7 @@ class _RecommendPageState extends State<RecommendPage> {
                           width: 2,
                         ),
                         Text(
-                          '(4)',
+                          '(${dataRecommendRecipe.count})',
                           style: TextStyle(
                             color: Colors.white,
                           ),

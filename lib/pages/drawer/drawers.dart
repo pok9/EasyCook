@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/notification/getCountVisited/getCountVisitedModel.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/models/reset_password/reset_passwordModel.dart';
 
 import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
@@ -12,6 +13,7 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -89,24 +91,50 @@ class _DrawersState extends State<Drawers> {
     });
   }
 
-
   Future<Null> getMyAccounts() async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer ${this.widget.token}"});
+    final response = await http.get(Uri.parse(apiUrl),
+        headers: {"Authorization": "Bearer ${this.widget.token}"});
 
     if (response.statusCode == 200) {
       // if (mounted)
       setState(() {
-      final String responseString = response.body;
+        final String responseString = response.body;
 
-      this.widget.data_MyAccount = myAccountFromJson(responseString);
-      this.widget.data_DataAc = this.widget.data_MyAccount.data[0];
+        this.widget.data_MyAccount = myAccountFromJson(responseString);
+        this.widget.data_DataAc = this.widget.data_MyAccount.data[0];
 
-      // getMyPost();
+        // getMyPost();
       });
+    } else {
+      return null;
+    }
+  }
 
+  ResetPasswordModel resetPasswordModel;
+  Future<Null> reset_password(String email) async {
+    final String apiUrl =
+        "http://apifood.comsciproject.com/pjUsers/reset_password";
+
+    var data = {
+      "email": email,
+    };
+
+    print(jsonEncode(data));
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data), headers: {"Content-Type": "application/json"});
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        final String responseString = response.body;
+        print(responseString);
+
+        resetPasswordModel = resetPasswordModelFromJson(responseString);
+      });
     } else {
       return null;
     }
@@ -139,7 +167,8 @@ class _DrawersState extends State<Drawers> {
                         image: DecorationImage(
                           // image: new NetworkImage(
                           //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                          image: AssetImage('${this.widget.data_DataAc.wallpaper}'),
+                          image: AssetImage(
+                              '${this.widget.data_DataAc.wallpaper}'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -222,7 +251,6 @@ class _DrawersState extends State<Drawers> {
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
-                     
                     ),
                     onTap: () {
                       Navigator.push(
@@ -342,9 +370,7 @@ class _DrawersState extends State<Drawers> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ChooseSettingPage()),
-                      ).then((value) => {
-                        getMyAccounts()
-                      });
+                      ).then((value) => {getMyAccounts()});
                     },
                   ),
                   ListTile(
@@ -511,199 +537,253 @@ class _DrawersState extends State<Drawers> {
             ),
     );
   }
-}
 
-Future<Null> _logOut() async {
-  var facebookSignIn = AuthBlock.facebookSignIns;
-  await facebookSignIn.logOut();
-}
+  Future<Null> _logOut() async {
+    var facebookSignIn = AuthBlock.facebookSignIns;
+    await facebookSignIn.logOut();
+  }
 
-void _tripEditModalBottomSheet(context) {
-  showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) => SingleChildScrollView(
-            child: Container(
-              color: Color(0xFF737373),
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: _buildBottomNavigationMenu(context),
-            ),
-          ));
-}
+  void _tripEditModalBottomSheet(context) {
+    _ctrlEmail.text = "";
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _buildBottomNavigationMenu(context),
+              ),
+            ));
+  }
 
-Container _buildBottomNavigationMenu(context) {
-  return Container(
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _ctrlEmail = TextEditingController();
 
-      // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
-      decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(30),
-              topRight: const Radius.circular(30))),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
+  Container _buildBottomNavigationMenu(context) {
+    return Container(
+
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
               children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "ลืมรหัสผ่านเหรอ",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.cancel,
+                          color: Colors.blue,
+                          size: 25,
+                        ))
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "ลืมรหัสผ่านเหรอ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                        'ยืนยันอีเมลของคุณแล้วเราจะส่งอีเมลไปให้เพื่อตั้งรหัสผ่านใหม่',
+                        style: TextStyle(fontSize: 15),
+                      ))
+                    ],
                   ),
                 ),
-                Spacer(),
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.cancel,
-                      color: Colors.blue,
-                      size: 25,
-                    ))
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                    'ยืนยันอีเมลของคุณแล้วเราจะส่งลิงก์ไปให้เพื่อตั้งรหัสผ่านใหม่',
-                    style: TextStyle(fontSize: 15),
-                  ))
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(30))),
-                  labelText: 'อีเมล',
-                  // hintText: 'อีเมล'ย,
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    controller: _ctrlEmail,
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please enter some text';
+                    //   }
+                    //   return null;
+                    // },
+                    validator: (value) => EmailValidator.validate(value)
+                        ? null
+                        : "กรุณาป้อนอีเมล์ของคุณ",
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      labelText: 'อีเมล',
+                      // hintText: 'อีเมล'ย,
+                    ),
+                    autofocus: false,
+                  ),
                 ),
-                autofocus: false,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                // padding: EdgeInsets.all(20),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    // padding: EdgeInsets.all(20),
 
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () async {
-                      Navigator.pop(context);
-                      _textBottomSheet(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.restart_alt_outlined,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'รีเซ็ตรหัสผ่าน',
-                            style: TextStyle(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          if (_formKey.currentState.validate()) {
+                            print(_ctrlEmail.text);
+                            showDialog(
+                                context: context,
+                                builder: (contex) {
+                                  return AlertDialog(
+                                      content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("กรุณารอสักครู่...   "),
+                                      CircularProgressIndicator()
+                                    ],
+                                  ));
+                                });
+
+                            await reset_password(_ctrlEmail.text);
+                            Navigator.pop(context);
+                            print(resetPasswordModel.success);
+                            // print("pok => ${resetPasswordModel.success}");
+                            if (resetPasswordModel.success == 1) {
+                              Navigator.pop(context);
+                              _textBottomSheet(context);
+                              _ctrlEmail.text = "";
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (contex) {
+                                  return AlertDialog(
+                                      content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.warning_amber,color: Colors.yellow[800],),
+                                      Text("โปรดทำรายการใหม่ในภายหลัง"),
+                                    ],
+                                  ));
+                                });
+                            }
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.restart_alt_outlined,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          )
-                        ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'รีเซ็ตรหัสผ่าน',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  void _textBottomSheet(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _textBottomNavigationMenu(context),
               ),
-            ),
-          ],
-        ),
-      ));
-}
+            ));
+  }
 
-void _textBottomSheet(context) {
-  showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) => SingleChildScrollView(
-            child: Container(
-              color: Color(0xFF737373),
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: _textBottomNavigationMenu(context),
-            ),
-          ));
-}
+  Container _textBottomNavigationMenu(context) {
+    return Container(
 
-Container _textBottomNavigationMenu(context) {
-  return Container(
-
-      // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
-      decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(30),
-              topRight: const Radius.circular(30))),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Spacer(),
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.cancel,
-                      color: Colors.blue,
-                      size: 25,
-                    ))
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    height: 50,
-                    width: 50,
-                    child: Image.network(
-                        "https://i.pinimg.com/originals/19/38/cd/1938cdac9a1b4bea2df9e31d20273cee.png"))
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Expanded(
-                      child: Text(
-                    'ทางเราได้ทำการส่งอีเมลรีเซ็ตรหัสผ่านไปให้คุณเรียบร้อยแล้ว',
-                    style: TextStyle(
-                      fontSize: 15,
-                    ),
-                    textAlign: TextAlign.center,
-                  ))
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.blue,
+                        size: 25,
+                      ))
                 ],
               ),
-            ),
-          ],
-        ),
-      ));
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 50,
+                      width: 50,
+                      child: Image.network(
+                          "https://i.pinimg.com/originals/19/38/cd/1938cdac9a1b4bea2df9e31d20273cee.png"))
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      'ทางเราได้ทำการส่งอีเมลรีเซ็ตรหัสผ่านไปให้คุณเรียบร้อยแล้ว',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                      textAlign: TextAlign.center,
+                    ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
 }

@@ -760,15 +760,15 @@ class _ScrollProfilePage2BottomNavbarState extends State
                             if (snapshot.hasData) {
                               return buildNestedScrollView();
                             }
-                            return Center(child: CircularProgressIndicator());
+                            return Center(child: CupertinoActivityIndicator(),);
                           },
                         );
                       }
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: CupertinoActivityIndicator(),);
                     },
                   );
           }
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CupertinoActivityIndicator(),);
         },
       );
   }
