@@ -107,16 +107,16 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
   String getTimeDifferenceFromNow(DateTime dateTime) {
     Duration difference = DateTime.now().difference(dateTime);
     if (difference.inSeconds < 5) {
-      return "เมื่อสักครู่";
+      return "เมื่อสักครู่.";
     } else if (difference.inMinutes < 1) {
-      return "${difference.inSeconds} วินาที";
+      return "${difference.inSeconds} วินาที.";
     } else if (difference.inHours < 1) {
-      return "${difference.inMinutes} นาที";
+      return "${difference.inMinutes} นาที.";
     } else if (difference.inHours < 24) {
-      return "${difference.inHours} ชั่วโมง";
-    } else{
-      return "${difference.inDays} วัน";
-    } 
+      return "${difference.inHours} ชั่วโมง.";
+    } else {
+      return "${difference.inDays} วัน.";
+    }
   }
 
   @override
@@ -193,24 +193,42 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
                           new SizedBox(
                             width: 10.0,
                           ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              new Text(
-                                "${dataFood.recipeName} ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              new Text(
-                                "${getTimeDifferenceFromNow(dataFood.date)}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey),
-                              ),
-                            ],
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: "${dataFood.recipeName} ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: getTimeDifferenceFromNow(
+                                                dataFood.date),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
+                                  ),
+                                  // child: Text(
+                                  //   "${dataFood.recipeName} ",
+                                  //   style: TextStyle(
+                                  //       fontWeight: FontWeight.bold,
+                                  //       color: Colors.white),
+                                  // ),
+                                ),
+                                // Text(
+                                //   "${getTimeDifferenceFromNow(dataFood.date)}",
+                                //   style: TextStyle(
+                                //       fontWeight: FontWeight.normal,
+                                //       color: Colors.grey),
+                                // ),
+                              ],
+                            ),
                           ),
-                          
                         ],
                       ),
                     ),
