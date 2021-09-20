@@ -29,6 +29,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mime/mime.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 import 'package:http/http.dart' as http;
@@ -284,19 +285,32 @@ class _ShowFoodState extends State<ShowFood> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Text(
-                (displayNumber + 1).toString() +
-                    ". " +
+              padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: CircleAvatar(
+                      // backgroundColor: Colors.,
+                      radius: 10,
+                      child: Text("${displayNumber + 1}"),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
                     dataIngredient[displayNumber].ingredientName +
-                    "\t" +
-                    dataIngredient[displayNumber].amount,
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'OpenSans',
-                    fontSize: 17,
-                    color: Colors.black,
-                    decoration: TextDecoration.none),
+                        "\t" +
+                        dataIngredient[displayNumber].amount,
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'OpenSans',
+                        fontSize: 17,
+                        color: Colors.black,
+                        decoration: TextDecoration.none),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -343,7 +357,7 @@ class _ShowFoodState extends State<ShowFood> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 1),
+                  padding: const EdgeInsets.only(top: 0),
                   child: CircleAvatar(
                     radius: 10,
                     child: Text("$i"),
@@ -533,7 +547,7 @@ class _ShowFoodState extends State<ShowFood> {
       return "${difference.inMinutes} นาที";
     } else if (difference.inHours < 24) {
       return "${difference.inHours} ชั่วโมง";
-    } else if (difference.inDays < 8){
+    } else if (difference.inDays < 8) {
       return "${difference.inDays} วัน";
     } else {
       return "${dateEdit(dateTime.toString())}";
@@ -563,7 +577,8 @@ class _ShowFoodState extends State<ShowFood> {
     List timeSp = dateTimeSp[1].split(".");
     List time = timeSp[0].split(":");
 
-    String text = "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
+    String text =
+        "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
     return text;
   }
 
@@ -576,7 +591,7 @@ class _ShowFoodState extends State<ShowFood> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           token = snapshot.data;
-          
+
           return FutureBuilder(
             future: getPost(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -584,10 +599,10 @@ class _ShowFoodState extends State<ShowFood> {
                 dataFood = snapshot.data;
                 dataIngredient = dataFood.ingredient;
                 dataHowto = dataFood.howto;
-getCategoryFood();
-          if (token != "" && token != null) {
-            getMybuy();
-          }
+                getCategoryFood();
+                if (token != "" && token != null) {
+                  getMybuy();
+                }
                 final List<Widget> ingredient =
                     dataIngredient == null ? [] : _ingredientList();
                 final List<Widget> howto1 =
@@ -910,25 +925,71 @@ getCategoryFood();
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                dataFood.description,
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: Row(
+                      //     children: [
+                      //       Expanded(
+                      //         child: Text(
+                      //           dataFood.description,
+                      //           textAlign: TextAlign.justify,
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.normal,
+                      //             fontFamily: 'OpenSans',
+                      //             fontSize: 15,
+                      //             color: Colors.black,
+                      //             decoration: TextDecoration.none,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: Row(
+                      //     children: [
+                      //       Expanded(
+                      //         child: RichText(
+                      //           text: TextSpan(
+                      //             text: dataFood.description,
+                      //             style: TextStyle(
+                      //               fontWeight: FontWeight.normal,
+                      //               fontFamily: 'OpenSans',
+                      //               fontSize: 15,
+                      //               color: Colors.black,
+                      //               decoration: TextDecoration.none,
+                      //             ),
+                      //             children: const <TextSpan>[
+                      //               // TextSpan(
+                      //               //     text: 'bold',
+                      //               //     style: TextStyle(
+                      //               //         fontWeight: FontWeight.bold)),
+                      //               TextSpan(
+                      //                   text: ' อ่านน้อยลง',
+                      //                   style: TextStyle(
+                      //                       color: Colors.blue,
+                      //                       fontWeight: FontWeight.bold)),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+
+                      // ReadMoreText(
+                      //   dataFood.description,
+                      //   trimLines: 2,
+                      //   colorClickableText: Colors.pink,
+                      //   trimMode: TrimMode.Line,
+                      //   trimCollapsedText: 'Show more',
+                      //   trimExpandedText: 'Show less',
+                      //   moreStyle: TextStyle(
+                      //       fontSize: 14, fontWeight: FontWeight.bold),
+                      // ),
+                      buildText(
+                        dataFood.description,
                       ),
                       Divider(
                         thickness: 1,
@@ -1455,38 +1516,37 @@ getCategoryFood();
                             // (categoryFood == null)
                             //     ? Text(categoryFood.toString())
                             //     : Text(categoryFood[0].recipeName)
-                            
                           ],
                         ),
                       ),
                       (categoryFood == null)
-                                ? Container(
-                                    height: 329,
-                                  )
-                                // : Container(
-                                //     height: 300,
-                                //     child: ListView.builder(
-                                //         scrollDirection: Axis.horizontal,
-                                //         shrinkWrap: true,
-                                //         physics: NeverScrollableScrollPhysics(),
-                                //         itemCount: categoryFood.length,
-                                //         itemBuilder: (context, index) {
-                                //           return Padding(
-                                //             padding: const EdgeInsets.all(8.0),
-                                //             child: Container(width: 50,height: 50,color: Colors.black,),
-                                //           );
-                                //         }),
-                                //   ),
-                            : Container(
-                                height: 300,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                      // scrollDirection: Axis.vertical,
-                                    itemCount: categoryFood.length,
-                                    itemBuilder: (context, index) {
-                                      return _recommendRecipeCard(
-                                          context, categoryFood[index]);
-                                    })),
+                          ? Container(
+                              height: 329,
+                            )
+                          // : Container(
+                          //     height: 300,
+                          //     child: ListView.builder(
+                          //         scrollDirection: Axis.horizontal,
+                          //         shrinkWrap: true,
+                          //         physics: NeverScrollableScrollPhysics(),
+                          //         itemCount: categoryFood.length,
+                          //         itemBuilder: (context, index) {
+                          //           return Padding(
+                          //             padding: const EdgeInsets.all(8.0),
+                          //             child: Container(width: 50,height: 50,color: Colors.black,),
+                          //           );
+                          //         }),
+                          //   ),
+                          : Container(
+                              height: 300,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  // scrollDirection: Axis.vertical,
+                                  itemCount: categoryFood.length,
+                                  itemBuilder: (context, index) {
+                                    return _recommendRecipeCard(
+                                        context, categoryFood[index]);
+                                  })),
                     ],
                   ),
                 )
@@ -1495,6 +1555,30 @@ getCategoryFood();
           )
         ]))
       ],
+    );
+  }
+
+  Widget buildText(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: ReadMoreText(
+          text,
+          trimLines: 4,
+          trimMode: TrimMode.Line,
+          trimCollapsedText: 'อ่านเพิ่มเติม',
+          trimExpandedText: 'อ่านน้อยลง',
+          style: TextStyle(
+            
+            fontWeight: FontWeight.normal,
+            fontFamily: 'OpenSans',
+            fontSize: 15,
+            color: Colors.black,
+            decoration: TextDecoration.none,
+          ),
+        ),
+      ),
     );
   }
 

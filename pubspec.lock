@@ -610,7 +610,7 @@ packages:
       name: readmore
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.1.0"
   rflutter_alert:
     dependency: "direct main"
     description:

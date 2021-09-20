@@ -74,7 +74,7 @@ dependencies:
 
   flutter_rating_bar: ^3.2.0+1
 
-  readmore: ^1.0.0
+ 
 
   google_fonts: ^2.1.0
 
@@ -118,6 +118,8 @@ dependencies:
 
   flutter_offline: ^2.0.0
   flutter_tindercard: ^0.2.0
+  
+  readmore: ^2.1.0
  
 
 dev_dependencies:
