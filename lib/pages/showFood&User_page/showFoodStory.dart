@@ -131,13 +131,15 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
           final List<StoryItem> howto3 = dataHowto == null ? [] : _howtoList3();
           return SimpleDialog(
             shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.white, width: 3),
+                side: BorderSide(color: Colors.white, width: 5),
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
             children: [
               Stack(
                 children: [
                   Container(
+                    
+                    
                     height: 400,
                     child: StoryView(
                       storyItems: howto3,
@@ -209,7 +211,7 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
                                             text: getTimeDifferenceFromNow(
                                                 dataFood.date),
                                             style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                                fontWeight: FontWeight.normal,color: Colors.grey)),
                                       ],
                                     ),
                                   ),

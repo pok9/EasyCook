@@ -62,9 +62,8 @@ class _ShowFoodState extends State<ShowFood> {
   double ratings = 0.0;
   @override
   void dispose() {
-    
     storyController.dispose();
-   
+
     if (token != "") {
       if (dataFood.userId != dataMyAccont.userId && ratings != 0.0) {
         insertNotificationData(
@@ -506,10 +505,9 @@ class _ShowFoodState extends State<ShowFood> {
                 ),
               ),
             )
-          : StoryItem.pageVideo(
-              "${dataHowto[displayNumber].pathFile}",
+          : StoryItem.pageVideo("${dataHowto[displayNumber].pathFile}",
               controller: storyController,
-              caption:"${dataHowto[displayNumber].description}");
+              caption: "${dataHowto[displayNumber].description}");
       // return ListTile(
       //   title: Row(
       //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -788,19 +786,40 @@ class _ShowFoodState extends State<ShowFood> {
       floatingWidget: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: 100,
-            width: 100,
-            child: ClipOval(
-              child: Image.network(
-                dataFood.profileImage,
-                fit: BoxFit.fill,
+          GestureDetector(
+            onTap: () {
+              if (token == "") {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return ProfileUser(
+                    reqUid: dataFood.userId,
+                  );
+                }));
+              } else if (dataMyAccont.userId == dataFood.userId) {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return ProfilePage();
+                }));
+              } else {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return ProfileUser(
+                    reqUid: dataFood.userId,
+                  );
+                }));
+              }
+            },
+            child: Container(
+              height: 100,
+              width: 100,
+              child: ClipOval(
+                child: Image.network(
+                  dataFood.profileImage,
+                  fit: BoxFit.fill,
+                ),
               ),
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 4.0)),
             ),
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 4.0)),
           ),
         ],
       ),
@@ -978,20 +997,44 @@ class _ShowFoodState extends State<ShowFood> {
                   color: Colors.white,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(dataFood.aliasName,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
-                                )),
-                          ],
+                      InkWell(
+                        onTap: () {
+                          if (token == "") {
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context) {
+                              return ProfileUser(
+                                reqUid: dataFood.userId,
+                              );
+                            }));
+                          } else if (dataMyAccont.userId == dataFood.userId) {
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context) {
+                              return ProfilePage();
+                            }));
+                          } else {
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context) {
+                              return ProfileUser(
+                                reqUid: dataFood.userId,
+                              );
+                            }));
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(dataFood.aliasName,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.none,
+                                  )),
+                            ],
+                          ),
                         ),
                       ),
                       // Padding(
@@ -1356,7 +1399,7 @@ class _ShowFoodState extends State<ShowFood> {
                                 },
                                 progressPosition: ProgressPosition.bottom,
                                 repeat: false,
-                                
+
                                 // inline: true,
                                 controller: storyController,
                               ),
