@@ -325,6 +325,14 @@ class _Feed2PageState extends State<Feed2Page> {
                       }
                       return InkWell(
                         onTap: () {
+                           SnackBar(
+                                                                      duration: Duration(
+                                                                          milliseconds:
+                                                                              1400),
+                                                                      content:
+                                                                          const Text(
+                                                                              'ลบความคิดเห็นแล้ว'),
+                                                                    );
                           if (dummyListDataNewfeedsglobal[index].price == 0) {
                             Navigator.push(
                               context,

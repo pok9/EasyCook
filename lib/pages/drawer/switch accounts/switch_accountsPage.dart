@@ -189,15 +189,6 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
                                   ),
                                 )
                               : null,
-                          // : IconButton(
-                          //     onPressed: () {
-
-                          //     },
-                          //     icon: Icon(
-                          //       Icons.clear,
-                          //       size: 15,
-                          //     ),
-                          //   ),
                           onTap: (data_DataAc.userId ==
                                   ListData_DataAc[index].userId)
                               ? null
@@ -245,19 +236,19 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
 
       preferences.setString("tokens", login.token);
       preferences.setString("email", ListData_DataAc[i].email);
-      getTokenFirebase(preferences.getString("tokens"));
+      getTokenFirebase(preferences.getString("tokens"), i);
     }
   }
 
-  getTokenFirebase(String token) async {
+  getTokenFirebase(String token,int index) async {
     String tokenFirebase = await FirebaseMessaging.instance.getToken(
         vapidKey:
             "BC5Y9rRxIQizOB9jx5GuFuK9HK-XkB0NreHveINUNby-tvNdZklyAI0tY_P4u50aYhEcvQW65lzaEdPJF3rygzw");
     print("tokenFirebaseLogin ===>>> $tokenFirebase");
-    updateTokenLogin(tokenFirebase, token);
+    updateTokenLogin(tokenFirebase, token,index);
   }
 
-  Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
+  Future<Null> updateTokenLogin(String tokenFirebase, String token,int index) async {
     print("tokenFirebase = ${tokenFirebase} ; token = ${token}");
     final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
 
@@ -273,6 +264,28 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
         });
+    // final snackBar = SnackBar(
+    //   duration: Duration(milliseconds: 1400),
+    //   content: const Text('สลับบัญชีแล้ว'),
+    // );
+
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+    final snackBar = SnackBar(
+      duration: Duration(milliseconds: 1400),
+      elevation: 6.0,
+      // backgroundColor: Configs.current.COLORS_PRIMARY,
+      behavior: SnackBarBehavior.floating,
+      content: Row(children: [
+        CircleAvatar(radius: 20,backgroundImage: NetworkImage(ListData_DataAc[index].profileImage),),
+        SizedBox(width: 10,),
+        Text(
+        "สลับบัญชี EasyCook เป็น ${ListData_DataAc[index].aliasName} แล้ว",
+        style: TextStyle(color: Colors.white),
+      )
+      ],),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
