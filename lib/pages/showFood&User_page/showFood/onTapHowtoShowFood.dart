@@ -1,20 +1,29 @@
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/video_items.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:mime/mime.dart';
+import 'package:video_player/video_player.dart';
 
 class OnTapHowtoShowFood extends StatefulWidget {
-  OnTapHowtoShowFood({this.dataHowto, Key key}) : super(key: key);
+  OnTapHowtoShowFood({this.index,this.dataHowto, Key key}) : super(key: key);
+  int index;
   List<Howto> dataHowto;
   @override
   _OnTapHowtoShowFoodState createState() => _OnTapHowtoShowFoodState();
 }
 
 class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
-  var controller = PageController();
+  
+  var controller;
   int currentpage = 0;
 
   @override
   void initState() {
+    print("onTap ==> ${this.widget.index}");
+    controller = PageController(initialPage:this.widget.index );
     // TODO: implement initState
+    
     super.initState();
     controller.addListener(() {
       setState(() {
@@ -24,7 +33,30 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    print("กดออก");
+//     flutterTts.setCompletionHandler(() {
+//   setState(() {
+
+//   });
+// });
+    flutterTts.stop();
+    super.dispose();
+  }
+
+  final FlutterTts flutterTts = FlutterTts();
+
+  @override
   Widget build(BuildContext context) {
+    // speak() async {
+    //     await flutterTts.speak("Hello");
+    // }
+    Future _speak(String text) async {
+      await flutterTts.setLanguage("th-TH");
+      await flutterTts.speak(text);
+    }
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
@@ -115,51 +147,91 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 60),
-                          child: Container(
-                            height: 300,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(this
-                                        .widget
-                                        .dataHowto[index]
-                                        .pathFile))),
-                          ),
+                          child: (lookupMimeType(this
+                                      .widget
+                                      .dataHowto[index]
+                                      .pathFile)[0] ==
+                                  "i")
+                              ? Container(
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(this
+                                              .widget
+                                              .dataHowto[index]
+                                              .pathFile))),
+                                )
+                              : Card(
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: AspectRatio(
+                                      // aspectRatio: 3 / 2,
+                                      // aspectRatio: 16 / 9,
+                                      aspectRatio: 1,
+                                      child: VideoItems(
+                                        videoPlayerController:
+                                            VideoPlayerController.network(this
+                                                .widget
+                                                .dataHowto[index]
+                                                .pathFile),
+                                        looping: false,
+                                        autoplay: false,
+                                        addfood_showfood: 0,
+                                      ),
+                                    ),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  elevation: 5,
+                                  margin: EdgeInsets.all(10),
+                                ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(onPressed: () {
-                              print("object");
-                            }, icon: Icon(Icons.speaker,size: 50,)),
+                            IconButton(
+                                onPressed: () => _speak(
+                                    this.widget.dataHowto[index].description),
+                                icon: Icon(
+                                  Icons.speaker,
+                                  color: Colors.blue,
+                                  size: 50,
+                                )),
                           ],
                         )
                       ],
                     );
                   }),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     ClipRRect(
-            //       borderRadius: BorderRadius.circular(40),
-            //       child: Container(
-            //           height: 30,
-            //           width: 60,
-            //           color: Colors.grey.shade500,
-            //           child: Padding(
-            //             padding: const EdgeInsets.all(4.0),
-            //             child: Center(
-            //                 child: Text(
-            //               "${currentpage + 1}/${this.widget.dataHowto.length}",
-            //               style: TextStyle(
-            //                   color: Colors.white,
-            //                   fontWeight: FontWeight.bold,
-            //                   fontSize: 15),
-            //             )),
-            //           )),
-            //     ),
-            //   ],
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: Container(
+                        height: 30,
+                        width: 60,
+                        color: Colors.grey.shade500,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Center(
+                              child: Text(
+                            "${currentpage + 1}/${this.widget.dataHowto.length}",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          )),
+                        )),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

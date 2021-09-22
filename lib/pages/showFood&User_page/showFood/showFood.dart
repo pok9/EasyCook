@@ -356,12 +356,12 @@ class _ShowFoodState extends State<ShowFood> {
 
       return InkWell(
         onTap: () {
-          print(dataHowto);
+          print("showFood => ${displayNumber}");
           print(dataHowto[displayNumber].description);
           print(dataHowto[displayNumber].pathFile);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => OnTapHowtoShowFood(dataHowto: dataHowto,)),
+            MaterialPageRoute(builder: (context) => OnTapHowtoShowFood(index: displayNumber,dataHowto: dataHowto,)),
           );
         },
         child: Column(
