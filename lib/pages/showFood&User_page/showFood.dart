@@ -284,7 +284,8 @@ class _ShowFoodState extends State<ShowFood> {
       int displayNumber = i;
       i++;
 
-      return Padding(
+      return 
+      Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,6 +333,7 @@ class _ShowFoodState extends State<ShowFood> {
         ),
       );
     }).toList(); // แปลงเป็นlist
+    
   }
 
   List<Widget> _howtoList1() {

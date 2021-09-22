@@ -202,7 +202,7 @@ class _FeedPageState extends State<FeedPage> {
   Future<Null> getPopularRecipe_free_and_not_free() async {
     //ฟิดที่เรากดติดตาม
     final String apiUrl =
-        "http://apifood.comsciproject.com/pjPost/popular_recipe_free";
+        "http://apifood.comsciproject.com/pjPost/popular_recipe";
 
     final response = await http.get(Uri.parse(apiUrl));
     // print("response = " + response.statusCode.toString());
@@ -650,7 +650,7 @@ class _FeedPageState extends State<FeedPage> {
                               return _recommendRecipeCard(
                                   context, dataRecommendRecipe[index]);
                             })),
-                            
+
                 DividerCutom(),
                 Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
@@ -701,7 +701,7 @@ class _FeedPageState extends State<FeedPage> {
                             totalNum: dataRecommendRecipe.length,
                             maxHeight: deviceSize.height * 0.5,
                             minHeight: deviceSize.height * 0.39,
-                            maxWidth: deviceSize.width ,
+                            maxWidth: deviceSize.width,
                             minWidth: deviceSize.width * 0.4,
 
                             // maxHeight: deviceSize.height * 0.7,
@@ -1037,8 +1037,6 @@ class _FeedPageState extends State<FeedPage> {
                         ),
                       ),
 
-                
-
                 DividerCutom(),
 
                 Padding(
@@ -1084,7 +1082,7 @@ class _FeedPageState extends State<FeedPage> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      // Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
                     ],
                   ),
                 ),
@@ -1114,7 +1112,7 @@ class _FeedPageState extends State<FeedPage> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      // Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
                     ],
                   ),
                 ),
@@ -1143,7 +1141,7 @@ class _FeedPageState extends State<FeedPage> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      // Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
                     ],
                   ),
                 ),
@@ -1501,7 +1499,7 @@ class _FeedPageState extends State<FeedPage> {
           if (dataRecommendRecipe.price == 0 ||
               dataRecommendRecipe.userId == data_DataAc.userId ||
               checkBuy.indexOf(dataRecommendRecipe.rid.toString()) >= 0) {
-                showDialog(
+            showDialog(
                 context: context,
                 builder: (_) {
                   return ShowFoodStory(
@@ -1568,14 +1566,14 @@ class _FeedPageState extends State<FeedPage> {
               height: 300,
               width: 230,
               child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusDirectional.circular(20)),
-                clipBehavior: Clip.antiAlias,
-                child: Image.network(
-                  dataRecommendRecipe.image,
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusDirectional.circular(20)),
+                  clipBehavior: Clip.antiAlias,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: "assets/loadGif/loadding2.gif",
+                    image: dataRecommendRecipe.image,
+                    fit: BoxFit.cover,
+                  )),
             ),
             (dataRecommendRecipe.score == 0)
                 ? Container()
@@ -1790,26 +1788,51 @@ class _FeedPageState extends State<FeedPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        new Container(
-                          height: 30.0,
-                          width: 30.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: new NetworkImage(
-                                      dataRecommendRecipe.profileImage))),
-                        ),
-                        new SizedBox(
-                          width: 10.0,
-                        ),
-                        new Text(
-                          dataRecommendRecipe.aliasName,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
+                    InkWell(
+                      onTap: () {
+                        if (token == "") {
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) {
+                            return ProfileUser(
+                              reqUid: dataRecommendRecipe.userId,
+                            );
+                          }));
+                        } else if (data_DataAc.userId ==
+                            dataRecommendRecipe.userId) {
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) {
+                            return ProfilePage();
+                          }));
+                        } else {
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) {
+                            return ProfileUser(
+                              reqUid: dataRecommendRecipe.userId,
+                            );
+                          }));
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          new Container(
+                            height: 30.0,
+                            width: 30.0,
+                            decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: new NetworkImage(
+                                        dataRecommendRecipe.profileImage))),
+                          ),
+                          new SizedBox(
+                            width: 10.0,
+                          ),
+                          new Text(
+                            dataRecommendRecipe.aliasName,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
                     ),
                     IconButton(
                         icon: Icon(Icons.more_vert),
@@ -1821,11 +1844,16 @@ class _FeedPageState extends State<FeedPage> {
               ),
               Container(
                 height: 210,
-                decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(50),
-                    image: DecorationImage(
-                        image: NetworkImage(dataRecommendRecipe.image),
-                        fit: BoxFit.cover)),
+                // decoration: BoxDecoration(
+                //     // borderRadius: BorderRadius.circular(50),
+                //     image: DecorationImage(
+                //         image: NetworkImage(dataRecommendRecipe.image),
+                //         fit: BoxFit.cover)),
+                child: FadeInImage.assetNetwork(
+                  placeholder: "assets/loadGif/loadding2.gif",
+                  image: dataRecommendRecipe.image,
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(3.0),
@@ -1853,12 +1881,9 @@ class _FeedPageState extends State<FeedPage> {
                     Container(
                       child: Row(
                         children: [
-                          Text(
-                            "4.2",
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                         
                           RatingBarIndicator(
-                            rating: 3,
+                            rating: dataRecommendRecipe.avgScore,
                             itemBuilder: (context, index) => Icon(
                               Icons.star,
                               color: Colors.blue,
@@ -1867,7 +1892,7 @@ class _FeedPageState extends State<FeedPage> {
                             itemSize: 16,
                           ),
                           Text(
-                            "(12)",
+                            "(${dataRecommendRecipe.counts})",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],

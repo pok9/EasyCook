@@ -437,7 +437,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               child: Container(
                                 height: 75,
                                 color: Color(0xfff3f3f4),
-                                child: IconButton(
+                                child:
+                                 IconButton(
                                     iconSize: 30,
                                     icon: Icon(
                                       Icons.add,

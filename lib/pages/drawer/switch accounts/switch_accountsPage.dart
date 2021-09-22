@@ -288,10 +288,15 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => SlidePage(),
-        ),
+        // MaterialPageRoute(
+        //   builder: (BuildContext context) => SlidePage(),
+        // ),
+        EnterExitRoute(exitPage: Container(), enterPage: SlidePage()),
         (route) => false);
+    
+    // Navigator.push(context,
+    // EnterExitRoute(exitPage: Container(), enterPage: SlidePage()));
+
     print("responseUpdateTokenFirebase = ${response.statusCode}");
     print("response.body = ${response.body}");
   }
@@ -330,4 +335,42 @@ class _SwitchAccountsPageState extends State<SwitchAccountsPage> {
     print("responseUpdateTokenFirebase = ${response.statusCode}");
     print("response.body = ${response.body}");
   }
+}
+
+class EnterExitRoute extends PageRouteBuilder {
+  final Widget enterPage;
+  final Widget exitPage;
+  EnterExitRoute({this.exitPage, this.enterPage})
+      : super(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              enterPage,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              Stack(
+                children: <Widget>[
+                  SlideTransition(
+                    position: new Tween<Offset>(
+                      begin: const Offset(0.0, 0.0),
+                      end: const Offset(-1.0, 0.0),
+                    ).animate(animation),
+                    child: exitPage,
+                  ),
+                  SlideTransition(
+                    position: new Tween<Offset>(
+                      begin: const Offset(1.0, 0.0),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: enterPage,
+                  )
+                ],
+              ),
+        );
 }

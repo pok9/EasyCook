@@ -327,7 +327,7 @@ class _Feed2PageState extends State<Feed2Page> {
   TabBarView body(Size deviceSize, BuildContext context) {
     return TabBarView(children: [
       (dataNewfeedsglobal == null)
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: Center(child: CupertinoActivityIndicator()))
           : GridView.builder(
               controller: _scrollController,
               shrinkWrap: true,
@@ -411,14 +411,30 @@ class _Feed2PageState extends State<Feed2Page> {
                               height: 170,
                               // width: 250,
 
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  // borderRadius: BorderRadius.circular(50),
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          dummyListDataNewfeedsglobal[index]
-                                              .image),
-                                      fit: BoxFit.cover)),
+                              // decoration: BoxDecoration(
+                              //     borderRadius: BorderRadius.circular(5),
+                              //     image: DecorationImage(
+                              //         image: NetworkImage(
+                              //             dummyListDataNewfeedsglobal[index]
+                              //                 .image),
+                              //         fit: BoxFit.cover)),
+
+                              // child: FadeInImage.assetNetwork(
+
+                              //   placeholder: "assets/loadGif/loadding2.gif",
+                              //   image: dummyListDataNewfeedsglobal[index].image,
+                              //   fit: BoxFit.cover,
+                              // ),
+
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: "assets/loadGif/loadding2.gif",
+                                  image:
+                                      dummyListDataNewfeedsglobal[index].image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                             (dummyListDataNewfeedsglobal[index].price == 0)
                                 ? Container()
@@ -604,8 +620,8 @@ class _Feed2PageState extends State<Feed2Page> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ShowFood(
-                                    newFeedsFollow.feed[index].rid)),
+                                builder: (context) =>
+                                    ShowFood(newFeedsFollow.feed[index].rid)),
                           ).then((value) => {getNewfeedsglobal()});
                         } else {
                           if (data_DataAc == null) {
@@ -613,25 +629,20 @@ class _Feed2PageState extends State<Feed2Page> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => RecipePurchasePage(
-                                        req_rid:
-                                            newFeedsFollow.feed[index]
-                                                .rid,
+                                        req_rid: newFeedsFollow.feed[index].rid,
                                       )),
                             ).then((value) => {getNewfeedsglobal()});
                           } else {
                             if (data_DataAc.userId ==
                                     newFeedsFollow.feed[index].userId ||
-                                checkBuy.indexOf(
-                                        newFeedsFollow.feed[index]
-                                            .rid
-                                            .toString()) >=
+                                checkBuy.indexOf(newFeedsFollow.feed[index].rid
+                                        .toString()) >=
                                     0) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ShowFood(
-                                        newFeedsFollow.feed[index]
-                                            .rid)),
+                                        newFeedsFollow.feed[index].rid)),
                               ).then((value) => {getNewfeedsglobal()});
                             } else {
                               Navigator.push(
@@ -639,8 +650,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                 MaterialPageRoute(
                                     builder: (context) => RecipePurchasePage(
                                           req_rid:
-                                              newFeedsFollow.feed[index]
-                                                  .rid,
+                                              newFeedsFollow.feed[index].rid,
                                         )),
                               ).then((value) => {
                                     if (token != "" && token != null)
@@ -665,28 +675,33 @@ class _Feed2PageState extends State<Feed2Page> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     InkWell(
-                                      onTap: (){
+                                      onTap: () {
                                         if (token == "") {
-                                  Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context) {
-                                    return ProfileUser(
-                                      reqUid: newFeedsFollow.feed[index].userId,
-                                    );
-                                  }));
-                                } else if (data_DataAc.userId ==
-                                    newFeedsFollow.feed[index].userId) {
-                                  Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context) {
-                                    return ProfilePage();
-                                  }));
-                                } else {
-                                  Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context) {
-                                    return ProfileUser(
-                                      reqUid: newFeedsFollow.feed[index].userId,
-                                    );
-                                  }));
-                                }
+                                          Navigator.push(context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) {
+                                            return ProfileUser(
+                                              reqUid: newFeedsFollow
+                                                  .feed[index].userId,
+                                            );
+                                          }));
+                                        } else if (data_DataAc.userId ==
+                                            newFeedsFollow.feed[index].userId) {
+                                          Navigator.push(context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) {
+                                            return ProfilePage();
+                                          }));
+                                        } else {
+                                          Navigator.push(context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) {
+                                            return ProfileUser(
+                                              reqUid: newFeedsFollow
+                                                  .feed[index].userId,
+                                            );
+                                          }));
+                                        }
                                       },
                                       child: Row(
                                         children: [
@@ -698,7 +713,8 @@ class _Feed2PageState extends State<Feed2Page> {
                                                 image: new DecorationImage(
                                                     fit: BoxFit.fill,
                                                     image: new NetworkImage(
-                                                        newFeedsFollow.feed[index]
+                                                        newFeedsFollow
+                                                            .feed[index]
                                                             .profileImage))),
                                           ),
                                           new SizedBox(
@@ -733,7 +749,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                         ],
                                       ),
                                     ),
-                                    
+
                                     // IconButton(
                                     //     icon: Icon(Icons.more_vert),
                                     //     onPressed: () {
@@ -769,64 +785,71 @@ class _Feed2PageState extends State<Feed2Page> {
                                     decoration: BoxDecoration(
                                         // borderRadius: BorderRadius.circular(50),
                                         image: DecorationImage(
-                                            image: NetworkImage(
-                                                newFeedsFollow.feed[index].image),
+                                            image: NetworkImage(newFeedsFollow
+                                                .feed[index].image),
                                             fit: BoxFit.cover)),
                                   ),
                                   (newFeedsFollow.feed[index].price == 0)
-                                ? Container()
-                                : Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 8, right: 8),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            (data_DataAc == null)
-                                                ? CircleAvatar(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    radius: 16,
-                                                  )
-                                                : (data_DataAc.userId ==
-                                                        newFeedsFollow.feed[index]
-                                                            .userId)
-                                                    ? Container()
-                                                    : CircleAvatar(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        radius: 16,
-                                                      ),
-                                            Positioned(
-                                              top: 1,
-                                              right: 1,
-                                              child: Container(
-                                                height: 30,
-                                                width: 30,
-                                                child: (data_DataAc == null)
-                                                    ? Image.network(
-                                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
-                                                    : (data_DataAc.userId ==
-                                                            newFeedsFollow.feed[index]
-                                                                .userId)
-                                                        ? Container()
-                                                        : (checkBuy.indexOf(
-                                                                    newFeedsFollow.feed[index]
-                                                                        .rid
-                                                                        .toString()) >=
-                                                                0)
-                                                            ? Image.network(
-                                                                "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                            : Image.network(
-                                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                      ? Container()
+                                      : Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8, right: 8),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Stack(
+                                                children: [
+                                                  (data_DataAc == null)
+                                                      ? CircleAvatar(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          radius: 16,
+                                                        )
+                                                      : (data_DataAc.userId ==
+                                                              newFeedsFollow
+                                                                  .feed[index]
+                                                                  .userId)
+                                                          ? Container()
+                                                          : CircleAvatar(
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              radius: 16,
+                                                            ),
+                                                  Positioned(
+                                                    top: 1,
+                                                    right: 1,
+                                                    child: Container(
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: (data_DataAc ==
+                                                              null)
+                                                          ? Image.network(
+                                                              "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                          : (data_DataAc
+                                                                      .userId ==
+                                                                  newFeedsFollow
+                                                                      .feed[
+                                                                          index]
+                                                                      .userId)
+                                                              ? Container()
+                                                              : (checkBuy.indexOf(newFeedsFollow
+                                                                          .feed[
+                                                                              index]
+                                                                          .rid
+                                                                          .toString()) >=
+                                                                      0)
+                                                                  ? Image.network(
+                                                                      "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                                  : Image.network(
+                                                                      "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                            ],
+                                          ),
+                                        )
                                 ],
                               ),
                             ],
