@@ -12,7 +12,7 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportUser.dart';
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:easy_cook/style/utiltties.dart';
 
 import 'package:flutter/cupertino.dart';

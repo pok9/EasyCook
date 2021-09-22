@@ -1,6 +1,6 @@
 import 'package:easy_cook/models/notification/getNotification/getNotificationModel.dart';
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

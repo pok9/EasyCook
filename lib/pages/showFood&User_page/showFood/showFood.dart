@@ -20,7 +20,8 @@ import 'package:easy_cook/pages/showFood&User_page/editFood_page/editFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportFood.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFoodStory.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/onTapHowtoShowFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
@@ -284,8 +285,7 @@ class _ShowFoodState extends State<ShowFood> {
       int displayNumber = i;
       i++;
 
-      return 
-      Padding(
+      return Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,7 +333,6 @@ class _ShowFoodState extends State<ShowFood> {
         ),
       );
     }).toList(); // แปลงเป็นlist
-    
   }
 
   List<Widget> _howtoList1() {
@@ -355,80 +354,92 @@ class _ShowFoodState extends State<ShowFood> {
       int displayNumber = i;
       i++;
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 0),
-                  child: CircleAvatar(
-                    radius: 10,
-                    child: Text("$i"),
+      return InkWell(
+        onTap: () {
+          print(dataHowto);
+          print(dataHowto[displayNumber].description);
+          print(dataHowto[displayNumber].pathFile);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OnTapHowtoShowFood(dataHowto: dataHowto,)),
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: CircleAvatar(
+                      radius: 10,
+                      child: Text("$i"),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Text(
-                    dataHowto[displayNumber].description,
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'OpenSans',
-                        fontSize: 17,
-                        color: Colors.black,
-                        decoration: TextDecoration.none),
+                  SizedBox(
+                    width: 5,
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Text(
+                      dataHowto[displayNumber].description,
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'OpenSans',
+                          fontSize: 17,
+                          color: Colors.black,
+                          decoration: TextDecoration.none),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
-              ? Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Container(
-                    constraints: new BoxConstraints.expand(
-                      height: 350.0,
-                    ),
-                    alignment: Alignment.bottomRight,
-                    padding: new EdgeInsets.only(right: 10, bottom: 8.0),
-                    decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        image: NetworkImage(dataHowto[displayNumber].pathFile),
-                        fit: BoxFit.contain,
+            (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
+                ? Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Container(
+                      constraints: new BoxConstraints.expand(
+                        height: 350.0,
+                      ),
+                      alignment: Alignment.bottomRight,
+                      padding: new EdgeInsets.only(right: 10, bottom: 8.0),
+                      decoration: new BoxDecoration(
+                        image: new DecorationImage(
+                          image:
+                              NetworkImage(dataHowto[displayNumber].pathFile),
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              : Card(
-                  semanticContainer: true,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: AspectRatio(
-                      // aspectRatio: 3 / 2,
-                      // aspectRatio: 16 / 9,
-                      aspectRatio: 1,
-                      child: VideoItems(
-                        videoPlayerController: VideoPlayerController.network(
-                            dataHowto[displayNumber].pathFile),
-                        looping: false,
-                        autoplay: false,
-                        addfood_showfood: 0,
+                  )
+                : Card(
+                    semanticContainer: true,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: AspectRatio(
+                        // aspectRatio: 3 / 2,
+                        // aspectRatio: 16 / 9,
+                        aspectRatio: 1,
+                        child: VideoItems(
+                          videoPlayerController: VideoPlayerController.network(
+                              dataHowto[displayNumber].pathFile),
+                          looping: false,
+                          autoplay: false,
+                          addfood_showfood: 0,
+                        ),
                       ),
                     ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  elevation: 5,
-                  margin: EdgeInsets.all(10),
-                )
-        ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 5,
+                    margin: EdgeInsets.all(10),
+                  )
+          ],
+        ),
       );
     }).toList(); // แปลงเป็นlist
   }

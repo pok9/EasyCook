@@ -26,32 +26,38 @@ class _VideoItemsState extends State<VideoItems> {
 
   @override
   void initState() {
+    
     // TODO: implement initState
-    super.initState();
-    _chewieController = ChewieController(
-        videoPlayerController: widget.videoPlayerController,
-        // aspectRatio: 30 / 15,
-        // aspectRatio: 16 / 9,
-        // aspectRatio: 3 / 2,
-        aspectRatio: 1,
-        // aspectRatio: widget.videoPlayerController.value.aspectRatio,
-        autoInitialize: true,
-        autoPlay: widget.autoplay,
-        looping: widget.looping,
-        errorBuilder: (context, errorMessage) {
-          return Center(
-            child: Text(
-              errorMessage,
-              style: TextStyle(color: Colors.red),
-            ),
+     if (mounted) {
+    
+      print("ssssss123");
+      _chewieController = ChewieController(
+          videoPlayerController: widget.videoPlayerController,
+          // aspectRatio: 30 / 15,
+          // aspectRatio: 16 / 9,
+          // aspectRatio: 3 / 2,
+          // aspectRatio: 1,
+          aspectRatio: widget.videoPlayerController.value.aspectRatio,
+          autoInitialize: true,
+          autoPlay: widget.autoplay,
+          looping: widget.looping,
+          errorBuilder: (context, errorMessage) {
+            return Center(
+              child: Text(
+                errorMessage,
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          }
           );
-        });
+          super.initState();
+    }
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-
+    print("wwwww333");
     // widget.videoPlayerController?.pause();
 
     if (widget.addfood_showfood == 0) {
@@ -59,12 +65,12 @@ class _VideoItemsState extends State<VideoItems> {
       // widget.videoPlayerController?.dispose();//---
       widget.videoPlayerController.pause();
       widget.videoPlayerController.dispose(); //---
-    } else if((widget.addfood_showfood == 1)){
+    } else if ((widget.addfood_showfood == 1)) {
       widget.videoPlayerController?.dispose();
-    }else if(widget.addfood_showfood == 2){//editFood
+    } else if (widget.addfood_showfood == 2) {
+      //editFood
       try {
         widget.videoPlayerController.pause();
-        
       } catch (e) {
         print(e);
       }
@@ -80,7 +86,8 @@ class _VideoItemsState extends State<VideoItems> {
 
   @override
   Widget build(BuildContext context) {
-    return Chewie(
+    return 
+    Chewie(
       controller: _chewieController,
     );
   }

@@ -3,7 +3,7 @@ import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/search_page/category/category.dart';
 import 'package:easy_cook/pages/search_page/search2.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFoodStory.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/showFoodStory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:shared_preferences/shared_preferences.dart';

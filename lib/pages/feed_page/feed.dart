@@ -25,8 +25,8 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFood.dart';
-import 'package:easy_cook/pages/showFood&User_page/showFoodStory.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
