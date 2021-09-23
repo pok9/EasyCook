@@ -167,8 +167,8 @@ class _DrawersState extends State<Drawers> {
                         image: DecorationImage(
                           // image: new NetworkImage(
                           //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                          image: AssetImage(
-                              '${this.widget.data_DataAc.wallpaper}'),
+                        
+                              image: (this.widget.data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${this.widget.data_DataAc.wallpaper}'),
                           fit: BoxFit.cover,
                         ),
                       ),

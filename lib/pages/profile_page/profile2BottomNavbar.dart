@@ -221,7 +221,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                         // image: new NetworkImage(
                         //     "https://c.tenor.com/0DbmgOWBjjkAAAAC/rain-heavy.gif"),
-                        image: AssetImage('${data_DataAc.wallpaper}'),
+                        image: (data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${data_DataAc.wallpaper}'),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -457,7 +457,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                                image: AssetImage('${data_DataAc.wallpaper}'),
+                                image: (data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${data_DataAc.wallpaper}'),
                                 fit: BoxFit.cover),
                           ),
 

@@ -353,8 +353,7 @@ class _WalletPageState extends State<WalletPage> {
                                                               BorderRadius
                                                                   .circular(10),
                                                           image: DecorationImage(
-                                                              image: AssetImage(
-                                                                  '${data_DataAc.wallpaper}'),
+                                                              image: (data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${data_DataAc.wallpaper}'),
                                                               fit:
                                                                   BoxFit.cover),
                                                         ),
