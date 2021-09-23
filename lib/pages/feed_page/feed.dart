@@ -702,7 +702,7 @@ class _FeedPageState extends State<FeedPage> {
                             maxHeight: deviceSize.height * 0.5,
                             minHeight: deviceSize.height * 0.39,
                             maxWidth: deviceSize.width,
-                            minWidth: deviceSize.width * 0.4,
+                            minWidth: deviceSize.width * 0.41,
 
                             // maxHeight: deviceSize.height * 0.7,
                             // minHeight: deviceSize.height * 0.2,

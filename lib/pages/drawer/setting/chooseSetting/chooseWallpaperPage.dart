@@ -83,6 +83,8 @@ class _ChooseWallpaperPageState extends State<ChooseWallpaperPage> {
     'assets/wallpapers/l3.jpg',
     'assets/wallpapers/l4.jpg',
     'assets/wallpapers/l5.jpg',
+    'assets/wallpapers/8bitTrain.gif',
+    'assets/wallpapers/heart.gif',
   ];
 
   int id = 0;

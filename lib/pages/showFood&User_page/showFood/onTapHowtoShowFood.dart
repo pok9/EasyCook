@@ -22,6 +22,7 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
   void initState() {
     print("onTap ==> ${this.widget.index}");
     controller = PageController(initialPage:this.widget.index );
+    currentpage = this.widget.index;
     // TODO: implement initState
     
     super.initState();

@@ -124,9 +124,34 @@ class _ScrollProfilePage2BottomNavbarState extends State
         (data_DataAc.userStatus == 1)
             ? IconButton(
                 onPressed: () {
-                  Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => WalletPage()))
-                      .then((value) => {
+                  // Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) => WalletPage()))
+                  //     .then((value) => {
+                  //           if (token != "" && token != null) {getMyAccounts()}
+                  //         });
+
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return WalletPage();
+                          },
+                          transitionsBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(0.0, 1.0),
+                                end: Offset(0.0, 0.0),
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                          // transitionDuration: Duration(seconds: 3)
+                          )).then((value) => {
                             if (token != "" && token != null) {getMyAccounts()}
                           });
                 },
@@ -387,14 +412,38 @@ class _ScrollProfilePage2BottomNavbarState extends State
                 ? Container()
                 : InkWell(
                     onTap: () {
-                      Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WalletPage()))
-                          .then((value) => {
-                                if (token != "" && token != null)
-                                  {getMyAccounts()}
-                              });
+                      // Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => WalletPage()))
+                      //     .then((value) => {
+                      //           if (token != "" && token != null)
+                      //             {getMyAccounts()}
+                      //         });
+                       Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return WalletPage();
+                          },
+                          transitionsBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(0.0, 1.0),
+                                end: Offset(0.0, 0.0),
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                          // transitionDuration: Duration(seconds: 3)
+                          )).then((value) => {
+                            if (token != "" && token != null) {getMyAccounts()}
+                          });
                     },
                     child: Container(
                       color: Colors.white,
@@ -675,102 +724,108 @@ class _ScrollProfilePage2BottomNavbarState extends State
           return Future.value(true);
         },
         child: OfflineBuilder(
-        connectivityBuilder: (
-          BuildContext context,
-          ConnectivityResult connectivity,
-          Widget child,
-        ) {
-          final bool connected = connectivity != ConnectivityResult.none;
-          return (connected)
-              ? body()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
+          connectivityBuilder: (
+            BuildContext context,
+            ConnectivityResult connectivity,
+            Widget child,
+          ) {
+            final bool connected = connectivity != ConnectivityResult.none;
+            return (connected)
+                ? body()
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.asset(
+                                      'assets/images/hambergerGray.png'))
+                            ],
+                          ),
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                                height: 100,
-                                width: 100,
-                                child: Image.asset(
-                                    'assets/images/hambergerGray.png'))
+                            Text(
+                              "คุณออฟไลน์อยู่",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            )
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "คุณออฟไลน์อยู่",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "ตรวจสอบการเชื่อมต่อของคุณ",
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                );
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              'There are no bottons to push :)',
-            ),
-            new Text(
-              'Just turn off your internet.',
-            ),
-          ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "ตรวจสอบการเชื่อมต่อของคุณ",
+                              style: TextStyle(fontSize: 15),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text(
+                'There are no bottons to push :)',
+              ),
+              new Text(
+                'Just turn off your internet.',
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
 
   FutureBuilder<String> body() {
     return FutureBuilder(
-        future: findUser(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return (token == "" || token == null)
-                ? LoginPage(
-                    close: 1,
-                  )
-                : FutureBuilder(
-                    future: getMyAccounts(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData) {
-                        return FutureBuilder(
-                          future: getMyPost(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasData) {
-                              return buildNestedScrollView();
-                            }
-                            return Center(child: CupertinoActivityIndicator(),);
-                          },
-                        );
-                      }
-                      return Center(child: CupertinoActivityIndicator(),);
-                    },
-                  );
-          }
-          return Center(child: CupertinoActivityIndicator(),);
-        },
-      );
+      future: findUser(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return (token == "" || token == null)
+              ? LoginPage(
+                  close: 1,
+                )
+              : FutureBuilder(
+                  future: getMyAccounts(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return FutureBuilder(
+                        future: getMyPost(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return buildNestedScrollView();
+                          }
+                          return Center(
+                            child: CupertinoActivityIndicator(),
+                          );
+                        },
+                      );
+                    }
+                    return Center(
+                      child: CupertinoActivityIndicator(),
+                    );
+                  },
+                );
+        }
+        return Center(
+          child: CupertinoActivityIndicator(),
+        );
+      },
+    );
   }
 
   Widget buildNestedScrollView() {

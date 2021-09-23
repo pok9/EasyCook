@@ -18,6 +18,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -172,214 +173,249 @@ class _SlidePageState extends State<SlidePage> {
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currenetScreen = FeedPage();
 
+  DateTime timeBackPressed = DateTime.now();
   @override
-  Widget build(BuildContext context) {
-    // resizeToAvoidBottomPadding:
-    // false;
-    // getTokenFireBase();
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async {
+        
+        final difference = DateTime.now().difference(timeBackPressed);
+        final isExitWarning = difference >= Duration(seconds: 2);
+
+        timeBackPressed = DateTime.now();
+
+        if(isExitWarning){
+          final message = "กดกลับอีกครั้งเพื่อออก";
+          Fluttertoast.showToast(msg: message,fontSize: 18);
+
+          return false;
+        }else{
+          Fluttertoast.cancel();
+          return true;
+        }
+      },
+      child: (dataUser == null || token == "")
+          ? bottomNvigationUser(context)
+          : (dataUser.userStatus == 1)
+              ? bottomNvigationUser(context)
+              : bottomNvigationAdmin(),
+      );
+
+  // {
+  //   // resizeToAvoidBottomPadding:
+  //   // false;
+  //   // getTokenFireBase();
+  //   if (token != "" && token != null) {
+  //     getMyAccounts2();
+  //   }
+
+  //
+  //   return (dataUser == null || token == "")
+  //       ? bottomNvigationUser(keyboardIsOpened, context)
+  //       : (dataUser.userStatus == 1)
+  //           ? bottomNvigationUser(keyboardIsOpened, context)
+  //           : bottomNvigationAdmin();
+  // }
+
+  Scaffold bottomNvigationAdmin() {
     if (token != "" && token != null) {
       getMyAccounts2();
     }
-
-    bool keyboardIsOpened =
-        MediaQuery.of(context).viewInsets.bottom != 0.0; //ทำให้ floating หาย
-    return (dataUser == null || token == "")
-        ? bottomNvigationUser(keyboardIsOpened, context)
-        : (dataUser.userStatus == 1)
-            ? bottomNvigationUser(keyboardIsOpened, context)
-            : bottomNvigationAdmin();
-  }
-
-  Scaffold bottomNvigationAdmin() => Scaffold(
-        extendBody: true,
-        body: PageStorage(bucket: bucket, child: currenetScreen),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.blue,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 10,
-          child: Container(
-            height: 50,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: Row(
-                // mainAxisAlignment:  MainAxisAlignment.spaceBetween,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currenetScreen = FeedPage();
-                        currentTab = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(currentTab == 0 ? Icons.home : Icons.home_outlined,
-                            color: currentTab == 0
-                                ? Colors.white
-                                : Colors.grey.shade300,
-                            size: 25),
-                        Text('หน้าแรก',
-                            style: TextStyle(
-                                color: currentTab == 0
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                                fontSize: 11))
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currenetScreen = SearchPage1();
-                        currentTab = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          currentTab == 1 ? Icons.search_sharp : Icons.search,
-                          color: currentTab == 1
+    return Scaffold(
+      extendBody: true,
+      body: PageStorage(bucket: bucket, child: currenetScreen),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          height: 50,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: Row(
+              // mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      currenetScreen = FeedPage();
+                      currentTab = 0;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(currentTab == 0 ? Icons.home : Icons.home_outlined,
+                          color: currentTab == 0
                               ? Colors.white
                               : Colors.grey.shade300,
-                          size: currentTab == 1 ? 27 : 25,
-                        ),
-                        Text(' ค้นหา ',
-                            style: TextStyle(
-                                color: currentTab == 1
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                                fontSize: 11))
-                      ],
-                    ),
+                          size: 25),
+                      Text('หน้าแรก',
+                          style: TextStyle(
+                              color: currentTab == 0
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              fontSize: 11))
+                    ],
                   ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        // currenetScreen = FeedFollowPage();
-                        currenetScreen = Feed2Page();
-                        currentTab = 2;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                            currentTab == 2
-                                ? Icons.filter
-                                : Icons.filter_outlined,
-                            color: currentTab == 2
-                                ? Colors.white
-                                : Colors.grey.shade300,
-                            size: 25),
-                        Text('สูตรล่าสุด',
-                            style: TextStyle(
-                                color: currentTab == 2
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                                fontSize: 11))
-                      ],
-                    ),
+                ),
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      currenetScreen = SearchPage1();
+                      currentTab = 1;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        currentTab == 1 ? Icons.search_sharp : Icons.search,
+                        color: currentTab == 1
+                            ? Colors.white
+                            : Colors.grey.shade300,
+                        size: currentTab == 1 ? 27 : 25,
+                      ),
+                      Text(' ค้นหา ',
+                          style: TextStyle(
+                              color: currentTab == 1
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              fontSize: 11))
+                    ],
                   ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        // currenetScreen = FeedFollowPage();
-                        currenetScreen = ManageMembers();
-                        currentTab = 3;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                            currentTab == 3
-                                ? Icons.cancel
-                                : Icons.cancel_outlined,
-                            color: currentTab == 3
-                                ? Colors.white
-                                : Colors.grey.shade300,
-                            size: 25),
-                        Text('จัดการสมาชิก',
-                            style: TextStyle(
-                                color: currentTab == 3
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                                fontSize: 11))
-                      ],
-                    ),
+                ),
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      // currenetScreen = FeedFollowPage();
+                      currenetScreen = Feed2Page();
+                      currentTab = 2;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                          currentTab == 2
+                              ? Icons.filter
+                              : Icons.filter_outlined,
+                          color: currentTab == 2
+                              ? Colors.white
+                              : Colors.grey.shade300,
+                          size: 25),
+                      Text('สูตรล่าสุด',
+                          style: TextStyle(
+                              color: currentTab == 2
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              fontSize: 11))
+                    ],
                   ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currenetScreen = ProfilePage2BottomNavbar();
-                        currentTab = 4;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        (dataUser == null)
-                            ? Icon(
-                                currentTab == 4
-                                    ? Icons.account_box
-                                    : Icons.account_box_outlined,
-                                color: currentTab == 4
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                                size: 25)
-                            : currentTab == 4
-                                ? Stack(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle),
-                                        height: 26,
-                                        width: 26,
+                ),
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      // currenetScreen = FeedFollowPage();
+                      currenetScreen = ManageMembers();
+                      currentTab = 3;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                          currentTab == 3
+                              ? Icons.cancel
+                              : Icons.cancel_outlined,
+                          color: currentTab == 3
+                              ? Colors.white
+                              : Colors.grey.shade300,
+                          size: 25),
+                      Text('จัดการสมาชิก',
+                          style: TextStyle(
+                              color: currentTab == 3
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              fontSize: 11))
+                    ],
+                  ),
+                ),
+                MaterialButton(
+                  minWidth: 40,
+                  onPressed: () {
+                    setState(() {
+                      currenetScreen = ProfilePage2BottomNavbar();
+                      currentTab = 4;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (dataUser == null)
+                          ? Icon(
+                              currentTab == 4
+                                  ? Icons.account_box
+                                  : Icons.account_box_outlined,
+                              color: currentTab == 4
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              size: 25)
+                          : currentTab == 4
+                              ? Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle),
+                                      height: 26,
+                                      width: 26,
+                                    ),
+                                    Positioned(
+                                      top: 1,
+                                      right: 1,
+                                      child: CircleAvatar(
+                                        radius: 12,
+                                        backgroundImage:
+                                            NetworkImage(dataUser.profileImage),
                                       ),
-                                      Positioned(
-                                        top: 1,
-                                        right: 1,
-                                        child: CircleAvatar(
-                                          radius: 12,
-                                          backgroundImage: NetworkImage(
-                                              dataUser.profileImage),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : CircleAvatar(
-                                    radius: 12,
-                                    backgroundImage:
-                                        NetworkImage(dataUser.profileImage),
-                                  ),
-                        Text('บัญชี',
-                            style: TextStyle(
-                                color: currentTab == 4
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                                fontSize: 11))
-                      ],
-                    ),
+                                    ),
+                                  ],
+                                )
+                              : CircleAvatar(
+                                  radius: 12,
+                                  backgroundImage:
+                                      NetworkImage(dataUser.profileImage),
+                                ),
+                      Text('บัญชี',
+                          style: TextStyle(
+                              color: currentTab == 4
+                                  ? Colors.white
+                                  : Colors.grey.shade300,
+                              fontSize: 11))
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 
-  Scaffold bottomNvigationUser(bool keyboardIsOpened, BuildContext context) {
+  Scaffold bottomNvigationUser(BuildContext context) {
+    if (token != "" && token != null) {
+      getMyAccounts2();
+    }
+    bool keyboardIsOpened =
+        MediaQuery.of(context).viewInsets.bottom != 0.0; //ทำให้ floating หาย
     return Scaffold(
       extendBody: true,
       body: PageStorage(bucket: bucket, child: currenetScreen),

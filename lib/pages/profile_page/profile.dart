@@ -115,9 +115,33 @@ class _ScrollProfilePageState extends State
         (data_DataAc.userStatus == 1)
             ? IconButton(
                 onPressed: () {
-                  Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => WalletPage()))
-                      .then((value) => {
+                  // Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) => WalletPage()))
+                  //     .then((value) => {
+                  //           if (token != "" && token != null) {getMyAccounts()}
+                  //         });
+                   Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return WalletPage();
+                          },
+                          transitionsBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(0.0, 1.0),
+                                end: Offset(0.0, 0.0),
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                          // transitionDuration: Duration(seconds: 3)
+                          )).then((value) => {
                             if (token != "" && token != null) {getMyAccounts()}
                           });
                 },
@@ -381,14 +405,38 @@ class _ScrollProfilePageState extends State
                 ? Container()
                 : InkWell(
                     onTap: () {
-                      Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WalletPage()))
-                          .then((value) => {
-                                if (token != "" && token != null)
-                                  {getMyAccounts()}
-                              });
+                      // Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => WalletPage()))
+                      //     .then((value) => {
+                      //           if (token != "" && token != null)
+                      //             {getMyAccounts()}
+                      //         });
+                       Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return WalletPage();
+                          },
+                          transitionsBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(0.0, 1.0),
+                                end: Offset(0.0, 0.0),
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                          // transitionDuration: Duration(seconds: 3)
+                          )).then((value) => {
+                            if (token != "" && token != null) {getMyAccounts()}
+                          });
                     },
                     child: Container(
                       color: Colors.white,
