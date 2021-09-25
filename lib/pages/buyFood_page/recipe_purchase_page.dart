@@ -592,7 +592,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              if (token != "") {
+                              if (token != "" && token != null) {
                                 showDialog(
                                   barrierColor: Colors.black26,
                                   context: context,

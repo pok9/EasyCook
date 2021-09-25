@@ -167,8 +167,11 @@ class _DrawersState extends State<Drawers> {
                         image: DecorationImage(
                           // image: new NetworkImage(
                           //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
-                        
-                              image: (this.widget.data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${this.widget.data_DataAc.wallpaper}'),
+
+                          image: (this.widget.data_DataAc.wallpaper == null)
+                              ? AssetImage('assets/wallpapers/default.jpg')
+                              : AssetImage(
+                                  '${this.widget.data_DataAc.wallpaper}'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -387,8 +390,6 @@ class _DrawersState extends State<Drawers> {
                       ),
                     ),
                     onTap: () {
-                     
-                                                                        
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -424,8 +425,10 @@ class _DrawersState extends State<Drawers> {
                       ///////////////////////// delete swith user //////////////////////////////
                       List<String> listEmail =
                           preferences.getStringList("listEmail");
-                      int index =
-                          listEmail.indexOf(this.widget.data_DataAc.email);
+                      if (listEmail != null) {}
+                      int index = (listEmail == null)
+                          ? -1
+                          : listEmail.indexOf(this.widget.data_DataAc.email);
                       print("index => $index");
                       if (index > -1) {
                         listEmail.removeAt(index);
@@ -672,17 +675,21 @@ class _DrawersState extends State<Drawers> {
                               _ctrlEmail.text = "";
                             } else {
                               showDialog(
-                                context: context,
-                                builder: (contex) {
-                                  return AlertDialog(
-                                      content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.warning_amber,color: Colors.yellow[800],),
-                                      Text("โปรดทำรายการใหม่ในภายหลัง"),
-                                    ],
-                                  ));
-                                });
+                                  context: context,
+                                  builder: (contex) {
+                                    return AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.warning_amber,
+                                          color: Colors.yellow[800],
+                                        ),
+                                        Text("โปรดทำรายการใหม่ในภายหลัง"),
+                                      ],
+                                    ));
+                                  });
                             }
                           }
                         },

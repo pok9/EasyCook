@@ -115,8 +115,9 @@ class _ShowFoodState extends State<ShowFood> {
     // token = preferences.getString("tokens");
     // });
 
-    print(preferences.getString("tokens"));
-    return preferences.getString("tokens");
+
+    // print(preferences.getString("tokens"));
+    return (preferences.getString("tokens") == null) ? "" : preferences.getString("tokens");
   }
 
   //ให้คะแนนสูตรอาหาร

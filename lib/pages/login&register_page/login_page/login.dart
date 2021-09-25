@@ -190,167 +190,168 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min, //autoSize
-        children: [
-          (this.widget.close == null) ? _getCloseButton(context) : Container(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'เข้าสู่ระบบ',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+    return SingleChildScrollView(
+      padding: (this.widget.close == 1) ? EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250) : null, 
+// Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 130));
+      // (this.widget.close == 1) ? : Container();
+      //  padding: EdgeInsets.only(top: 
+      // //  MediaQuery.of(context).size.height.hasFo ?
+      //                   MediaQuery.of(context).size.height / 2 - 250 // adjust values according to your need
+      //                   // : MediaQuery.of(context).size.height / 2 - 130
+      //                   ),
+      child: AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min, //autoSize
+          children: [
+            (this.widget.close == null) ? _getCloseButton(context) : Container(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'เข้าสู่ระบบ',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+              ),
             ),
-          ),
-          Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'กรุณากรอก อีเมล';
-                      }
-
-                      // if (login != null) {
-                      //   if (login.success == 0) {
-                      //     return login.message;
-                      //   }
-                      // }
-
-                      return null;
-                    },
-                    controller: _ctrlEmail,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.account_circle),
-                      labelText: 'อีเมล',
+            Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'กรุณากรอก อีเมล';
+                        }
+    
+                        // if (login != null) {
+                        //   if (login.success == 0) {
+                        //     return login.message;
+                        //   }
+                        // }
+    
+                        return null;
+                      },
+                      controller: _ctrlEmail,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.account_circle),
+                        labelText: 'อีเมล',
+                      ),
                     ),
-                  ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'กรุณากรอก รหัสผ่าน';
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'กรุณากรอก รหัสผ่าน';
+                        }
+                        // if (login != null) {
+                        //   if (login.success == 0) {
+                        //     return login.message;
+                        //   }
+                        // }
+    
+                        return null;
+                      },
+                      controller: _ctrlPassword,
+                      obscureText: hidePassword,
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.lock),
+                          labelText: 'รหัสผ่าน',
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            child: Icon(
+                              hidePassword == true
+                                  ? FontAwesomeIcons.solidEye
+                                  : FontAwesomeIcons.solidEyeSlash,
+                              size: 18,
+                            ),
+                          )),
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: 30,
+            ),
+            Container(width: 220, height: 45, child: buildCustomButton()),
+            SizedBox(
+              height: 15,
+            ),
+            (this.widget.closeFacebook == 0)
+                ? Container()
+              
+    
+                : Container(
+                    width: 220,
+                    height: 45,
+                    child: SignInButton(Buttons.Facebook,text: "เข้าสู่ระบบ ด้วย Facebook", onPressed: () async {
+                      final FacebookLoginResult result =
+                          await facebookSignIn.logIn(['email']);
+    
+                      switch (result.status) {
+                        case FacebookLoginStatus.loggedIn:
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    content: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("กรุณารอสักครู่...   "),
+                                    CircularProgressIndicator()
+                                  ],
+                                ));
+                              });
+                          final FacebookAccessToken accessToken =
+                              result.accessToken;
+    
+                          final graphResponse = await http.get(
+                              // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
+                              Uri.parse(
+                                  'https://graph.facebook.com/v11.0/me?fields=name,first_name,last_name,email,picture.width(800).height(800)&access_token=${accessToken.token}'));
+                          final profile = jsonDecode(graphResponse.body);
+                          print(profile);
+                          setState(() {
+                            userID = profile['id'];
+                            email = profile['email'];
+                            name_surname = profile['first_name'];
+                            alias_name = profile['last_name'];
+                            profile_image = profile['picture']['data']['url'];
+    
+                            LoginFacebookMD(userID, email, alias_name,
+                                name_surname, profile_image);
+    
+                            // print("loginFacebook.success => ${loginFacebook.success}");
+    
+                            print("userID => $userID");
+                            print("email => $email");
+                            print("name_surname => $name_surname");
+                            print("alias_name => $alias_name");
+                            print("profile_image => $profile_image");
+                          });
+    
+                          print('''
+           Logged in!
+           
+           Token: ${accessToken.token}
+           User id: ${accessToken.userId}
+           Expires: ${accessToken.expires}
+           Permissions: ${accessToken.permissions}
+           Declined permissions: ${accessToken.declinedPermissions}
+           ''');
+                          break;
+                        case FacebookLoginStatus.cancelledByUser:
+                          print('Login cancelled by the user.');
+                          break;
+                        case FacebookLoginStatus.error:
+                          print('Something went wrong with the login process.\n'
+                              'Here\'s the error Facebook gave us: ${result.errorMessage}');
+                          break;
                       }
-                      // if (login != null) {
-                      //   if (login.success == 0) {
-                      //     return login.message;
-                      //   }
-                      // }
-
-                      return null;
-                    },
-                    controller: _ctrlPassword,
-                    obscureText: hidePassword,
-                    decoration: InputDecoration(
-                        icon: Icon(Icons.lock),
-                        labelText: 'รหัสผ่าน',
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              hidePassword = !hidePassword;
-                            });
-                          },
-                          child: Icon(
-                            hidePassword == true
-                                ? FontAwesomeIcons.solidEye
-                                : FontAwesomeIcons.solidEyeSlash,
-                            size: 18,
-                          ),
-                        )),
-                  ),
-                ],
-              )),
-          SizedBox(
-            height: 30,
-          ),
-          Container(width: 220, height: 45, child: buildCustomButton()),
-          SizedBox(
-            height: 15,
-          ),
-          (this.widget.closeFacebook == 0)
-              ? Container()
-              // : DialogButton(
-              //     height: 45,
-              //     onPressed: () async {
-
-              //     },
-              //     child: Text(
-              //       "Facebook",
-              //       style: TextStyle(color: Colors.white, fontSize: 20),
-              //     ),
-              //   ),
-
-              : Container(
-                  width: 220,
-                  height: 45,
-                  child: SignInButton(Buttons.Facebook,text: "เข้าสู่ระบบ ด้วย Facebook", onPressed: () async {
-                    final FacebookLoginResult result =
-                        await facebookSignIn.logIn(['email']);
-
-                    switch (result.status) {
-                      case FacebookLoginStatus.loggedIn:
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                  content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("กรุณารอสักครู่...   "),
-                                  CircularProgressIndicator()
-                                ],
-                              ));
-                            });
-                        final FacebookAccessToken accessToken =
-                            result.accessToken;
-
-                        final graphResponse = await http.get(
-                            // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
-                            Uri.parse(
-                                'https://graph.facebook.com/v11.0/me?fields=name,first_name,last_name,email,picture.width(800).height(800)&access_token=${accessToken.token}'));
-                        final profile = jsonDecode(graphResponse.body);
-                        print(profile);
-                        setState(() {
-                          userID = profile['id'];
-                          email = profile['email'];
-                          name_surname = profile['first_name'];
-                          alias_name = profile['last_name'];
-                          profile_image = profile['picture']['data']['url'];
-
-                          LoginFacebookMD(userID, email, alias_name,
-                              name_surname, profile_image);
-
-                          // print("loginFacebook.success => ${loginFacebook.success}");
-
-                          print("userID => $userID");
-                          print("email => $email");
-                          print("name_surname => $name_surname");
-                          print("alias_name => $alias_name");
-                          print("profile_image => $profile_image");
-                        });
-
-                        print('''
-         Logged in!
-         
-         Token: ${accessToken.token}
-         User id: ${accessToken.userId}
-         Expires: ${accessToken.expires}
-         Permissions: ${accessToken.permissions}
-         Declined permissions: ${accessToken.declinedPermissions}
-         ''');
-                        break;
-                      case FacebookLoginStatus.cancelledByUser:
-                        print('Login cancelled by the user.');
-                        break;
-                      case FacebookLoginStatus.error:
-                        print('Something went wrong with the login process.\n'
-                            'Here\'s the error Facebook gave us: ${result.errorMessage}');
-                        break;
-                    }
-                  }),
-                )
-        ],
+                    }),
+                  )
+          ],
+        ),
       ),
     );
   }

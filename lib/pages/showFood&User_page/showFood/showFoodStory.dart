@@ -158,11 +158,14 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
                     padding: const EdgeInsets.fromLTRB(20, 30, 0, 0),
                     child: InkWell(
                       onTap: () {
+                        storyController.pause();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => ShowFood(this.widget.rid)),
-                        );
+                        )..then((value){
+                          storyController.play();
+                        });
                       },
                       child: Row(
                         children: [
