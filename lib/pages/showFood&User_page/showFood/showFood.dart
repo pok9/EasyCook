@@ -115,9 +115,10 @@ class _ShowFoodState extends State<ShowFood> {
     // token = preferences.getString("tokens");
     // });
 
-
     // print(preferences.getString("tokens"));
-    return (preferences.getString("tokens") == null) ? "" : preferences.getString("tokens");
+    return (preferences.getString("tokens") == null)
+        ? ""
+        : preferences.getString("tokens");
   }
 
   //ให้คะแนนสูตรอาหาร
@@ -362,7 +363,11 @@ class _ShowFoodState extends State<ShowFood> {
           print(dataHowto[displayNumber].pathFile);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => OnTapHowtoShowFood(index: displayNumber,dataHowto: dataHowto,)),
+            MaterialPageRoute(
+                builder: (context) => OnTapHowtoShowFood(
+                      index: displayNumber,
+                      dataHowto: dataHowto,
+                    )),
           );
         },
         child: Column(
@@ -522,24 +527,6 @@ class _ShowFoodState extends State<ShowFood> {
           : StoryItem.pageVideo("${dataHowto[displayNumber].pathFile}",
               controller: storyController,
               caption: "${dataHowto[displayNumber].description}");
-      // return ListTile(
-      //   title: Row(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: [
-      //       Padding(
-      //         padding: const EdgeInsets.only(top: 1),
-      //         child: CircleAvatar(
-      //           radius: 10,
-      //           child: Text("$i"),
-      //         ),
-      //       ),
-      //       SizedBox(
-      //         width: 5,
-      //       ),
-      //       Expanded(child: Text(dataHowto[displayNumber].description)),
-      //     ],
-      //   ),
-      // );
     }).toList(); // แปลงเป็นlist
   }
 
@@ -711,40 +698,8 @@ class _ShowFoodState extends State<ShowFood> {
                                   datas = snapshot.data;
                                   dataMyAccont = datas.data[0];
 
-                                  // return FutureBuilder(
-                                  //   future:getCategoryFood(),
-                                  //   builder: (BuildContext context,
-                                  //       AsyncSnapshot snapshot) {
-                                  //     if (snapshot.hasData == true) {
-                                  //       categoryFood = snapshot.data;
-                                  //       return FutureBuilder(
-                                  //   future: getMybuy(),
-                                  //   builder: (BuildContext context,
-                                  //       AsyncSnapshot snapshot) {
-                                  //     if (snapshot.hasData == true) {
-                                  //       checkBuy = snapshot.data;
                                   return buildBody(ingredient, howto1, howto2,
                                       howto3, sizeScreen);
-                                  //     }
-
-                                  //     return Scaffold(
-                                  //       body: Center(
-                                  //         child:
-                                  //             CircularProgressIndicator(),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // );
-                                  //     }
-
-                                  //     return Scaffold(
-                                  //       body: Center(
-                                  //         child:
-                                  //             CircularProgressIndicator(),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // );
                                 }
 
                                 if (snapshot.hasData == false) {
@@ -1039,6 +994,7 @@ class _ShowFoodState extends State<ShowFood> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(dataFood.aliasName,
                                   style: TextStyle(
@@ -1048,6 +1004,34 @@ class _ShowFoodState extends State<ShowFood> {
                                     color: Colors.black,
                                     decoration: TextDecoration.none,
                                   )),
+                              // MaterialButton(
+                              //   splashColor: Colors.grey,
+                              //   color: Colors.blue[400],
+                              //   onPressed: () {},
+                              //   child: Text(
+                              //     'ติดตาม',
+                              //     style: TextStyle(color: Colors.white),
+                              //   ),
+                              //   shape: StadiumBorder(),
+                              // )
+
+                              // TextButton(
+                              //   style: TextButton.styleFrom(
+                              //     shape: RoundedRectangleBorder(
+                              //       borderRadius: BorderRadius.circular(18.0),
+                              //       side: BorderSide(color: Colors.blue),
+                              //     ),
+                              //     padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+
+                              //   ),
+                              //   onPressed: () {},
+                              //   child: Text(
+                              //     "+ ติดตาม".toUpperCase(),
+                              //     style: TextStyle(
+                              //       fontSize: 14.0,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

@@ -105,102 +105,110 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                   itemCount: dataMybuy.length,
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ShowFood( dataMybuy[index].recipeId)),
-            );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ShowFood(dataMybuy[index].recipeId)),
+                        );
                       },
-                      child: Container(
-                        height: 165,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              children: [
-                                Card(
-                                  semanticContainer: true,
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  child: Container(
-                                    height: 154,
-                                    child: Image.network(
-                                      dataMybuy[index].image,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  elevation: 5,
-                                ),
-                              ],
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            dataMybuy[index].recipeName,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 20.0,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 5),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Icon(
-                                            Icons.food_bank,
-                                            color: Colors.grey,
-                                            size: 15,
-                                          ),
-                                          SizedBox(
-                                            width: 1,
-                                          ),
-                                          Text(dataMybuy[index].foodCategory),
-                                        ],
+                      child: Card(
+                        child: Container(
+                          color: Colors.grey[100],
+                          height: 165,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
+                                  Card(
+                                    semanticContainer: true,
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    child: Container(
+                                      height: 154,
+                                      child: Image.network(
+                                        dataMybuy[index].image,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                    Expanded(child: Container()),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height: 25.0,
-                                          width: 25.0,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: NetworkImage(
-                                                      dataMybuy[index].profileImage))),
-                                        ),
-                                        SizedBox(width: 5,),
-                                        Text(
-                                          dataMybuy[index].aliasName,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    elevation: 5,
+                                  ),
+                                ],
                               ),
-                            )
-                          ],
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              dataMybuy[index].recipeName,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 20.0,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Icon(
+                                              Icons.food_bank,
+                                              color: Colors.grey,
+                                              size: 15,
+                                            ),
+                                            SizedBox(
+                                              width: 1,
+                                            ),
+                                            Text(dataMybuy[index].foodCategory),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(child: Container()),
+                                      Divider(color: Colors.black,),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            height: 25.0,
+                                            width: 25.0,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: NetworkImage(
+                                                        dataMybuy[index]
+                                                            .profileImage))),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            dataMybuy[index].aliasName,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );

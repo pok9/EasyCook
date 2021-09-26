@@ -34,13 +34,13 @@ class _CommentFoodState extends State<CommentFood> {
   @override
   void initState() {
     super.initState();
-    focusNode.addListener((){
-      if(focusNode.hasFocus){
-        setState(() {
-          showEmoji = false;
-        });
-      }
-    });
+    // focusNode.addListener((){
+    //   if(focusNode.hasFocus){
+    //     setState(() {
+    //       showEmoji = false;
+    //     });
+    //   }
+    // });
     findUser();
     getCommentPosts();
   }
@@ -272,8 +272,8 @@ class _CommentFoodState extends State<CommentFood> {
     return text;
   }
 
-  bool showEmoji = false;
-  FocusNode focusNode = FocusNode();
+  // bool showEmoji = false;
+  // FocusNode focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -614,7 +614,7 @@ class _CommentFoodState extends State<CommentFood> {
                   ),
                   Expanded(
                       child: TextFormField(
-                        focusNode: focusNode,
+                        // focusNode: focusNode,
                     onChanged: (value) {
                       if (!value.isEmpty) {
                         if (_formKey.currentState.validate()) {}
@@ -652,16 +652,17 @@ class _CommentFoodState extends State<CommentFood> {
                         hintText: "แสดงความคิดเห็น...",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(40)),
-                        prefixIcon: IconButton(
-                          icon: Icon(Icons.emoji_emotions),
-                          onPressed: () {
-                            focusNode.unfocus();
-                            focusNode.canRequestFocus = false;
-                            setState(() {
-                              showEmoji = !showEmoji;
-                            });
-                          },
-                        )),
+                        // prefixIcon: IconButton(
+                        //   icon: Icon(Icons.emoji_emotions),
+                        //   onPressed: () {
+                        //     focusNode.unfocus();
+                        //     focusNode.canRequestFocus = false;
+                        //     setState(() {
+                        //       showEmoji = !showEmoji;
+                        //     });
+                        //   },
+                        // )
+                        ),
                   )),
                   TextButton(
                       onPressed: () async {
@@ -714,25 +715,25 @@ class _CommentFoodState extends State<CommentFood> {
               ),
               
             ),
-            showEmoji ? showEmojiPicker() : Container()
+            // showEmoji ? showEmojiPicker() : Container()
           ],
         ),
       ),
     );
   }
 
-  Widget showEmojiPicker() {
-    return EmojiPicker(
-      rows: 3,
-      columns: 7,
-      recommendKeywords: ["racing", "horse"],
-      numRecommended: 10,
-      onEmojiSelected: (emoji, category) {
-        print(emoji);
-        setState(() {
-          commentController.text += emoji.emoji;
-        });
-      },
-    );
-  }
+  // Widget showEmojiPicker() {
+  //   return EmojiPicker(
+  //     rows: 3,
+  //     columns: 7,
+  //     recommendKeywords: ["racing", "horse"],
+  //     numRecommended: 10,
+  //     onEmojiSelected: (emoji, category) {
+  //       print(emoji);
+  //       setState(() {
+  //         commentController.text += emoji.emoji;
+  //       });
+  //     },
+  //   );
+  // }
 }

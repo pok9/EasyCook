@@ -116,6 +116,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ? Colors.grey.shade300
                       : Colors.white,
                   margin: EdgeInsets.all(1),
+                  elevation: 0,
                   child: ListTile(
                     // leading: FlutterLogo(size: 72.0),
                     leading: Stack(
@@ -181,7 +182,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     ),
                     subtitle: Text(
                         "${dataGetNotification[index].description}\n\n${dataGetNotification[index].date}"),
-                    trailing: Icon(Icons.more_horiz),
+                    // trailing: Icon(Icons.more_horiz),
                     isThreeLine: true,
                     onTap: () {
                       if (dataGetNotification[index].status == "follow" ||

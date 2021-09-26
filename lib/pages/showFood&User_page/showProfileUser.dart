@@ -18,6 +18,7 @@ import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -261,8 +262,6 @@ class _ProfileUserState extends State<ProfileUser> {
 
   int checkPressCountFollowAndUnFollow = 0;
 
-
-  
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -528,7 +527,19 @@ class _ProfileUserState extends State<ProfileUser> {
                                                               .toString(),
                                                           "follow");
 
-                                                      // _ProfileUserState(this.reqUid);
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "ติดตามแล้ว",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          timeInSecForIosWeb: 1,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          textColor:
+                                                              Colors.white,
+                                                          fontSize: 16.0);
                                                     },
                                                     child: Text(
                                                       'ติดตาม',
@@ -548,7 +559,20 @@ class _ProfileUserState extends State<ProfileUser> {
                                                           this
                                                               .data_PostUser
                                                               .userId);
-                                                        
+                                                      
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "ยกเลิกติดตามแล้ว",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          timeInSecForIosWeb: 1,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          textColor:
+                                                              Colors.white,
+                                                          fontSize: 16.0);
                                                     },
                                                     child: Text(
                                                       'กำลังติดตาม',
@@ -603,7 +627,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 width: 110,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    if (token == "" || token == null) {
+                                                    if (token == "" ||
+                                                        token == null) {
                                                       showDialog(
                                                           context: context,
                                                           builder: (_) {
@@ -664,7 +689,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 width: 110,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    if (token == "" || token == null) {
+                                                    if (token == "" ||
+                                                        token == null) {
                                                       showDialog(
                                                           context: context,
                                                           builder: (_) {

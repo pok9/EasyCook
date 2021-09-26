@@ -380,17 +380,23 @@ class _FeedPageState extends State<FeedPage> {
             style: const TextStyle(
               fontSize: 20.0,
             ),
-            child: AnimatedTextKit(
-              animatedTexts: [
-                TyperAnimatedText('Easy Cook'),
-                TypewriterAnimatedText('Easy Cook'),
-                WavyAnimatedText('Easy Cook'),
-                // WavyAnimatedText('ชุมชนของคนรักการทําอาหาร'),
+            child: Row(
+              children: [
+                Image.asset('assets/logos/hamburger.png',width: 25,height: 25,),
+                SizedBox(width: 5,),
+                AnimatedTextKit(
+                  animatedTexts: [
+                    TyperAnimatedText('Easy Cook'),
+                    TypewriterAnimatedText('Easy Cook'),
+                    WavyAnimatedText('Easy Cook'),
+                    // WavyAnimatedText('ชุมชนของคนรักการทําอาหาร'),
+                  ],
+                  isRepeatingAnimation: true,
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
               ],
-              isRepeatingAnimation: true,
-              onTap: () {
-                print("Tap Event");
-              },
             ),
           ),
         ),
@@ -851,41 +857,107 @@ class _FeedPageState extends State<FeedPage> {
                                       (dataRecommendRecipe[index].score == 0)
                                           ? Container()
                                           : Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      16, 16, 0, 0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, top: 16),
                                               child: Row(
-                                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
                                                 children: [
-                                                  Icon(
-                                                    Icons.star,
-                                                    color: Colors.blue,
-                                                    size: 20,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 1,
-                                                  ),
-                                                  Text(
-                                                    dataRecommendRecipe[index]
-                                                        .score
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 2,
-                                                  ),
-                                                  Text(
-                                                    '(${dataRecommendRecipe[index].count})',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            40),
+                                                    child: Container(
+                                                        height: 30,
+                                                        width: 90,
+                                                        color: Colors.black
+                                                            .withOpacity(0.6),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4.0),
+                                                          child: Center(
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.star,
+                                                                  color: Colors
+                                                                      .blue,
+                                                                  size: 15,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 1,
+                                                                ),
+                                                                Text(
+                                                                  dataRecommendRecipe[
+                                                                          index]
+                                                                      .score
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 2,
+                                                                ),
+                                                                Text(
+                                                                  '(${dataRecommendRecipe[index].count})',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )),
                                                   ),
                                                 ],
                                               ),
                                             ),
+                                      // Padding(
+                                      //     padding:
+                                      //         const EdgeInsets.fromLTRB(
+                                      //             16, 16, 0, 0),
+                                      //     child:
+                                      //     Row(
+                                      //       // crossAxisAlignment: CrossAxisAlignment.end,
+                                      //       children: [
+
+                                      //         Icon(
+                                      //           Icons.star,
+                                      //           color: Colors.blue,
+                                      //           size: 20,
+                                      //         ),
+                                      //         SizedBox(
+                                      //           width: 1,
+                                      //         ),
+                                      //         Text(
+                                      //           dataRecommendRecipe[index]
+                                      //               .score
+                                      //               .toString(),
+                                      //           style: TextStyle(
+                                      //               color: Colors.white,
+                                      //               fontWeight:
+                                      //                   FontWeight.bold),
+                                      //         ),
+                                      //         SizedBox(
+                                      //           width: 2,
+                                      //         ),
+                                      //         Text(
+                                      //           '(${dataRecommendRecipe[index].count})',
+                                      //           style: TextStyle(
+                                      //             color: Colors.white,
+                                      //           ),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //   ),
                                       (dataRecommendRecipe[index].price == 0)
                                           ? Container()
                                           : Padding(
@@ -1841,7 +1913,7 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                     IconButton(
                         icon: Icon(Icons.more_vert),
-                        onPressed: ()  {
+                        onPressed: () {
                           // print("more_vert" + index.toString());
                           // Share.share('check out my website https://example.com');
                         })
@@ -1887,7 +1959,6 @@ class _FeedPageState extends State<FeedPage> {
                     Container(
                       child: Row(
                         children: [
-                         
                           RatingBarIndicator(
                             rating: dataRecommendRecipe.avgScore,
                             itemBuilder: (context, index) => Icon(

@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RecipePurchasePage extends StatefulWidget {
@@ -116,7 +117,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
     }
   }
 
-   String getTimeDifferenceFromNow(DateTime dateTime) {
+  String getTimeDifferenceFromNow(DateTime dateTime) {
     Duration difference = DateTime.now().difference(dateTime);
     if (difference.inSeconds < 5) {
       return "เมื่อสักครู่";
@@ -281,14 +282,11 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
+                            horizontal: 16.0, vertical: 0.0),
                         child: Row(
                           children: [
                             Expanded(
-                                child: Text(
-                              dataFood.description,
-                              style: TextStyle(fontSize: 15),
-                            ))
+                                child: buildText(dataFood.description))
                           ],
                         ),
                       ),
@@ -302,25 +300,25 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                     thickness: 1,
                                   ),
                                 ),
-                     (dataGetCommentPost == null)
+                      (dataGetCommentPost == null)
                           ? Container()
                           : (dataGetCommentPost.isEmpty)
                               ? Container()
-                          : Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "ความคิดเห็น",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                              : Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "ความคิดเห็น",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-
+                                ),
                       ListView.builder(
                           padding: EdgeInsets.only(top: 0),
                           shrinkWrap: true,
@@ -374,209 +372,35 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                 ),
                               ),
                               subtitle: RichText(
-                                    text: TextSpan(
+                                text: TextSpan(
+                                  text:
+                                      '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.none,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12.0,
+                                      color: Colors.grey.shade600),
+                                  children: <TextSpan>[
+                                    TextSpan(
                                       text:
-                                          '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
+                                          '${dataGetCommentPost[index].commentDetail}',
                                       style: TextStyle(
                                           decoration: TextDecoration.none,
                                           fontFamily: 'OpenSans',
-                                          fontSize: 12.0,
-                                          color: Colors.grey.shade600),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              '${dataGetCommentPost[index].commentDetail}',
-                                          style: TextStyle(
-                                              decoration: TextDecoration.none,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 12,
-                                              color: Colors.black),
-                                        ),
-                                      ],
+                                          fontSize: 12,
+                                          color: Colors.black),
                                     ),
-                                  ),
+                                  ],
+                                ),
+                              ),
                               dense: true,
                               // trailing: Text('Horse'),
                             );
                           })
-                      // Expanded(
-                      //   child: Container(
-                      //     padding: EdgeInsets.all(20),
-                      //     width: double.infinity,
-                      //     decoration: BoxDecoration(
-                      //         color: Colors.white,
-                      //         borderRadius: BorderRadius.only(
-                      //           topLeft: Radius.circular(30),
-                      //           topRight: Radius.circular(30),
-                      //         )),
-                      //     child: Column(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         Padding(
-                      //           padding: const EdgeInsets.symmetric(vertical: 20),
-                      //           child: Row(
-                      //             children: [
-                      //               Expanded(
-                      //                   child: Column(
-                      //                 crossAxisAlignment: CrossAxisAlignment.start,
-                      //                 children: [
-                      //                   Text(
-                      //                     dataFood.recipeName,
-                      //                     style:
-                      //                         Theme.of(context).textTheme.headline6,
-                      //                   ),
-                      //                   SizedBox(
-                      //                     height: 10,
-                      //                   ),
-                      //                   Row(
-                      //                     children: [
-                      //                       RatingBarIndicator(
-                      //                         rating: 3,
-                      //                         itemBuilder: (context, index) => Icon(
-                      //                           Icons.star,
-                      //                           color: Colors.blue,
-                      //                         ),
-                      //                         itemCount: 5,
-                      //                         itemSize: 20.5,
-                      //                         direction: Axis.horizontal,
-                      //                       ),
-                      //                       SizedBox(
-                      //                         width: 10,
-                      //                       ),
-                      //                       Text("24 reviews")
-                      //                     ],
-                      //                   ),
-                      //                   SizedBox(
-                      //                     height: 10,
-                      //                   ),
-                      //                   Row(
-                      //                     children: [
-                      //                       CircleAvatar(
-                      //                         backgroundImage:
-                      //                             NetworkImage(dataFood.profileImage),
-                      //                         radius: 15,
-                      //                       ),
-                      //                       SizedBox(
-                      //                         width: 5,
-                      //                       ),
-                      //                       Expanded(
-                      //                         child: Text(
-                      //                           dataFood.aliasName,
-                      //                           maxLines: 1,
-                      //                           overflow: TextOverflow.ellipsis,
-                      //                           textAlign: TextAlign.left,
-                      //                         ),
-                      //                       )
-                      //                     ],
-                      //                   ),
-                      //                 ],
-                      //               )),
-                      //               Text(
-                      //                 "\฿${numberFormat.format(dataFood.price)}",
-                      //                 style: TextStyle(
-                      //                     color: Colors.red,
-                      //                     fontWeight: FontWeight.bold,
-                      //                     fontSize: 20),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //         Row(
-                      //           children: [
-                      //             Column(
-                      //               children: [
-                      //                 Text(
-                      //                   dataFood.description,
-                      //                   style: TextStyle(height: 1.5),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ],
-                      //         ),
-                      //         SizedBox(
-                      //           height: size.height * 0.1,
-                      //         ),
-                      //         Container(
-                      //           // padding: EdgeInsets.all(20),
-                      //           width: size.width * 0.8,
-                      //           decoration: BoxDecoration(
-                      //               color: Colors.red,
-                      //               borderRadius: BorderRadius.circular(10)),
-                      //           child: Material(
-                      //             color: Colors.transparent,
-                      //             child: InkWell(
-                      //               onTap: () {
-                      //                 if (token != "") {
-                      //                   showDialog(
-                      //                     barrierColor: Colors.black26,
-                      //                     context: context,
-                      //                     builder: (context) {
-                      //                       return CustomAlertDialog(
-                      //                         title: "ซื้อสูตรอาหาร",
-                      //                         description:
-                      //                             "คุณแน่ใจใช่ไหมที่จะซื้อสูตรอาหารนี้",
-                      //                         token: this.token,
-                      //                         rid: dataFood.rid,
-                      //                         recipeName: dataFood.recipeName,
-                      //                         foodOwner_userId:
-                      //                             dataFood.userId.toString(),
-                      //                         myDataUser:
-                      //                             myDataUser.userId.toString(),
-                      //                         myNameUser: myDataUser.aliasName,
-                      //                       );
-                      //                     },
-                      //                   );
-                      //                 } else {
-                      //                   showDialog(
-                      //                       context: context,
-                      //                       builder: (_) {
-                      //                         return LoginPage();
-                      //                       }).then((value) {
-                      //                     // findUser();
-                      //                   });
-                      //                 }
-                      //               },
-                      //               child: Padding(
-                      //                 padding: const EdgeInsets.all(20.0),
-                      //                 child: Row(
-                      //                   mainAxisAlignment: MainAxisAlignment.center,
-                      //                   children: [
-                      //                     Icon(
-                      //                       Icons.food_bank,
-                      //                       color: Colors.white,
-                      //                     ),
-                      //                     SizedBox(
-                      //                       width: 10,
-                      //                     ),
-                      //                     Text(
-                      //                       'ซื้อสูตรอาหาร',
-                      //                       style: TextStyle(
-                      //                           color: Colors.white,
-                      //                           fontWeight: FontWeight.bold,
-                      //                           fontSize: 18),
-                      //                     )
-                      //                   ],
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // )
                     ],
                   ),
                 ),
                 Container(
-                  // width: double.infinity,
-                  // decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     borderRadius: BorderRadius.only(
-                  //       topLeft: Radius.circular(30),
-                  //       topRight: Radius.circular(30),
-                  // )
-                  // ),
                   height: 100,
                   color: Color(0xfff3f3f4),
                   padding: EdgeInsets.all(5),
@@ -652,6 +476,29 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
               ],
             ),
           );
+  }
+
+  Widget buildText(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: ReadMoreText(
+          text,
+          trimLines: 4,
+          trimMode: TrimMode.Line,
+          trimCollapsedText: 'อ่านเพิ่มเติม',
+          trimExpandedText: 'อ่านน้อยลง',
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontFamily: 'OpenSans',
+            fontSize: 15,
+            color: Colors.black,
+            decoration: TextDecoration.none,
+          ),
+        ),
+      ),
+    );
   }
 }
 
