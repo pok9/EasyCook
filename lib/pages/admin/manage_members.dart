@@ -179,6 +179,7 @@ class _ManageMembersState extends State<ManageMembers> {
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,6 +190,7 @@ class _ManageMembersState extends State<ManageMembers> {
       body: DefaultTabController(
         length: 3,
         child: Scaffold(
+          
           appBar: new PreferredSize(
             preferredSize: Size.fromHeight(40),
             child: new Container(
@@ -234,9 +236,11 @@ class _ManageMembersState extends State<ManageMembers> {
           body: TabBarView(children: [
             Container(
               child: Scaffold(
+              
                 body: DefaultTabController(
                   length: 3,
                   child: Scaffold(
+                    
                     appBar: new PreferredSize(
                       preferredSize: Size.fromHeight(40),
                       child: new Container(
@@ -315,6 +319,7 @@ class _ManageMembersState extends State<ManageMembers> {
                         ),
                       ),
                     ),
+             
                     body: TabBarView(
                       children: [
                         (dateGetAllReport == null)
@@ -478,131 +483,143 @@ class _ManageMembersState extends State<ManageMembers> {
                       ],
                     ),
                   ),
-            Center(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                    child: TextFormField(
-                      controller: _ctrlNoti,
-                      // maxLength: 60,
-                      minLines: 10,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        suffixIcon: (clear_ctrlNoti)
-                            ? null
-                            : Padding(
-                                padding: const EdgeInsets.only(bottom: 170),
-                                child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _ctrlNoti.text = "";
-                                      clear_ctrlNoti = true;
-                                    });
-                                  },
-                                  icon: Icon(Icons.clear),
-                                ),
-                              ),
-                        filled: true,
-                        fillColor: Color(0xfff3f3f4),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: "แจ้งเตือนแอป",
-                        hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.length > 0) {
-                            clear_ctrlNoti = false;
-                          } else {
-                            clear_ctrlNoti = true;
+                  
+            SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                      child: TextFormField(
+                        controller: _ctrlNoti,
+                        // maxLength: 60,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'กรุณากรอกข้อความ';
                           }
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 50.0,
-                    child: GestureDetector(
-                      onTap: () async {
-                        showDialog(
-                            context: context,
-                            builder: (contex) {
-                              return AlertDialog(
-                                  content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("กรุณารอสักครู่...   "),
-                                  CircularProgressIndicator()
-                                ],
-                              ));
-                            });
-                        ApiNotificationModel apiNotificationModel =
-                            await addIngredients(_ctrlNoti.text);
-                        Navigator.pop(context);
-                        _ctrlNoti.text = "";
-                        clear_ctrlNoti = true;
-
-                        if (apiNotificationModel.success == 1) {
-                          Fluttertoast.showToast(
-                              msg: "ส่งแจ้งเตือนเรียบร้อย",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: "มีข้อผิดพลาดโปรดส่งใหม่ในภายหลัง",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-
-                        setState(() {
-                          
-                        });
-                        // print(
-                        //     "apiNotificationModel.success => ${apiNotificationModel.success}");
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xFFF05A22),
-                            style: BorderStyle.solid,
-                            width: 1.0,
-                          ),
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Center(
-                              child: Text(
-                                "ส่งแจ้งเตือน",
-                                style: TextStyle(
-                                  color: Color(0xFFF05A22),
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1,
+                          return null;
+                        },
+                        minLines: 10,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          suffixIcon: (clear_ctrlNoti)
+                              ? null
+                              : Padding(
+                                  padding: const EdgeInsets.only(bottom: 170),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _ctrlNoti.text = "";
+                                        clear_ctrlNoti = true;
+                                      });
+                                    },
+                                    icon: Icon(Icons.clear),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                          filled: true,
+                          fillColor: Color(0xfff3f3f4),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: "แจ้งเตือนแอป",
+                          hintStyle:
+                              TextStyle(fontSize: 16, color: Colors.grey),
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            if (value.length > 0) {
+                              clear_ctrlNoti = false;
+                            } else {
+                              clear_ctrlNoti = true;
+                            }
+                          });
+                        },
                       ),
                     ),
-                  )
-                ],
+                    Container(
+                      height: 50.0,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_formKey.currentState.validate()) {
+                            showDialog(
+                                context: context,
+                                builder: (contex) {
+                                  return AlertDialog(
+                                      content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("กรุณารอสักครู่...   "),
+                                      CircularProgressIndicator()
+                                    ],
+                                  ));
+                                });
+                            ApiNotificationModel apiNotificationModel =
+                                await addIngredients(_ctrlNoti.text);
+                            Navigator.pop(context);
+                            _ctrlNoti.text = "";
+                            clear_ctrlNoti = true;
+            
+                            if (apiNotificationModel.success == 1) {
+                              Fluttertoast.showToast(
+                                  msg: "ส่งแจ้งเตือนเรียบร้อย",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "มีข้อผิดพลาดโปรดส่งใหม่ในภายหลัง",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+            
+                            setState(() {});
+                          }
+            
+                          // print(
+                          //     "apiNotificationModel.success => ${apiNotificationModel.success}");
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0xFFF05A22),
+                              style: BorderStyle.solid,
+                              width: 1.0,
+                            ),
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Center(
+                                child: Text(
+                                  "ส่งแจ้งเตือน",
+                                  style: TextStyle(
+                                    color: Color(0xFFF05A22),
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
           ]),
@@ -611,6 +628,34 @@ class _ManageMembersState extends State<ManageMembers> {
     );
   }
 
+  String dateEdit(String date) {
+    //data
+    Map<String, String> map = {
+      '01': "มกราคม",
+      '02': "กุมภาพันธ์",
+      '03': "มีนาคม",
+      '04': "เมษายน",
+      '05': "พฤษภาคม",
+      '06': "มิถุนายน",
+      '07': "กรกฎาคม",
+      '08': "สิงหาคม",
+      '09': "กันยายน",
+      '10': "ตุลาคม",
+      '11': "พฤศจิกายน",
+      '12': "ธันวาคม"
+    };
+    List<String> dateTimeSp = date.split(" ");
+    List<String> dateSp = dateTimeSp[0].split("-");
+
+    //time
+    List timeSp = dateTimeSp[1].split(".");
+    List time = timeSp[0].split(":");
+
+    String text =
+        "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} เวลา ${time[0]}:${time[1]} น.";
+    return text;
+  }
+  
   Widget reportEverything(String typeNameReport) {
     return ListView.builder(
         //  reverse: true,
@@ -643,7 +688,8 @@ class _ManageMembersState extends State<ManageMembers> {
                       child: Text(dateGetAllReport[index].nameUserReport),
                     ),
                     subtitle: Text(
-                        "${dateGetAllReport[index].title}\n\n${dateGetAllReport[index].datetime}"),
+                        "${dateGetAllReport[index].title}\n\n${dateEdit(dateGetAllReport[index].datetime
+                                                          .toString())}"),
                     trailing: IconButton(
                         onPressed: () {
                           showDialog(

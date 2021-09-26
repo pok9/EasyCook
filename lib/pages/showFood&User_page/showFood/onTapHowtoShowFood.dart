@@ -107,7 +107,7 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                   controller: controller,
                   itemCount: this.widget.dataHowto.length,
                   itemBuilder: (context, index) {
-                    return Column(
+                    return ListView(
                       children: [
                         //  Card(
                         //   elevation: 6.0,

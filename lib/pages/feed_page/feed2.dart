@@ -663,169 +663,156 @@ class _Feed2PageState extends State<Feed2Page> {
                       child: Container(
                         // height: 500,
                         width: 280,
-                        child: Card(
-                          semanticContainer: true,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        if (token == "") {
-                                          Navigator.push(context,
-                                              CupertinoPageRoute(
-                                                  builder: (context) {
-                                            return ProfileUser(
-                                              reqUid: newFeedsFollow
-                                                  .feed[index].userId,
-                                            );
-                                          }));
-                                        } else if (data_DataAc.userId ==
-                                            newFeedsFollow.feed[index].userId) {
-                                          Navigator.push(context,
-                                              CupertinoPageRoute(
-                                                  builder: (context) {
-                                            return ProfilePage();
-                                          }));
-                                        } else {
-                                          Navigator.push(context,
-                                              CupertinoPageRoute(
-                                                  builder: (context) {
-                                            return ProfileUser(
-                                              reqUid: newFeedsFollow
-                                                  .feed[index].userId,
-                                            );
-                                          }));
-                                        }
-                                      },
-                                      child: Row(
-                                        children: [
-                                          new Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: new NetworkImage(
-                                                        newFeedsFollow
-                                                            .feed[index]
-                                                            .profileImage))),
-                                          ),
-                                          new SizedBox(
-                                            width: 10.0,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 8, 0, 8),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                new Text(
-                                                  newFeedsFollow
-                                                      .feed[index].aliasName,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                new Text(
-                                                  dateEdit(newFeedsFollow
-                                                      .feed[index].date
-                                                      .toString()),
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    // IconButton(
-                                    //     icon: Icon(Icons.more_vert),
-                                    //     onPressed: () {
-                                    //       // print("more_vert" + index.toString());
-                                    //     })
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      newFeedsFollow.feed[index].recipeName,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.left,
-                                      style: GoogleFonts.lato(),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Stack(
+                        child: Column(
+                          children: [
+                            Card(
+                              semanticContainer: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              child: Column(
                                 children: [
-                                  Container(
-                                    height: 310,
-                                    // width: 500,
-                                    decoration: BoxDecoration(
-                                        // borderRadius: BorderRadius.circular(50),
-                                        image: DecorationImage(
-                                            image: NetworkImage(newFeedsFollow
-                                                .feed[index].image),
-                                            fit: BoxFit.cover)),
-                                  ),
-                                  (newFeedsFollow.feed[index].price == 0)
-                                      ? Container()
-                                      : Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, right: 8),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            if (token == "") {
+                                              Navigator.push(context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) {
+                                                return ProfileUser(
+                                                  reqUid: newFeedsFollow
+                                                      .feed[index].userId,
+                                                );
+                                              }));
+                                            } else if (data_DataAc.userId ==
+                                                newFeedsFollow
+                                                    .feed[index].userId) {
+                                              Navigator.push(context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) {
+                                                return ProfilePage();
+                                              }));
+                                            } else {
+                                              Navigator.push(context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) {
+                                                return ProfileUser(
+                                                  reqUid: newFeedsFollow
+                                                      .feed[index].userId,
+                                                );
+                                              }));
+                                            }
+                                          },
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
                                             children: [
-                                              Stack(
+                                              new Container(
+                                                height: 30.0,
+                                                width: 30.0,
+                                                decoration: new BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: new DecorationImage(
+                                                        fit: BoxFit.fill,
+                                                        image: new NetworkImage(
+                                                            newFeedsFollow
+                                                                .feed[index]
+                                                                .profileImage))),
+                                              ),
+                                              new SizedBox(
+                                                width: 10.0,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 8, 0, 8),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    new Text(
+                                                      newFeedsFollow.feed[index]
+                                                          .aliasName,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    new Text(
+                                                      dateEdit(newFeedsFollow
+                                                          .feed[index].date
+                                                          .toString()),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+
+                                        // IconButton(
+                                        //     icon: Icon(Icons.more_vert),
+                                        //     onPressed: () {
+                                        //       // print("more_vert" + index.toString());
+                                        //     })
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          newFeedsFollow.feed[index].recipeName,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.left,
+                                          style: GoogleFonts.lato(),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Stack(
+                                    children: [
+                                      Container(
+                                        height: 310,
+                                        // width: 500,
+                                        decoration: BoxDecoration(
+                                            // borderRadius: BorderRadius.circular(50),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    newFeedsFollow
+                                                        .feed[index].image),
+                                                fit: BoxFit.cover)),
+                                      ),
+                                      (newFeedsFollow.feed[index].price == 0)
+                                          ? Container()
+                                          : Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8, right: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
                                                 children: [
-                                                  (data_DataAc == null)
-                                                      ? CircleAvatar(
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          radius: 16,
-                                                        )
-                                                      : (data_DataAc.userId ==
-                                                              newFeedsFollow
-                                                                  .feed[index]
-                                                                  .userId)
-                                                          ? Container()
-                                                          : CircleAvatar(
+                                                  Stack(
+                                                    children: [
+                                                      (data_DataAc == null)
+                                                          ? CircleAvatar(
                                                               backgroundColor:
                                                                   Colors.white,
                                                               radius: 16,
-                                                            ),
-                                                  Positioned(
-                                                    top: 1,
-                                                    right: 1,
-                                                    child: Container(
-                                                      height: 30,
-                                                      width: 30,
-                                                      child: (data_DataAc ==
-                                                              null)
-                                                          ? Image.network(
-                                                              "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                            )
                                                           : (data_DataAc
                                                                       .userId ==
                                                                   newFeedsFollow
@@ -833,32 +820,57 @@ class _Feed2PageState extends State<Feed2Page> {
                                                                           index]
                                                                       .userId)
                                                               ? Container()
-                                                              : (checkBuy.indexOf(newFeedsFollow
+                                                              : CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  radius: 16,
+                                                                ),
+                                                      Positioned(
+                                                        top: 1,
+                                                        right: 1,
+                                                        child: Container(
+                                                          height: 30,
+                                                          width: 30,
+                                                          child: (data_DataAc ==
+                                                                  null)
+                                                              ? Image.network(
+                                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                              : (data_DataAc
+                                                                          .userId ==
+                                                                      newFeedsFollow
                                                                           .feed[
                                                                               index]
-                                                                          .rid
-                                                                          .toString()) >=
-                                                                      0)
-                                                                  ? Image.network(
-                                                                      "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                  : Image.network(
-                                                                      "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
-                                                    ),
+                                                                          .userId)
+                                                                  ? Container()
+                                                                  : (checkBuy.indexOf(newFeedsFollow
+                                                                              .feed[
+                                                                                  index]
+                                                                              .rid
+                                                                              .toString()) >=
+                                                                          0)
+                                                                      ? Image.network(
+                                                                          "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                                      : Image.network(
+                                                                          "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                        )
+                                            )
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          elevation: 5,
-                          margin: EdgeInsets.all(10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              elevation: 5,
+                              margin: EdgeInsets.all(10),
+                            ),
+                          ],
                         ),
                       ),
                     ),

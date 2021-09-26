@@ -1036,7 +1036,7 @@ class _ShowFoodState extends State<ShowFood> {
                           ),
                         ),
                       ),
-                      buildText(
+                      buildTextDescription(
                         dataFood.description,
                       ),
                       Divider(
@@ -1430,11 +1430,13 @@ class _ShowFoodState extends State<ShowFood> {
                                         dataGetCommentPost[index].profileImage),
                                   ),
                                   title: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                    child: Text(
-                                      dataGetCommentPost[index].aliasName,
-                                      style: TextStyle(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 10, 0, 0),
+                                      child: RichText(
+                                        text: TextSpan(
+                                            text: dataGetCommentPost[index]
+                                                .aliasName,
+                                            style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: (dataGetCommentPost[index]
                                                       .userStatus ==
@@ -1447,41 +1449,66 @@ class _ShowFoodState extends State<ShowFood> {
                                                           dataMyAccont.userId)
                                                       ? Colors.blue
                                                       : Colors.black),
-                                    ),
-                                  ),
-                                  subtitle: RichText(
-                                    text: TextSpan(
-                                      text:
-                                          '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
-                                      style: TextStyle(
-                                          decoration: TextDecoration.none,
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 12.0,
-                                          color: Colors.grey.shade600),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              '${dataGetCommentPost[index].commentDetail}',
-                                          style: TextStyle(
-                                              decoration: TextDecoration.none,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 12,
-                                              color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  // subtitle: Text(
-                                  //   '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n${dataGetCommentPost[index].commentDetail}',
-                                  //   textAlign: TextAlign.justify,
-                                  //   style: TextStyle(
-                                  //     fontWeight: FontWeight.normal,
-                                  //     fontFamily: 'OpenSans',
-                                  //     fontSize: 12,
-                                  //     color: Colors.black,
-                                  //     decoration: TextDecoration.none,
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
+                                                style: TextStyle(
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 12.0,
+                                                    color:
+                                                        Colors.grey.shade600),
+                                              )
+                                            ]),
+                                      )),
+                                  // Padding(
+                                  //   padding:
+                                  //       const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                  //   child: Text(
+                                  //     dataGetCommentPost[index].aliasName,
+                                  //     style: TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         color: (dataGetCommentPost[index]
+                                  //                     .userStatus ==
+                                  //                 0)
+                                  //             ? Colors.red
+                                  //             : (dataMyAccont == null)
+                                  //                 ? Colors.black
+                                  //                 : (dataGetCommentPost[index]
+                                  //                             .userId ==
+                                  //                         dataMyAccont.userId)
+                                  //                     ? Colors.blue
+                                  //                     : Colors.black),
                                   //   ),
                                   // ),
+
+                                  subtitle:buildTextComment(index),
+                                  //  RichText(
+                                  //   text: TextSpan(
+                                  //     text:
+                                  //         '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
+                                  //     style: TextStyle(
+                                  //         decoration: TextDecoration.none,
+                                  //         fontFamily: 'OpenSans',
+                                  //         fontSize: 12.0,
+                                  //         color: Colors.grey.shade600),
+                                  //     children: <TextSpan>[
+                                  //       TextSpan(
+                                  //         text:
+                                  //             '${dataGetCommentPost[index].commentDetail}',
+                                  //         style: TextStyle(
+                                  //             decoration: TextDecoration.none,
+                                  //             fontFamily: 'OpenSans',
+                                  //             fontSize: 12,
+                                  //             color: Colors.black),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  // subtitle: Text(
+                                 
                                   dense: true,
                                   // trailing: Text('Horse'),
                                 );
@@ -1624,7 +1651,7 @@ class _ShowFoodState extends State<ShowFood> {
     );
   }
 
-  Widget buildText(String text) {
+  Widget buildTextDescription(String text) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Align(
@@ -1643,6 +1670,31 @@ class _ShowFoodState extends State<ShowFood> {
             decoration: TextDecoration.none,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildTextComment(int index) {
+    // return TextSpan(
+    //   text: '${dataGetCommentPost[index].commentDetail}',
+    //   style: TextStyle(
+    //       decoration: TextDecoration.none,
+    //       fontFamily: 'OpenSans',
+    //       fontSize: 12,
+    //       color: Colors.black),
+    // );
+    return ReadMoreText(
+      '${dataGetCommentPost[index].commentDetail}',
+      trimLines: 8,
+      trimMode: TrimMode.Line,
+      trimCollapsedText: 'อ่านเพิ่มเติม',
+      trimExpandedText: 'อ่านน้อยลง',
+      style: TextStyle(
+        fontWeight: FontWeight.normal,
+        fontFamily: 'OpenSans',
+        fontSize: 13,
+        color: Colors.black,
+        decoration: TextDecoration.none,
       ),
     );
   }

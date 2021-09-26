@@ -298,25 +298,7 @@ class _ReportCommentState extends State<ReportComment> {
                 ),
               ),
               Divider(),
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 8),
-              //   child: Text.rich(
-              //     TextSpan(
-              //       children: <TextSpan>[
-              //         TextSpan(
-              //             text:
-              //                 ' หากเป็นเจ้าของลิขสิทธิ์สูตรอาหารนี้และเชื่อว่ามีการโพสสูตรอาหารที่คุณไม่ได้รับอนุญาต โปรดดำเนินการตาม ',
-              //             style: TextStyle(fontSize: 14)),
-              //         TextSpan(
-              //             text: 'คำแนะนำเหล่านี้',
-              //             style: TextStyle(fontSize: 14, color: Colors.blue)),
-              //         TextSpan(
-              //             text: ' เพื่อส่งการแจ้งเตื่อนการละเมิดลิขสิทธิ์ ',
-              //             style: TextStyle(fontSize: 14)),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+              
             ],
           ),
         ),
