@@ -38,7 +38,7 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString("tokens");
-      if (token != "") {
+      if (token != "" && token != null) {
         getMyAccounts();
         getFollower();
         getFollowing();

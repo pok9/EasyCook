@@ -12,10 +12,12 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportComment.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class CommentFood extends StatefulWidget {
   ShowFoods dataFood;
@@ -32,6 +34,13 @@ class _CommentFoodState extends State<CommentFood> {
   @override
   void initState() {
     super.initState();
+    focusNode.addListener((){
+      if(focusNode.hasFocus){
+        setState(() {
+          showEmoji = false;
+        });
+      }
+    });
     findUser();
     getCommentPosts();
   }
@@ -228,7 +237,7 @@ class _CommentFoodState extends State<CommentFood> {
       return "${difference.inMinutes} นาที";
     } else if (difference.inHours < 24) {
       return "${difference.inHours} ชั่วโมง";
-    } else if (difference.inDays < 8){
+    } else if (difference.inDays < 8) {
       return "${difference.inDays} วัน";
     } else {
       return "${dateEdit(dateTime.toString())}";
@@ -258,10 +267,13 @@ class _CommentFoodState extends State<CommentFood> {
     List timeSp = dateTimeSp[1].split(".");
     List time = timeSp[0].split(":");
 
-    String text = "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
+    String text =
+        "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
     return text;
   }
 
+  bool showEmoji = false;
+  FocusNode focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -337,27 +349,27 @@ class _CommentFoodState extends State<CommentFood> {
                               ),
                             ),
                             subtitle: RichText(
-                                    text: TextSpan(
-                                      text:
-                                          '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
-                                      style: TextStyle(
-                                          decoration: TextDecoration.none,
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 12.0,
-                                          color: Colors.grey.shade600),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              '${dataGetCommentPost[index].commentDetail}',
-                                          style: TextStyle(
-                                              decoration: TextDecoration.none,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 12,
-                                              color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
+                              text: TextSpan(
+                                text:
+                                    '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
+                                style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 12.0,
+                                    color: Colors.grey.shade600),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        '${dataGetCommentPost[index].commentDetail}',
+                                    style: TextStyle(
+                                        decoration: TextDecoration.none,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 12,
+                                        color: Colors.black),
                                   ),
+                                ],
+                              ),
+                            ),
                             // subtitle: Text(
                             //   '${dataGetCommentPost[index].datetime}\n\n${dataGetCommentPost[index].commentDetail}',
                             //   // textAlign: TextAlign.left,
@@ -602,6 +614,7 @@ class _CommentFoodState extends State<CommentFood> {
                   ),
                   Expanded(
                       child: TextFormField(
+                        focusNode: focusNode,
                     onChanged: (value) {
                       if (!value.isEmpty) {
                         if (_formKey.currentState.validate()) {}
@@ -632,12 +645,23 @@ class _CommentFoodState extends State<CommentFood> {
                     autofocus: this.widget.autoFocus,
                     minLines: 1,
                     maxLines: 5,
+                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                         // contentPadding: const EdgeInsets.symmetric(vertical: 1.0,horizontal: 20),
                         hintText: "แสดงความคิดเห็น...",
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40))),
+                            borderRadius: BorderRadius.circular(40)),
+                        prefixIcon: IconButton(
+                          icon: Icon(Icons.emoji_emotions),
+                          onPressed: () {
+                            focusNode.unfocus();
+                            focusNode.canRequestFocus = false;
+                            setState(() {
+                              showEmoji = !showEmoji;
+                            });
+                          },
+                        )),
                   )),
                   TextButton(
                       onPressed: () async {
@@ -684,12 +708,31 @@ class _CommentFoodState extends State<CommentFood> {
                       child: Text("โพสต์"))
                   // CircleAvatar(
                   //     child: IconButton(onPressed: () {}, icon: Icon(Icons.send)))
+                  
                 ],
+                
               ),
-            )
+              
+            ),
+            showEmoji ? showEmojiPicker() : Container()
           ],
         ),
       ),
+    );
+  }
+
+  Widget showEmojiPicker() {
+    return EmojiPicker(
+      rows: 3,
+      columns: 7,
+      recommendKeywords: ["racing", "horse"],
+      numRecommended: 10,
+      onEmojiSelected: (emoji, category) {
+        print(emoji);
+        setState(() {
+          commentController.text += emoji.emoji;
+        });
+      },
     );
   }
 }

@@ -1635,8 +1635,11 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   scrollDirection: Axis.horizontal,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Row(
-                      children: timeWidgets.toList(),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: timeWidgets.toList(),
+                      ),
                     ),
                   ),
                 ),
@@ -1872,7 +1875,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
       Price('ฟรี'),
       Price('ระบุราคา'),
     ];
-    if (this.widget.price != "0") {
+    if (this.widget.price != "0.0") {
       _selectPrices = this.widget.price;
       _prices[1] = Price('${this.widget.price}');
     } else {

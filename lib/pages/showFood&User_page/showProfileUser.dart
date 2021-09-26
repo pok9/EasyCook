@@ -98,7 +98,7 @@ class _ProfileUserState extends State<ProfileUser> {
         data_RecipePost = data_PostUser.recipePost;
         print("data_PostUser.userId = " + data_PostUser.userId.toString());
 
-        if (token != "") {
+        if (token != "" && token != null) {
           checkFollower();
         }
 
@@ -548,6 +548,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                           this
                                                               .data_PostUser
                                                               .userId);
+                                                        
                                                     },
                                                     child: Text(
                                                       'กำลังติดตาม',
@@ -602,7 +603,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 width: 110,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    if (token == "") {
+                                                    if (token == "" || token == null) {
                                                       showDialog(
                                                           context: context,
                                                           builder: (_) {
@@ -663,7 +664,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                 width: 110,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    if (token == "") {
+                                                    if (token == "" || token == null) {
                                                       showDialog(
                                                           context: context,
                                                           builder: (_) {

@@ -48,7 +48,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
 
     setState(() {
       token = preferences.getString("tokens");
-      if (token != "") {
+      if (token != "" && token != null) {
         getMyAccounts();
       }
     });

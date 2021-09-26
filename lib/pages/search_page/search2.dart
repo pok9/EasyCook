@@ -528,7 +528,7 @@ class _SearchPage2State extends State<SearchPage2> {
                           } else
                             return GestureDetector(
                               onTap: () {
-                                if (token == "") {
+                                if (token == "" || token == null) {
                                   Navigator.push(context,
                                       CupertinoPageRoute(builder: (context) {
                                     return ProfileUser(

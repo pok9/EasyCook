@@ -38,7 +38,7 @@ class _CategoryState extends State<Category> {
       token = preferences.getString("tokens");
 
       print(token);
-      if (token != "") {
+      if (token != "" && token != null) {
         getMyAccounts();
         getMybuy();
       }

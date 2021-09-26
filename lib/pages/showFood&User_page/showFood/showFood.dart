@@ -841,8 +841,9 @@ class _ShowFoodState extends State<ShowFood> {
       floatingPosition:
           FloatingPosition(top: -20, left: (sizeScreen.width - 50) / 2.35),
       slivers: [
+        //this.req_rid.toString()
         SliverAppBar(
-          title: Text(dataFood.recipeName + " " + this.req_rid.toString()),
+          title: Text(dataFood.recipeName),
           actions: [
             (dataMyAccont == null || dataFood == null)
                 ? Container()
@@ -1051,69 +1052,6 @@ class _ShowFoodState extends State<ShowFood> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   child: Row(
-                      //     children: [
-                      //       Expanded(
-                      //         child: Text(
-                      //           dataFood.description,
-                      //           textAlign: TextAlign.justify,
-                      //           style: TextStyle(
-                      //             fontWeight: FontWeight.normal,
-                      //             fontFamily: 'OpenSans',
-                      //             fontSize: 15,
-                      //             color: Colors.black,
-                      //             decoration: TextDecoration.none,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   child: Row(
-                      //     children: [
-                      //       Expanded(
-                      //         child: RichText(
-                      //           text: TextSpan(
-                      //             text: dataFood.description,
-                      //             style: TextStyle(
-                      //               fontWeight: FontWeight.normal,
-                      //               fontFamily: 'OpenSans',
-                      //               fontSize: 15,
-                      //               color: Colors.black,
-                      //               decoration: TextDecoration.none,
-                      //             ),
-                      //             children: const <TextSpan>[
-                      //               // TextSpan(
-                      //               //     text: 'bold',
-                      //               //     style: TextStyle(
-                      //               //         fontWeight: FontWeight.bold)),
-                      //               TextSpan(
-                      //                   text: ' อ่านน้อยลง',
-                      //                   style: TextStyle(
-                      //                       color: Colors.blue,
-                      //                       fontWeight: FontWeight.bold)),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-
-                      // ReadMoreText(
-                      //   dataFood.description,
-                      //   trimLines: 2,
-                      //   colorClickableText: Colors.pink,
-                      //   trimMode: TrimMode.Line,
-                      //   trimCollapsedText: 'Show more',
-                      //   trimExpandedText: 'Show less',
-                      //   moreStyle: TextStyle(
-                      //       fontSize: 14, fontWeight: FontWeight.bold),
-                      // ),
                       buildText(
                         dataFood.description,
                       ),
@@ -1363,48 +1301,6 @@ class _ShowFoodState extends State<ShowFood> {
                               height: 300,
                               child: StoryView(
                                 storyItems: howto3,
-                                // [
-                                //   StoryItem.text(
-                                //     title:
-                                //         "I guess you'd love to see more of our food. That's great.",
-                                //     backgroundColor: Colors.blue,
-                                //   ),
-                                //   StoryItem.text(
-                                //     title: "Nice!\n\nTap to continue.",
-                                //     backgroundColor: Colors.red,
-                                //     textStyle: TextStyle(
-                                //       fontFamily: 'Dancing',
-                                //       fontSize: 40,
-                                //     ),
-                                //   ),
-                                //   StoryItem.pageImage(
-                                //     url:
-                                //         "https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg",
-                                //     caption: "Still sampling",
-                                //     controller: storyController,
-                                //   ),
-                                //   StoryItem.pageImage(
-                                //       url:
-                                //           "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif",
-                                //       caption: "Working with gifs",
-                                //       controller: storyController),
-                                //   StoryItem.pageImage(
-                                //     url:
-                                //         "https://media.giphy.com/media/XcA8krYsrEAYXKf4UQ/giphy.gif",
-                                //     caption: "Hello, from the other side",
-                                //     controller: storyController,
-                                //   ),
-                                //   StoryItem.pageImage(
-                                //     url:
-                                //         "https://media.giphy.com/media/XcA8krYsrEAYXKf4UQ/giphy.gif",
-                                //     caption: "Hello, from the other side2",
-                                //     controller: storyController,
-                                //   ),
-                                //   StoryItem.pageVideo(
-                                //       "https://apifood.comsciproject.com/uploadHowto/2021-09-12T134134081Z-00223-6.mp4",
-                                //       controller: storyController,
-                                //       caption: "Hektas, sektas and skatad"),
-                                // ],
                                 onStoryShow: (s) {
                                   print("Showing a story");
                                 },

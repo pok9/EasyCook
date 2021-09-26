@@ -191,7 +191,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: (this.widget.close == 1) ? EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250) : null, 
+      // padding: (this.widget.close == 1) ? EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250) : EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250), 
+      padding:EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250),
 // Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 130));
       // (this.widget.close == 1) ? : Container();
       //  padding: EdgeInsets.only(top: 

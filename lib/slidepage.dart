@@ -426,7 +426,7 @@ class _SlidePageState extends State<SlidePage> {
               child: FloatingActionButton(
                 child: Icon(Icons.add),
                 onPressed: () {
-                  if (token != "") {
+                  if (token != "" && token != null) {
                     Navigator.pushNamed(context, '/AddFoodPage');
                   } else {
                     showDialog(

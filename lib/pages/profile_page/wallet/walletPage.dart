@@ -168,6 +168,7 @@ class _WalletPageState extends State<WalletPage> {
   List dataListWithdrawTopup = [];
   List dummyListDataListWithdrawTopup = [];
   Future<List> getListWithdrawTopup() async {
+   
     dataListWithdrawTopup = [];
     for (int i = 0; i < data_my_his_withdraw.length; i++) {
       dataListWithdrawTopup.add(data_my_his_withdraw[i]);
@@ -176,47 +177,50 @@ class _WalletPageState extends State<WalletPage> {
     for (int i = 0; i < data_my_his_topup.length; i++) {
       dataListWithdrawTopup.add(data_my_his_topup[i]);
     }
+ 
 
-    // for (int i = 0; i < dataListWithdrawTopup.length; i++) {
-    //    Duration difference = DateTime.now().difference(DateTime.parse("${dataListWithdrawTopup[i].datetime}"));
-    // print(difference.inMilliseconds);
-    //   // print(dataListWithdrawTopup[i].datetime);
-    // }
 
-    for (int i = 0; i < dataListWithdrawTopup.length; i++) {
-      Duration difference = DateTime.now()
-          .difference(DateTime.parse("${dataListWithdrawTopup[i].datetime}"));
-    }
+   
 
     selectionSort(dataListWithdrawTopup);
-    for (int i = 0; i < dataListWithdrawTopup.length; i++) {
-      Duration difference = DateTime.now()
-          .difference(DateTime.parse("${dataListWithdrawTopup[i].datetime}"));
-    }
+   
+   
+
+     
+
+  
     return dataListWithdrawTopup;
   }
 
   void selectionSort(List array) {
-    for (int i = 0; i < array.length; i++) {
+
+    for (int i = 0; i < array.length-1; i++) {
       Duration difference =
           DateTime.now().difference(DateTime.parse("${array[i].datetime}"));
+       
+      int min = difference.inSeconds;
 
-      int min = difference.inMilliseconds;
 
       int minId = i;
-      for (int j = i + 1; j < array.length; j++) {
+      for (int j = i+1; j<array.length; j++) {
+       
         Duration difference =
             DateTime.now().difference(DateTime.parse("${array[j].datetime}"));
-        if (difference.inMilliseconds < min) {
-          min = array[j];
+          
+         
+        if (difference.inSeconds < min) {
+          min = difference.inSeconds;
           minId = j;
         }
+           
       }
+
+       
       // // swapping
 
-      var temp = array[i];
-      array[i] = min;
-      array[minId] = temp;
+      var temp = array[minId];
+      array[minId] = array[i];
+      array[i] = temp;
     }
 
     // return array;

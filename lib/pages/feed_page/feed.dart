@@ -39,6 +39,7 @@ import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:share/share.dart';
 // import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -1742,7 +1743,11 @@ class _FeedPageState extends State<FeedPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-              );
+              ).then((value) {
+                // getPopularRecipe_free_and_not_free();
+                // getPopularRecipe_free();
+                // getPopularRecipe_not_free();
+              });
             } else {
               Navigator.push(
                 context,
@@ -1836,8 +1841,9 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                     IconButton(
                         icon: Icon(Icons.more_vert),
-                        onPressed: () {
+                        onPressed: ()  {
                           // print("more_vert" + index.toString());
+                          // Share.share('check out my website https://example.com');
                         })
                   ],
                 ),
