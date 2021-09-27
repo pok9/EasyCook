@@ -200,21 +200,7 @@ class _SlidePageState extends State<SlidePage> {
               : bottomNvigationAdmin(),
       );
 
-  // {
-  //   // resizeToAvoidBottomPadding:
-  //   // false;
-  //   // getTokenFireBase();
-  //   if (token != "" && token != null) {
-  //     getMyAccounts2();
-  //   }
 
-  //
-  //   return (dataUser == null || token == "")
-  //       ? bottomNvigationUser(keyboardIsOpened, context)
-  //       : (dataUser.userStatus == 1)
-  //           ? bottomNvigationUser(keyboardIsOpened, context)
-  //           : bottomNvigationAdmin();
-  // }
 
   Scaffold bottomNvigationAdmin() {
     if (token != "" && token != null) {
@@ -425,7 +411,8 @@ class _SlidePageState extends State<SlidePage> {
               opacity: keyboardIsOpened ? 0 : 1,
               child: FloatingActionButton(
                 child: Icon(Icons.add),
-                onPressed: () {
+                onPressed: () async {
+                  
                   if (token != "" && token != null) {
                     Navigator.pushNamed(context, '/AddFoodPage');
                   } else {

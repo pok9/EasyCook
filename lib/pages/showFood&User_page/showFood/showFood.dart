@@ -1437,18 +1437,21 @@ class _ShowFoodState extends State<ShowFood> {
                                             text: dataGetCommentPost[index]
                                                 .aliasName,
                                             style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: (dataGetCommentPost[index]
-                                                      .userStatus ==
-                                                  0)
-                                              ? Colors.red
-                                              : (dataMyAccont == null)
-                                                  ? Colors.black
-                                                  : (dataGetCommentPost[index]
-                                                              .userId ==
-                                                          dataMyAccont.userId)
-                                                      ? Colors.blue
-                                                      : Colors.black),
+                                                fontWeight: FontWeight.bold,
+                                                color: (dataGetCommentPost[
+                                                                index]
+                                                            .userStatus ==
+                                                        0)
+                                                    ? Colors.red
+                                                    : (dataMyAccont == null)
+                                                        ? Colors.black
+                                                        : (dataGetCommentPost[
+                                                                        index]
+                                                                    .userId ==
+                                                                dataMyAccont
+                                                                    .userId)
+                                                            ? Colors.blue
+                                                            : Colors.black),
                                             children: <TextSpan>[
                                               TextSpan(
                                                 text:
@@ -1484,7 +1487,7 @@ class _ShowFoodState extends State<ShowFood> {
                                   //   ),
                                   // ),
 
-                                  subtitle:buildTextComment(index),
+                                  subtitle: buildTextComment(index),
                                   //  RichText(
                                   //   text: TextSpan(
                                   //     text:
@@ -1508,7 +1511,7 @@ class _ShowFoodState extends State<ShowFood> {
                                   //   ),
                                   // ),
                                   // subtitle: Text(
-                                 
+
                                   dense: true,
                                   // trailing: Text('Horse'),
                                 );
@@ -1586,63 +1589,73 @@ class _ShowFoodState extends State<ShowFood> {
                 SizedBox(
                   height: 5,
                 ),
-                Card(
-                  margin: EdgeInsets.zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
-                  //ปรับขอบการ์ด
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "หมวดหมู่ที่คล้ายกัน",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                (categoryFood == null)
+                    ? Container()
+                    : (categoryFood.length == 1)
+                        ? Container()
+                        : Card(
+                            margin: EdgeInsets
+                                .zero, //ปรับระยะขอบการ์ดให้ติดขอบทุกด้าน
+                            //ปรับขอบการ์ด
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
                             ),
-                            // (categoryFood == null)
-                            //     ? Text(categoryFood.toString())
-                            //     : Text(categoryFood[0].recipeName)
-                          ],
-                        ),
-                      ),
-                      (categoryFood == null)
-                          ? Container(
-                              height: 329,
-                            )
-                          // : Container(
-                          //     height: 300,
-                          //     child: ListView.builder(
-                          //         scrollDirection: Axis.horizontal,
-                          //         shrinkWrap: true,
-                          //         physics: NeverScrollableScrollPhysics(),
-                          //         itemCount: categoryFood.length,
-                          //         itemBuilder: (context, index) {
-                          //           return Padding(
-                          //             padding: const EdgeInsets.all(8.0),
-                          //             child: Container(width: 50,height: 50,color: Colors.black,),
-                          //           );
-                          //         }),
-                          //   ),
-                          : Container(
-                              height: 300,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  // scrollDirection: Axis.vertical,
-                                  itemCount: categoryFood.length,
-                                  itemBuilder: (context, index) {
-                                    return _recommendRecipeCard(
-                                        context, categoryFood[index]);
-                                  })),
-                    ],
-                  ),
-                )
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Row(
+                                    // crossAxisAlignment: CrossAxisAlignment.center,
+                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "หมวดหมู่ที่คล้ายกัน",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      // (categoryFood == null)
+                                      //     ? Text(categoryFood.toString())
+                                      //     : Text(categoryFood[0].recipeName)
+                                    ],
+                                  ),
+                                ),
+                                (categoryFood == null)
+                                    ? Container(
+                                        height: 329,
+                                      )
+                                    // : Container(
+                                    //     height: 300,
+                                    //     child: ListView.builder(
+                                    //         scrollDirection: Axis.horizontal,
+                                    //         shrinkWrap: true,
+                                    //         physics: NeverScrollableScrollPhysics(),
+                                    //         itemCount: categoryFood.length,
+                                    //         itemBuilder: (context, index) {
+                                    //           return Padding(
+                                    //             padding: const EdgeInsets.all(8.0),
+                                    //             child: Container(width: 50,height: 50,color: Colors.black,),
+                                    //           );
+                                    //         }),
+                                    //   ),
+                                    : Container(
+                                        height: 300,
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            // scrollDirection: Axis.vertical,
+                                            itemCount: categoryFood.length,
+                                            itemBuilder: (context, index) {
+                                              if (categoryFood[index].rid ==
+                                                  dataFood.rid) {
+                                                return Container();
+                                              }
+                                              return _recommendRecipeCard(
+                                                  context, categoryFood[index]);
+                                            })),
+                              ],
+                            ),
+                          )
               ],
             ),
           )

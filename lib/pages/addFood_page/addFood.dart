@@ -254,7 +254,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
           actionExtentRatio: 0.25,
           secondaryActions: <Widget>[
             IconSlideAction(
-              caption: 'Delete',
+              caption: 'ลบ',
               color: Colors.red,
               icon: Icons.delete,
               onTap: () {
@@ -377,7 +377,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
           actionExtentRatio: 0.25,
           secondaryActions: <Widget>[
             IconSlideAction(
-              caption: 'Delete',
+              caption: 'ลบ',
               color: Colors.red,
               icon: Icons.delete,
               onTap: () {
@@ -1752,6 +1752,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
       const Category('เมนูนึ่ง'),
       const Category('เมนูตุ๋น'),
       const Category('เมนูทอด'),
+      const Category('เมนูย่าง'),
     ];
 
     _selectPrices = "ฟรี";

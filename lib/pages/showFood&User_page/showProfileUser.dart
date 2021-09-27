@@ -276,7 +276,7 @@ class _ProfileUserState extends State<ProfileUser> {
         // ),
         title: Text(data_PostUser == null
             ? ""
-            : data_PostUser.aliasName + data_PostUser.userId.toString()),
+            : data_PostUser.aliasName),
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {

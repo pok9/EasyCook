@@ -246,11 +246,11 @@ class _RegisterPage3State extends State<RegisterPage3> {
                       ),
                       SizedBox(height: 30.0),
                       SizedBox(height: 30.0),
-                      _buildFullNameTF(),
+                      _buildNicknameTF(),
                       SizedBox(
                         height: 20.0,
                       ),
-                      _buildNicknameTF(),
+                      _buildFullNameTF(),
                       SizedBox(
                         height: 20.0,
                       ),

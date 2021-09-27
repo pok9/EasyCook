@@ -12,7 +12,7 @@ import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportComment.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
-import 'package:emoji_picker/emoji_picker.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

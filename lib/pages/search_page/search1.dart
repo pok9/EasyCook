@@ -26,6 +26,7 @@ class _SearchPage1State extends State<SearchPage1> {
     "เมนูนึ่ง",
     "เมนูตุ๋น",
     "เมนูทอด",
+    "เมนูย่าง",
   ];
   var iconFood = [
     "https://cdn-icons-png.flaticon.com/512/4913/4913194.png",
@@ -34,6 +35,8 @@ class _SearchPage1State extends State<SearchPage1> {
     "https://cdn-icons-png.flaticon.com/512/3063/3063360.png",
     "https://cdn-icons-png.flaticon.com/512/1302/1302319.png",
     "https://cdn-icons-png.flaticon.com/512/1143/1143203.png",
+    "https://cdn-icons-png.flaticon.com/512/4212/4212850.png",
+    
   ];
 
   @override
