@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:easy_cook/class/xxx_token_class.dart';
 import 'package:easy_cook/models/register/register_model.dart';
 import 'package:easy_cook/style/utiltties.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:easy_cook/slidepage.dart';
+
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/services.dart';
@@ -41,24 +41,34 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _ctrlPassword = TextEditingController();
   TextEditingController _ctrlCheckPassword = TextEditingController();
 
+  final passwordValidator = MultiValidator([
+    RequiredValidator(errorText: 'password is required'),
+    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
+    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+        errorText: 'passwords must have at least one special character')
+  ]);
+
   String isEmail = "";
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'อีเมล์',
-          style: kLabelStyle,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Text(
+            'อีเมล์',
+            style: kLabelStyle,
+          ),
         ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
           // decoration: kBoxDecorationStyle, //กรอบ
 
-          height: 60.0,
+          height: 80.0,
 
           child: TextFormField(
-            validator: (value) => EmailValidator.validate(value)
+            validator: (value) => email_validator.EmailValidator.validate(value)
                 ? (isEmail != "")
                     ? isEmail
                     : null
@@ -76,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
                   borderSide: BorderSide(color: Colors.white, width: 1)),
-              contentPadding: EdgeInsets.only(top: 18.0),
+              contentPadding: EdgeInsets.only(top: 38.0),
               filled: true,
               fillColor: Color(0xFF6CA8F1),
               prefixIcon: Icon(
@@ -99,26 +109,33 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'รหัสผ่าน',
-          style: kLabelStyle,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Text(
+            'รหัสผ่าน',
+            style: kLabelStyle,
+          ),
         ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
           // decoration: kBoxDecorationStyle, //กรอบ
 
-          height: 60.0,
+          height: 80.0,
 
           child: TextFormField(
-            validator: (value) {
+            validator: 
+            (value) {
               if (value == null || value.isEmpty) {
                 return 'กรุณาป้อนรหัสผ่าน';
-              } else if (value != _ctrlCheckPassword.text) {
+              } else if(value.length < 6){
+                return 'รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร';
+              }else if (value != _ctrlCheckPassword.text) {
                 return 'รหัสผ่านไม่ตรงกัน';
               }
               return null;
             },
+           
             controller: _ctrlPassword,
             obscureText: true,
             keyboardType: TextInputType.emailAddress,
@@ -132,7 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
                   borderSide: BorderSide(color: Colors.white, width: 1)),
-              contentPadding: EdgeInsets.only(top: 18.0),
+              contentPadding: EdgeInsets.only(top: 38.0),
               filled: true,
               fillColor: Color(0xFF6CA8F1),
               prefixIcon: Icon(
@@ -154,16 +171,19 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'ยืนยันรหัสผ่าน',
-          style: kLabelStyle,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Text(
+            'ยืนยันรหัสผ่าน',
+            style: kLabelStyle,
+          ),
         ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
           // decoration: kBoxDecorationStyle, //กรอบ
 
-          height: 60.0,
+          height: 80.0,
 
           child: TextFormField(
             validator: (value) {
@@ -187,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
                   borderSide: BorderSide(color: Colors.white, width: 1)),
-              contentPadding: EdgeInsets.only(top: 18.0),
+              contentPadding: EdgeInsets.only(top: 38.0),
               filled: true,
               fillColor: Color(0xFF6CA8F1),
               prefixIcon: Icon(
@@ -364,79 +384,66 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    // Container(
+    //         height: double.infinity,
+    //         width: double.infinity,
+    //         decoration: BoxDecoration(
+    //           gradient: LinearGradient(
+    //             begin: Alignment.topCenter,
+    //             end: Alignment.bottomCenter,
+    //             colors: [
+    //               Colors.blueAccent,
+    //               Colors.blueAccent,
+    //               Colors.blueAccent,
+    //               Colors.blueAccent,
+    //             ],
+    //             stops: [0.1, 0.4, 0.7, 0.9],
+    //           ),
+    //         ),
+    //       ),
     return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.blueAccent,
-                      Colors.blueAccent,
-                      Colors.blueAccent,
-                      Colors.blueAccent,
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
+      body: Container(
+        color: Colors.blueAccent,
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
                   ),
-                ),
-              ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'สมัครสมาชิก',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 30.0),
-                        SizedBox(height: 30.0),
-                        _buildEmailTF(),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        _buildPasswordTF(),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        _buildPasswordTFconfirm(),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-
-                        // _buildNameTF(),
-                        // SizedBox(
-                        //   height: 20.0,
-                        // ),
-                        _buildRegisterBtn(),
-                        _buildCancelBtn()
-                      ],
+                  Text(
+                    'สมัครสมาชิก',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              )
-            ],
+                  SizedBox(height: 30.0),
+                  _buildEmailTF(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  _buildPasswordTF(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  _buildPasswordTFconfirm(),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  _buildRegisterBtn(),
+                  _buildCancelBtn()
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -36,7 +36,16 @@ class _SearchPage1State extends State<SearchPage1> {
     "https://cdn-icons-png.flaticon.com/512/1302/1302319.png",
     "https://cdn-icons-png.flaticon.com/512/1143/1143203.png",
     "https://cdn-icons-png.flaticon.com/512/4212/4212850.png",
-    
+  ];
+
+  var categoryFoodImage = [
+    "https://c4.wallpaperflare.com/wallpaper/1015/171/825/smoothie-4k-hd-wallpaper-preview.jpg",
+    "https://img.taste.com.au/pqrFylbF/taste/2018/05/how-to-boil-an-egg-140215-2.jpg",
+    "https://img.freepik.com/free-photo/keto-diet-food-keto-breakfast-grilled-chicken-avocado-feta-cheese-quail-eggs-strawberries-nuts-lettuce-gray-background_114941-1607.jpg?size=626&ext=jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCnCRigJXR961hQpA6G-Hy03S3eD7xMQiTHbPJP2jgyyuns4YG14vSRJctRp210CRUZU&usqp=CAU",
+    "https://vistapointe.net/images/stew-8.jpg",
+    "https://wallpapercave.com/wp/wp2055348.jpg",
+    "https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmJxfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80"
   ];
 
   @override
@@ -168,6 +177,7 @@ class _SearchPage1State extends State<SearchPage1> {
                             return MenuFeature(
                               iconAsset: iconFood[index],
                               name: menuFood[index],
+                              categoryFoodImage: categoryFoodImage[index],
                             );
                           })),
                     ),
@@ -291,7 +301,8 @@ class _SearchPage1State extends State<SearchPage1> {
 class MenuFeature extends StatelessWidget {
   final String iconAsset;
   final String name;
-  MenuFeature({this.iconAsset, this.name});
+  final String categoryFoodImage;
+  MenuFeature({this.iconAsset, this.name,this.categoryFoodImage});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -303,7 +314,7 @@ class MenuFeature extends StatelessWidget {
               builder: (context) => Category(
                     categoryName: name,
                     categoryFoodImage:
-                        "https://www.mama.co.th/imgadmins/img_product_cate/big/cate_big_20180409150840.jpg",
+                        categoryFoodImage,
                   )),
         );
       },

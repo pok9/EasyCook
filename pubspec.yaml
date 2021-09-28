@@ -91,7 +91,8 @@ dependencies:
   firebase_messaging: ^10.0.4
   
   flutter_launcher_icons: ^0.9.1
-
+  
+  form_field_validator: ^1.1.0
   email_validator: '^1.0.6'
 
   flutter_credit_card: ^2.0.0
@@ -129,6 +130,7 @@ dependencies:
   flutter_tts: ^3.2.2
 
   share: ^2.0.4
+  
   
   # emoji_picker: ^0.0.2
   

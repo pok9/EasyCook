@@ -71,6 +71,51 @@ class _NotificationPageState extends State<NotificationPage> {
     });
   }
 
+  String getTimeDifferenceFromNow(DateTime dateTime) {
+    Duration difference = DateTime.now().difference(dateTime);
+    if (difference.inSeconds < 5) {
+      return "เมื่อสักครู่";
+    } else if (difference.inMinutes < 1) {
+      return "${difference.inSeconds} วินาที";
+    } else if (difference.inHours < 1) {
+      return "${difference.inMinutes} นาที";
+    } else if (difference.inHours < 24) {
+      return "${difference.inHours} ชั่วโมง";
+    } else if (difference.inDays < 8) {
+      return "${difference.inDays} วัน";
+    } else {
+      return "${dateEdit(dateTime.toString())}";
+    }
+  }
+
+  String dateEdit(String date) {
+    //data
+    Map<String, String> map = {
+      '01': "ม.ค.",
+      '02': "ก.พ.",
+      '03': "มี.ค.",
+      '04': "เม.ย.",
+      '05': "พ.ค.",
+      '06': "มิ.ย.",
+      '07': "ก.ค.",
+      '08': "ส.ค.",
+      '09': "ก.ย.",
+      '10': "ต.ค.",
+      '11': "พ.ย.",
+      '12': "ธ.ค."
+    };
+    List<String> dateTimeSp = date.split(" ");
+    List<String> dateSp = dateTimeSp[0].split("-");
+
+    //time
+    List timeSp = dateTimeSp[1].split(".");
+    List time = timeSp[0].split(":");
+
+    String text =
+        "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,7 +226,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       child: Text(dataGetNotification[index].state),
                     ),
                     subtitle: Text(
-                        "${dataGetNotification[index].description}\n\n${dataGetNotification[index].date}"),
+                        "${dataGetNotification[index].description}\n\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetNotification[index].date}"))}"),
                     // trailing: Icon(Icons.more_horiz),
                     isThreeLine: true,
                     onTap: () {

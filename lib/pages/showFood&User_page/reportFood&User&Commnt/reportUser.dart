@@ -17,7 +17,6 @@ class ReportUser extends StatefulWidget {
 }
 
 class _ReportUserState extends State<ReportUser> {
-
   List<Exercise> exercises = [
     Exercise(name: 'บัญชีนี้สร้างขึ้นเพื่อรังแกหรือก่อกวนฉัน'),
     Exercise(name: 'ปลอมแปลงว่าเป็นฉันหรือเพื่อน'),
@@ -106,14 +105,14 @@ class _ReportUserState extends State<ReportUser> {
         imageFile = croppedFile;
         AddImage addImageModels = new AddImage(File(imageFile.path));
 
-        image = addImageModels; 
+        image = addImageModels;
         // this.addImageProfile = [];
         // this.addImageProfile.add(addImageModels);
         // this._imageProfile = "";
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -128,7 +127,8 @@ class _ReportUserState extends State<ReportUser> {
           },
         ),
         (isSelect)
-            ? (_selected == exercises.length-1 && (otherCtl.text == "" && image == null))
+            ? (_selected == exercises.length - 1 &&
+                    (otherCtl.text == "" && image == null))
                 ? Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Text(
@@ -149,15 +149,14 @@ class _ReportUserState extends State<ReportUser> {
                         path = await addreportImage(this.image.image);
                       }
 
-                      if (_selected != exercises.length-1) {
+                      if (_selected != exercises.length - 1) {
                         print("description => ${exercises[_selected].name}");
                         description = exercises[_selected].name;
                       } else if (otherCtl.text != "" && otherCtl != null) {
                         print("description => ${otherCtl.text}");
                         description = otherCtl.text;
-                      } 
+                      }
                       print(path);
-
 
                       List<String> arrValue = [];
 
@@ -166,14 +165,14 @@ class _ReportUserState extends State<ReportUser> {
 
                       Navigator.pop(context, arrValue);
                     },
-                  ):
-        Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Text(
-            'รายงาน',
-            style: TextStyle(color: Colors.grey),
-          ),
-        )
+                  )
+            : Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Text(
+                  'รายงาน',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              )
       ],
       content: SingleChildScrollView(
         child: Container(
@@ -204,32 +203,30 @@ class _ReportUserState extends State<ReportUser> {
                           });
                     }),
               ),
-              (_selected != exercises.length-1)
+              (_selected != exercises.length - 1)
                   ? Container()
-                 
                   : TextFormField(
-                        controller: otherCtl,
-                   
-                        minLines: 2,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xfff3f3f4),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "โปรดระบุ",
-                          hintStyle: TextStyle(
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: Colors.grey),
+                      controller: otherCtl,
+                      minLines: 2,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xfff3f3f4),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
                         ),
-                        onChanged: (value) {
-                           setState(() {});
-                        },
+                        hintText: "โปรดระบุ",
+                        hintStyle: TextStyle(
+                            fontSize: 16,
+                            // fontWeight: FontWeight.bold,
+                            color: Colors.grey),
                       ),
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                    ),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Row(
@@ -246,17 +243,35 @@ class _ReportUserState extends State<ReportUser> {
                                   color: Colors.grey.shade700,
                                 ),
                                 onPressed: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   new MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           new AddImagePage()),
-                                  // ).then((value) {
-                                  //   if (value != null) {
-                                  //     image = value;
-                                  //     setState(() {});
-                                  //   }
-                                  // });
+                                 showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        ListTile(
+                                          leading: new Icon(
+                                              Icons.photo_camera_back,
+                                              color: Colors.blue),
+                                          title: new Text('รูปภาพในมือถือ'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            pickCropImage();
+                                          },
+                                        ),
+                                        ListTile(
+                                          leading: new Icon(
+                                              Icons.camera_alt_outlined,
+                                              color: Colors.blue),
+                                          title: new Text('ถ่ายรูปภาพ'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            captureImage();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
                                 }),
                           )
                         : Container(
