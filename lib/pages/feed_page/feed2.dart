@@ -2,6 +2,7 @@ import 'package:easy_cook/models/feed/newFeedsFollow_model.dart';
 import 'package:easy_cook/models/feed/newfeedsglobal/newfeedsglobal.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
+import 'package:easy_cook/pages/addFood_page/addFood.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
@@ -48,19 +49,57 @@ class _Feed2PageState extends State<Feed2Page> {
 
   _getMoreList() {
     print("Get More List");
-    _currentMax = dummyListDataNewfeedsglobal.length;
 
-    if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal.length) >= 4) {
-      for (int i = dummyListDataNewfeedsglobal.length;
-          i < _currentMax + 4;
-          i++) {
-        dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+    if (selected == 0) {
+      _currentMax = dummyListDataNewfeedsglobal.length;
+
+      if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal.length) >=
+          4) {
+        for (int i = dummyListDataNewfeedsglobal.length;
+            i < _currentMax + 4;
+            i++) {
+          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+        }
+      } else {
+        for (int i = dummyListDataNewfeedsglobal.length;
+            i < dataNewfeedsglobal.length;
+            i++) {
+          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+        }
       }
-    } else {
-      for (int i = dummyListDataNewfeedsglobal.length;
-          i < dataNewfeedsglobal.length;
-          i++) {
-        dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+    }else if(selected == 1){
+      _currentMax = dummyListDataNewfeedsglobal_free.length;
+
+      if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal_free.length) >=
+          4) {
+        for (int i = dummyListDataNewfeedsglobal_free.length;
+            i < _currentMax + 4;
+            i++) {
+          dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+        }
+      } else {
+        for (int i = dummyListDataNewfeedsglobal_free.length;
+            i < dataNewfeedsglobal.length;
+            i++) {
+          dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+        }
+      }
+    }else if(selected == 2){
+      _currentMax = dummyListDataNewfeedsglobal_notFree.length;
+
+      if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal_notFree.length) >=
+          4) {
+        for (int i = dummyListDataNewfeedsglobal_notFree.length;
+            i < _currentMax + 4;
+            i++) {
+          dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+        }
+      } else {
+        for (int i = dummyListDataNewfeedsglobal_notFree.length;
+            i < dataNewfeedsglobal.length;
+            i++) {
+          dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+        }
       }
     }
 
@@ -130,8 +169,12 @@ class _Feed2PageState extends State<Feed2Page> {
 
   List<Newfeedsglobal> dataNewfeedsglobal;
   List<Newfeedsglobal> dummyListDataNewfeedsglobal;
+  List<Newfeedsglobal> dummyListDataNewfeedsglobal_free;
+  List<Newfeedsglobal> dummyListDataNewfeedsglobal_notFree;
   Future<Null> getNewfeedsglobal() async {
     dummyListDataNewfeedsglobal = [];
+    dummyListDataNewfeedsglobal_free = [];
+    dummyListDataNewfeedsglobal_notFree = [];
     final String apiUrl =
         "http://apifood.comsciproject.com/pjPost/newfeedsglobal";
 
@@ -147,10 +190,20 @@ class _Feed2PageState extends State<Feed2Page> {
           if (dataNewfeedsglobal.length >= 10) {
             for (int i = 0; i < 10; i++) {
               dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+              if (dataNewfeedsglobal[i].price > 0) {
+                dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+              } else {
+                dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+              }
             }
           } else {
             for (int i = 0; i < dataNewfeedsglobal.length; i++) {
               dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+              if (dataNewfeedsglobal[i].price > 0) {
+                dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+              } else {
+                dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+              }
             }
           }
         });
@@ -211,6 +264,7 @@ class _Feed2PageState extends State<Feed2Page> {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
+        backgroundColor: Color(0xFFf3f5f9),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(40.0),
             child: AppBar(
@@ -225,11 +279,14 @@ class _Feed2PageState extends State<Feed2Page> {
           length: 2,
           child: Scaffold(
             // backgroundColor: Color(0xFFf3f5f9),
-            backgroundColor: Colors.white,
+
+            // backgroundColor: Colors.white,
+            // backgroundColor: Color(0xFFF5F5F5),
+            backgroundColor: Color(0xFFf3f5f9),
             appBar: new PreferredSize(
               preferredSize: Size.fromHeight(40),
               child: new Container(
-                color: Colors.white70,
+                color: Color(0xFFf3f5f9),
                 child: new SafeArea(
                   child: Column(
                     children: <Widget>[
@@ -324,281 +381,64 @@ class _Feed2PageState extends State<Feed2Page> {
         ));
   }
 
+  int selected = 0;
+  List<String> txtLatest_recipe = ["ทั้งหมด", "ฟรี", "ไม่ฟรี"];
   TabBarView body(Size deviceSize, BuildContext context) {
     return TabBarView(children: [
       (dataNewfeedsglobal == null)
           ? Center(child: Center(child: CupertinoActivityIndicator()))
-          : GridView.builder(
-              controller: _scrollController,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                mainAxisExtent: 250,
-                maxCrossAxisExtent: (deviceSize.width > 400) ? 250 : 200,
-              ),
-              itemCount: ((dummyListDataNewfeedsglobal.length + 1) % 2 != 0)
-                  ? dummyListDataNewfeedsglobal.length
-                  : dummyListDataNewfeedsglobal.length + 1,
-              itemBuilder: (BuildContext ctx, index) {
-                if (index == dataNewfeedsglobal.length) {
-                  return Center(
-                    child: Container(),
-                  );
-                }
-                if (index == dummyListDataNewfeedsglobal.length) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Center(child: CupertinoActivityIndicator()),
-                    ],
-                  );
-                }
-                return InkWell(
-                  onTap: () {
-                    if (dummyListDataNewfeedsglobal[index].price == 0) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ShowFood(
-                                dummyListDataNewfeedsglobal[index].rid)),
-                      ).then((value) => {getNewfeedsglobal()});
-                    } else {
-                      if (data_DataAc == null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RecipePurchasePage(
-                                    req_rid:
-                                        dummyListDataNewfeedsglobal[index].rid,
-                                  )),
-                        ).then((value) => {getNewfeedsglobal()});
-                      } else {
-                        if (data_DataAc.userId ==
-                                dummyListDataNewfeedsglobal[index].userId ||
-                            checkBuy.indexOf(dummyListDataNewfeedsglobal[index]
-                                    .rid
-                                    .toString()) >=
-                                0) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShowFood(
-                                    dummyListDataNewfeedsglobal[index].rid)),
-                          ).then((value) => {getNewfeedsglobal()});
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RecipePurchasePage(
-                                      req_rid:
-                                          dummyListDataNewfeedsglobal[index]
-                                              .rid,
-                                    )),
-                          ).then((value) => {
-                                if (token != "" && token != null)
-                                  {getMybuy(), getNewfeedsglobal()}
-                              });
-                        }
-                      }
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: 170,
-                              // width: 250,
-
-                              // decoration: BoxDecoration(
-                              //     borderRadius: BorderRadius.circular(5),
-                              //     image: DecorationImage(
-                              //         image: NetworkImage(
-                              //             dummyListDataNewfeedsglobal[index]
-                              //                 .image),
-                              //         fit: BoxFit.cover)),
-
-                              // child: FadeInImage.assetNetwork(
-
-                              //   placeholder: "assets/loadGif/loadding2.gif",
-                              //   image: dummyListDataNewfeedsglobal[index].image,
-                              //   fit: BoxFit.cover,
-                              // ),
-
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: FadeInImage.assetNetwork(
-                                  placeholder: "assets/loadGif/loadding2.gif",
-                                  image:
-                                      dummyListDataNewfeedsglobal[index].image,
-                                  fit: BoxFit.cover,
+          : ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 40,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 0),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selected = index;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: selected == index
+                                      ? Colors.blue
+                                      : Colors.white,
+                                ),
+                                child: Text(
+                                  txtLatest_recipe[index],
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: selected == index
+                                          ? Colors.white
+                                          : Colors.black),
                                 ),
                               ),
                             ),
-                            (dummyListDataNewfeedsglobal[index].price == 0)
-                                ? Container()
-                                : Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 8, right: 8),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            (data_DataAc == null)
-                                                ? CircleAvatar(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    radius: 16,
-                                                  )
-                                                : (data_DataAc.userId ==
-                                                        dummyListDataNewfeedsglobal[
-                                                                index]
-                                                            .userId)
-                                                    ? Container()
-                                                    : CircleAvatar(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        radius: 16,
-                                                      ),
-                                            Positioned(
-                                              top: 1,
-                                              right: 1,
-                                              child: Container(
-                                                height: 30,
-                                                width: 30,
-                                                child: (data_DataAc == null)
-                                                    ? Image.network(
-                                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
-                                                    : (data_DataAc.userId ==
-                                                            dummyListDataNewfeedsglobal[
-                                                                    index]
-                                                                .userId)
-                                                        ? Container()
-                                                        : (checkBuy.indexOf(
-                                                                    dummyListDataNewfeedsglobal[
-                                                                            index]
-                                                                        .rid
-                                                                        .toString()) >=
-                                                                0)
-                                                            ? Image.network(
-                                                                "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                            : Image.network(
-                                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Column(
-                                children: [
-                                  new Container(
-                                    height: 20.0,
-                                    width: 20.0,
-                                    decoration: new BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: new DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: new NetworkImage(
-                                                dummyListDataNewfeedsglobal[
-                                                        index]
-                                                    .profileImage))),
-                                  ),
-                                ],
-                              ),
-                              new SizedBox(
-                                width: 10.0,
-                              ),
-                              Expanded(
-                                child: new Text(
-                                  dummyListDataNewfeedsglobal[index].aliasName,
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.normal),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              (dummyListDataNewfeedsglobal[index].score == 0)
-                                  ? Container()
-                                  : Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Icon(
-                                            Icons.star,
-                                            color: Colors.blue,
-                                            size: 15,
-                                          ),
-                                          SizedBox(
-                                            width: 1,
-                                          ),
-                                          Text(
-                                            dummyListDataNewfeedsglobal[index]
-                                                    .score
-                                                    .toString() +
-                                                "/5",
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            width: 2,
-                                          ),
-                                          Text(
-                                            '(${dummyListDataNewfeedsglobal[index].count})',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  dummyListDataNewfeedsglobal[index].recipeName,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.justify,
-                                  // style: TextStyle(
-
-                                  //     color: Colors.black,
-                                  //     fontSize: 15),
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(child: Container()),
-                      ],
-                    ),
+                        separatorBuilder: (_, index) => SizedBox(
+                              width: 15,
+                            ),
+                        itemCount: 3),
                   ),
-                );
-              }),
+                ),
+                // bodyFeed2(dummyListDataNewfeedsglobal, deviceSize, context)
+                (selected == 0)
+                    ? bodyFeed2(
+                        dummyListDataNewfeedsglobal, deviceSize, context)
+                    : (selected == 1)
+                        ? bodyFeed2(dummyListDataNewfeedsglobal_free,
+                            deviceSize, context)
+                        : bodyFeed2(dummyListDataNewfeedsglobal_notFree,
+                            deviceSize, context),
+              ],
+            ),
       (newFeedsFollow == null)
           ? Container()
           : ListView.builder(
@@ -876,5 +716,270 @@ class _Feed2PageState extends State<Feed2Page> {
                     ),
             )
     ]);
+  }
+
+  GridView bodyFeed2(List<Newfeedsglobal> dummyListDataNewfeedsglobal,
+      Size deviceSize, BuildContext context) {
+    return GridView.builder(
+        controller: _scrollController,
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          mainAxisExtent: 250,
+          maxCrossAxisExtent: (deviceSize.width > 400) ? 250 : 200,
+        ),
+        itemCount: ((dummyListDataNewfeedsglobal.length + 1) % 2 != 0)
+            ? dummyListDataNewfeedsglobal.length
+            : dummyListDataNewfeedsglobal.length + 1,
+        itemBuilder: (BuildContext ctx, index) {
+          if (index == dummyListDataNewfeedsglobal.length) {
+            return Center(
+              child: Container(),
+            );
+          }
+          if (index == dummyListDataNewfeedsglobal.length) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Center(child: CupertinoActivityIndicator()),
+              ],
+            );
+          }
+          return InkWell(
+            onTap: () {
+              if (dummyListDataNewfeedsglobal[index].price == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ShowFood(dummyListDataNewfeedsglobal[index].rid)),
+                ).then((value) => {getNewfeedsglobal()});
+              } else {
+                if (data_DataAc == null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RecipePurchasePage(
+                              req_rid: dummyListDataNewfeedsglobal[index].rid,
+                            )),
+                  ).then((value) => {getNewfeedsglobal()});
+                } else {
+                  if (data_DataAc.userId ==
+                          dummyListDataNewfeedsglobal[index].userId ||
+                      checkBuy.indexOf(dummyListDataNewfeedsglobal[index]
+                              .rid
+                              .toString()) >=
+                          0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ShowFood(dummyListDataNewfeedsglobal[index].rid)),
+                    ).then((value) => {getNewfeedsglobal()});
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RecipePurchasePage(
+                                req_rid: dummyListDataNewfeedsglobal[index].rid,
+                              )),
+                    ).then((value) => {
+                          if (token != "" && token != null)
+                            {getMybuy(), getNewfeedsglobal()}
+                        });
+                  }
+                }
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+              child: Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        height: 170,
+                        // width: 250,
+
+                        // decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(5),
+                        //     image: DecorationImage(
+                        //         image: NetworkImage(
+                        //             dummyListDataNewfeedsglobal[index]
+                        //                 .image),
+                        //         fit: BoxFit.cover)),
+
+                        // child: FadeInImage.assetNetwork(
+
+                        //   placeholder: "assets/loadGif/loadding2.gif",
+                        //   image: dummyListDataNewfeedsglobal[index].image,
+                        //   fit: BoxFit.cover,
+                        // ),
+
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: "assets/loadGif/loadding2.gif",
+                            image: dummyListDataNewfeedsglobal[index].image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      (dummyListDataNewfeedsglobal[index].price == 0)
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 8, right: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      (data_DataAc == null)
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 16,
+                                            )
+                                          : (data_DataAc.userId ==
+                                                  dummyListDataNewfeedsglobal[
+                                                          index]
+                                                      .userId)
+                                              ? Container()
+                                              : CircleAvatar(
+                                                  backgroundColor: Colors.white,
+                                                  radius: 16,
+                                                ),
+                                      Positioned(
+                                        top: 1,
+                                        right: 1,
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          child: (data_DataAc == null)
+                                              ? Image.network(
+                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                              : (data_DataAc.userId ==
+                                                      dummyListDataNewfeedsglobal[
+                                                              index]
+                                                          .userId)
+                                                  ? Container()
+                                                  : (checkBuy.indexOf(
+                                                              dummyListDataNewfeedsglobal[
+                                                                      index]
+                                                                  .rid
+                                                                  .toString()) >=
+                                                          0)
+                                                      ? Image.network(
+                                                          "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                      : Image.network(
+                                                          "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Column(
+                          children: [
+                            new Container(
+                              height: 20.0,
+                              width: 20.0,
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: new NetworkImage(
+                                          dummyListDataNewfeedsglobal[index]
+                                              .profileImage))),
+                            ),
+                          ],
+                        ),
+                        new SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: new Text(
+                            dummyListDataNewfeedsglobal[index].aliasName,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            
+                          ),
+                        ),
+                        (dummyListDataNewfeedsglobal[index].score == 0)
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.blue,
+                                      size: 15,
+                                    ),
+                                    SizedBox(
+                                      width: 1,
+                                    ),
+                                    Text(
+                                      dummyListDataNewfeedsglobal[index]
+                                              .score
+                                              .toString() +
+                                          "/5",
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text(
+                                      '(${dummyListDataNewfeedsglobal[index].count})',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            dummyListDataNewfeedsglobal[index].recipeName,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.justify,
+                            // style: TextStyle(
+
+                            //     color: Colors.black,
+                            //     fontSize: 15),
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

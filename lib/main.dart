@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: SlidePage(
         flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
         channel: channel,

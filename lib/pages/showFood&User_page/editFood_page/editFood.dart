@@ -914,6 +914,16 @@ class _EditFoodPageState extends State<EditFoodPage> {
               content: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                child: Image.asset(
+                  'assets/loadGif/loadding3.gif',
+                ),
+                width: 50,
+                height: 50,
+              ),
+              SizedBox(
+                width: 5,
+              ),
               Text("กรุณารอสักครู่...   "),
               CircularProgressIndicator()
             ],

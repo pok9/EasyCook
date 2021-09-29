@@ -190,7 +190,6 @@ class _ManageMembersState extends State<ManageMembers> {
       body: DefaultTabController(
         length: 3,
         child: Scaffold(
-          
           appBar: new PreferredSize(
             preferredSize: Size.fromHeight(40),
             child: new Container(
@@ -206,21 +205,21 @@ class _ManageMembersState extends State<ManageMembers> {
                       // ),
                       tabs: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                          padding: const EdgeInsets.only(bottom: 5),
                           child: new Text(
                             "รายงาน",
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                          padding: const EdgeInsets.only(bottom: 5),
                           child: new Text(
                             "จัดการสมาชิก",
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                          padding: const EdgeInsets.only(bottom: 5),
                           child: new Text(
                             "แจ้งเตือนแอป",
                             style: TextStyle(color: Colors.black),
@@ -236,11 +235,9 @@ class _ManageMembersState extends State<ManageMembers> {
           body: TabBarView(children: [
             Container(
               child: Scaffold(
-              
                 body: DefaultTabController(
                   length: 3,
                   child: Scaffold(
-                    
                     appBar: new PreferredSize(
                       preferredSize: Size.fromHeight(40),
                       child: new Container(
@@ -263,7 +260,7 @@ class _ManageMembersState extends State<ManageMembers> {
                                           color: Colors.grey,
                                         ),
                                         SizedBox(
-                                          width: 5,
+                                          width: 1,
                                         ),
                                         new Text(
                                           "สูตรอาหาร",
@@ -283,7 +280,7 @@ class _ManageMembersState extends State<ManageMembers> {
                                           color: Colors.grey,
                                         ),
                                         SizedBox(
-                                          width: 5,
+                                          width: 1,
                                         ),
                                         new Text(
                                           "ผู้ใช้",
@@ -303,7 +300,7 @@ class _ManageMembersState extends State<ManageMembers> {
                                           color: Colors.grey,
                                         ),
                                         SizedBox(
-                                          width: 5,
+                                          width: 1,
                                         ),
                                         new Text(
                                           "คอมเมนต์",
@@ -319,7 +316,6 @@ class _ManageMembersState extends State<ManageMembers> {
                         ),
                       ),
                     ),
-             
                     body: TabBarView(
                       children: [
                         (dateGetAllReport == null)
@@ -483,7 +479,6 @@ class _ManageMembersState extends State<ManageMembers> {
                       ],
                     ),
                   ),
-                  
             SingleChildScrollView(
               child: Form(
                 key: _formKey,
@@ -561,7 +556,7 @@ class _ManageMembersState extends State<ManageMembers> {
                             Navigator.pop(context);
                             _ctrlNoti.text = "";
                             clear_ctrlNoti = true;
-            
+
                             if (apiNotificationModel.success == 1) {
                               Fluttertoast.showToast(
                                   msg: "ส่งแจ้งเตือนเรียบร้อย",
@@ -581,10 +576,10 @@ class _ManageMembersState extends State<ManageMembers> {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                             }
-            
+
                             setState(() {});
                           }
-            
+
                           // print(
                           //     "apiNotificationModel.success => ${apiNotificationModel.success}");
                         },
@@ -655,7 +650,7 @@ class _ManageMembersState extends State<ManageMembers> {
         "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} เวลา ${time[0]}:${time[1]} น.";
     return text;
   }
-  
+
   Widget reportEverything(String typeNameReport) {
     return ListView.builder(
         //  reverse: true,
@@ -688,8 +683,7 @@ class _ManageMembersState extends State<ManageMembers> {
                       child: Text(dateGetAllReport[index].nameUserReport),
                     ),
                     subtitle: Text(
-                        "${dateGetAllReport[index].title}\n\n${dateEdit(dateGetAllReport[index].datetime
-                                                          .toString())}"),
+                        "${dateGetAllReport[index].title}\n\n${dateEdit(dateGetAllReport[index].datetime.toString())}"),
                     trailing: IconButton(
                         onPressed: () {
                           showDialog(

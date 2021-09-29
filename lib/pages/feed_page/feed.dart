@@ -372,7 +372,9 @@ class _FeedPageState extends State<FeedPage> {
 
     return Scaffold(
       // backgroundColor: Colors.white70,
+ 
       backgroundColor: Color(0xFFf3f5f9),
+      //  backgroundColor: Color(0xFFF5F5F5),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(

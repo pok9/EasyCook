@@ -97,10 +97,14 @@ class _SearchPage1State extends State<SearchPage1> {
   }
 
   final StoryController controller = StoryController();
+
+  int selected = 0;
+  List<String> txtLatest_recipe = ["ทั้งหมด", "ฟรี", "ไม่ฟรี"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFf3f5f9),
+        // backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
         title: Text('ค้นหา'),
         bottom: PreferredSize(

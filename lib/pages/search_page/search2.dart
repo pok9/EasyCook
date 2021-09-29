@@ -196,6 +196,9 @@ class _SearchPage2State extends State<SearchPage2> {
 
   bool isText = false;
   final translator = GoogleTranslator();
+
+  int selected = 0;
+  List<String> txtLatest_recipe = ["ทั้งหมด", "ฟรี", "ไม่ฟรี"];
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -296,7 +299,47 @@ class _SearchPage2State extends State<SearchPage2> {
               ),
             ),
             body: (isText == false)
-                ? Container()
+                ? Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 40,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: 0),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) => GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selected = index;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: selected == index
+                                          ? Colors.blue
+                                          : Colors.white,
+                                    ),
+                                    child: Text(
+                                      txtLatest_recipe[index],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: selected == index
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                  ),
+                                ),
+                            separatorBuilder: (_, index) => SizedBox(
+                                  width: 15,
+                                ),
+                            itemCount: 3),
+                      ),
+                    ),
+                  )
                 : TabBarView(children: [
                     (dataRecipe == null)
                         ? Center(
@@ -305,43 +348,72 @@ class _SearchPage2State extends State<SearchPage2> {
                                   Colors.blue),
                             ),
                           )
-                        : ListView.builder(
-                            itemCount: dataRecipe.length,
-                            itemBuilder: (context, index) => Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        if (dataRecipe[index].price == 0) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => ShowFood(
-                                                    dataRecipe[index].rid)),
-                                          );
-                                        } else {
-                                          if (dataAcUser == null) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RecipePurchasePage(
-                                                        req_rid:
-                                                            dataRecipe[index]
-                                                                .rid,
-                                                      )),
-                                            );
-                                          } else {
-                                            if (dataAcUser.userId ==
-                                                    dataRecipe[index].userId ||
-                                                checkBuy.indexOf(
-                                                        dataRecipe[index]
-                                                            .rid
-                                                            .toString()) >=
-                                                    0) {
+                        : ListView(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 40,
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: ListView.separated(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 0),
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) =>
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selected = index;
+                                              });
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 10, horizontal: 15),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                color: selected == index
+                                                    ? Colors.blue
+                                                    : Colors.white,
+                                              ),
+                                              child: Text(
+                                                txtLatest_recipe[index],
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: selected == index
+                                                        ? Colors.white
+                                                        : Colors.black),
+                                              ),
+                                            ),
+                                          ),
+                                      separatorBuilder: (_, index) => SizedBox(
+                                            width: 15,
+                                          ),
+                                      itemCount: 3),
+                                ),
+                              ),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: dataRecipe.length,
+                                  itemBuilder: (context, index) {
+                                    if (selected == 1 && dataRecipe[index].price > 0 ) {
+                                      return Container();
+                                    }
+                                    if(selected == 2 && dataRecipe[index].price == 0) {
+                                      return Container();
+                                    }
+
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (dataRecipe[index].price == 0) {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -351,173 +423,211 @@ class _SearchPage2State extends State<SearchPage2> {
                                                                 .rid)),
                                               );
                                             } else {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        RecipePurchasePage(
-                                                          req_rid:
-                                                              dataRecipe[index]
-                                                                  .rid,
-                                                        )),
-                                              );
+                                              if (dataAcUser == null) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          RecipePurchasePage(
+                                                            req_rid: dataRecipe[
+                                                                    index]
+                                                                .rid,
+                                                          )),
+                                                );
+                                              } else {
+                                                if (dataAcUser.userId ==
+                                                        dataRecipe[index]
+                                                            .userId ||
+                                                    checkBuy.indexOf(
+                                                            dataRecipe[index]
+                                                                .rid
+                                                                .toString()) >=
+                                                        0) {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ShowFood(dataRecipe[
+                                                                    index]
+                                                                .rid)),
+                                                  );
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            RecipePurchasePage(
+                                                              req_rid:
+                                                                  dataRecipe[
+                                                                          index]
+                                                                      .rid,
+                                                            )),
+                                                  );
+                                                }
+                                              }
                                             }
-                                          }
-                                        }
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            16, 16, 16, 0),
-                                        child: Column(
-                                          children: [
-                                            Stack(
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                16, 0, 16, 0),
+                                            child: Column(
                                               children: [
-                                                Container(
-                                                  width: deviceSize.width,
-                                                  height: 220,
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        new BorderRadius
-                                                            .circular(15.0),
-                                                    child: Image(
-                                                      fit: BoxFit.cover,
-                                                      // alignment: Alignment.topRight,
-                                                      image: NetworkImage(
-                                                          dataRecipe[index]
-                                                              .image), ////////////////////////////////////////////////////////
+                                                Stack(
+                                                  children: [
+                                                    Container(
+                                                      width: deviceSize.width,
+                                                      height: 220,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            new BorderRadius
+                                                                .circular(15.0),
+                                                        child: Image(
+                                                          fit: BoxFit.cover,
+                                                          // alignment: Alignment.topRight,
+                                                          image: NetworkImage(
+                                                              dataRecipe[index]
+                                                                  .image), ////////////////////////////////////////////////////////
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                                (dataRecipe[index].price == 0)
-                                                    ? Container()
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                top: 8,
-                                                                right: 8),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Stack(
+                                                    (dataRecipe[index].price ==
+                                                            0)
+                                                        ? Container()
+                                                        : Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 8,
+                                                                    right: 8),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
                                                               children: [
-                                                                (dataAcUser ==
-                                                                        null)
-                                                                    ? CircleAvatar(
-                                                                        backgroundColor:
-                                                                            Colors.white,
-                                                                        radius:
-                                                                            16,
-                                                                      )
-                                                                    : (dataAcUser.userId ==
-                                                                            dataRecipe[index].userId)
-                                                                        ? Container()
-                                                                        : CircleAvatar(
+                                                                Stack(
+                                                                  children: [
+                                                                    (dataAcUser ==
+                                                                            null)
+                                                                        ? CircleAvatar(
                                                                             backgroundColor:
                                                                                 Colors.white,
                                                                             radius:
                                                                                 16,
-                                                                          ),
-                                                                Positioned(
-                                                                  top: 1,
-                                                                  right: 1,
-                                                                  child:
-                                                                      Container(
-                                                                    height: 30,
-                                                                    width: 30,
-                                                                    child: (dataAcUser ==
-                                                                            null)
-                                                                        ? Image.network(
-                                                                            "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                          )
                                                                         : (dataAcUser.userId ==
                                                                                 dataRecipe[index].userId)
                                                                             ? Container()
-                                                                            : (checkBuy.indexOf(dataRecipe[index].rid.toString()) >= 0)
-                                                                                ? Image.network("https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                                : Image.network("https://image.flaticon.com/icons/png/512/1177/1177428.png"),
-                                                                  ),
+                                                                            : CircleAvatar(
+                                                                                backgroundColor: Colors.white,
+                                                                                radius: 16,
+                                                                              ),
+                                                                    Positioned(
+                                                                      top: 1,
+                                                                      right: 1,
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            30,
+                                                                        width:
+                                                                            30,
+                                                                        child: (dataAcUser ==
+                                                                                null)
+                                                                            ? Image.network("https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                            : (dataAcUser.userId == dataRecipe[index].userId)
+                                                                                ? Container()
+                                                                                : (checkBuy.indexOf(dataRecipe[index].rid.toString()) >= 0)
+                                                                                    ? Image.network("https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                                                    : Image.network("https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               ],
                                                             ),
-                                                          ],
+                                                          )
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8, bottom: 8),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 4,
+                                                        child: Text(
+                                                          dataRecipe[index]
+                                                              .recipeName,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 15),
                                                         ),
-                                                      )
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8, bottom: 8),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 4,
-                                                    child: Text(
-                                                      dataRecipe[index]
-                                                          .recipeName,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 15),
-                                                    ),
-                                                  ),
-                                                  (dataRecipe[index].score == 0)
-                                                      ? Container()
-                                                      : Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Icon(
-                                                              Icons.star,
-                                                              color:
-                                                                  Colors.blue,
-                                                              size: 18,
+                                                      ),
+                                                      (dataRecipe[index]
+                                                                  .score ==
+                                                              0)
+                                                          ? Container()
+                                                          : Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.star,
+                                                                  color: Colors
+                                                                      .blue,
+                                                                  size: 18,
+                                                                ),
+                                                                Text(dataRecipe[
+                                                                            index]
+                                                                        .score
+                                                                        .toString() +
+                                                                    "/5(${dataRecipe[index].count})")
+                                                              ],
                                                             ),
-                                                            Text(dataRecipe[
-                                                                        index]
-                                                                    .score
-                                                                    .toString() +
-                                                                "/5(${dataRecipe[index].count})")
-                                                          ],
-                                                        ),
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                new Container(
-                                                  height: 30.0,
-                                                  width: 30.0,
-                                                  decoration: new BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      image: new DecorationImage(
-                                                          fit: BoxFit.fill,
-                                                          image: new NetworkImage(
-                                                              dataRecipe[index]
-                                                                  .profileImage))),
+                                                    ],
+                                                  ),
                                                 ),
-                                                SizedBox(
-                                                  width: 10,
+                                                Row(
+                                                  children: [
+                                                    new Container(
+                                                      height: 30.0,
+                                                      width: 30.0,
+                                                      decoration: new BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          image: new DecorationImage(
+                                                              fit: BoxFit.fill,
+                                                              image: new NetworkImage(
+                                                                  dataRecipe[
+                                                                          index]
+                                                                      .profileImage))),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(dataRecipe[index]
+                                                            .nameSurname +
+                                                        "(${dataRecipe[index].aliasName})")
+                                                  ],
                                                 ),
-                                                Text(dataRecipe[index]
-                                                        .nameSurname +
-                                                    "(${dataRecipe[index].aliasName})")
                                               ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 16,
-                                    )
-                                  ],
-                                )),
+                                        SizedBox(
+                                          height: 16,
+                                        )
+                                      ],
+                                    );
+                                  }),
+                            ],
+                          ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: ListView.builder(

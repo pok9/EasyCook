@@ -437,8 +437,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               child: Container(
                                 height: 75,
                                 color: Color(0xfff3f3f4),
-                                child:
-                                 IconButton(
+                                child: IconButton(
                                     iconSize: 30,
                                     icon: Icon(
                                       Icons.add,
@@ -627,69 +626,95 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                       //   }
                                                       // });
                                                       showModalBottomSheet(
-                                          context: context,
-                                          builder: (context) {
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                ListTile(
-                                                  leading: new Icon(
-                                                    Icons.photo_camera_back,
-                                                    color: Colors.blue,
-                                                  ),
-                                                  title: new Text(
-                                                      'รูปภาพในมือถือ'),
-                                                  onTap: () async {
-                                                    Navigator.pop(context);
-                                                    pickCropImage(
-                                                        imageHowto,
-                                                        "addPictueHowto",
-                                                        displayNumber - 1);
-                                                  },
-                                                ),
-                                                ListTile(
-                                                  leading: new Icon(
-                                                      Icons.camera_alt_outlined,
-                                                      color: Colors.blue),
-                                                  title: new Text('ถ่ายรูปภาพ'),
-                                                  onTap: () async {
-                                                    Navigator.pop(context);
-                                                    captureImage(
-                                                        imageHowto,
-                                                        "addPictueHowto",
-                                                        displayNumber - 1);
-                                                  },
-                                                ),
-                                                ListTile(
-                                                  leading: new Icon(
-                                                      Icons
-                                                          .video_collection_outlined,
-                                                      color: Colors.blue),
-                                                  title: new Text(
-                                                      'เพิ่ม วิดีโอ จากคลัง'),
-                                                  onTap: () async {
-                                                    Navigator.pop(context);
-                                                    pickCropVideo(imageHowto,
-                                                        displayNumber - 1);
-                                                  },
-                                                ),
-                                                ListTile(
-                                                  leading: new Icon(
-                                                      Icons
-                                                          .video_camera_back_outlined,
-                                                      color: Colors.blue),
-                                                  title: new Text('ถ่ายวิดีโอ'),
-                                                  onTap: () async {
-                                                    Navigator.pop(context);
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: <
+                                                                  Widget>[
+                                                                ListTile(
+                                                                  leading:
+                                                                      new Icon(
+                                                                    Icons
+                                                                        .photo_camera_back,
+                                                                    color: Colors
+                                                                        .blue,
+                                                                  ),
+                                                                  title: new Text(
+                                                                      'รูปภาพในมือถือ'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    pickCropImage(
+                                                                        imageHowto,
+                                                                        "addPictueHowto",
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                                ListTile(
+                                                                  leading: new Icon(
+                                                                      Icons
+                                                                          .camera_alt_outlined,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  title: new Text(
+                                                                      'ถ่ายรูปภาพ'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    captureImage(
+                                                                        imageHowto,
+                                                                        "addPictueHowto",
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                                ListTile(
+                                                                  leading: new Icon(
+                                                                      Icons
+                                                                          .video_collection_outlined,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  title: new Text(
+                                                                      'เพิ่ม วิดีโอ จากคลัง'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    pickCropVideo(
+                                                                        imageHowto,
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                                ListTile(
+                                                                  leading: new Icon(
+                                                                      Icons
+                                                                          .video_camera_back_outlined,
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  title: new Text(
+                                                                      'ถ่ายวิดีโอ'),
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
 
-                                                    captureVideo(imageHowto,
-                                                        displayNumber - 1);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                          
+                                                                    captureVideo(
+                                                                        imageHowto,
+                                                                        displayNumber -
+                                                                            1);
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            );
+                                                          });
+
                                                       // showModalBottomSheet(
                                                       //     context: context,
                                                       //     builder: (context) {
@@ -865,6 +890,16 @@ class _AddFoodPageState extends State<AddFoodPage> {
               content: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                child: Image.asset(
+                  'assets/loadGif/loadding3.gif',
+                ),
+                width: 50,
+                height: 50,
+              ),
+              SizedBox(
+                width: 5,
+              ),
               Text("กรุณารอสักครู่...   "),
               CircularProgressIndicator()
             ],
@@ -952,8 +987,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
             addImageModel.add(addImageModels);
           } else if (mode == "editPictue") {
             addImageModel[index] = addImageModels;
-          }
-          else if (mode == "addPictueHowto") {
+          } else if (mode == "addPictueHowto") {
             addImageModel[index] = addImageModels.image;
           }
         });
