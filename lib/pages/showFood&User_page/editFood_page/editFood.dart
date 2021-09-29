@@ -1868,6 +1868,8 @@ class _EditFoodPageState extends State<EditFoodPage> {
       const Category('เมนูตุ่น'),
       const Category('เมนูทอด'),
       const Category('เมนูย่าง'),
+      const Category('เมนูอบ'),
+      const Category('เมนูกินเล่น'),
     ];
 
     // _selectPrices = "ฟรี";

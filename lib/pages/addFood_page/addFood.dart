@@ -1753,6 +1753,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
       const Category('เมนูตุ๋น'),
       const Category('เมนูทอด'),
       const Category('เมนูย่าง'),
+      const Category('เมนูอบ'),
+      const Category('เมนูกินเล่น'),
     ];
 
     _selectPrices = "ฟรี";

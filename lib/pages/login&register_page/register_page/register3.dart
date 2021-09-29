@@ -91,7 +91,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
+              // fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -126,7 +126,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
             controller: _ctrlNickName,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
+              // fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -191,7 +191,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
+            // fontFamily: 'OpenSans',
           ),
         ),
       ),
@@ -215,10 +215,10 @@ class _RegisterPage3State extends State<RegisterPage3> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.blueGrey,
                       Colors.blueAccent,
-                      Colors.blueGrey,
-                      Colors.blue,
+                      Colors.blueAccent,
+                      Colors.blueAccent,
+                      Colors.blueAccent,
                     ],
                     stops: [0.1, 0.4, 0.7, 0.9],
                   ),
@@ -239,7 +239,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
                         'ตั้งชื่อ',
                         style: TextStyle(
                           color: Colors.white,
-                          fontFamily: 'OpenSans',
+                          // fontFamily: 'OpenSans',
                           fontSize: 30.0,
                           fontWeight: FontWeight.bold,
                         ),

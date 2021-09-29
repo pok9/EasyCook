@@ -226,7 +226,7 @@ class _DrawersState extends State<Drawers> {
                     ),
                     title: Text(
                       'บัญชีของฉัน',
-                      style: GoogleFonts.kanit(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
@@ -250,7 +250,7 @@ class _DrawersState extends State<Drawers> {
                     ),
                     title: Text(
                       'สูตรที่ซื้อ',
-                      style: GoogleFonts.kanit(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
@@ -309,7 +309,7 @@ class _DrawersState extends State<Drawers> {
                               ),
                     title: Text(
                       'การแจ้งเตือน',
-                      style: GoogleFonts.kanit(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
@@ -336,7 +336,7 @@ class _DrawersState extends State<Drawers> {
                           ),
                           title: Text(
                             'ศูนย์ช่วยเหลือ',
-                            style: GoogleFonts.kanit(
+                            style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w300,
                             ),
@@ -363,7 +363,7 @@ class _DrawersState extends State<Drawers> {
                     ),
                     title: Text(
                       'ตั้งค่า',
-                      style: GoogleFonts.kanit(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
@@ -384,7 +384,7 @@ class _DrawersState extends State<Drawers> {
                     ),
                     title: Text(
                       'สลับบัญชี',
-                      style: GoogleFonts.kanit(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
@@ -405,7 +405,7 @@ class _DrawersState extends State<Drawers> {
                     ),
                     title: Text(
                       'ออกจากระบบ',
-                      style: GoogleFonts.kanit(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),

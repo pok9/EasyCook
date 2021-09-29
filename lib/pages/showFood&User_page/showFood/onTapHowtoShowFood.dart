@@ -137,7 +137,7 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                                   // "fasdfasdufajsjofaosidjfiasodjfiadsfosadjifoadsiofjioasdjfijiojsadfjiosadfuiashudfhASDFIOASDIFOJIJSADOFJIOASDOIFJASOIDJFOOIFJDSOIIFAJPOSDFJOIAJSDIOFOIJFDSAOIJFPOIASJDIOFJIOASDJIOFsdauifhuisahduifhuiasdhfuihasduhfuihsadufhuisasdifiuhsadiufhiusadhfuisadufuisaduhfiaiusdhfuihasdufhuiahsduifuiahsdiufhiuovfiuasbyifoyaisyfiuoasyiufoyoiuasyvbyiuafybiaoviabsyivobyfsdbyifuysbioyy",
                                   style: TextStyle(
                                       fontWeight: FontWeight.normal,
-                                      fontFamily: 'OpenSans',
+                                      //fontFamily: 'OpenSans',
                                       fontSize: 17,
                                       color: Colors.black,
                                       decoration: TextDecoration.none),

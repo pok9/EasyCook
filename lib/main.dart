@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 // import 'package:easy_cook/slidepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -54,7 +55,11 @@ class MyApp extends StatelessWidget {
         flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
         channel: channel,
       ),
-    
+      theme: ThemeData(
+        fontFamily: 'Schyler',
+        
+        // primarySwatch: C
+      ),
       routes: {
         '/register-page': (context) => RegisterPage(),
         '/register2-page': (context) => RegisterPage2(),

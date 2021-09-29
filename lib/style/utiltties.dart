@@ -3,20 +3,20 @@ import 'package:google_fonts/google_fonts.dart';
 
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
-  fontFamily: 'OpenSans',
+  // fontFamily: 'OpenSans',
 );
 final kHintTextStyle2 = TextStyle(
   //ส่วนผสมวิธีืทำ
   fontSize: 17,
   color: Colors.black,
-  fontFamily: 'OpenSans',
+  // fontFamily: 'OpenSans',
   // fontSize: 40
 );
 final kHintTextStyle3 = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20,
     color: Colors.black,
-    fontFamily: 'OpenSans',
+    // fontFamily: 'OpenSans',
     decoration: TextDecoration.underline,
     decorationStyle: TextDecorationStyle.double
     // fontSize: 40
@@ -25,12 +25,12 @@ final kHintTextStyle3 = TextStyle(
 final kLabelStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
-  fontFamily: 'OpenSans',
+  // fontFamily: 'OpenSans',
 );
 final kLabelStyle2 = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,
-  fontFamily: 'OpenSans',
+  // fontFamily: 'OpenSans',
 );
 
 final kBoxDecorationStyle = BoxDecoration(

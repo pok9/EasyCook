@@ -587,7 +587,7 @@ class _Feed2PageState extends State<Feed2Page> {
 
                                   //     color: Colors.black,
                                   //     fontSize: 15),
-                                  style: GoogleFonts.lato(fontSize: 15),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                             ],
@@ -775,7 +775,7 @@ class _Feed2PageState extends State<Feed2Page> {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.left,
-                                          style: GoogleFonts.lato(),
+                                          style: TextStyle(fontSize: 15),
                                         ),
                                         SizedBox(
                                           width: 5,

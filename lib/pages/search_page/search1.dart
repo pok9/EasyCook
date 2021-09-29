@@ -27,6 +27,8 @@ class _SearchPage1State extends State<SearchPage1> {
     "เมนูตุ๋น",
     "เมนูทอด",
     "เมนูย่าง",
+    "เมนูอบ",
+    "เมนูกินเล่น"
   ];
   var iconFood = [
     "https://cdn-icons-png.flaticon.com/512/4913/4913194.png",
@@ -36,6 +38,8 @@ class _SearchPage1State extends State<SearchPage1> {
     "https://cdn-icons-png.flaticon.com/512/1302/1302319.png",
     "https://cdn-icons-png.flaticon.com/512/1143/1143203.png",
     "https://cdn-icons-png.flaticon.com/512/4212/4212850.png",
+    "https://cdn-icons-png.flaticon.com/512/4363/4363676.png",
+    "https://cdn-icons-png.flaticon.com/512/1276/1276200.png"
   ];
 
   var categoryFoodImage = [
@@ -45,7 +49,9 @@ class _SearchPage1State extends State<SearchPage1> {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCnCRigJXR961hQpA6G-Hy03S3eD7xMQiTHbPJP2jgyyuns4YG14vSRJctRp210CRUZU&usqp=CAU",
     "https://vistapointe.net/images/stew-8.jpg",
     "https://wallpapercave.com/wp/wp2055348.jpg",
-    "https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmJxfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80"
+    "https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmJxfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+    "https://www.allergicliving.com/wp-content/uploads/2020/12/GettyImages-182441598_2.jpg",
+    "https://img.wongnai.com/p/1920x0/2019/02/11/f267780e15b044ba818113c039defb7b.jpg"
   ];
 
   @override

@@ -290,7 +290,7 @@ class _ScrollProfilePageState extends State
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'โพสต์',
+                                        'สูตร',
                                         style: TextStyle(
                                             color: Colors.white70,
                                             fontSize: 12),

@@ -382,8 +382,14 @@ class _FeedPageState extends State<FeedPage> {
             ),
             child: Row(
               children: [
-                Image.asset('assets/logos/hamburger.png',width: 25,height: 25,),
-                SizedBox(width: 5,),
+                Image.asset(
+                  'assets/logos/hamburger.png',
+                  width: 25,
+                  height: 25,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
                 AnimatedTextKit(
                   animatedTexts: [
                     TyperAnimatedText('Easy Cook'),
@@ -878,7 +884,9 @@ class _FeedPageState extends State<FeedPage> {
                                                                   .all(4.0),
                                                           child: Center(
                                                             child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
                                                               children: [
                                                                 Icon(
                                                                   Icons.star,
@@ -1651,35 +1659,82 @@ class _FeedPageState extends State<FeedPage> {
             (dataRecommendRecipe.score == 0)
                 ? Container()
                 : Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                    padding: const EdgeInsets.only(left: 8, top: 16),
                     child: Row(
-                      // crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.blue,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 1,
-                        ),
-                        Text(
-                          dataRecommendRecipe.score.toString(),
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '(${dataRecommendRecipe.count})',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Container(
+                              height: 20,
+                              width: 65,
+                              color: Colors.black.withOpacity(0.6),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.blue,
+                                      size: 13,
+                                    ),
+                                    SizedBox(
+                                      width: 1,
+                                    ),
+                                    Text(
+                                      dataRecommendRecipe.score.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10),
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text(
+                                      '(${dataRecommendRecipe.count})',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 10),
+                                    ),
+                                  ],
+                                ),
+                              )),
                         ),
                       ],
                     ),
                   ),
+            // Padding(
+            //     padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+            //     child: Row(
+            //       // crossAxisAlignment: CrossAxisAlignment.end,
+            //       children: [
+            //         Icon(
+            //           Icons.star,
+            //           color: Colors.blue,
+            //           size: 20,
+            //         ),
+            //         SizedBox(
+            //           width: 1,
+            //         ),
+            //         Text(
+            //           dataRecommendRecipe.score.toString(),
+            //           style: TextStyle(
+            //               color: Colors.white, fontWeight: FontWeight.bold),
+            //         ),
+            //         SizedBox(
+            //           width: 2,
+            //         ),
+            //         Text(
+            //           '(${dataRecommendRecipe.count})',
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
             (dataRecommendRecipe.price == 0)
                 ? Container()
                 : Padding(
@@ -2146,7 +2201,7 @@ class _FeedPageState extends State<FeedPage> {
                                       child: Text(
                                         '- เลิกติดตาม',
                                         style: TextStyle(
-                                            color: Colors.red, fontSize: 11),
+                                            color: Colors.red, fontSize: 9),
                                       ),
                                     ),
                                     shape: StadiumBorder(
@@ -2194,7 +2249,7 @@ class _FeedPageState extends State<FeedPage> {
                                       child: Text(
                                         '+ ติดตาม',
                                         style: TextStyle(
-                                            color: Colors.blue, fontSize: 11),
+                                            color: Colors.blue, fontSize: 9),
                                       ),
                                     ),
                                     shape: StadiumBorder(

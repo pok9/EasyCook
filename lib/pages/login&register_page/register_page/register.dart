@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
+              // fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               errorStyle: TextStyle(fontSize: 13.0, color: Colors.pink[50]),
@@ -141,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
+              // fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               errorStyle: TextStyle(fontSize: 13.0, color: Colors.pink[50]),
@@ -199,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
+              // fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               errorStyle: TextStyle(fontSize: 13.0, color: Colors.pink[50]),
@@ -316,7 +316,7 @@ class _RegisterPageState extends State<RegisterPage> {
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.normal,
-            fontFamily: 'OpenSans',
+            // fontFamily: 'OpenSans',
           ),
         ),
       ),
@@ -347,7 +347,7 @@ class _RegisterPageState extends State<RegisterPage> {
               letterSpacing: 1.5,
               fontSize: 18.0,
               fontWeight: FontWeight.normal,
-              fontFamily: 'OpenSans',
+              // fontFamily: 'OpenSans',
             ),
           ),
         ));
@@ -421,7 +421,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     'สมัครสมาชิก',
                     style: TextStyle(
                       color: Colors.white,
-                      fontFamily: 'OpenSans',
+                      // fontFamily: 'OpenSans',
                       fontSize: 30.0,
                       fontWeight: FontWeight.bold,
                     ),

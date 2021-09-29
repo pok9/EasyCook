@@ -298,7 +298,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'โพสต์',
+                                        'สูตร',
                                         style: TextStyle(
                                             color: Colors.white70,
                                             fontSize: 12),
