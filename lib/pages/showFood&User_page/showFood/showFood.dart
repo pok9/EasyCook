@@ -1424,6 +1424,36 @@ class _ShowFoodState extends State<ShowFood> {
                                       : dataGetCommentPost.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
+                                  onTap: () {
+                                    if (dataMyAccont == null) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProfileUser(
+                                                  reqUid:
+                                                      dataGetCommentPost[index]
+                                                          .userId,
+                                                )),
+                                      );
+                                    } else if ((dataMyAccont.userId ==
+                                        dataGetCommentPost[index].userId)) {
+                                      Navigator.push(context,
+                                          CupertinoPageRoute(
+                                              builder: (context) {
+                                        return ProfilePage();
+                                      }));
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProfileUser(
+                                                  reqUid:
+                                                      dataGetCommentPost[index]
+                                                          .userId,
+                                                )),
+                                      );
+                                    }
+                                  },
                                   isThreeLine: true,
                                   leading: CircleAvatar(
                                     backgroundImage: NetworkImage(

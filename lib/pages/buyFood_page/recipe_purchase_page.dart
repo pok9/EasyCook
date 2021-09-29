@@ -198,20 +198,40 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                             horizontal: 16.0, vertical: 8.0),
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(dataFood.profileImage),
-                              radius: 15,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfileUser(
+                                      reqUid: dataFood.userId,
+                                    );
+                                  }));
+                              },
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(dataFood.profileImage),
+                                radius: 15,
+                              ),
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             Expanded(
-                              child: Text(
-                                "${dataFood.nameSurname}(${dataFood.aliasName})",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      CupertinoPageRoute(builder: (context) {
+                                    return ProfileUser(
+                                      reqUid: dataFood.userId,
+                                    );
+                                  }));
+                                },
+                                child: Text(
+                                  "${dataFood.nameSurname}(${dataFood.aliasName})",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
                             ),
                             (dataFood.score == null)
@@ -285,8 +305,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                             horizontal: 16.0, vertical: 0.0),
                         child: Row(
                           children: [
-                            Expanded(
-                                child: buildText(dataFood.description))
+                            Expanded(child: buildText(dataFood.description))
                           ],
                         ),
                       ),
