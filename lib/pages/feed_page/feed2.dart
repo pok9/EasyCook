@@ -67,10 +67,11 @@ class _Feed2PageState extends State<Feed2Page> {
           dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
         }
       }
-    }else if(selected == 1){
+    } else if (selected == 1) {
       _currentMax = dummyListDataNewfeedsglobal_free.length;
 
-      if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal_free.length) >=
+      if ((dataNewfeedsglobal.length -
+              dummyListDataNewfeedsglobal_free.length) >=
           4) {
         for (int i = dummyListDataNewfeedsglobal_free.length;
             i < _currentMax + 4;
@@ -84,10 +85,11 @@ class _Feed2PageState extends State<Feed2Page> {
           dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
         }
       }
-    }else if(selected == 2){
+    } else if (selected == 2) {
       _currentMax = dummyListDataNewfeedsglobal_notFree.length;
 
-      if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal_notFree.length) >=
+      if ((dataNewfeedsglobal.length -
+              dummyListDataNewfeedsglobal_notFree.length) >=
           4) {
         for (int i = dummyListDataNewfeedsglobal_notFree.length;
             i < _currentMax + 4;
@@ -513,94 +515,86 @@ class _Feed2PageState extends State<Feed2Page> {
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            if (token == "") {
-                                              Navigator.push(context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) {
-                                                return ProfileUser(
-                                                  reqUid: newFeedsFollow
-                                                      .feed[index].userId,
-                                                );
-                                              }));
-                                            } else if (data_DataAc.userId ==
-                                                newFeedsFollow
-                                                    .feed[index].userId) {
-                                              Navigator.push(context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) {
-                                                return ProfilePage();
-                                              }));
-                                            } else {
-                                              Navigator.push(context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) {
-                                                return ProfileUser(
-                                                  reqUid: newFeedsFollow
-                                                      .feed[index].userId,
-                                                );
-                                              }));
-                                            }
-                                          },
-                                          child: Row(
-                                            children: [
-                                              new Container(
-                                                height: 30.0,
-                                                width: 30.0,
-                                                decoration: new BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: new DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image: new NetworkImage(
-                                                            newFeedsFollow
-                                                                .feed[index]
-                                                                .profileImage))),
-                                              ),
-                                              new SizedBox(
-                                                width: 10.0,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        0, 8, 0, 8),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    new Text(
-                                                      newFeedsFollow.feed[index]
-                                                          .aliasName,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    new Text(
-                                                      dateEdit(newFeedsFollow
-                                                          .feed[index].date
-                                                          .toString()),
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          fontSize: 12),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                                    child: InkWell(
+                                      onTap: () {
+                                        if (token == "") {
+                                          Navigator.push(context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) {
+                                            return ProfileUser(
+                                              reqUid: newFeedsFollow
+                                                  .feed[index].userId,
+                                            );
+                                          }));
+                                        } else if (data_DataAc.userId ==
+                                            newFeedsFollow.feed[index].userId) {
+                                          Navigator.push(context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) {
+                                            return ProfilePage();
+                                          }));
+                                        } else {
+                                          Navigator.push(context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) {
+                                            return ProfileUser(
+                                              reqUid: newFeedsFollow
+                                                  .feed[index].userId,
+                                            );
+                                          }));
+                                        }
+                                      },
+                                      child: Row(
+                                        children: [
+                                          new Container(
+                                            height: 30.0,
+                                            width: 30.0,
+                                            decoration: new BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: new DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: new NetworkImage(
+                                                        newFeedsFollow
+                                                            .feed[index]
+                                                            .profileImage))),
                                           ),
-                                        ),
-
-                                        // IconButton(
-                                        //     icon: Icon(Icons.more_vert),
-                                        //     onPressed: () {
-                                        //       // print("more_vert" + index.toString());
-                                        //     })
-                                      ],
+                                          new SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 8, 0, 8),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  new Text(
+                                                    newFeedsFollow
+                                                        .feed[index].aliasName,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  new Text(
+                                                    dateEdit(newFeedsFollow
+                                                        .feed[index].date
+                                                        .toString()),
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: 12),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -610,12 +604,14 @@ class _Feed2PageState extends State<Feed2Page> {
                                           CrossAxisAlignment.end,
                                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          newFeedsFollow.feed[index].recipeName,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(fontSize: 15),
+                                        Expanded(
+                                          child: Text(
+                                            newFeedsFollow.feed[index].recipeName,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -909,7 +905,6 @@ class _Feed2PageState extends State<Feed2Page> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            
                           ),
                         ),
                         (dummyListDataNewfeedsglobal[index].score == 0)

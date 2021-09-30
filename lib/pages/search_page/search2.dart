@@ -307,47 +307,51 @@ class _SearchPage2State extends State<SearchPage2> {
                 //     :
                 TabBarView(children: [
               (dataRecipe == null)
-                  ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 40,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: ListView.separated(
-                              padding: EdgeInsets.symmetric(horizontal: 0),
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) => GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selected = index;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: selected == index
-                                            ? Colors.blue
-                                            : Colors.white,
-                                      ),
-                                      child: Text(
-                                        txtLatest_recipe[index],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
+                  ? Column(
+                    children: [
+                      Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 40,
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: ListView.separated(
+                                  padding: EdgeInsets.symmetric(horizontal: 0),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) => GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selected = index;
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 15),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
                                             color: selected == index
-                                                ? Colors.white
-                                                : Colors.black),
+                                                ? Colors.blue
+                                                : Colors.white,
+                                          ),
+                                          child: Text(
+                                            txtLatest_recipe[index],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: selected == index
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                              separatorBuilder: (_, index) => SizedBox(
-                                    width: 15,
-                                  ),
-                              itemCount: 3),
+                                  separatorBuilder: (_, index) => SizedBox(
+                                        width: 15,
+                                      ),
+                                  itemCount: 3),
+                            ),
+                          ),
                         ),
-                      ),
-                    )
+                    ],
+                  )
                   : ListView(
                       children: [
                         Padding(
@@ -597,9 +601,11 @@ class _SearchPage2State extends State<SearchPage2> {
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              Text(dataRecipe[index]
-                                                      .nameSurname +
-                                                  "(${dataRecipe[index].aliasName})")
+                                              Expanded(
+                                                child: Text(dataRecipe[index]
+                                                        .nameSurname +
+                                                    "(${dataRecipe[index].aliasName})",maxLines: 1,overflow: TextOverflow.ellipsis,),
+                                              )
                                             ],
                                           ),
                                         ],
@@ -647,8 +653,8 @@ class _SearchPage2State extends State<SearchPage2> {
                           }
                         },
                         child: ListTile(
-                          title: Text(dataUser[index].aliasName),
-                          subtitle: Text(dataUser[index].nameSurname),
+                          title: Text(dataUser[index].aliasName,maxLines: 1,style: TextStyle(overflow: TextOverflow.ellipsis,),),
+                          subtitle: Text(dataUser[index].nameSurname,maxLines: 1,style: TextStyle(overflow: TextOverflow.ellipsis,)),
                           leading: Container(
                             height: 40.0,
                             width: 40.0,
@@ -691,7 +697,7 @@ class _SearchPage2State extends State<SearchPage2> {
                                     backgroundImage: NetworkImage(
                                         imageTranslationResPath[index]),
                                   ),
-                    title: Text(dataIngredientName.elementAt(index)),
+                    title: Text(dataIngredientName.elementAt(index),maxLines: 1,style: TextStyle(overflow: TextOverflow.ellipsis,),),
                   );
                 },
               )

@@ -372,7 +372,7 @@ class _FeedPageState extends State<FeedPage> {
 
     return Scaffold(
       // backgroundColor: Colors.white70,
- 
+
       backgroundColor: Color(0xFFf3f5f9),
       //  backgroundColor: Color(0xFFF5F5F5),
       appBar: PreferredSize(
@@ -1098,13 +1098,18 @@ class _FeedPageState extends State<FeedPage> {
                                                 new SizedBox(
                                                   width: 10.0,
                                                 ),
-                                                new Text(
-                                                  dataRecommendRecipe[index]
-                                                      .aliasName,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
+                                                Expanded(
+                                                  child: new Text(
+                                                    dataRecommendRecipe[index]
+                                                        .aliasName,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
+                                                  ),
                                                 )
                                               ],
                                             ),
@@ -1842,10 +1847,15 @@ class _FeedPageState extends State<FeedPage> {
                       new SizedBox(
                         width: 10.0,
                       ),
-                      new Text(
-                        dataRecommendRecipe.aliasName,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                      Expanded(
+                        child: new Text(
+                          dataRecommendRecipe.aliasName,
+                          maxLines: 1,
+                          style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       )
                     ],
                   ),
@@ -1918,63 +1928,63 @@ class _FeedPageState extends State<FeedPage> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        if (token == "") {
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            return ProfileUser(
-                              reqUid: dataRecommendRecipe.userId,
-                            );
-                          }));
-                        } else if (data_DataAc.userId ==
-                            dataRecommendRecipe.userId) {
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            return ProfilePage();
-                          }));
-                        } else {
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            return ProfileUser(
-                              reqUid: dataRecommendRecipe.userId,
-                            );
-                          }));
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          new Container(
-                            height: 30.0,
-                            width: 30.0,
-                            decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: new DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: new NetworkImage(
-                                        dataRecommendRecipe.profileImage))),
-                          ),
-                          new SizedBox(
-                            width: 10.0,
-                          ),
-                          new Text(
-                            dataRecommendRecipe.aliasName,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
+                padding: const EdgeInsets.only(left: 8),
+                child: InkWell(
+                  onTap: () {
+                    if (token == "") {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return ProfileUser(
+                          reqUid: dataRecommendRecipe.userId,
+                        );
+                      }));
+                    } else if (data_DataAc.userId ==
+                        dataRecommendRecipe.userId) {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return ProfilePage();
+                      }));
+                    } else {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return ProfileUser(
+                          reqUid: dataRecommendRecipe.userId,
+                        );
+                      }));
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      new Container(
+                        height: 30.0,
+                        width: 30.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: new NetworkImage(
+                                    dataRecommendRecipe.profileImage))),
                       ),
-                    ),
-                    IconButton(
-                        icon: Icon(Icons.more_vert),
-                        onPressed: () {
-                          // print("more_vert" + index.toString());
-                          // Share.share('check out my website https://example.com');
-                        })
-                  ],
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                       Expanded(
+                         child: Text(
+                          dataRecommendRecipe.aliasName,
+                          maxLines: 1,
+                          style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold),
+                                             ),
+                       ),
+                     
+                       IconButton(
+                              icon: Icon(Icons.more_vert),
+                              onPressed: () {
+                                
+                              })
+                    ],
+                  ),
                 ),
               ),
               Container(

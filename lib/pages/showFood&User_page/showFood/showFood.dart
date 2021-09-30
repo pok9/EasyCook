@@ -312,7 +312,7 @@ class _ShowFoodState extends State<ShowFood> {
                     dataIngredient[displayNumber].ingredientName +
                         "\t" +
                         dataIngredient[displayNumber].amount,
-                    style: GoogleFonts.mali(
+                    style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 17,
                         color: Colors.black,
@@ -391,7 +391,7 @@ class _ShowFoodState extends State<ShowFood> {
                   Expanded(
                     child: Text(
                       dataHowto[displayNumber].description,
-                      style: GoogleFonts.mali(
+                      style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 17,
                           color: Colors.black,
@@ -516,7 +516,7 @@ class _ShowFoodState extends State<ShowFood> {
               controller: storyController,
               caption: Text(
                 "${dataHowto[displayNumber].description}",
-                style: GoogleFonts.mali(
+                style: TextStyle(
                   color: Colors.white,
                   backgroundColor: Colors.black54,
                   fontSize: 17,
@@ -590,13 +590,13 @@ class _ShowFoodState extends State<ShowFood> {
   AlertDialog alertDialog_successful_or_unsuccessful(
       String reportText1, Color color, String reportText2) {
     return AlertDialog(
-      title: Text(reportText1, style: GoogleFonts.mali(color: Colors.white)),
-      titleTextStyle: GoogleFonts.mali(
+      title: Text(reportText1, style: TextStyle(color: Colors.white)),
+      titleTextStyle: TextStyle(
           fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
       backgroundColor: color,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20))),
-      content: Text(reportText2, style: GoogleFonts.mali(color: Colors.white)),
+      content: Text(reportText2, style: TextStyle(color: Colors.white)),
     );
   }
 
@@ -996,7 +996,7 @@ class _ShowFoodState extends State<ShowFood> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(dataFood.aliasName,
-                                  style: GoogleFonts.mali(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 20,
                                     color: Colors.black,
@@ -1008,7 +1008,7 @@ class _ShowFoodState extends State<ShowFood> {
                               //   onPressed: () {},
                               //   child: Text(
                               //     'ติดตาม',
-                              //     style: GoogleFonts.mali(color: Colors.white),
+                              //     style: TextStyle(color: Colors.white),
                               //   ),
                               //   shape: StadiumBorder(),
                               // )
@@ -1025,7 +1025,7 @@ class _ShowFoodState extends State<ShowFood> {
                               //   onPressed: () {},
                               //   child: Text(
                               //     "+ ติดตาม".toUpperCase(),
-                              //     style: GoogleFonts.mali(
+                              //     style: TextStyle(
                               //       fontSize: 14.0,
                               //     ),
                               //   ),
@@ -1063,7 +1063,7 @@ class _ShowFoodState extends State<ShowFood> {
                             ),
                       Text(
                         dataFood.recipeName,
-                        style: GoogleFonts.mali(
+                        style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 25,
                           color: Colors.black,
@@ -1103,7 +1103,7 @@ class _ShowFoodState extends State<ShowFood> {
                               ),
                               Text(
                                 dataFood.suitableFor,
-                                style: GoogleFonts.mali(
+                                style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12,
                                   color: Colors.grey.shade600,
@@ -1124,7 +1124,7 @@ class _ShowFoodState extends State<ShowFood> {
                               ),
                               Text(
                                 dataFood.takeTime,
-                                style: GoogleFonts.mali(
+                                style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12,
                                   color: Colors.grey.shade600,
@@ -1145,7 +1145,7 @@ class _ShowFoodState extends State<ShowFood> {
                               ),
                               Text(
                                 dataFood.foodCategory,
-                                style: GoogleFonts.mali(
+                                style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12,
                                   color: Colors.grey.shade600,
@@ -1180,7 +1180,7 @@ class _ShowFoodState extends State<ShowFood> {
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
                               "ส่วนผสม",
-                              style: GoogleFonts.mali(
+                              style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 25,
                                 color: Colors.black,
@@ -1224,7 +1224,7 @@ class _ShowFoodState extends State<ShowFood> {
                               padding: const EdgeInsets.only(left: 10),
                               child: Text(
                                 "วิธีทำ",
-                                style: GoogleFonts.mali(
+                                style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: 25,
                                   color: Colors.black,
@@ -1311,7 +1311,7 @@ class _ShowFoodState extends State<ShowFood> {
                           children: [
                             Text(
                               "ให้คะแนน & แสดงความคิดเห็น",
-                              style: GoogleFonts.mali(
+                              style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
@@ -1458,7 +1458,7 @@ class _ShowFoodState extends State<ShowFood> {
                                         text: TextSpan(
                                             text: dataGetCommentPost[index]
                                                 .aliasName,
-                                            style: GoogleFonts.mali(
+                                            style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: (dataGetCommentPost[
                                                                 index]
@@ -1478,7 +1478,7 @@ class _ShowFoodState extends State<ShowFood> {
                                               TextSpan(
                                                 text:
                                                     '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
-                                                style: GoogleFonts.mali(
+                                                style: TextStyle(
                                                     decoration:
                                                         TextDecoration.none,
                                                     fontSize: 12.0,
@@ -1492,7 +1492,7 @@ class _ShowFoodState extends State<ShowFood> {
                                   //       const EdgeInsets.fromLTRB(0, 10, 0, 0),
                                   //   child: Text(
                                   //     dataGetCommentPost[index].aliasName,
-                                  //     style: GoogleFonts.mali(
+                                  //     style: TextStyle(
                                   //         fontWeight: FontWeight.bold,
                                   //         color: (dataGetCommentPost[index]
                                   //                     .userStatus ==
@@ -1513,7 +1513,7 @@ class _ShowFoodState extends State<ShowFood> {
                                   //   text: TextSpan(
                                   //     text:
                                   //         '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
-                                  //     style: GoogleFonts.mali(
+                                  //     style: TextStyle(
                                   //         decoration: TextDecoration.none,
                                   //         fontFamily: 'OpenSans',
                                   //         fontSize: 12.0,
@@ -1522,7 +1522,7 @@ class _ShowFoodState extends State<ShowFood> {
                                   //       TextSpan(
                                   //         text:
                                   //             '${dataGetCommentPost[index].commentDetail}',
-                                  //         style: GoogleFonts.mali(
+                                  //         style: TextStyle(
                                   //             decoration: TextDecoration.none,
                                   //             fontFamily: 'OpenSans',
                                   //             fontSize: 12,
@@ -1594,7 +1594,7 @@ class _ShowFoodState extends State<ShowFood> {
                                     Center(
                                         child: Text(
                                       'แสดงความคิดเห็น...',
-                                      style: GoogleFonts.mali(
+                                      style: TextStyle(
                                           color: Colors.black54, fontSize: 16),
                                     )),
                                   ],
@@ -1632,7 +1632,7 @@ class _ShowFoodState extends State<ShowFood> {
                                     children: [
                                       Text(
                                         "หมวดหมู่ที่คล้ายกัน",
-                                        style: GoogleFonts.mali(
+                                        style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -1696,7 +1696,7 @@ class _ShowFoodState extends State<ShowFood> {
           trimMode: TrimMode.Line,
           trimCollapsedText: 'อ่านเพิ่มเติม',
           trimExpandedText: 'อ่านน้อยลง',
-          style: GoogleFonts.mali(
+          style: TextStyle(
             fontWeight: FontWeight.normal,
             fontSize: 15,
             color: Colors.black,
@@ -1710,7 +1710,7 @@ class _ShowFoodState extends State<ShowFood> {
   Widget buildTextComment(int index) {
     // return TextSpan(
     //   text: '${dataGetCommentPost[index].commentDetail}',
-    //   style: GoogleFonts.mali(
+    //   style: TextStyle(
     //       decoration: TextDecoration.none,
     //       fontFamily: 'OpenSans',
     //       fontSize: 12,
@@ -1722,7 +1722,7 @@ class _ShowFoodState extends State<ShowFood> {
       trimMode: TrimMode.Line,
       trimCollapsedText: 'อ่านเพิ่มเติม',
       trimExpandedText: 'อ่านน้อยลง',
-      style: GoogleFonts.mali(
+      style: TextStyle(
         fontWeight: FontWeight.normal,
         fontSize: 13,
         color: Colors.black,
@@ -1813,15 +1813,15 @@ class _ShowFoodState extends State<ShowFood> {
                         ),
                         Text(
                           dataRecommendRecipe.score.toString(),
-                          style: GoogleFonts.mali(
+                          style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
                           width: 2,
                         ),
                         Text(
-                          '(4)',
-                          style: GoogleFonts.mali(
+                          '(${dataRecommendRecipe.count})',
+                          style: TextStyle(
                             color: Colors.white,
                           ),
                         ),
@@ -1884,7 +1884,7 @@ class _ShowFoodState extends State<ShowFood> {
                 children: [
                   // Text(
                   //       "testasdjasjdknkjaskdnjkasndkj",
-                  //       style: GoogleFonts.mali(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),
+                  //       style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),
                   //     ),
                   Row(
                     children: [
@@ -1894,7 +1894,7 @@ class _ShowFoodState extends State<ShowFood> {
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
-                          style: GoogleFonts.mali(
+                          style: TextStyle(
                               color: Colors.white, fontSize: 25),
                         ),
                       ),
@@ -1934,10 +1934,14 @@ class _ShowFoodState extends State<ShowFood> {
                       new SizedBox(
                         width: 10.0,
                       ),
-                      new Text(
-                        dataRecommendRecipe.aliasName,
-                        style: GoogleFonts.mali(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                      Expanded(
+                        child: new Text(
+                          dataRecommendRecipe.aliasName,
+                          maxLines: 1,
+                          style: TextStyle(
+                             overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
                       )
                     ],
                   ),
@@ -1999,7 +2003,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           SizedBox(height: 15),
           Text(
             "${widget.title}",
-            style: GoogleFonts.mali(
+            style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
             ),
@@ -2049,7 +2053,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
               child: Center(
                 child: Text(
                   "ยืนยัน",
-                  style: GoogleFonts.mali(
+                  style: TextStyle(
                     fontSize: 18.0,
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold,
@@ -2076,7 +2080,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
               child: Center(
                 child: Text(
                   "ยกเลิก",
-                  style: GoogleFonts.mali(
+                  style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.normal,
                   ),
@@ -2131,7 +2135,7 @@ class CustomDialog extends StatelessWidget {
                     child: Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.mali(
+                      style: TextStyle(
                           fontSize: 22.0, fontWeight: FontWeight.w700),
                     ),
                   ),
@@ -2142,7 +2146,7 @@ class CustomDialog extends StatelessWidget {
               ),
               Text(
                 description,
-                style: GoogleFonts.mali(
+                style: TextStyle(
                     color: Colors.grey.shade800, fontSize: 16.0),
               ),
               SizedBox(

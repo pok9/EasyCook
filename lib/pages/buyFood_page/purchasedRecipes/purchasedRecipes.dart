@@ -55,6 +55,7 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFf3f5f9),
       appBar: AppBar(
         title: Text('สูตรที่ซื้อ'),
       ),
@@ -115,7 +116,7 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                       },
                       child: Card(
                         child: Container(
-                          color: Colors.grey[100],
+                          color: Colors.white,
                           height: 165,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +144,8 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -179,7 +181,9 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                                         ),
                                       ),
                                       Expanded(child: Container()),
-                                      Divider(color: Colors.black,),
+                                      Divider(
+                                        color: Colors.black,
+                                      ),
                                       Row(
                                         children: [
                                           Container(
@@ -196,10 +200,15 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                                           SizedBox(
                                             width: 5,
                                           ),
-                                          Text(
-                                            dataMybuy[index].aliasName,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
+                                          Expanded(
+                                            child: Text(
+                                              dataMybuy[index].aliasName,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
                                           )
                                         ],
                                       )

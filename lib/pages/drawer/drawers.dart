@@ -202,14 +202,18 @@ class _DrawersState extends State<Drawers> {
                           //Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
                           Text(
                             this.widget.data_MyAccount.data[0].aliasName,
+                            maxLines: 1,
                             style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
                               fontSize: 20,
                               color: Colors.white,
                             ),
                           ),
                           Text(
                             this.widget.data_MyAccount.data[0].nameSurname,
+                               maxLines: 1,
                             style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
                               fontSize: 15,
                               color: Colors.white70,
                             ),

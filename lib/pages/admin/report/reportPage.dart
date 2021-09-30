@@ -63,7 +63,10 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text((dataGetReport == null) ? "" : dataGetReport.title,style: TextStyle(),),
+        title: Text(
+          (dataGetReport == null) ? "" : dataGetReport.title,
+          style: TextStyle(),
+        ),
       ),
       body: (dataGetReport == null)
           ? Center(
@@ -94,39 +97,42 @@ class _ReportPageState extends State<ReportPage> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        (dataGetReport.title ==
-                                                "รายงานสูตรอาหาร")
-                                            ? "เจ้าของสูตรนี้"
-                                            : "ผู้ที่โดนแจ้งรายงาน",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                            fontSize: 15
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                            (dataGetReport.title ==
+                                                    "รายงานสูตรอาหาร")
+                                                ? "เจ้าของสูตรนี้"
+                                                : "ผู้ที่โดนแจ้งรายงาน",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15)
+                                            // TextStyle(
+                                            //     fontWeight: FontWeight.bold,
+                                            //     fontSize: 15),
+                                            )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            dataTarget.aliasUserTarget +
+                                                " " +
+                                                dataTarget.nameUserTarget,
+                                            style: TextStyle(
+                                                // fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
                                         )
-                                        // TextStyle(
-                                        //     fontWeight: FontWeight.bold,
-                                        //     fontSize: 15),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        dataTarget.aliasUserTarget +
-                                            " " +
-                                            dataTarget.nameUserTarget,
-                                        style: TextStyle(
-                                            // fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -174,12 +180,13 @@ class _ReportPageState extends State<ReportPage> {
                                                             fontSize: 17,
                                                             fontWeight:
                                                                 FontWeight
-                                                                    .bold),
+                                                                    .bold
+                                                                    ),
                                                       ),
                                                       TextSpan(
                                                         text: dataRecipe
                                                             .recipeName,
-                                                        style: TextStyle (
+                                                        style: TextStyle(
                                                           fontSize: 17,
                                                         ),
                                                       )
@@ -226,36 +233,42 @@ class _ReportPageState extends State<ReportPage> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "บัญชีผู้ใช้ที่แจ้งรายงาน",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        dataUserReport.aliasUserReport +
-                                            " " +
-                                            dataUserReport.nameUserReport,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      )
-                                    ],
-                                  ),
-                                ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "บัญชีผู้ใช้ที่แจ้งรายงาน",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            dataUserReport.aliasUserReport +
+                                                " " +
+                                                dataUserReport.nameUserReport,
+                                            style: TextStyle(
+                                                // fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(

@@ -382,36 +382,48 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                     dataGetCommentPost[index].profileImage),
                               ),
                               title: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                child: Text(
-                                  dataGetCommentPost[index].aliasName,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                ),
-                              ),
-                              subtitle: RichText(
-                                text: TextSpan(
-                                  text:
-                                      '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
-                                  style: TextStyle(
-                                      decoration: TextDecoration.none,
-                                      // fontFamily: 'OpenSans',
-                                      fontSize: 12.0,
-                                      color: Colors.grey.shade600),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text:
-                                          '${dataGetCommentPost[index].commentDetail}',
+                                padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: dataGetCommentPost[index].aliasName,
                                       style: TextStyle(
-                                          decoration: TextDecoration.none,
-                                          // fontFamily: 'OpenSans',
-                                          fontSize: 12,
-                                          color: Colors.black),
-                                    ),
-                                  ],
+                                          fontWeight: FontWeight.normal,
+                                          color: (dataGetCommentPost[index]
+                                                      .userStatus ==
+                                                  0)
+                                              ? Colors.red
+                                              : (dataGetCommentPost[index]
+                                                          .userId ==
+                                                      myDataUser.userId)
+                                                  ? Colors.blue
+                                                  : Colors.black),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text:
+                                              '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
+                                          style: TextStyle(
+                                              decoration: TextDecoration.none,
+                                              // fontFamily: 'OpenSans',
+                                              fontSize: 12.0,
+                                              color: Colors.grey.shade600),
+                                        )
+                                      ]),
+                                )
+                                // Text(
+                                //   dataGetCommentPost[index].aliasName,
+                                //   style: TextStyle(
+                                //       fontWeight: FontWeight.bold,
+                                //       color: (dataGetCommentPost[index]
+                                //                   .userStatus ==
+                                //               0)
+                                //           ? Colors.red
+                                //           : (dataGetCommentPost[index].userId ==
+                                //                   data_DataAc.userId)
+                                //               ? Colors.blue
+                                //               : Colors.black),
+                                // ),
                                 ),
-                              ),
+                              subtitle: buildTextComment(index),
                               dense: true,
                               // trailing: Text('Horse'),
                             );
@@ -516,6 +528,31 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
             decoration: TextDecoration.none,
           ),
         ),
+      ),
+    );
+  }
+
+   Widget buildTextComment(int index) {
+    // return TextSpan(
+    //   text: '${dataGetCommentPost[index].commentDetail}',
+    //   style: TextStyle(
+    //       decoration: TextDecoration.none,
+    //       fontFamily: 'OpenSans',
+    //       fontSize: 12,
+    //       color: Colors.black),
+    // );
+    return ReadMoreText(
+      '${dataGetCommentPost[index].commentDetail}',
+      trimLines: 8,
+      trimMode: TrimMode.Line,
+      trimCollapsedText: 'อ่านเพิ่มเติม',
+      trimExpandedText: 'อ่านน้อยลง',
+      style: TextStyle(
+        fontWeight: FontWeight.normal,
+        // fontFamily: 'OpenSans',
+        fontSize: 13,
+        color: Colors.black,
+        decoration: TextDecoration.none,
       ),
     );
   }

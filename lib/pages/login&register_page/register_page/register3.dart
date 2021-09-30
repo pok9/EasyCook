@@ -28,17 +28,17 @@ Future<Register2Model> registers2(
       "http://apifood.comsciproject.com/pjUsers/signupNewStep3";
 
   print("token" + token);
-  var data = {
-    "name_surname": name_surname, 
-    "alias_name": alias_name
-  };
+  var data = {"name_surname": name_surname, "alias_name": alias_name};
   print(jsonEncode(data));
   final response = await http.post(Uri.parse(apiUrl),
       body: jsonEncode(data),
-      headers: {"Authorization": "Bearer $token","Content-Type": "application/json"});
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json"
+      });
 
-  print("toke==" +token);
-  print("response.statusCode = "+response.statusCode.toString());
+  print("toke==" + token);
+  print("response.statusCode = " + response.statusCode.toString());
   if (response.statusCode == 200) {
     final String responseString = response.body;
 
@@ -73,35 +73,58 @@ class _RegisterPage3State extends State<RegisterPage3> {
   // _RegisterPage3State() {
   //   tokens();
   // }
-  Widget _buildFullNameTF() {
+
+  Widget _buildNicknameTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'ชื่อ-นามสกุล',
-          style: kLabelStyle,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Text(
+            'นามแฝง',
+            style: kLabelStyle,
+          ),
         ),
-        SizedBox(height: 10.0),
+        // SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
-          decoration: kBoxDecorationStyle, //กรอบ
-          height: 60.0,
-          child: TextField(
-            controller: _ctrlFullName,
-            keyboardType: TextInputType.emailAddress,
+          // decoration: kBoxDecorationStyle, //กรอบ
+
+          height: 80.0,
+
+          child: TextFormField(
+            controller: _ctrlNickName,
+            keyboardType: TextInputType.name,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'กรุณาป้อนนามแฝง';
+              }
+              return null;
+            },
             style: TextStyle(
               color: Colors.white,
               // fontFamily: 'OpenSans',
             ),
+            maxLength: 30,
             decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
+              errorStyle: TextStyle(fontSize: 13.0, color: Colors.pink[50]),
+              // border: InputBorder.none,
+
+              border: OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.white, width: 1)),
+              contentPadding: EdgeInsets.only(top: 38.0),
+              filled: true,
+              fillColor: Color(0xFF6CA8F1),
               prefixIcon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
-              hintText: 'ป้อนชื่อ-นามสกุลของคุณ',
-              hintStyle: kHintTextStyle,
+
+              hintText: 'ป้อนนามแฝงคุณ',
+              hintStyle: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -109,40 +132,133 @@ class _RegisterPage3State extends State<RegisterPage3> {
     );
   }
 
-  Widget _buildNicknameTF() {
+  Widget _buildFullNameTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'นามแฝง',
-          style: kLabelStyle,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Text(
+            'ชื่อ-นามสกุล',
+            style: kLabelStyle,
+          ),
         ),
-        SizedBox(height: 10.0),
+        // SizedBox(height: 10.0),
         Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            controller: _ctrlNickName,
+          alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
+          // decoration: kBoxDecorationStyle, //กรอบ
+
+          height: 80.0,
+          
+          child: TextFormField(
+            controller: _ctrlFullName,
+            keyboardType: TextInputType.name,
+             validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'กรุณาป้อนชื่อ-นามสกุล';
+              }
+              return null;
+            },
+            maxLength: 50,
             style: TextStyle(
               color: Colors.white,
               // fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
+              errorStyle: TextStyle(fontSize: 13.0, color: Colors.pink[50]),
+              // border: InputBorder.none,
+
+              border: OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.white, width: 1)),
+              contentPadding: EdgeInsets.only(top: 38.0),
+              filled: true,
+              fillColor: Color(0xFF6CA8F1),
               prefixIcon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
-              hintText: 'ป้อนนามแฝงคุณ',
-              hintStyle: kHintTextStyle,
+
+              hintText: 'ป้อนชื่อ-นามสกุลของคุณ',
+              hintStyle: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
         ),
       ],
     );
   }
+  // Widget _buildFullNameTF() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text(
+  //         'ชื่อ-นามสกุล',
+  //         style: kLabelStyle,
+  //       ),
+  //       SizedBox(height: 10.0),
+  //       Container(
+  //         alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
+  //         decoration: kBoxDecorationStyle, //กรอบ
+  //         height: 60.0,
+  //         child: TextField(
+  //           controller: _ctrlFullName,
+  //           keyboardType: TextInputType.emailAddress,
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //             // fontFamily: 'OpenSans',
+  //           ),
+  //           decoration: InputDecoration(
+  //             border: InputBorder.none,
+  //             contentPadding: EdgeInsets.only(top: 14.0),
+  //             prefixIcon: Icon(
+  //               Icons.person,
+  //               color: Colors.white,
+  //             ),
+  //             hintText: 'ป้อนชื่อ-นามสกุลของคุณ',
+  //             hintStyle: kHintTextStyle,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Widget _buildNicknameTF() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text(
+  //         'นามแฝง',
+  //         style: kLabelStyle,
+  //       ),
+  //       SizedBox(height: 10.0),
+  //       Container(
+  //         alignment: Alignment.centerLeft,
+  //         decoration: kBoxDecorationStyle,
+  //         height: 60.0,
+  //         child: TextField(
+  //           controller: _ctrlNickName,
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //             // fontFamily: 'OpenSans',
+  //           ),
+  //           decoration: InputDecoration(
+  //             border: InputBorder.none,
+  //             contentPadding: EdgeInsets.only(top: 14.0),
+  //             prefixIcon: Icon(
+  //               Icons.person,
+  //               color: Colors.white,
+  //             ),
+  //             hintText: 'ป้อนนามแฝงคุณ',
+  //             hintStyle: kHintTextStyle,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildConfirmBtn() {
     return Container(
@@ -152,30 +268,33 @@ class _RegisterPage3State extends State<RegisterPage3> {
         elevation: 5.0,
         onPressed: () async {
           print("ยืนยัน");
-          print(_ctrlFullName.text);
-          print(_ctrlNickName.text);
-          // registers2
+          if (_formKey.currentState.validate()) {
+            print(_ctrlFullName.text);
+            print(_ctrlNickName.text);
+            // registers2
 
-          if (_ctrlFullName.text != '' && _ctrlNickName.text != '') {
-            var str =
-                await registers2(token, _ctrlFullName.text, _ctrlNickName.text);
-            print("str =="+str.success.toString());
-            if (str.success == 1) {
-              Navigator.pushNamedAndRemoveUntil(context, '/slide-page', (Route<dynamic> route) => false);
-              // Navigator.pushReplacement(
-              //   context,
-              //   new MaterialPageRoute(
-              //       /*check()*/
-              //       builder: (context) =>
-              //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-              // ).then((value) {
-              //   /* if (value == null) {
-              //     } else {
+            if (_ctrlFullName.text != '' && _ctrlNickName.text != '') {
+              var str = await registers2(
+                  token, _ctrlFullName.text, _ctrlNickName.text);
+              print("str ==" + str.success.toString());
+              if (str.success == 1) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/slide-page', (Route<dynamic> route) => false);
+                // Navigator.pushReplacement(
+                //   context,
+                //   new MaterialPageRoute(
+                //       /*check()*/
+                //       builder: (context) =>
+                //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
+                // ).then((value) {
+                //   /* if (value == null) {
+                //     } else {
 
-              //       proList.add(value);
-              //     }*/
-              //   setState(() {});
-              // });
+                //       proList.add(value);
+                //     }*/
+                //   setState(() {});
+                // });
+              }
             }
           }
         },
@@ -198,6 +317,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
     );
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -205,67 +325,71 @@ class _RegisterPage3State extends State<RegisterPage3> {
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.blueAccent,
-                      Colors.blueAccent,
-                      Colors.blueAccent,
-                      Colors.blueAccent,
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
+          child: Form(
+            key: _formKey,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.blueAccent,
+                        Colors.blueAccent,
+                        Colors.blueAccent,
+                        Colors.blueAccent,
+                      ],
+                      stops: [0.1, 0.4, 0.7, 0.9],
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'ตั้งชื่อ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          // fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
+                Container(
+                  height: double.infinity,
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 40.0,
+                      vertical: 120.0,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'ตั้งชื่อ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            // fontFamily: 'OpenSans',
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 30.0),
-                      SizedBox(height: 30.0),
-                      _buildNicknameTF(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildFullNameTF(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
+                        SizedBox(height: 30.0),
+                        SizedBox(height: 30.0),
+                        // _buildNicknameTF(),
+                        _buildNicknameTF(),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        _buildFullNameTF(),
+                        SizedBox(
+                          height: 20.0,
+                        ),
 
-                      // _buildNameTF(),
-                      // SizedBox(
-                      //   height: 20.0,
-                      // ),
+                        // _buildNameTF(),
+                        // SizedBox(
+                        //   height: 20.0,
+                        // ),
 
-                      _buildConfirmBtn(),
-                    ],
+                        _buildConfirmBtn(),
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

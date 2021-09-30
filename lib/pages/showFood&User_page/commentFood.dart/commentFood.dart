@@ -354,7 +354,7 @@ class _CommentFoodState extends State<CommentFood> {
                                               '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
                                           style: TextStyle(
                                               decoration: TextDecoration.none,
-                                              fontFamily: 'OpenSans',
+                                              // fontFamily: 'OpenSans',
                                               fontSize: 12.0,
                                               color: Colors.grey.shade600),
                                         )
@@ -745,7 +745,7 @@ class _CommentFoodState extends State<CommentFood> {
       trimExpandedText: 'อ่านน้อยลง',
       style: TextStyle(
         fontWeight: FontWeight.normal,
-        fontFamily: 'OpenSans',
+        // fontFamily: 'OpenSans',
         fontSize: 13,
         color: Colors.black,
         decoration: TextDecoration.none,

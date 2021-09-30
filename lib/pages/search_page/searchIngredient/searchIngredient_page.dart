@@ -332,7 +332,9 @@ class _SearchIngredientState extends State<SearchIngredient> {
                                                       Text(listDataFood
                                                           .elementAt(index)
                                                           .score
-                                                          .toString()+"/5")
+                                                          .toString()+"/5(${listDataFood
+                                                          .elementAt(index)
+                                                          .count})")
                                                     ],
                                                   ),
                                           ),
@@ -356,10 +358,12 @@ class _SearchIngredientState extends State<SearchIngredient> {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Text(listDataFood
-                                                .elementAt(index)
-                                                .nameSurname +
-                                            "(${listDataFood.elementAt(index).aliasName})")
+                                        Expanded(
+                                          child: Text(listDataFood
+                                                  .elementAt(index)
+                                                  .nameSurname +
+                                              "(${listDataFood.elementAt(index).aliasName})",maxLines: 1,style: TextStyle(),),
+                                        )
                                       ],
                                     ),
                                   ],

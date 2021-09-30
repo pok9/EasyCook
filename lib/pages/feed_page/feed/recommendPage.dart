@@ -352,10 +352,14 @@ class _RecommendPageState extends State<RecommendPage> {
                       new SizedBox(
                         width: 10.0,
                       ),
-                      new Text(
-                        dataRecommendRecipe.aliasName,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                      Expanded(
+                        child: new Text(
+                          dataRecommendRecipe.aliasName,
+                          maxLines: 1,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
                       )
                     ],
                   ),

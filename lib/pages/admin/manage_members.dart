@@ -208,21 +208,24 @@ class _ManageMembersState extends State<ManageMembers> {
                           padding: const EdgeInsets.only(bottom: 5),
                           child: new Text(
                             "รายงาน",
-                            style: TextStyle(color: Colors.black),
+                            maxLines: 1,
+                            style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.black),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 5),
                           child: new Text(
                             "จัดการสมาชิก",
-                            style: TextStyle(color: Colors.black),
+                            maxLines: 1,
+                            style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.black),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 5),
                           child: new Text(
                             "แจ้งเตือนแอป",
-                            style: TextStyle(color: Colors.black),
+                            maxLines: 1,
+                            style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.black),
                           ),
                         ),
                       ],
@@ -262,9 +265,14 @@ class _ManageMembersState extends State<ManageMembers> {
                                         SizedBox(
                                           width: 1,
                                         ),
-                                        new Text(
-                                          "สูตรอาหาร",
-                                          style: TextStyle(color: Colors.black),
+                                        Expanded(
+                                          child: new Text(
+                                            "สูตรอาหาร",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.black),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -282,9 +290,14 @@ class _ManageMembersState extends State<ManageMembers> {
                                         SizedBox(
                                           width: 1,
                                         ),
-                                        new Text(
-                                          "ผู้ใช้",
-                                          style: TextStyle(color: Colors.black),
+                                        Expanded(
+                                          child: new Text(
+                                            "ผู้ใช้",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.black),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -302,9 +315,14 @@ class _ManageMembersState extends State<ManageMembers> {
                                         SizedBox(
                                           width: 1,
                                         ),
-                                        new Text(
-                                          "คอมเมนต์",
-                                          style: TextStyle(color: Colors.black),
+                                        Expanded(
+                                          child: new Text(
+                                            "คอมเมนต์",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.black),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -661,7 +679,7 @@ class _ManageMembersState extends State<ManageMembers> {
         itemBuilder: (context, index) {
           if (dateGetAllReport[index].typeReport == typeNameReport) {
             return Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 4),
               child: Card(
                 color: Colors.white,
                 margin: EdgeInsets.all(1),
@@ -680,7 +698,10 @@ class _ManageMembersState extends State<ManageMembers> {
                     ),
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8),
-                      child: Text(dateGetAllReport[index].nameUserReport),
+                      child: Text(
+                        dateGetAllReport[index].nameUserReport,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     subtitle: Text(
                         "${dateGetAllReport[index].title}\n\n${dateEdit(dateGetAllReport[index].datetime.toString())}"),
