@@ -201,11 +201,11 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                             InkWell(
                               onTap: () {
                                 Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context) {
-                                    return ProfileUser(
-                                      reqUid: dataFood.userId,
-                                    );
-                                  }));
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    reqUid: dataFood.userId,
+                                  );
+                                }));
                               },
                               child: CircleAvatar(
                                 backgroundImage:
@@ -382,47 +382,51 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
                                     dataGetCommentPost[index].profileImage),
                               ),
                               title: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                                child: RichText(
-                                  text: TextSpan(
-                                      text: dataGetCommentPost[index].aliasName,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          color: (dataGetCommentPost[index]
-                                                      .userStatus ==
-                                                  0)
-                                              ? Colors.red
-                                              : (dataGetCommentPost[index]
-                                                          .userId ==
-                                                      myDataUser.userId)
-                                                  ? Colors.blue
-                                                  : Colors.black),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
-                                          style: TextStyle(
-                                              decoration: TextDecoration.none,
-                                              // fontFamily: 'OpenSans',
-                                              fontSize: 12.0,
-                                              color: Colors.grey.shade600),
-                                        )
-                                      ]),
-                                )
-                                // Text(
-                                //   dataGetCommentPost[index].aliasName,
-                                //   style: TextStyle(
-                                //       fontWeight: FontWeight.bold,
-                                //       color: (dataGetCommentPost[index]
-                                //                   .userStatus ==
-                                //               0)
-                                //           ? Colors.red
-                                //           : (dataGetCommentPost[index].userId ==
-                                //                   data_DataAc.userId)
-                                //               ? Colors.blue
-                                //               : Colors.black),
-                                // ),
-                                ),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text:
+                                            dataGetCommentPost[index].aliasName,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            color: (dataGetCommentPost[index]
+                                                        .userStatus ==
+                                                    0)
+                                                ? Colors.red
+                                                : (myDataUser == null)
+                                                    ? Colors.black
+                                                    : (dataGetCommentPost[index]
+                                                                .userId ==
+                                                            myDataUser.userId)
+                                                        ? Colors.blue
+                                                        : Colors.black),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
+                                            style: TextStyle(
+                                                decoration: TextDecoration.none,
+                                                // fontFamily: 'OpenSans',
+                                                fontSize: 12.0,
+                                                color: Colors.grey.shade600),
+                                          )
+                                        ]),
+                                  )
+                                  // Text(
+                                  //   dataGetCommentPost[index].aliasName,
+                                  //   style: TextStyle(
+                                  //       fontWeight: FontWeight.bold,
+                                  //       color: (dataGetCommentPost[index]
+                                  //                   .userStatus ==
+                                  //               0)
+                                  //           ? Colors.red
+                                  //           : (dataGetCommentPost[index].userId ==
+                                  //                   data_DataAc.userId)
+                                  //               ? Colors.blue
+                                  //               : Colors.black),
+                                  // ),
+                                  ),
                               subtitle: buildTextComment(index),
                               dense: true,
                               // trailing: Text('Horse'),
@@ -532,7 +536,7 @@ class _RecipePurchasePageState extends State<RecipePurchasePage> {
     );
   }
 
-   Widget buildTextComment(int index) {
+  Widget buildTextComment(int index) {
     // return TextSpan(
     //   text: '${dataGetCommentPost[index].commentDetail}',
     //   style: TextStyle(

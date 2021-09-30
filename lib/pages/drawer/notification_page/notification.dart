@@ -122,24 +122,27 @@ class _NotificationPageState extends State<NotificationPage> {
       appBar: AppBar(
         title: Text('การแจ้งเตือน'),
         actions: [
-          PopupMenuButton(
-            child: Center(child: Icon(Icons.more_vert_outlined)),
-            onSelected: (value) {
-              setState(() {
-                if (value == 1) {
-                  print("555");
-                  clearNotificationData();
-                }
-              });
-            },
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem(
-                  child: Text('ลบการแจ้งเตือนทั้งหมด'),
-                  value: 1,
-                ),
-              ];
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: PopupMenuButton(
+              child: Center(child: Icon(Icons.more_vert_outlined)),
+              onSelected: (value) {
+                setState(() {
+                  if (value == 1) {
+                    print("555");
+                    clearNotificationData();
+                  }
+                });
+              },
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: Text('ลบการแจ้งเตือนทั้งหมด'),
+                    value: 1,
+                  ),
+                ];
+              },
+            ),
           )
         ],
       ),

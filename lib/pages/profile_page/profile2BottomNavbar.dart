@@ -109,6 +109,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
   }
 
   buildSliverAppBar(context) {
+    Size size = MediaQuery.of(context).size;
     return SliverAppBar(
       title: Text(data_DataAc.aliasName),
       pinned: true,
@@ -225,7 +226,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 100),
+                    padding: const EdgeInsets.only(top: 90),
                     child: Column(
                       children: [
                         InkWell(

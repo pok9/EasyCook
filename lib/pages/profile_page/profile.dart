@@ -211,7 +211,7 @@ class _ScrollProfilePageState extends State
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 100),
+                    padding: const EdgeInsets.only(top: 90),
                     child: Column(
                       children: [
                         // SizedBox(
