@@ -222,28 +222,68 @@ class _RecommendPageState extends State<RecommendPage> {
                     child: Row(
                       // crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.blue,
-                          size: 20,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Container(
+                              height: 30,
+                              width: 90,
+                              color: Colors.black.withOpacity(0.6),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.blue,
+                                        size: 15,
+                                      ),
+                                      SizedBox(
+                                        width: 1,
+                                      ),
+                                      Text(
+                                        dataRecommendRecipe.score.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        '(${dataRecommendRecipe.count})',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
                         ),
-                        SizedBox(
-                          width: 1,
-                        ),
-                        Text(
-                          dataRecommendRecipe.score.toString(),
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '(${dataRecommendRecipe.count})',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
+                        // Icon(
+                        //   Icons.star,
+                        //   color: Colors.blue,
+                        //   size: 20,
+                        // ),
+                        // SizedBox(
+                        //   width: 1,
+                        // ),
+                        // Text(
+                        //   dataRecommendRecipe.score.toString(),
+                        //   style: TextStyle(
+                        //       color: Colors.white, fontWeight: FontWeight.bold),
+                        // ),
+                        // SizedBox(
+                        //   width: 2,
+                        // ),
+                        // Text(
+                        //   '(${dataRecommendRecipe.count})',
+                        //   style: TextStyle(
+                        //     color: Colors.white,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

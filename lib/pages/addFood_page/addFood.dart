@@ -1104,7 +1104,12 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 }
 
                 if (text != "") {
-                  showdialogPost(context, text);
+                  // showdialogPost(context, text);
+                  showDialog(
+                  context: context,
+                  builder: (context) => CustomDialogNotificationPost(
+                        text: text,
+                      ));
                   check = false;
                 }
                 if (check) {
@@ -2176,3 +2181,100 @@ class CustomDialog extends StatelessWidget {
     );
   }
 }
+
+class CustomDialogNotificationPost extends StatelessWidget {
+  final String text;
+
+
+  CustomDialogNotificationPost({this.text,});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 100, bottom: 26, left: 16, right: 16),
+          margin: EdgeInsets.only(top: 40),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Text(
+              //         title,
+              //         textAlign: TextAlign.center,
+              //         style: TextStyle(
+              //             fontSize: 22.0, fontWeight: FontWeight.w700),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+             
+              Text(
+                text,
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "อยู่หน้านี้ต่อ",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text("ออกไปหน้าอื่น"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 16,
+          right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 50,
+            backgroundImage: NetworkImage(
+                'https://png.pngtree.com/png-vector/20190228/ourlarge/pngtree-wrong-false-icon-design-template-vector-isolated-png-image_711430.jpg',),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+

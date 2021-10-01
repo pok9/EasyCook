@@ -1137,7 +1137,7 @@ class _FeedPageState extends State<FeedPage> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      // Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
                     ],
                   ),
                 ),

@@ -98,6 +98,7 @@ class _ScrollProfilePageState extends State
   }
 
   buildSliverAppBar() {
+    
     return SliverAppBar(
       // title: buildHeader(),
       title: Text(data_DataAc.aliasName),
@@ -106,7 +107,7 @@ class _ScrollProfilePageState extends State
       floating: false,
       snap: false,
       elevation: 0.0,
-      expandedHeight: (data_DataAc.userStatus == 0) ? 403 : 550,
+      expandedHeight: (data_DataAc.userStatus == 0) ? 405 : 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(),

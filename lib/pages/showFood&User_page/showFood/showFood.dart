@@ -1803,28 +1803,68 @@ class _ShowFoodState extends State<ShowFood> {
                     child: Row(
                       // crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.blue,
-                          size: 20,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Container(
+                              height: 30,
+                              width: 90,
+                              color: Colors.black.withOpacity(0.6),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.blue,
+                                        size: 15,
+                                      ),
+                                      SizedBox(
+                                        width: 1,
+                                      ),
+                                      Text(
+                                        dataRecommendRecipe.score.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        '(${dataRecommendRecipe.count})',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
                         ),
-                        SizedBox(
-                          width: 1,
-                        ),
-                        Text(
-                          dataRecommendRecipe.score.toString(),
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '(${dataRecommendRecipe.count})',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
+                        // Icon(
+                        //   Icons.star,
+                        //   color: Colors.blue,
+                        //   size: 20,
+                        // ),
+                        // SizedBox(
+                        //   width: 1,
+                        // ),
+                        // Text(
+                        //   dataRecommendRecipe.score.toString(),
+                        //   style: TextStyle(
+                        //       color: Colors.white, fontWeight: FontWeight.bold),
+                        // ),
+                        // SizedBox(
+                        //   width: 2,
+                        // ),
+                        // Text(
+                        //   '(${dataRecommendRecipe.count})',
+                        //   style: TextStyle(
+                        //     color: Colors.white,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -1894,8 +1934,7 @@ class _ShowFoodState extends State<ShowFood> {
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.white, fontSize: 25),
+                          style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
                       ),
                     ],
@@ -1939,8 +1978,9 @@ class _ShowFoodState extends State<ShowFood> {
                           dataRecommendRecipe.aliasName,
                           maxLines: 1,
                           style: TextStyle(
-                             overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       )
                     ],
@@ -2146,8 +2186,7 @@ class CustomDialog extends StatelessWidget {
               ),
               Text(
                 description,
-                style: TextStyle(
-                    color: Colors.grey.shade800, fontSize: 16.0),
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
               ),
               SizedBox(
                 height: 30.0,

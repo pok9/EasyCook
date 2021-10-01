@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:easy_cook/models/admin/manage_members_model.dart';
 import 'package:easy_cook/models/checkFollower_checkFollowing/checkFollower_model.dart';
 import 'package:easy_cook/models/follow/manageFollow_model.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
@@ -262,6 +263,30 @@ class _ProfileUserState extends State<ProfileUser> {
 
   int checkPressCountFollowAndUnFollow = 0;
 
+  Future<ManageMembersModel> ManageMembers(String uid, String token) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/banUser";
+
+    var data = {
+      "user_ID": uid,
+    };
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.body);
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return manageMembersModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -274,9 +299,7 @@ class _ProfileUserState extends State<ProfileUser> {
         //     image: DecorationImage(image: NetworkImage('https://media4.giphy.com/media/QVI76pRcwyrZlBwUpU/200w.webp?cid=ecf05e47nkfvwzl8s2kc7d99vh35o7rj8fysks84vggixccu&rid=200w.webp&ct=g'),fit: BoxFit.cover)
         //   ),
         // ),
-        title: Text(data_PostUser == null
-            ? ""
-            : data_PostUser.aliasName),
+        title: Text(data_PostUser == null ? "" : data_PostUser.aliasName),
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
@@ -291,95 +314,171 @@ class _ProfileUserState extends State<ProfileUser> {
         actions: [
           (data_PostUser == null || data_DataAc == null)
               ? Container()
-              : (data_DataAc.userStatus == 0 || (token == "" && token == null))
+              : (token == "" && token == null)
                   ? Container()
-                  : PopupMenuButton(
-                      child: Center(
-                          child: Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Icon(Icons.more_horiz_outlined),
-                      )),
-                      onSelected: (value) {
-                        print(value);
-                        if (value == 0) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ReportUser();
-                              }).then((value) async {
-                            if (value != null) {
+                  : (data_DataAc.userStatus == 0)
+                      ? PopupMenuButton(
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Icon(Icons.more_horiz_outlined),
+                          )),
+                          onSelected: (value) async {
+                            if (value == 0) {
                               showDialog(
-                                  context: context,
-                                  builder: (contex) {
-                                    return AlertDialog(
-                                        content: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text("กรุณารอสักครู่...   "),
-                                        CircularProgressIndicator()
-                                      ],
-                                    ));
-                                  });
-
-                              AddReport dataAddReport = await addReport(
-                                  data_PostUser.userId.toString(),
-                                  "user",
-                                  null,
-                                  "รายงานผู้ใช้",
-                                  value[0],
-                                  value[1]);
-
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("กรุณารอสักครู่...   "),
+                                      CircularProgressIndicator()
+                                    ],
+                                  ));
+                                },
+                              );
+                              ManageMembersModel manageMembersModel =
+                                  await ManageMembers(
+                                      this.data_PostUser.userId.toString(),
+                                      this.token);
                               Navigator.pop(context);
-                              String reportText1;
-                              String reportText2;
-                              Color color;
-                              if (dataAddReport.success == 1) {
-                                reportText1 = "รายงานสำเร็จ";
-                                reportText2 = "ขอบคุณสำหรับการรายงาน";
-                                color = Colors.green;
+                              if (manageMembersModel.success == 1) {
+                                
+                               
+                            
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomDialog(
+                                          title: "แบนสำเร็จ",
+                                          description:
+                                              "คุณได้ทำการแบนสมาชิกเรียบร้อย",
+                                          image:
+                                              'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                                          colors: Colors.lightGreen,
+                                          index: 1,
+                                        ));
                               } else {
-                                reportText1 = "รายงานไม่สำเร็จ";
-                                reportText2 = "โปรดรายงานใหม่ในภายหลัง";
-                                color = Colors.red;
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomDialog(
+                                          title: "แบนไม่สำเร็จ",
+                                          description: "มีบางอย่างผิดพลาด",
+                                          image:
+                                              'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                                          colors: Colors.redAccent,
+                                          index: 0,
+                                        ));
                               }
+                            }
+                          },
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.flag,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text('แบนผู้ใช้'),
+                                  ],
+                                ),
+                                value: 0,
+                              ),
+                            ];
+                          })
+                      : PopupMenuButton(
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Icon(Icons.more_horiz_outlined),
+                          )),
+                          onSelected: (value) {
+                            print(value);
+                            if (value == 0) {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    Future.delayed(Duration(milliseconds: 1500),
-                                        () {
-                                      Navigator.of(context).pop(true);
+                                    return ReportUser();
+                                  }).then((value) async {
+                                if (value != null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (contex) {
+                                        return AlertDialog(
+                                            content: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text("กรุณารอสักครู่...   "),
+                                            CircularProgressIndicator()
+                                          ],
+                                        ));
+                                      });
 
-                                      // Navigator.pop(context);
-                                    });
-                                    return alertDialog_successful_or_unsuccessful(
-                                        reportText1, color, reportText2);
-                                  });
-                              print(
-                                  "dataAddReport.success ===>>> ${dataAddReport.success}");
+                                  AddReport dataAddReport = await addReport(
+                                      data_PostUser.userId.toString(),
+                                      "user",
+                                      null,
+                                      "รายงานผู้ใช้",
+                                      value[0],
+                                      value[1]);
+
+                                  Navigator.pop(context);
+                                  String reportText1;
+                                  String reportText2;
+                                  Color color;
+                                  if (dataAddReport.success == 1) {
+                                    reportText1 = "รายงานสำเร็จ";
+                                    reportText2 = "ขอบคุณสำหรับการรายงาน";
+                                    color = Colors.green;
+                                  } else {
+                                    reportText1 = "รายงานไม่สำเร็จ";
+                                    reportText2 = "โปรดรายงานใหม่ในภายหลัง";
+                                    color = Colors.red;
+                                  }
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        Future.delayed(
+                                            Duration(milliseconds: 1500), () {
+                                          Navigator.of(context).pop(true);
+
+                                          // Navigator.pop(context);
+                                        });
+                                        return alertDialog_successful_or_unsuccessful(
+                                            reportText1, color, reportText2);
+                                      });
+                                  print(
+                                      "dataAddReport.success ===>>> ${dataAddReport.success}");
+                                }
+                              });
                             }
-                          });
-                        }
-                      },
-                      itemBuilder: (context) {
-                        return [
-                          PopupMenuItem(
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.flag,
-                                  color: Colors.black,
+                          },
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.flag,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text('รายงานผู้ใช้'),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text('รายงานผู้ใช้'),
-                              ],
-                            ),
-                            value: 0,
-                          ),
-                        ];
-                      })
+                                value: 0,
+                              ),
+                            ];
+                          })
         ],
       ),
       body: (data_PostUser == null && checkFollowers == null) ||
@@ -528,8 +627,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                           "follow");
 
                                                       Fluttertoast.showToast(
-                                                          msg:
-                                                              "ติดตามแล้ว",
+                                                          msg: "ติดตามแล้ว",
                                                           toastLength: Toast
                                                               .LENGTH_SHORT,
                                                           gravity: ToastGravity
@@ -559,7 +657,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                           this
                                                               .data_PostUser
                                                               .userId);
-                                                      
+
                                                       Fluttertoast.showToast(
                                                           msg:
                                                               "ยกเลิกติดตามแล้ว",
@@ -1183,6 +1281,114 @@ class _ProfileUserState extends State<ProfileUser> {
                 ),
               ),
             ),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title, description, buttonText, image;
+  final Color colors;
+  final int index;
+  final int rid;
+
+  CustomDialog(
+      {this.title,
+      this.description,
+      this.buttonText,
+      this.image,
+      this.colors,
+      this.index,
+      this.rid});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(17),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                )
+              ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 22.0, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text(
+                description,
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: colors,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      if (index == 1) {
+                        // Navigator.pop(context);
+                        print("1111111111111111");
+                      } else {
+                        // Navigator.pop(context);
+                        print("222222222222222");
+                      }
+                    },
+                    child: Text(
+                      "เข้าใจแล้ว",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 16,
+          right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.blueAccent,
+            radius: 50,
+            backgroundImage: NetworkImage(this.image),
+          ),
+        )
+      ],
     );
   }
 }
