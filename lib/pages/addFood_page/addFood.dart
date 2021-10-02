@@ -2,6 +2,7 @@ import 'dart:convert';
 // import 'dart:ffi';
 import 'dart:io';
 
+import 'package:chewie/chewie.dart';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
 import 'package:easy_cook/models/addFood/addhowto_model.dart';
@@ -15,6 +16,7 @@ import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -407,7 +409,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     Expanded(
                       flex: 5,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 0),
+                        padding: const EdgeInsets.only(top: 0,bottom: 0),
                         child: TextFormField(
                           controller: controller2,
                           minLines: 2,
@@ -444,20 +446,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                       color: Colors.grey.shade700,
                                     ),
                                     onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   new MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           new AddImageOrViderPage()),
-                                      // ).then((value) {
-                                      //   if (value != null) {
-                                      //     imageHowto[displayNumber - 1] =
-                                      //         value.image;
-
-                                      //     setState(() {});
-                                      //   }
-                                      // });
-
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (context) {
@@ -544,303 +532,534 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 (imageHowto[displayNumber - 1].toString() ==
                         File('').toString())
                     ? Container()
-                    : Row(
-                        children: [
-                          Expanded(
-                              // flex: 3,
-                              child: (imageHowto[displayNumber - 1]
-                                          .toString() ==
-                                      File('').toString())
-                                  ? Container()
-                                  : (lookupMimeType(
-                                              imageHowto[displayNumber - 1]
-                                                  .path)[0] ==
-                                          "i")
-                                      ? Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 10, 0, 20),
-                                          child: Container(
-                                              constraints:
-                                                  new BoxConstraints.expand(
-                                                height: 350.0,
-                                              ),
-                                              alignment: Alignment.bottomRight,
-                                              padding: new EdgeInsets.only(
-                                                  right: 10, bottom: 8.0),
-                                              decoration: new BoxDecoration(
-                                                image: new DecorationImage(
-                                                  image: FileImage(imageHowto[
-                                                      displayNumber - 1]),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              child: ToggleButtons(
-                                                color: Colors.black
-                                                    .withOpacity(0.60),
-                                                selectedColor: Colors.black,
-                                                selectedBorderColor:
-                                                    Colors.grey,
-                                                splashColor: Colors.blue,
-                                                hoverColor: Color(0xFF6200EE)
-                                                    .withOpacity(0.04),
-                                                borderRadius:
-                                                    BorderRadius.circular(20.0),
-                                                constraints: BoxConstraints(
-                                                    minHeight: 30.0),
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.camera_alt,
+                    : Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                          children: [
+                            Expanded(
+                                // flex: 3,
+                                child:
+                                    (imageHowto[displayNumber - 1].toString() ==
+                                            File('').toString())
+                                        ? Container()
+                                        : (lookupMimeType(
+                                                    imageHowto[displayNumber - 1]
+                                                        .path)[0] ==
+                                                "i")
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 8, 0, 15),
+                                                child: Container(
+                                                    constraints:
+                                                        new BoxConstraints.expand(
+                                                      height: 350.0,
+                                                    ),
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    padding: new EdgeInsets.only(
+                                                        right: 10, bottom: 8.0),
+                                                    decoration: new BoxDecoration(
+                                                      image: new DecorationImage(
+                                                        image: FileImage(
+                                                            imageHowto[
+                                                                displayNumber -
+                                                                    1]),
+                                                        fit: BoxFit.cover,
                                                       ),
-                                                      SizedBox(
-                                                        width: 1,
-                                                      ),
-                                                      Text("แก้ไข")
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.delete),
-                                                      Text("ลบ")
-                                                    ],
-                                                  ),
-                                                ],
-                                                isSelected: [true, true],
-                                                onPressed: (int index) {
-                                                  setState(() {
-                                                    if (index == 0) {
-                                                      // Navigator.push(
-                                                      //   context,
-                                                      //   new MaterialPageRoute(
-                                                      //       builder: (context) =>
-                                                      //           new AddImageOrViderPage()),
-                                                      // ).then((value) {
-                                                      //   if (value != null) {
-                                                      //     setState(() {
-                                                      //       imageHowto[
-                                                      //           displayNumber -
-                                                      //               1] = value
-                                                      //           .image;
-                                                      //     });
-                                                      //   }
-                                                      // });
-                                                      showModalBottomSheet(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: <
-                                                                  Widget>[
-                                                                ListTile(
-                                                                  leading:
-                                                                      new Icon(
-                                                                    Icons
-                                                                        .photo_camera_back,
+                                                    ),
+                                                    child: ToggleButtons(
+                                                      color: Colors.black
+                                                          .withOpacity(0.60),
+                                                      selectedColor: Colors.black,
+                                                      selectedBorderColor:
+                                                          Colors.grey,
+                                                      splashColor: Colors.blue,
+                                                      hoverColor:
+                                                          Color(0xFF6200EE)
+                                                              .withOpacity(0.04),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                      constraints: BoxConstraints(
+                                                          minHeight: 30.0),
+                                                      children: <Widget>[
+                                                        Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.camera_alt,
+                                                              color: Colors.white,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 1,
+                                                            ),
+                                                            Text(
+                                                              "แก้ไข",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.delete,
+                                                              color: Colors.white,
+                                                            ),
+                                                            Text("ลบ",
+                                                                style: TextStyle(
                                                                     color: Colors
-                                                                        .blue,
-                                                                  ),
-                                                                  title: new Text(
-                                                                      'รูปภาพในมือถือ'),
-                                                                  onTap:
-                                                                      () async {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    pickCropImage(
-                                                                        imageHowto,
-                                                                        "addPictueHowto",
-                                                                        displayNumber -
-                                                                            1);
-                                                                  },
-                                                                ),
-                                                                ListTile(
-                                                                  leading: new Icon(
-                                                                      Icons
-                                                                          .camera_alt_outlined,
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  title: new Text(
-                                                                      'ถ่ายรูปภาพ'),
-                                                                  onTap:
-                                                                      () async {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    captureImage(
-                                                                        imageHowto,
-                                                                        "addPictueHowto",
-                                                                        displayNumber -
-                                                                            1);
-                                                                  },
-                                                                ),
-                                                                ListTile(
-                                                                  leading: new Icon(
-                                                                      Icons
-                                                                          .video_collection_outlined,
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  title: new Text(
-                                                                      'เพิ่ม วิดีโอ จากคลัง'),
-                                                                  onTap:
-                                                                      () async {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    pickCropVideo(
-                                                                        imageHowto,
-                                                                        displayNumber -
-                                                                            1);
-                                                                  },
-                                                                ),
-                                                                ListTile(
-                                                                  leading: new Icon(
-                                                                      Icons
-                                                                          .video_camera_back_outlined,
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  title: new Text(
-                                                                      'ถ่ายวิดีโอ'),
-                                                                  onTap:
-                                                                      () async {
-                                                                    Navigator.pop(
-                                                                        context);
+                                                                        .white))
+                                                          ],
+                                                        ),
+                                                      ],
+                                                      isSelected: [true, true],
+                                                      onPressed: (int index) {
+                                                        setState(() {
+                                                          if (index == 0) {
+                                                            showModalBottomSheet(
+                                                                context: context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: <
+                                                                        Widget>[
+                                                                      ListTile(
+                                                                        leading:
+                                                                            new Icon(
+                                                                          Icons
+                                                                              .photo_camera_back,
+                                                                          color: Colors
+                                                                              .blue,
+                                                                        ),
+                                                                        title: new Text(
+                                                                            'รูปภาพในมือถือ'),
+                                                                        onTap:
+                                                                            () async {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          pickCropImage(
+                                                                              imageHowto,
+                                                                              "addPictueHowto",
+                                                                              displayNumber -
+                                                                                  1);
+                                                                        },
+                                                                      ),
+                                                                      ListTile(
+                                                                        leading: new Icon(
+                                                                            Icons
+                                                                                .camera_alt_outlined,
+                                                                            color:
+                                                                                Colors.blue),
+                                                                        title: new Text(
+                                                                            'ถ่ายรูปภาพ'),
+                                                                        onTap:
+                                                                            () async {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          captureImage(
+                                                                              imageHowto,
+                                                                              "addPictueHowto",
+                                                                              displayNumber -
+                                                                                  1);
+                                                                        },
+                                                                      ),
+                                                                      ListTile(
+                                                                        leading: new Icon(
+                                                                            Icons
+                                                                                .video_collection_outlined,
+                                                                            color:
+                                                                                Colors.blue),
+                                                                        title: new Text(
+                                                                            'เพิ่ม วิดีโอ จากคลัง'),
+                                                                        onTap:
+                                                                            () async {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          pickCropVideo(
+                                                                              imageHowto,
+                                                                              displayNumber -
+                                                                                  1);
+                                                                        },
+                                                                      ),
+                                                                      ListTile(
+                                                                        leading: new Icon(
+                                                                            Icons
+                                                                                .video_camera_back_outlined,
+                                                                            color:
+                                                                                Colors.blue),
+                                                                        title: new Text(
+                                                                            'ถ่ายวิดีโอ'),
+                                                                        onTap:
+                                                                            () async {
+                                                                          Navigator.pop(
+                                                                              context);
 
-                                                                    captureVideo(
-                                                                        imageHowto,
-                                                                        displayNumber -
-                                                                            1);
-                                                                  },
-                                                                ),
-                                                              ],
-                                                            );
-                                                          });
+                                                                          captureVideo(
+                                                                              imageHowto,
+                                                                              displayNumber -
+                                                                                  1);
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                });
+                                                          } else if (index == 1) {
+                                                            showDialog(
+                                                                context: context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title: const Text(
+                                                                        'ยืนยัน'),
+                                                                    content:
+                                                                        const Text(
+                                                                            'คุณต้องการลบรูปนี้ ?'),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        onPressed: () => Navigator.pop(
+                                                                            context,
+                                                                            'Cancel'),
+                                                                        child:
+                                                                            const Text(
+                                                                          'ยกเลิก',
+                                                                          style: TextStyle(
+                                                                              color:
+                                                                                  Colors.red),
+                                                                        ),
+                                                                      ),
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            imageHowto[displayNumber - 1] =
+                                                                                File('');
 
-                                                      // showModalBottomSheet(
-                                                      //     context: context,
-                                                      //     builder: (context) {
-                                                      //       return Column(
-                                                      //         mainAxisSize:
-                                                      //             MainAxisSize
-                                                      //                 .min,
-                                                      //         children: <
-                                                      //             Widget>[
-                                                      //           ListTile(
-                                                      //             leading:
-                                                      //                 new Icon(
-                                                      //               Icons.photo,
-                                                      //               color: Colors
-                                                      //                   .blue,
-                                                      //             ),
-                                                      //             title: new Text(
-                                                      //                 'รูปภาพในมือถือ'),
-                                                      //             onTap:
-                                                      //                 () async {
-                                                      //               Navigator.pop(
-                                                      //                   context);
-                                                      //               pickCropImage(
-                                                      //                   imageHowto,
-                                                      //                   "addPictueHowto",
-                                                      //                   displayNumber -
-                                                      //                       1);
-                                                      //             },
-                                                      //           ),
-                                                      //           ListTile(
-                                                      //             leading: new Icon(
-                                                      //                 Icons
-                                                      //                     .camera_alt_outlined,
-                                                      //                 color: Colors
-                                                      //                     .blue),
-                                                      //             title: new Text(
-                                                      //                 'ถ่ายรูปภาพ'),
-                                                      //             onTap:
-                                                      //                 () async {
-                                                      //               Navigator.pop(
-                                                      //                   context);
-                                                      //               captureImage(
-                                                      //                   imageHowto,
-                                                      //                   "addPictueHowto",
-                                                      //                   displayNumber -
-                                                      //                       1);
-                                                      //             },
-                                                      //           ),
-                                                      //         ],
-                                                      //       );
-                                                      //     });
-                                                    } else if (index == 1) {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              title: const Text(
-                                                                  'ยืนยัน'),
-                                                              content: const Text(
-                                                                  'คุณต้องการลบรูปนี้ ?'),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          context,
-                                                                          'Cancel'),
-                                                                  child:
-                                                                      const Text(
-                                                                    'ยกเลิก',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .red),
-                                                                  ),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    setState(
-                                                                        () {
-                                                                      imageHowto[
+                                                                            Navigator.pop(
+                                                                                context);
+                                                                          });
+                                                                        },
+                                                                        child:
+                                                                            const Text(
+                                                                          'ตกลง',
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                });
+                                                          }
+                                                        });
+                                                      },
+                                                    )),
+                                              )
+                                            : Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 8, 0, 15),
+                                                child: Stack(
+                                                  children: [
+                                                    // Container(
+                                                    //   alignment:
+                                                    //       Alignment.topCenter,
+                                                    //   child: Stack(
+                                                    //     children: [
+                                                    //       AspectRatio(
+                                                    //         aspectRatio:
+                                                    //             VideoPlayerController.file(
+                                                    //                     imageHowto[
+                                                    //                         displayNumber -
+                                                    //                             1])
+                                                    //                 .value
+                                                    //                 .aspectRatio,
+                                                    //         child: VideoPlayer(VideoPlayerController
+                                                    //             .file(imageHowto[
+                                                    //                 displayNumber -
+                                                    //                     1])
+                                                    //           ..setLooping(false)
+                                                    //           ..initialize().then((_) =>
+                                                    //               VideoPlayerController.file(
+                                                    //                       imageHowto[
+                                                    //                           displayNumber -
+                                                    //                               1])
+                                                    //                   .play())),
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+
+                                                    // Align(
+                                                    //   alignment: Alignment.center,
+                                                    //   child: Chewie(
+                                                    //       controller:
+                                                    //           ChewieController(
+                                                    //               videoPlayerController:
+                                                    //                   VideoPlayerController.file(
+                                                    //                       imageHowto[
+                                                    //                           displayNumber -
+                                                    //                               1]),
+                                                    //               aspectRatio: VideoPlayerController.file(
+                                                    //                       imageHowto[
+                                                    //                           displayNumber -
+                                                    //                               1])
+                                                    //                   .value
+                                                    //                   .aspectRatio,
+                                                    //               autoInitialize:
+                                                    //                   true,
+                                                    //               autoPlay: false,
+                                                    //               looping: false,
+                                                    //               errorBuilder:
+                                                    //                   (context,
+                                                    //                       errorMessage) {
+                                                    //                 return Center(
+                                                    //                   child: Text(
+                                                    //                     errorMessage,
+                                                    //                     style: TextStyle(
+                                                    //                         color: Colors
+                                                    //                             .red),
+                                                    //                   ),
+                                                    //                 );
+                                                    //               }),
+                                                    //     ),
+                                                    // ),
+
+                                                    // (VideoPlayerController.file(
+                                                    //             imageHowto[
+                                                    //                 displayNumber -
+                                                    //                     1])
+                                                    //         .value
+                                                    //         .isInitialized)
+                                                    //     ? Center(
+                                                    //         child:
+                                                    //             CupertinoActivityIndicator(),
+                                                    //       )
+                                                    //     : 
+                                                        Align(
+                                                            alignment:
+                                                                Alignment.center,
+                                                            child: AspectRatio(
+                                                              aspectRatio: VideoPlayerController
+                                                                      .file(imageHowto[
                                                                           displayNumber -
-                                                                              1] = File(
-                                                                          '');
-
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    });
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    'ตกลง',
-                                                                  ),
+                                                                              1])
+                                                                  .value
+                                                                  .aspectRatio,
+                                                              child: Container(
+                                                                child: VideoItems(
+                                                                  videoPlayerController:
+                                                                      VideoPlayerController.file(imageHowto[
+                                                                          displayNumber -
+                                                                              1]),
+                                                                  looping: false,
+                                                                  autoplay: false,
+                                                                  addfood_showfood:
+                                                                      2,
                                                                 ),
-                                                              ],
-                                                            );
-                                                          });
-                                                    }
-                                                  });
-                                                },
-                                              )),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 10, 0, 0),
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: AspectRatio(
-                                              aspectRatio: 1,
-                                              child: Container(
-                                                child: VideoItems(
-                                                  videoPlayerController:
-                                                      VideoPlayerController
-                                                          .file(imageHowto[
-                                                              displayNumber -
-                                                                  1]),
-                                                  looping: false,
-                                                  autoplay: false,
-                                                  addfood_showfood: 2,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                    // Positioned(
+                                                    //   child: Padding(
+                                                    //     padding:
+                                                    //         const EdgeInsets.all(
+                                                    //             8.0),
+                                                    //     child: ToggleButtons(
+                                                    //       color: Colors.black
+                                                    //           .withOpacity(0.60),
+                                                    //       selectedColor:
+                                                    //           Colors.black,
+                                                    //       selectedBorderColor:
+                                                    //           Colors.grey,
+                                                    //       splashColor:
+                                                    //           Colors.blue,
+                                                    //       hoverColor: Color(
+                                                    //               0xFF6200EE)
+                                                    //           .withOpacity(0.04),
+                                                    //       borderRadius:
+                                                    //           BorderRadius
+                                                    //               .circular(20.0),
+                                                    //       constraints:
+                                                    //           BoxConstraints(
+                                                    //               minHeight:
+                                                    //                   30.0),
+                                                    //       children: <Widget>[
+                                                    //         Row(
+                                                    //           children: [
+                                                    //             Icon(
+                                                    //               Icons
+                                                    //                   .camera_alt,
+                                                    //               color: Colors
+                                                    //                   .white,
+                                                    //             ),
+                                                    //             SizedBox(
+                                                    //               width: 1,
+                                                    //             ),
+                                                    //             Text(
+                                                    //               "แก้ไข",
+                                                    //               style: TextStyle(
+                                                    //                   color: Colors
+                                                    //                       .white),
+                                                    //             )
+                                                    //           ],
+                                                    //         ),
+                                                    //         Row(
+                                                    //           children: [
+                                                    //             Icon(
+                                                    //               Icons.delete,
+                                                    //               color: Colors
+                                                    //                   .white,
+                                                    //             ),
+                                                    //             Text("ลบ",
+                                                    //                 style: TextStyle(
+                                                    //                     color: Colors
+                                                    //                         .white))
+                                                    //           ],
+                                                    //         ),
+                                                    //       ],
+                                                    //       isSelected: [
+                                                    //         true,
+                                                    //         true
+                                                    //       ],
+                                                    //       onPressed: (int index) {
+                                                    //         setState(() {
+                                                    //           if (index == 0) {
+                                                    //             showModalBottomSheet(
+                                                    //                 context:
+                                                    //                     context,
+                                                    //                 builder:
+                                                    //                     (context) {
+                                                    //                   return Column(
+                                                    //                     mainAxisSize:
+                                                    //                         MainAxisSize
+                                                    //                             .min,
+                                                    //                     children: <
+                                                    //                         Widget>[
+                                                    //                       ListTile(
+                                                    //                         leading:
+                                                    //                             new Icon(
+                                                    //                           Icons.photo_camera_back,
+                                                    //                           color:
+                                                    //                               Colors.blue,
+                                                    //                         ),
+                                                    //                         title:
+                                                    //                             new Text('รูปภาพในมือถือ'),
+                                                    //                         onTap:
+                                                    //                             () async {
+                                                    //                           Navigator.pop(context);
+                                                    //                           pickCropImage(
+                                                    //                               imageHowto,
+                                                    //                               "addPictueHowto",
+                                                    //                               displayNumber - 1);
+                                                    //                         },
+                                                    //                       ),
+                                                    //                       ListTile(
+                                                    //                         leading: new Icon(
+                                                    //                             Icons.camera_alt_outlined,
+                                                    //                             color: Colors.blue),
+                                                    //                         title:
+                                                    //                             new Text('ถ่ายรูปภาพ'),
+                                                    //                         onTap:
+                                                    //                             () async {
+                                                    //                           Navigator.pop(context);
+                                                    //                           captureImage(
+                                                    //                               imageHowto,
+                                                    //                               "addPictueHowto",
+                                                    //                               displayNumber - 1);
+                                                    //                         },
+                                                    //                       ),
+                                                    //                       ListTile(
+                                                    //                         leading: new Icon(
+                                                    //                             Icons.video_collection_outlined,
+                                                    //                             color: Colors.blue),
+                                                    //                         title:
+                                                    //                             new Text('เพิ่ม วิดีโอ จากคลัง'),
+                                                    //                         onTap:
+                                                    //                             () async {
+                                                    //                           Navigator.pop(context);
+                                                    //                           pickCropVideo(imageHowto,
+                                                    //                               displayNumber - 1);
+                                                    //                         },
+                                                    //                       ),
+                                                    //                       ListTile(
+                                                    //                         leading: new Icon(
+                                                    //                             Icons.video_camera_back_outlined,
+                                                    //                             color: Colors.blue),
+                                                    //                         title:
+                                                    //                             new Text('ถ่ายวิดีโอ'),
+                                                    //                         onTap:
+                                                    //                             () async {
+                                                    //                           Navigator.pop(context);
+
+                                                    //                           captureVideo(imageHowto,
+                                                    //                               displayNumber - 1);
+                                                    //                         },
+                                                    //                       ),
+                                                    //                     ],
+                                                    //                   );
+                                                    //                 });
+                                                    //           } else if (index ==
+                                                    //               1) {
+                                                    //             showDialog(
+                                                    //                 context:
+                                                    //                     context,
+                                                    //                 builder:
+                                                    //                     (BuildContext
+                                                    //                         context) {
+                                                    //                   return AlertDialog(
+                                                    //                     title: const Text(
+                                                    //                         'ยืนยัน'),
+                                                    //                     content:
+                                                    //                         const Text(
+                                                    //                             'คุณต้องการลบวิดีโอนี้นี้ ?'),
+                                                    //                     actions: <
+                                                    //                         Widget>[
+                                                    //                       TextButton(
+                                                    //                         onPressed: () => Navigator.pop(
+                                                    //                             context,
+                                                    //                             'Cancel'),
+                                                    //                         child:
+                                                    //                             const Text(
+                                                    //                           'ยกเลิก',
+                                                    //                           style:
+                                                    //                               TextStyle(color: Colors.red),
+                                                    //                         ),
+                                                    //                       ),
+                                                    //                       TextButton(
+                                                    //                         onPressed:
+                                                    //                             () {
+                                                    //                           setState(() {
+                                                                                
+                                                    //                             imageHowto[displayNumber - 1] = File('');
+
+                                                    //                             Navigator.pop(context);
+                                                    //                           });
+                                                    //                         },
+                                                    //                         child:
+                                                    //                             const Text(
+                                                    //                           'ตกลง',
+                                                    //                         ),
+                                                    //                       ),
+                                                    //                     ],
+                                                    //                   );
+                                                    //                 });
+                                                    //           }
+                                                    //         });
+                                                    //       },
+                                                    //     ),
+                                                    //   ),
+                                                    // )
+                                                  ],
                                                 ),
-                                              ),
-                                            ),
-                                          ),
-                                        )),
-                        ],
-                      ),
+                                              )),
+                          ],
+                        ),
+                    ),
               ],
             ),
           ),
@@ -1106,10 +1325,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 if (text != "") {
                   // showdialogPost(context, text);
                   showDialog(
-                  context: context,
-                  builder: (context) => CustomDialogNotificationPost(
-                        text: text,
-                      ));
+                      context: context,
+                      builder: (context) => CustomDialogNotificationPost(
+                            text: text,
+                          ));
                   check = false;
                 }
                 if (check) {
@@ -1188,10 +1407,11 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 }
                 setState(() {});
               },
-              child: Text('โพสต์'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.grey,
+              child: Text(
+                'โพสต์',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              style: ElevatedButton.styleFrom(primary: Colors.red),
             ),
           )
         ],
@@ -1299,15 +1519,26 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               children: [
                                 Icon(
                                   Icons.camera_alt,
+                                  color: Colors.white,
                                 ),
                                 SizedBox(
                                   width: 1,
                                 ),
-                                Text("แก้ไข")
+                                Text(
+                                  "แก้ไข",
+                                  style: TextStyle(color: Colors.white),
+                                )
                               ],
                             ),
                             Row(
-                              children: [Icon(Icons.delete), Text("ลบ")],
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                                Text("ลบ",
+                                    style: TextStyle(color: Colors.white))
+                              ],
                             ),
                           ],
                           isSelected: [true, true],
@@ -1793,7 +2024,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
       const Category('เมนูทอด'),
       const Category('เมนูย่าง'),
       const Category('เมนูอบ'),
-      const Category('เมนูกินเล่น'),
+      const Category('อาหารว่าง'),
     ];
 
     _selectPrices = "ฟรี";
@@ -2185,8 +2416,9 @@ class CustomDialog extends StatelessWidget {
 class CustomDialogNotificationPost extends StatelessWidget {
   final String text;
 
-
-  CustomDialogNotificationPost({this.text,});
+  CustomDialogNotificationPost({
+    this.text,
+  });
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -2229,7 +2461,7 @@ class CustomDialogNotificationPost extends StatelessWidget {
               //     ),
               //   ],
               // ),
-             
+
               Text(
                 text,
                 style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
@@ -2269,12 +2501,11 @@ class CustomDialogNotificationPost extends StatelessWidget {
             backgroundColor: Colors.white,
             radius: 50,
             backgroundImage: NetworkImage(
-                'https://png.pngtree.com/png-vector/20190228/ourlarge/pngtree-wrong-false-icon-design-template-vector-isolated-png-image_711430.jpg',),
+              'https://png.pngtree.com/png-vector/20190228/ourlarge/pngtree-wrong-false-icon-design-template-vector-isolated-png-image_711430.jpg',
+            ),
           ),
         )
       ],
     );
   }
 }
-
-

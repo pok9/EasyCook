@@ -74,6 +74,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
   //   tokens();
   // }
 
+  int checkNickname = 0;
   Widget _buildNicknameTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,9 +96,14 @@ class _RegisterPage3State extends State<RegisterPage3> {
           child: TextFormField(
             controller: _ctrlNickName,
             keyboardType: TextInputType.name,
+            onChanged: (value) {
+              checkNickname = 1;
+            },
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'กรุณาป้อนนามแฝง';
+              if (checkNickname == 1) {
+                if (value == null || value.isEmpty || value.trim() == "") {
+                  return '*กรุณาป้อนนามแฝง';
+                }
               }
               return null;
             },
@@ -132,6 +138,7 @@ class _RegisterPage3State extends State<RegisterPage3> {
     );
   }
 
+  int checFullName = 0;
   Widget _buildFullNameTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,14 +156,20 @@ class _RegisterPage3State extends State<RegisterPage3> {
           // decoration: kBoxDecorationStyle, //กรอบ
 
           height: 80.0,
-          
+
           child: TextFormField(
             controller: _ctrlFullName,
             keyboardType: TextInputType.name,
-             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'กรุณาป้อนชื่อ-นามสกุล';
+            onChanged: (value) {
+              checFullName = 1;
+            },
+            validator: (value) {
+              if (checFullName == 1) {
+                if (value == null || value.isEmpty || value.trim() == "") {
+                  return '*กรุณาป้อนชื่อ-นามสกุล';
+                }
               }
+
               return null;
             },
             maxLength: 50,
@@ -189,77 +202,18 @@ class _RegisterPage3State extends State<RegisterPage3> {
       ],
     );
   }
-  // Widget _buildFullNameTF() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text(
-  //         'ชื่อ-นามสกุล',
-  //         style: kLabelStyle,
-  //       ),
-  //       SizedBox(height: 10.0),
-  //       Container(
-  //         alignment: Alignment.centerLeft, //ให้มาอยู่ตรงกลาง
-  //         decoration: kBoxDecorationStyle, //กรอบ
-  //         height: 60.0,
-  //         child: TextField(
-  //           controller: _ctrlFullName,
-  //           keyboardType: TextInputType.emailAddress,
-  //           style: TextStyle(
-  //             color: Colors.white,
-  //             // fontFamily: 'OpenSans',
-  //           ),
-  //           decoration: InputDecoration(
-  //             border: InputBorder.none,
-  //             contentPadding: EdgeInsets.only(top: 14.0),
-  //             prefixIcon: Icon(
-  //               Icons.person,
-  //               color: Colors.white,
-  //             ),
-  //             hintText: 'ป้อนชื่อ-นามสกุลของคุณ',
-  //             hintStyle: kHintTextStyle,
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildNicknameTF() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text(
-  //         'นามแฝง',
-  //         style: kLabelStyle,
-  //       ),
-  //       SizedBox(height: 10.0),
-  //       Container(
-  //         alignment: Alignment.centerLeft,
-  //         decoration: kBoxDecorationStyle,
-  //         height: 60.0,
-  //         child: TextField(
-  //           controller: _ctrlNickName,
-  //           style: TextStyle(
-  //             color: Colors.white,
-  //             // fontFamily: 'OpenSans',
-  //           ),
-  //           decoration: InputDecoration(
-  //             border: InputBorder.none,
-  //             contentPadding: EdgeInsets.only(top: 14.0),
-  //             prefixIcon: Icon(
-  //               Icons.person,
-  //               color: Colors.white,
-  //             ),
-  //             hintText: 'ป้อนนามแฝงคุณ',
-  //             hintStyle: kHintTextStyle,
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
+  
+  showdialog(context) {
+  return showDialog(
+      context: context,
+      builder: (contex) {
+        return AlertDialog(
+            content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text("กรุณารอสักครู่...   "), CircularProgressIndicator()],
+        ));
+      });
+}
   Widget _buildConfirmBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -268,32 +222,24 @@ class _RegisterPage3State extends State<RegisterPage3> {
         elevation: 5.0,
         onPressed: () async {
           print("ยืนยัน");
+          
+          checkNickname = 1;
+          checFullName = 1;
           if (_formKey.currentState.validate()) {
             print(_ctrlFullName.text);
             print(_ctrlNickName.text);
             // registers2
 
             if (_ctrlFullName.text != '' && _ctrlNickName.text != '') {
+              showdialog(context);
               var str = await registers2(
                   token, _ctrlFullName.text, _ctrlNickName.text);
               print("str ==" + str.success.toString());
+              Navigator.pop(context);
               if (str.success == 1) {
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/slide-page', (Route<dynamic> route) => false);
-                // Navigator.pushReplacement(
-                //   context,
-                //   new MaterialPageRoute(
-                //       /*check()*/
-                //       builder: (context) =>
-                //           new SlidePage()), /////////////////////////////////////////////////////////////////////////////////
-                // ).then((value) {
-                //   /* if (value == null) {
-                //     } else {
-
-                //       proList.add(value);
-                //     }*/
-                //   setState(() {});
-                // });
+               
               }
             }
           }
@@ -327,6 +273,8 @@ class _RegisterPage3State extends State<RegisterPage3> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: Form(
             key: _formKey,
+            // autovalidate: true,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Stack(
               children: <Widget>[
                 Container(

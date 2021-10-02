@@ -22,15 +22,18 @@ class VideoItems extends StatefulWidget {
 }
 
 class _VideoItemsState extends State<VideoItems> {
+
   ChewieController _chewieController;
+  int count = 0;
 
   @override
   void initState() {
-    
+     super.initState();
     // TODO: implement initState
      if (mounted) {
     
-      print("ssssss123");
+      print(11111111);
+     
       _chewieController = ChewieController(
           videoPlayerController: widget.videoPlayerController,
           // aspectRatio: 30 / 15,
@@ -50,14 +53,15 @@ class _VideoItemsState extends State<VideoItems> {
             );
           }
           );
-          super.initState();
+         
     }
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    print("wwwww333");
+    print(3333333);
+    count++;
     // widget.videoPlayerController?.pause();
 
     if (widget.addfood_showfood == 0) {
@@ -86,6 +90,8 @@ class _VideoItemsState extends State<VideoItems> {
 
   @override
   Widget build(BuildContext context) {
+    print(2222222);
+    count++;
     return 
     Chewie(
       controller: _chewieController,

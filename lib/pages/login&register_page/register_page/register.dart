@@ -49,6 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
   ]);
 
   String isEmail = "";
+  int checkEmail = 0;
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,13 +69,27 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 80.0,
 
           child: TextFormField(
-            validator: (value) => email_validator.EmailValidator.validate(value)
-                ? (isEmail != "")
-                    ? isEmail
-                    : null
-                : "กรุณาป้อนอีเมล์ของคุณ",
+            onChanged: (value) {
+              checkEmail = 1;
+            },
+            validator: (value) {
+              return (checkEmail == 0)
+                  ? null
+                  : email_validator.EmailValidator.validate(value)
+                      ? (isEmail != "")
+                          ? isEmail
+                          : null
+                      : "*กรุณาป้อนอีเมล์ของคุณ";
+            },
             controller: _ctrlEmail,
             keyboardType: TextInputType.emailAddress,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(
+                  r'[a-zA-Z0-9]\_*\-*\!*\@*\#*\$*\%*\(*\)*\+*\|*\~*\=*\\*\`*\{*\}*\[*\]*\:*\”*\;*\<*\>*\?*\,*\.*\/*')),
+              // FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
+              // FilteringTextInputFormatter.allow(RegExp('[a-z A-Z 0-9 _-]')),
+              FilteringTextInputFormatter.deny(RegExp('[ ]')),
+            ],
             style: TextStyle(
               color: Colors.white,
               // fontFamily: 'OpenSans',
@@ -105,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  int chechPassword = 0;
   Widget _buildPasswordTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,21 +140,30 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 80.0,
 
           child: TextFormField(
-            validator: 
-            (value) {
-              if (value == null || value.isEmpty) {
-                return 'กรุณาป้อนรหัสผ่าน';
-              } else if(value.length < 6){
-                return 'รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร';
-              }else if (value != _ctrlCheckPassword.text) {
-                return 'รหัสผ่านไม่ตรงกัน';
+            onChanged: (value) {
+              chechPassword = 1;
+            },
+            validator: (value) {
+              if (chechPassword == 1) {
+                if (value == null || value.isEmpty) {
+                  return '*กรุณาป้อนรหัสผ่าน';
+                } else if (value.length < 6) {
+                  return '*รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร';
+                } 
               }
+
               return null;
             },
-           
             controller: _ctrlPassword,
             obscureText: true,
             keyboardType: TextInputType.emailAddress,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(
+                  r'[a-zA-Z0-9]\_*\-*\!*\@*\#*\$*\%*\(*\)*\+*\|*\~*\=*\\*\`*\{*\}*\[*\]*\:*\”*\;*\<*\>*\?*\,*\.*\/*')),
+              // FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
+              // FilteringTextInputFormatter.allow(RegExp('[a-z A-Z 0-9 _-]')),
+              FilteringTextInputFormatter.deny(RegExp('[ ]')),
+            ],
             style: TextStyle(
               color: Colors.white,
               // fontFamily: 'OpenSans',
@@ -167,6 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  int checkPasswordConfirm = 0;
   Widget _buildPasswordTFconfirm() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,17 +212,30 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 80.0,
 
           child: TextFormField(
+            onChanged: (value) {
+              checkPasswordConfirm = 1;
+            },
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'กรุณาป้อนยืนยันรหัสผ่าน';
-              } else if (value != _ctrlPassword.text) {
-                return 'รหัสผ่านไม่ตรงกัน';
+              if (checkPasswordConfirm == 1) {
+                if (value == null || value.isEmpty) {
+                  return '*กรุณาป้อนยืนยันรหัสผ่าน';
+                } else if (value != _ctrlPassword.text) {
+                  return '*รหัสผ่านไม่ตรงกัน';
+                }
               }
+
               return null;
             },
             controller: _ctrlCheckPassword,
             obscureText: true,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.visiblePassword,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(
+                  r'[a-zA-Z0-9]\_*\-*\!*\@*\#*\$*\%*\(*\)*\+*\|*\~*\=*\\*\`*\{*\}*\[*\]*\:*\”*\;*\<*\>*\?*\,*\.*\/*')),
+              // FilteringTextInputFormatter.allow(RegExp(r'^\d+')),
+              // FilteringTextInputFormatter.allow(RegExp('[a-z A-Z 0-9 _-]')),
+              FilteringTextInputFormatter.deny(RegExp('[ ]')),
+            ],
             style: TextStyle(
               color: Colors.white,
               // fontFamily: 'OpenSans',
@@ -232,6 +271,9 @@ class _RegisterPageState extends State<RegisterPage> {
       child: ElevatedButton(
         onPressed: () async {
           isEmail = "";
+          checkEmail = 1;
+          chechPassword = 1;
+          checkPasswordConfirm = 1;
           if (_formKey.currentState.validate()) {
             print(_ctrlPassword.text);
             print(_ctrlCheckPassword.text);
@@ -291,7 +333,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Navigator.pushNamedAndRemoveUntil(context, '/register2-page',
                     (Route<dynamic> route) => false);
               } else {
-                isEmail = response.message;
+                isEmail = "*"+response.message;
                 if (_formKey.currentState.validate()) {}
                 print(response.message);
               }
@@ -409,6 +451,7 @@ class _RegisterPageState extends State<RegisterPage> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

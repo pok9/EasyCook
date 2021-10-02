@@ -258,7 +258,7 @@ class _Feed2PageState extends State<Feed2Page> {
     List time = timeSp[0].split(":");
 
     String text =
-        "${dateSp[2]} ${map[dateSp[1]]} เวลา ${time[0]}:${time[1]} น.";
+        "${int.parse(dateSp[2])} ${map[dateSp[1]]} เวลา ${time[0]}:${time[1]} น.";
     return text;
   }
 

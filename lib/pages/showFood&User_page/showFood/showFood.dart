@@ -1396,9 +1396,13 @@ class _ShowFoodState extends State<ShowFood> {
                                                                     false,
                                                                 dataFood:
                                                                     dataFood,
-                                                              ))).then(
-                                                      (value) => this
-                                                          .getCommentPosts());
+                                                              ))).then((value) {
+                                                                print("okokok$value");
+                                                                this.getCommentPosts();
+                                                                setState(() {
+                                                                  
+                                                                });
+                                                              });
                                                 }
                                               },
                                               child: Text("ดูความเห็นทั้งหมด")),

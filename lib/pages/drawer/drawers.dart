@@ -583,6 +583,7 @@ class _DrawersState extends State<Drawers> {
           padding: const EdgeInsets.all(8.0),
           child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 Row(
@@ -629,15 +630,17 @@ class _DrawersState extends State<Drawers> {
                     //   }
                     //   return null;
                     // },
+                   
                     validator: (value) => EmailValidator.validate(value)
                         ? null
-                        : "กรุณาป้อนอีเมล์ของคุณ",
+                        : "*กรุณาป้อนอีเมล์ของคุณ",
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       labelText: 'อีเมล',
                       // hintText: 'อีเมล'ย,
                     ),
+                    keyboardType: TextInputType.emailAddress,
                     autofocus: false,
                   ),
                 ),
@@ -685,12 +688,14 @@ class _DrawersState extends State<Drawers> {
                                         content: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         Icon(
                                           Icons.warning_amber,
                                           color: Colors.yellow[800],
                                         ),
-                                        Text("โปรดทำรายการใหม่ในภายหลัง"),
+                                        SizedBox(width: 5,),
+                                        Text(resetPasswordModel.message),
                                       ],
                                     ));
                                   });

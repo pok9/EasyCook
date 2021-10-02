@@ -494,17 +494,18 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                     children: [
                                                       Icon(
                                                         Icons.camera_alt,
+                                                        color: Colors.white,
                                                       ),
                                                       SizedBox(
                                                         width: 1,
                                                       ),
-                                                      Text("แก้ไข")
+                                                      Text("แก้ไข",style: TextStyle(color: Colors.white),)
                                                     ],
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons.delete),
-                                                      Text("ลบ")
+                                                      Icon(Icons.delete,color: Colors.white,),
+                                                      Text("ลบ",style: TextStyle(color: Colors.white),)
                                                     ],
                                                   ),
                                                 ],
@@ -1255,9 +1256,9 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('แก้ไข'),
+              child: Text('บันทึก',style: TextStyle(fontWeight: FontWeight.bold),),
               style: ElevatedButton.styleFrom(
-                primary: Colors.grey,
+                primary: Colors.red,
               ),
             ),
           )
@@ -1368,15 +1369,16 @@ class _EditFoodPageState extends State<EditFoodPage> {
                               children: [
                                 Icon(
                                   Icons.camera_alt,
+                                  color: Colors.white,
                                 ),
                                 SizedBox(
                                   width: 1,
                                 ),
-                                Text("แก้ไข")
+                                Text("แก้ไข",style: TextStyle(color: Colors.white),)
                               ],
                             ),
                             Row(
-                              children: [Icon(Icons.delete), Text("ลบ")],
+                              children: [Icon(Icons.delete,color: Colors.white,), Text("ลบ",style: TextStyle(color: Colors.white),)],
                             ),
                           ],
                           isSelected: [true, true],
@@ -1879,7 +1881,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
       const Category('เมนูทอด'),
       const Category('เมนูย่าง'),
       const Category('เมนูอบ'),
-      const Category('เมนูกินเล่น'),
+      const Category('อาหารว่าง'),
     ];
 
     // _selectPrices = "ฟรี";

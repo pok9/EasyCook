@@ -169,6 +169,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,23 +196,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
         actions: [
           IconButton(
             onPressed: () async {
-              if (_data_DataAc.aliasName != ctrl_name1.text ||
-                  _data_DataAc.nameSurname != ctrl_name2.text ||
-                  _imageProfile == "") {
-                if (_imageProfile == "") {
-                  EditProfile editProfiles =
-                      await editProfile(addImageProfile[0].image);
-                }
-
+              if (_formKey.currentState.validate()) {
                 if (_data_DataAc.aliasName != ctrl_name1.text ||
-                    _data_DataAc.nameSurname != ctrl_name2.text) {
-                  EditName editNames =
-                      await editName(ctrl_name2.text, ctrl_name1.text);
-                }
+                    _data_DataAc.nameSurname != ctrl_name2.text ||
+                    _imageProfile == "") {
+                  if (_imageProfile == "") {
+                    EditProfile editProfiles =
+                        await editProfile(addImageProfile[0].image);
+                  }
 
-                Navigator.pop(context);
-              } else {
-                Navigator.pop(context);
+                  if (_data_DataAc.aliasName != ctrl_name1.text ||
+                      _data_DataAc.nameSurname != ctrl_name2.text) {
+                    EditName editNames =
+                        await editName(ctrl_name2.text, ctrl_name1.text);
+                  }
+
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pop(context);
+                }
               }
             },
             icon: Icon(
@@ -223,123 +226,139 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       body: Container(
         padding: EdgeInsets.only(left: 15, top: 20, right: 15),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            children: [
-              Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 4, color: Colors.white),
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.1),
-                            )
-                          ],
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: (_imageProfile != "")
-                                ? NetworkImage(this._imageProfile)
-                                : FileImage(addImageProfile[0].image),
-                          )),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: ListView(
+              children: [
+                Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 130,
+                        height: 130,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 4, color: Colors.white),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color: Colors.black.withOpacity(0.1),
+                              )
+                            ],
                             shape: BoxShape.circle,
-                            border: Border.all(width: 1, color: Colors.white),
-                            color: Colors.blue,
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   new MaterialPageRoute(
-                              //       builder: (context) => new AddImagePage()),
-                              // ).then((value) {
-                              //   if (value != null) {
-                              //     print(value);
-                              //     this.addImageProfile = [];
-                              //     this.addImageProfile.add(value);
-                              //     this._imageProfile = "";
-                              //     setState(() {});
-                              //   }
-                              // });
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        ListTile(
-                                          leading: new Icon(
-                                              Icons.photo_camera_back,
-                                              color: Colors.blue),
-                                          title: new Text('รูปภาพในมือถือ'),
-                                          onTap: () async {
-                                            Navigator.pop(context);
-                                            pickCropImage();
-                                          },
-                                        ),
-                                        ListTile(
-                                          leading: new Icon(
-                                              Icons.camera_alt_outlined,
-                                              color: Colors.blue),
-                                          title: new Text('ถ่ายรูปภาพ'),
-                                          onTap: () async {
-                                            Navigator.pop(context);
-                                            captureImage();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.white,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: (_imageProfile != "")
+                                  ? NetworkImage(this._imageProfile)
+                                  : FileImage(addImageProfile[0].image),
+                            )),
+                      ),
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 1, color: Colors.white),
+                              color: Colors.blue,
                             ),
-                          ),
-                          // child: Icon(
-                          //   Icons.edit,
-                          //   color: Colors.white,
-                          // ),
-                        ))
-                  ],
+                            child: IconButton(
+                              onPressed: () {
+                                // Navigator.push(
+                                //   context,
+                                //   new MaterialPageRoute(
+                                //       builder: (context) => new AddImagePage()),
+                                // ).then((value) {
+                                //   if (value != null) {
+                                //     print(value);
+                                //     this.addImageProfile = [];
+                                //     this.addImageProfile.add(value);
+                                //     this._imageProfile = "";
+                                //     setState(() {});
+                                //   }
+                                // });
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          ListTile(
+                                            leading: new Icon(
+                                                Icons.photo_camera_back,
+                                                color: Colors.blue),
+                                            title: new Text('รูปภาพในมือถือ'),
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                              pickCropImage();
+                                            },
+                                          ),
+                                          ListTile(
+                                            leading: new Icon(
+                                                Icons.camera_alt_outlined,
+                                                color: Colors.blue),
+                                            title: new Text('ถ่ายรูปภาพ'),
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                              captureImage();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                            ),
+                            // child: Icon(
+                            //   Icons.edit,
+                            //   color: Colors.white,
+                            // ),
+                          ))
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              buildTextField(
-                  "ชื่อนามแฝง", _data_DataAc.aliasName, false, ctrl_name1),
-              buildTextField(
-                  "ชื่อ-นามสุกล", _data_DataAc.nameSurname, false, ctrl_name2),
-            ],
+                SizedBox(
+                  height: 30,
+                ),
+                buildTextField(
+                    "ชื่อนามแฝง", false, ctrl_name1,30),
+                buildTextField("ชื่อ-นามสุกล", false,
+                    ctrl_name2,50),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget buildTextField(String labelText, String placeholder,
-      bool isPasswordTextFiele, TextEditingController textCTL) {
+  Widget buildTextField(String labelText,
+      bool isPasswordTextFiele, TextEditingController textCTL,int maxLength) {
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
-      child: TextField(
+      child: TextFormField(
+        maxLength: maxLength,
+        onChanged: (value) {
+                      if (!value.isEmpty && value.trim() != "") {
+                        if (_formKey.currentState.validate()) {}
+                      }
+                    },
+        validator: (value) {
+          if (value == null || value.isEmpty || value.trim() == "") {
+            return '*กรุณากรอก $labelText';
+          }
+          return null;
+        },
         controller: textCTL,
         obscureText: isPasswordTextFiele ? isObscurePassword : false,
         decoration: InputDecoration(
@@ -355,7 +374,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             contentPadding: EdgeInsets.only(bottom: 5),
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
+            // hintText: placeholder,
             hintStyle: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey)),
       ),
@@ -370,11 +389,18 @@ class CustomDialog extends StatelessWidget {
   CustomDialog({this.title, this.description, this.buttonText, this.image});
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: dialogContent(context),
+    return SingleChildScrollView(
+      
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 250,
+                        // MediaQuery.of(context).size.height / 2 - 250 // adjust values according to your need
+                        // : MediaQuery.of(context).size.height / 2 - 130
+                        ),//
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: dialogContent(context),
+      ),
     );
   }
 

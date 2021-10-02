@@ -268,16 +268,20 @@ class _CommentFoodState extends State<CommentFood> {
     List time = timeSp[0].split(":");
 
     String text =
-        "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
+        "${int.parse(dateSp[2])} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
     return text;
   }
 
   // bool showEmoji = false;
   // FocusNode focusNode = FocusNode();
+  int checkActivity = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          Navigator.pop(context,checkActivity);
+        },icon: Icon(Icons.arrow_back),),
         title: Text("แสดงความคิดเห็น"),
       ),
       body: Form(
@@ -404,12 +408,7 @@ class _CommentFoodState extends State<CommentFood> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: <Widget>[
-                                                    // ListTile(
-                                                    //   leading:
-                                                    //       Icon(Icons.edit),
-                                                    //   title: Text("แก้ไข"),
-                                                    //   onTap: () {},
-                                                    // ),
+                                                
                                                     ListTile(
                                                       leading:
                                                           Icon(Icons.delete),
@@ -422,14 +421,14 @@ class _CommentFoodState extends State<CommentFood> {
                                                             // return object of type Dialog
                                                             return AlertDialog(
                                                               title: new Text(
-                                                                  "ลบความคิดเห็น"),
+                                                                  "ลบความคิดเห็น",style: TextStyle(color: Colors.red),),
                                                               content: new Text(
                                                                   "ลบความคิดเห็นโดยถาวรใช่ไหม"),
                                                               actions: <Widget>[
                                                                 // usually buttons at the bottom of the dialog
                                                                 new TextButton(
                                                                   child: new Text(
-                                                                      "ยกเลิก"),
+                                                                      "ยกเลิก",style: TextStyle(color: Colors.red)),
                                                                   onPressed:
                                                                       () {
                                                                     Navigator.of(
@@ -446,6 +445,7 @@ class _CommentFoodState extends State<CommentFood> {
                                                                           "ลบ"),
                                                                   onPressed:
                                                                       () async {
+                                                                        checkActivity = 1;
                                                                     await deleteComment(
                                                                         dataGetCommentPost[index]
                                                                             .cid);
@@ -625,12 +625,12 @@ class _CommentFoodState extends State<CommentFood> {
                       child: TextFormField(
                     // focusNode: focusNode,
                     onChanged: (value) {
-                      if (!value.isEmpty) {
+                      if (!value.isEmpty && value.trim() != "") {
                         if (_formKey.currentState.validate()) {}
                       }
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty || value.trim() == "") {
                         return 'กรอกข้อความแสดงความคิดเห็น';
                       }
                       return null;

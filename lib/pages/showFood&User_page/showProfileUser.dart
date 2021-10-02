@@ -35,6 +35,35 @@ class ProfileUser extends StatefulWidget {
 
 class _ProfileUserState extends State<ProfileUser> {
   @override
+  void dispose() {
+    if (token != "" && token != null) {
+      if (startCheckOnPressFollowList[0] == 0 &&
+          checkOnPressFollow != 0 &&
+          checkOnPressFollow % 2 != 0) {
+        insertNotificationData(
+            data_PostUser.userId.toString(),
+            data_DataAc.aliasName,
+            "ได้ติดตามคุณ",
+            null,
+            data_DataAc.userId.toString(),
+            "follow");
+      } else if (startCheckOnPressFollowList[0] == 1 &&
+          checkOnPressFollow != 0 &&
+          checkOnPressFollow % 2 == 0) {
+        insertNotificationData(
+            data_PostUser.userId.toString(),
+            data_DataAc.aliasName,
+            "ได้ติดตามคุณ",
+            null,
+            data_DataAc.userId.toString(),
+            "follow");
+      }
+    }
+
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     findUser();
@@ -93,6 +122,7 @@ class _ProfileUserState extends State<ProfileUser> {
     final response = await http.get(Uri.parse(apiUrl));
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
+      if(mounted)
       setState(() {
         final String responseString = response.body;
 
@@ -124,13 +154,15 @@ class _ProfileUserState extends State<ProfileUser> {
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
     if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
-        checkFollowers = checkFollowerFromJson(responseString);
+      if (mounted)
         setState(() {
-          print("checkkkkk222 = " + checkFollowers.checkFollower.toString());
+          final String responseString = response.body;
+          checkFollowers = checkFollowerFromJson(responseString);
+
+          print("checkFollowers.checkFollower = " +
+              checkFollowers.checkFollower.toString());
+          startCheckOnPressFollowList.add(checkFollowers.checkFollower);
         });
-      });
     } else {
       return null;
     }
@@ -149,7 +181,8 @@ class _ProfileUserState extends State<ProfileUser> {
     if (response.statusCode == 200) {
       final String responseString = response.body;
       ManageFollow aa = manageFollowFromJson(responseString);
-      print(aa.success);
+      
+      if(mounted)
       setState(() {
         getPostUser();
         // this.initState();
@@ -287,6 +320,8 @@ class _ProfileUserState extends State<ProfileUser> {
     }
   }
 
+  int checkOnPressFollow = 0;
+  List<int> startCheckOnPressFollowList = [];
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -345,9 +380,6 @@ class _ProfileUserState extends State<ProfileUser> {
                                       this.token);
                               Navigator.pop(context);
                               if (manageMembersModel.success == 1) {
-                                
-                               
-                            
                                 showDialog(
                                     context: context,
                                     builder: (context) => CustomDialog(
@@ -609,22 +641,12 @@ class _ProfileUserState extends State<ProfileUser> {
                                                     color: Colors.blue[400],
                                                     onPressed: () {
                                                       checkPressCountFollowAndUnFollow++;
-                                                      print("ติดตาม");
+                                                      checkOnPressFollow++;
                                                       manageFollow(
                                                           "fol",
                                                           this
                                                               .data_PostUser
                                                               .userId);
-
-                                                      insertNotificationData(
-                                                          data_PostUser.userId
-                                                              .toString(),
-                                                          data_DataAc.aliasName,
-                                                          "ได้ติดตามคุณ",
-                                                          null,
-                                                          data_DataAc.userId
-                                                              .toString(),
-                                                          "follow");
 
                                                       Fluttertoast.showToast(
                                                           msg: "ติดตามแล้ว",
@@ -652,6 +674,7 @@ class _ProfileUserState extends State<ProfileUser> {
                                                     onPressed: () {
                                                       print("ยกเลิกติดตาม");
                                                       checkPressCountFollowAndUnFollow++;
+                                                      checkOnPressFollow++;
                                                       manageFollow(
                                                           "unfol",
                                                           this

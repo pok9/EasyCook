@@ -55,6 +55,7 @@ class _FeedPageState extends State<FeedPage> {
   PageController pageController = PageController();
   int pageCount = 2;
 
+
   @override
   void initState() {
     super.initState();
@@ -384,19 +385,27 @@ class _FeedPageState extends State<FeedPage> {
             ),
             child: Row(
               children: [
+                // Image.asset(
+                //   'assets/logos/hamburger.png',
+                //   width: 25,
+                //   height: 25,
+                // ),
                 Image.asset(
-                  'assets/logos/hamburger.png',
-                  width: 25,
-                  height: 25,
+                  'assets/loadGif/loadding3.gif',
+                  width: 30,
+                  height: 30,
                 ),
                 SizedBox(
                   width: 5,
                 ),
                 AnimatedTextKit(
                   animatedTexts: [
-                    TyperAnimatedText('Easy Cook'),
-                    TypewriterAnimatedText('Easy Cook'),
-                    WavyAnimatedText('Easy Cook'),
+                    TyperAnimatedText('Easy Cook',
+                        textStyle: GoogleFonts.mali()),
+                    TypewriterAnimatedText('Easy Cook',
+                        textStyle: GoogleFonts.mali()),
+                    WavyAnimatedText('Easy Cook',
+                        textStyle: GoogleFonts.mali()),
                     // WavyAnimatedText('ชุมชนของคนรักการทําอาหาร'),
                   ],
                   isRepeatingAnimation: true,
@@ -810,58 +819,7 @@ class _FeedPageState extends State<FeedPage> {
                                                         .image),
                                                 fit: BoxFit.cover)),
                                       ),
-                                      // Container(
-                                      //   width: deviceSize.width,
-                                      //   height: deviceSize.height,
-                                      //   decoration: BoxDecoration(
-                                      //       gradient: LinearGradient(
-                                      //           colors: [
-                                      //         Colors.black.withOpacity(0.25),
-                                      //         Colors.black.withOpacity(0)
-                                      //       ],
-                                      //           end: Alignment.topCenter,
-                                      //           begin: Alignment.bottomCenter)),
-                                      //   child: Column(
-                                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                                      //     mainAxisAlignment: MainAxisAlignment.end,
-                                      //     children: [
-                                      //       Row(
-                                      //         children: [
-                                      //           Container(
-                                      //             width: deviceSize.width * 0.72,
-                                      //             child: Column(
-                                      //               children: [
-                                      //                 Row(
-                                      //                   children: [
-                                      //                     Text(
-                                      //                       dataRecommendRecipe[index]
-                                      //                           .recipeName,
-                                      //                       style: TextStyle(
-                                      //                           fontSize: 24,
-                                      //                           color: Colors.white,
-                                      //                           fontWeight:
-                                      //                               FontWeight.bold),
-                                      //                     ),
-                                      //                     SizedBox(width: 10,),
-                                      //                    Text(
-                                      //                       dataRecommendRecipe[index]
-                                      //                           .recipeName,
-                                      //                       style: TextStyle(
-                                      //                           fontSize: 24,
-                                      //                           color: Colors.white,
-                                      //                           fontWeight:
-                                      //                               FontWeight.bold),
-                                      //                     ),
-                                      //                   ],
-                                      //                 )
-                                      //               ],
-                                      //             ),
-                                      //           )
-                                      //         ],
-                                      //       )
-                                      //     ],
-                                      //   ),
-                                      // )
+
                                       (dataRecommendRecipe[index].score == 0)
                                           ? Container()
                                           : Padding(
@@ -1968,21 +1926,16 @@ class _FeedPageState extends State<FeedPage> {
                       new SizedBox(
                         width: 10.0,
                       ),
-                       Expanded(
-                         child: Text(
+                      Expanded(
+                        child: Text(
                           dataRecommendRecipe.aliasName,
                           maxLines: 1,
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.bold),
-                                             ),
-                       ),
-                     
-                       IconButton(
-                              icon: Icon(Icons.more_vert),
-                              onPressed: () {
-                                
-                              })
+                        ),
+                      ),
+                      IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
                     ],
                   ),
                 ),

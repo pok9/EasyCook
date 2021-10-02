@@ -28,12 +28,12 @@ class _SearchPage1State extends State<SearchPage1> {
     "เมนูทอด",
     "เมนูย่าง",
     "เมนูอบ",
-    "เมนูกินเล่น"
+    "อาหารว่าง"
   ];
   var iconFood = [
     "https://cdn-icons-png.flaticon.com/512/4913/4913194.png",
     "https://cdn-icons-png.flaticon.com/512/3063/3063364.png",
-    "https://cdn-icons-png.flaticon.com/512/5601/5601409.png",
+    "https://cdn-icons-png.flaticon.com/512/1147/1147934.png",
     "https://cdn-icons-png.flaticon.com/512/3063/3063360.png",
     "https://cdn-icons-png.flaticon.com/512/1302/1302319.png",
     "https://cdn-icons-png.flaticon.com/512/1143/1143203.png",

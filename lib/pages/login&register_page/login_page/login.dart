@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -24,7 +24,7 @@ class LoginPage extends StatefulWidget {
   int close;
   int closeFacebook;
   String token;
-  LoginPage({this.close, this.closeFacebook,this.token});
+  LoginPage({this.close, this.closeFacebook, this.token});
 
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -40,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String textFail = "";
   Widget buildCustomButton() {
+
     var progressTextButton = ProgressButton(
       stateWidgets: {
         ButtonState.idle: Text(
@@ -188,14 +189,17 @@ class _LoginPageState extends State<LoginPage> {
     print("response.body = ${response.body}");
   }
 
+  int checkEmail = 0;
+  int checkPassword = 0;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      // padding: (this.widget.close == 1) ? EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250) : EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250), 
-      padding:EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250),
+      // padding: (this.widget.close == 1) ? EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250) : EdgeInsets.only(top:MediaQuery.of(context).size.height / 2 - 250),
+      padding:
+          EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 250),
 // Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 130));
       // (this.widget.close == 1) ? : Container();
-      //  padding: EdgeInsets.only(top: 
+      //  padding: EdgeInsets.only(top:
       // //  MediaQuery.of(context).size.height.hasFo ?
       //                   MediaQuery.of(context).size.height / 2 - 250 // adjust values according to your need
       //                   // : MediaQuery.of(context).size.height / 2 - 130
@@ -204,7 +208,9 @@ class _LoginPageState extends State<LoginPage> {
         content: Column(
           mainAxisSize: MainAxisSize.min, //autoSize
           children: [
-            (this.widget.close == null) ? _getCloseButton(context) : Container(),
+            (this.widget.close == null)
+                ? _getCloseButton(context)
+                : Container(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -214,23 +220,30 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Form(
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'กรุณากรอก อีเมล';
-                        }
-    
-                        // if (login != null) {
-                        //   if (login.success == 0) {
-                        //     return login.message;
-                        //   }
-                        // }
-    
-                        return null;
+                      onChanged: (value) {
+                        checkEmail = 1;
                       },
+                      validator: (value) {
+                        return (checkEmail == 0)
+                            ? null
+                            : (value.trim() == "" || value.length == 0)
+                                ? "*กรุณากรอก อีเมล"
+                                : email_validator.EmailValidator.validate(value)
+                                    ? null
+                                    : "*อีเมลไม่ถูกต้อง ";
+                      },
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return '*กรุณากรอก อีเมล';
+                      //   }
+
+                      //   return null;
+                      // },
                       controller: _ctrlEmail,
                       decoration: InputDecoration(
                         icon: Icon(Icons.account_circle),
@@ -238,16 +251,22 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     TextFormField(
+                      onChanged: (value) {
+                        checkPassword = 1;
+                      },
                       validator: (value) {
-                        if (value.isEmpty) {
-                          return 'กรุณากรอก รหัสผ่าน';
+                        if(checkPassword == 1){
+                          if (value.isEmpty) {
+                          return '*กรุณากรอก รหัสผ่าน';
                         }
+                        } 
+                        
                         // if (login != null) {
                         //   if (login.success == 0) {
                         //     return login.message;
                         //   }
                         // }
-    
+
                         return null;
                       },
                       controller: _ctrlPassword,
@@ -280,15 +299,14 @@ class _LoginPageState extends State<LoginPage> {
             ),
             (this.widget.closeFacebook == 0)
                 ? Container()
-              
-    
                 : Container(
                     width: 220,
                     height: 45,
-                    child: SignInButton(Buttons.Facebook,text: "เข้าสู่ระบบ ด้วย Facebook", onPressed: () async {
+                    child: SignInButton(Buttons.Facebook,
+                        text: "เข้าสู่ระบบ ด้วย Facebook", onPressed: () async {
                       final FacebookLoginResult result =
                           await facebookSignIn.logIn(['email']);
-    
+
                       switch (result.status) {
                         case FacebookLoginStatus.loggedIn:
                           showDialog(
@@ -305,7 +323,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                           final FacebookAccessToken accessToken =
                               result.accessToken;
-    
+
                           final graphResponse = await http.get(
                               // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
                               Uri.parse(
@@ -318,19 +336,19 @@ class _LoginPageState extends State<LoginPage> {
                             name_surname = profile['first_name'];
                             alias_name = profile['last_name'];
                             profile_image = profile['picture']['data']['url'];
-    
+
                             LoginFacebookMD(userID, email, alias_name,
                                 name_surname, profile_image);
-    
+
                             // print("loginFacebook.success => ${loginFacebook.success}");
-    
+
                             print("userID => $userID");
                             print("email => $email");
                             print("name_surname => $name_surname");
                             print("alias_name => $alias_name");
                             print("profile_image => $profile_image");
                           });
-    
+
                           print('''
            Logged in!
            
@@ -357,17 +375,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  
-
   void onPressedCustomButton() async {
+    checkEmail = 1;
+    checkPassword = 1;
     if (_formKey.currentState.validate()) {
       stateOnlyText = ButtonState.loading;
       setState(() {});
       await logins(_ctrlEmail.text, _ctrlPassword.text);
 
       if (login.success == 1) {
-        
-        if(this.widget.token != ""){
+        if (this.widget.token != "") {
           updateTokenExit();
         }
 

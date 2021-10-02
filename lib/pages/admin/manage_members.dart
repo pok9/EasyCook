@@ -665,7 +665,7 @@ class _ManageMembersState extends State<ManageMembers> {
     List time = timeSp[0].split(":");
 
     String text =
-        "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} เวลา ${time[0]}:${time[1]} น.";
+        "${int.parse(dateSp[2])} ${map[dateSp[1]]} ${dateSp[0]} เวลา ${time[0]}:${time[1]} น.";
     return text;
   }
 
