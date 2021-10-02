@@ -1119,7 +1119,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 }
 
                 //ชื่อเมนู
-                if (_ctrlNameFood.text != "") {
+                if (_ctrlNameFood.text != "" && _ctrlNameFood.text.trim() != "") {
                   print("ชื่อเมนู = " + _ctrlNameFood.text);
                   recipe_name = _ctrlNameFood.text;
                 } else {
@@ -1236,7 +1236,9 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   showdialogPost(context, text);
                   check = false;
                 }
-                if (check) {
+
+              
+                  if (check) {
                   showdialog(context);
                   await editRecipePost_Fuc(
                       recipe_name,
@@ -1255,6 +1257,8 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }
+                
+                
               },
               child: Text('บันทึก',style: TextStyle(fontWeight: FontWeight.bold),),
               style: ElevatedButton.styleFrom(
@@ -1496,6 +1500,14 @@ class _EditFoodPageState extends State<EditFoodPage> {
                     maxLength: 30,
                     style: TextStyle(color: Colors.black, fontSize: 20),
                     controller: _ctrlNameFood,
+                     validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.trim() == "") {
+                          return '*โปรดใส่ชื่อเมนู';
+                        }
+                        return null;
+                      },
                     decoration: InputDecoration(
                       suffixIcon: (clearNameFood)
                           ? null
@@ -1510,7 +1522,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                             ),
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10),
-                      errorText: _validate ? 'โปรดใส่ชื่อเมนู' : null,
+                      
                       filled: true,
                       fillColor: Color(0xfff3f3f4),
                       border: OutlineInputBorder(

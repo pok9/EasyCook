@@ -275,6 +275,7 @@ class _CommentFoodState extends State<CommentFood> {
   // bool showEmoji = false;
   // FocusNode focusNode = FocusNode();
   int checkActivity = 0;
+  bool checkActivityComment = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -631,7 +632,7 @@ class _CommentFoodState extends State<CommentFood> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty || value.trim() == "") {
-                        return 'กรอกข้อความแสดงความคิดเห็น';
+                        return '*กรอกข้อความแสดงความคิดเห็น';
                       }
                       return null;
                     },
@@ -690,6 +691,7 @@ class _CommentFoodState extends State<CommentFood> {
                             });
                           } else {
                             print("โพส");
+                            
                             print(commentController.text);
                             CommentPostModel commentPostModel =
                                 await CommentPost(
@@ -700,7 +702,7 @@ class _CommentFoodState extends State<CommentFood> {
                             if (commentPostModel.success == 1) {
                               getCommentPosts();
                               if (data_DataAc.userId !=
-                                  this.widget.dataFood.userId) {
+                                  this.widget.dataFood.userId && checkActivityComment) {
                                 insertNotificationData(
                                     this.widget.dataFood.userId.toString(),
                                     data_DataAc.aliasName,
@@ -708,8 +710,9 @@ class _CommentFoodState extends State<CommentFood> {
                                     this.widget.dataFood.rid.toString(),
                                     data_DataAc.userId.toString(),
                                     "comment");
+                                    checkActivityComment = false;
                               }
-
+                              
                               commentController.text = "";
                             }
                           }

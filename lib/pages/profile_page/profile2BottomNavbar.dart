@@ -119,6 +119,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
       expandedHeight: (data_DataAc.userStatus == 0) ? 403 : 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
+        
         background: buildFlexibleSpaceWidget(context),
       ),
       actions: [
@@ -166,11 +167,13 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   Widget buildFlexibleTooBarWidget() {
     return PreferredSize(
+      
       preferredSize: Size(MediaQuery.of(context).size.width, 44),
       child: Container(
+        
         alignment: Alignment.center,
         child: Container(
-          color: Colors.white,
+          color:  Color(0xFFf3f5f9),
           width: MediaQuery.of(context).size.width,
           child: TabBar(
             controller: tabController,
@@ -204,8 +207,10 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   buildFlexibleSpaceWidget(context) {
     return Column(
+      
       children: [
         Container(
+          
             // color: Colors.primaries[index],
             // height:500,
             child: Column(
@@ -447,7 +452,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                           });
                     },
                     child: Container(
-                      color: Colors.white,
+                      color: Color(0xFFf3f5f9),
                       child: Padding(
                         padding: const EdgeInsets.only(
                             left: 18, right: 18, top: 18, bottom: 18),
@@ -831,6 +836,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   Widget buildNestedScrollView() {
     return Scaffold(
+       backgroundColor: Color(0xFFf3f5f9),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [buildSliverAppBar(context)];

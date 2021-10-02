@@ -160,7 +160,7 @@ class _ScrollProfilePageState extends State
       child: Container(
         alignment: Alignment.center,
         child: Container(
-          color: Colors.white,
+          color: Color(0xFFf3f5f9),
           width: MediaQuery.of(context).size.width,
           child: TabBar(
             controller: tabController,
@@ -440,7 +440,7 @@ class _ScrollProfilePageState extends State
                           });
                     },
                     child: Container(
-                      color: Colors.white,
+                      color: Color(0xFFf3f5f9),
                       child: Padding(
                         padding: const EdgeInsets.only(
                             left: 18, right: 18, top: 18, bottom: 18),
@@ -543,7 +543,7 @@ class _ScrollProfilePageState extends State
         context: context,
         builder: (context) => SingleChildScrollView(
               child: Container(
-                color: Color(0xFF737373),
+                color: Color(0xFFf3f5f9),
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: _buildBottomNavigationMenu(context, select),
@@ -768,6 +768,7 @@ class _ScrollProfilePageState extends State
   Widget buildNestedScrollView() {
     // Slide view
     return NestedScrollView(
+      
       // Configure foldable head layout
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [buildSliverAppBar()];

@@ -146,6 +146,7 @@ class _DrawersState extends State<Drawers> {
     print("this.widget.token ===>>> ${this.widget.token}");
     print("this.widget.data_DataAc ===>>> ${this.widget.data_DataAc}");
     return Container(
+
       width: deviceSize.width - 45,
       child: (this.widget.token != "" && this.widget.data_DataAc != null)
           ? Drawer(
@@ -466,6 +467,7 @@ class _DrawersState extends State<Drawers> {
                   GestureDetector(
                     onTap: () {},
                     child: Container(
+                      color: Color(0xFFf3f5f9),
                       height: 210,
                       child: DrawerHeader(
                         decoration: BoxDecoration(
@@ -572,7 +574,7 @@ class _DrawersState extends State<Drawers> {
 
   Container _buildBottomNavigationMenu(context) {
     return Container(
-
+       
         // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
