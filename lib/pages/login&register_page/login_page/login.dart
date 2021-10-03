@@ -4,8 +4,10 @@
 
 import 'dart:convert';
 
+import 'package:easy_cook/Service/Auth_Service.dart';
 import 'package:easy_cook/models/login/login_model.dart';
 import 'package:easy_cook/slidepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:flutter/material.dart';
@@ -40,7 +42,6 @@ class _LoginPageState extends State<LoginPage> {
 
   String textFail = "";
   Widget buildCustomButton() {
-
     var progressTextButton = ProgressButton(
       stateWidgets: {
         ButtonState.idle: Text(
@@ -191,6 +192,8 @@ class _LoginPageState extends State<LoginPage> {
 
   int checkEmail = 0;
   int checkPassword = 0;
+
+  AuthClass authClass = AuthClass();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -255,12 +258,12 @@ class _LoginPageState extends State<LoginPage> {
                         checkPassword = 1;
                       },
                       validator: (value) {
-                        if(checkPassword == 1){
+                        if (checkPassword == 1) {
                           if (value.isEmpty) {
-                          return '*กรุณากรอก รหัสผ่าน';
+                            return '*กรุณากรอก รหัสผ่าน';
+                          }
                         }
-                        } 
-                        
+
                         // if (login != null) {
                         //   if (login.success == 0) {
                         //     return login.message;
@@ -294,62 +297,72 @@ class _LoginPageState extends State<LoginPage> {
               height: 30,
             ),
             Container(width: 220, height: 45, child: buildCustomButton()),
-            SizedBox(
-              height: 15,
+            // SizedBox(
+            //   height: 15,
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("หรือ"),
             ),
+
             (this.widget.closeFacebook == 0)
                 ? Container()
                 : Container(
                     width: 220,
                     height: 45,
-                    child: SignInButton(Buttons.Facebook,
-                        text: "เข้าสู่ระบบ ด้วย Facebook", onPressed: () async {
-                      final FacebookLoginResult result =
-                          await facebookSignIn.logIn(['email']);
+                    child: Row(
+                      children: [
+                        SignInButton(Buttons.Facebook,
+                            text: "เข้าสู่ระบบ ด้วย Facebook",
+                            onPressed: () async {
+                          final FacebookLoginResult result =
+                              await facebookSignIn.logIn(['email']);
 
-                      switch (result.status) {
-                        case FacebookLoginStatus.loggedIn:
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                    content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("กรุณารอสักครู่...   "),
-                                    CircularProgressIndicator()
-                                  ],
-                                ));
+                          switch (result.status) {
+                            case FacebookLoginStatus.loggedIn:
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("กรุณารอสักครู่...   "),
+                                        CircularProgressIndicator()
+                                      ],
+                                    ));
+                                  });
+                              final FacebookAccessToken accessToken =
+                                  result.accessToken;
+
+                              final graphResponse = await http.get(
+                                  // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
+                                  Uri.parse(
+                                      'https://graph.facebook.com/v11.0/me?fields=name,first_name,last_name,email,picture.width(800).height(800)&access_token=${accessToken.token}'));
+                              final profile = jsonDecode(graphResponse.body);
+                              print(profile);
+                              setState(() {
+                                userID = profile['id'];
+                                email = profile['email'];
+                                name_surname = profile['first_name'];
+                                alias_name = profile['last_name'];
+                                profile_image =
+                                    profile['picture']['data']['url'];
+
+                                LoginFacebookMD(userID, email, alias_name,
+                                    name_surname, profile_image);
+
+                                // print("loginFacebook.success => ${loginFacebook.success}");
+
+                                print("userID => $userID");
+                                print("email => $email");
+                                print("name_surname => $name_surname");
+                                print("alias_name => $alias_name");
+                                print("profile_image => $profile_image");
                               });
-                          final FacebookAccessToken accessToken =
-                              result.accessToken;
 
-                          final graphResponse = await http.get(
-                              // Uri.parse('https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}'));
-                              Uri.parse(
-                                  'https://graph.facebook.com/v11.0/me?fields=name,first_name,last_name,email,picture.width(800).height(800)&access_token=${accessToken.token}'));
-                          final profile = jsonDecode(graphResponse.body);
-                          print(profile);
-                          setState(() {
-                            userID = profile['id'];
-                            email = profile['email'];
-                            name_surname = profile['first_name'];
-                            alias_name = profile['last_name'];
-                            profile_image = profile['picture']['data']['url'];
-
-                            LoginFacebookMD(userID, email, alias_name,
-                                name_surname, profile_image);
-
-                            // print("loginFacebook.success => ${loginFacebook.success}");
-
-                            print("userID => $userID");
-                            print("email => $email");
-                            print("name_surname => $name_surname");
-                            print("alias_name => $alias_name");
-                            print("profile_image => $profile_image");
-                          });
-
-                          print('''
+                              print('''
            Logged in!
            
            Token: ${accessToken.token}
@@ -358,17 +371,57 @@ class _LoginPageState extends State<LoginPage> {
            Permissions: ${accessToken.permissions}
            Declined permissions: ${accessToken.declinedPermissions}
            ''');
-                          break;
-                        case FacebookLoginStatus.cancelledByUser:
-                          print('Login cancelled by the user.');
-                          break;
-                        case FacebookLoginStatus.error:
-                          print('Something went wrong with the login process.\n'
-                              'Here\'s the error Facebook gave us: ${result.errorMessage}');
-                          break;
-                      }
-                    }),
-                  )
+                              break;
+                            case FacebookLoginStatus.cancelledByUser:
+                              print('Login cancelled by the user.');
+                              break;
+                            case FacebookLoginStatus.error:
+                              print(
+                                  'Something went wrong with the login process.\n'
+                                  'Here\'s the error Facebook gave us: ${result.errorMessage}');
+                              break;
+                          }
+                        })
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5,),
+            (this.widget.closeFacebook == 0)
+                ? Container()
+                : Container(
+                    width: 220,
+                    height: 45,
+                    child: Row(
+                      children: [
+                        SignInButton(Buttons.Google,
+                            text: "เข้าสู่ระบบ ด้วย Google",
+                            onPressed: () async {
+                          UserCredential userCredential =
+                              await authClass.googleSigIn(context);
+
+                          LoginFacebookMD(
+                              userCredential.user.uid,
+                              userCredential.user.email,
+                              userCredential.user.email,
+                              userCredential.user.displayName,
+                              userCredential.user.photoURL);
+                        })
+                      ],
+                    ),
+                  ),
+            // IconButton(
+            //     onPressed: () async {
+            //       UserCredential userCredential =
+            //           await authClass.googleSigIn(context);
+
+            //       LoginFacebookMD(
+            //           userCredential.user.uid,
+            //           userCredential.user.email,
+            //           userCredential.user.email,
+            //           userCredential.user.displayName,
+            //           userCredential.user.photoURL);
+            //     },
+            //     icon: Icon(Icons.g_mobiledata))
           ],
         ),
       ),

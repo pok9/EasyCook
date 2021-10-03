@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_cook/Service/Auth_Service.dart';
 import 'package:easy_cook/models/notification/getCountVisited/getCountVisitedModel.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/reset_password/reset_passwordModel.dart';
@@ -446,6 +447,8 @@ class _DrawersState extends State<Drawers> {
                       } else {
                         print("LogOutFacebook");
                         _logOut();
+                        AuthClass authClass = AuthClass();
+                        authClass.logout();
                       }
 
                       ///////////////////////// delete swith user //////////////////////////////
