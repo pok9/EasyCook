@@ -973,6 +973,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: true,
+          
           // hideBottomControls: true,
         ));
     if (croppedFile != null) {

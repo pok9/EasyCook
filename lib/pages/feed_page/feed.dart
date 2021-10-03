@@ -1989,7 +1989,7 @@ class _FeedPageState extends State<FeedPage> {
                             itemSize: 16,
                           ),
                           Text(
-                            "(${dataRecommendRecipe.counts})",
+                            "${dataRecommendRecipe.avgScore}/5(${dataRecommendRecipe.counts})",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],

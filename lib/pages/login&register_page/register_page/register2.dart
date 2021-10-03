@@ -5,10 +5,10 @@ import 'dart:io';
 // import 'package:dio/dio.dart';
 // import 'package:dio/dio.dart';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
-import 'package:easy_cook/class/xxx_token_class.dart';
+
 
 import 'package:easy_cook/models/register/register2_model.dart';
-import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -336,24 +336,27 @@ class _RegisterPage2State extends State<RegisterPage2> {
   }
 
   cropImage() async {
+    
     File croppedFile = await ImageCropper.cropImage(
-        aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
+      cropStyle: CropStyle.circle,
+        // aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
         sourcePath: imageFile.path,
-        // aspectRatioPresets: [
-        //   CropAspectRatioPreset.square,
-        //   CropAspectRatioPreset.ratio3x2,
-        //   CropAspectRatioPreset.original,
-        //   CropAspectRatioPreset.ratio4x3,
-        //   CropAspectRatioPreset.ratio16x9
-        // ],
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Crop',
-          toolbarColor: Color(0xffc69f50),
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: true,
-          // hideBottomControls: true,
-        ));
+        // // aspectRatioPresets: [
+        // //   CropAspectRatioPreset.square,
+        // //   CropAspectRatioPreset.ratio3x2,
+        // //   CropAspectRatioPreset.original,
+        // //   CropAspectRatioPreset.ratio4x3,
+        // //   CropAspectRatioPreset.ratio16x9
+        // // ],
+        // androidUiSettings: AndroidUiSettings(
+        //   toolbarTitle: 'Crop',
+        //   toolbarColor: Color(0xffc69f50),
+        //   toolbarWidgetColor: Colors.white,
+        //   initAspectRatio: CropAspectRatioPreset.original,
+        //   lockAspectRatio: true,
+        //   // hideBottomControls: true,
+        // )
+        );
     if (croppedFile != null) {
       setState(() {
         imageFile = croppedFile;

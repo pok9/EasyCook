@@ -209,7 +209,9 @@ class _ManageMembersState extends State<ManageMembers> {
                           child: new Text(
                             "รายงาน",
                             maxLines: 1,
-                            style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.black),
+                            style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                color: Colors.black),
                           ),
                         ),
                         Padding(
@@ -217,7 +219,9 @@ class _ManageMembersState extends State<ManageMembers> {
                           child: new Text(
                             "จัดการสมาชิก",
                             maxLines: 1,
-                            style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.black),
+                            style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                color: Colors.black),
                           ),
                         ),
                         Padding(
@@ -225,7 +229,9 @@ class _ManageMembersState extends State<ManageMembers> {
                           child: new Text(
                             "แจ้งเตือนแอป",
                             maxLines: 1,
-                            style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.black),
+                            style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                color: Colors.black),
                           ),
                         ),
                       ],
@@ -426,8 +432,7 @@ class _ManageMembersState extends State<ManageMembers> {
                                             image: new NetworkImage(
                                                 dataUser[index].profileImage))),
                                   ),
-                                  trailing: (dataMyAccount.userId ==
-                                          dataUser[index].userId)
+                                  trailing: (dataUser[index].userStatus == 0)
                                       ? null
                                       : OutlinedButton(
                                           onPressed: () {

@@ -156,7 +156,9 @@ class _RecommendPageState extends State<RecommendPage> {
               context,
               MaterialPageRoute(
                   builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            );
+            ).then((value) {
+              getRecommendRecipe();
+            });
           } else {
             Navigator.push(
               context,
@@ -176,7 +178,9 @@ class _RecommendPageState extends State<RecommendPage> {
               context,
               MaterialPageRoute(
                   builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            );
+            ).then((value) {
+              getRecommendRecipe();
+            });
           } else {
             Navigator.push(
               context,
@@ -197,7 +201,6 @@ class _RecommendPageState extends State<RecommendPage> {
         child: Stack(
           children: [
             Container(
-              // height: 500,
               height: 300,
               width: 230,
               child: Card(
@@ -209,10 +212,6 @@ class _RecommendPageState extends State<RecommendPage> {
                   image: dataRecommendRecipe.image,
                   fit: BoxFit.cover,
                 ),
-                // child: Image.network(
-                //   dataRecommendRecipe.image,
-                //   fit: BoxFit.cover,
-                // ),
               ),
             ),
             (dataRecommendRecipe.score == 0)
@@ -220,7 +219,6 @@ class _RecommendPageState extends State<RecommendPage> {
                 : Padding(
                     padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                     child: Row(
-                      // crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(40),
@@ -262,28 +260,6 @@ class _RecommendPageState extends State<RecommendPage> {
                                 ),
                               )),
                         ),
-                        // Icon(
-                        //   Icons.star,
-                        //   color: Colors.blue,
-                        //   size: 20,
-                        // ),
-                        // SizedBox(
-                        //   width: 1,
-                        // ),
-                        // Text(
-                        //   dataRecommendRecipe.score.toString(),
-                        //   style: TextStyle(
-                        //       color: Colors.white, fontWeight: FontWeight.bold),
-                        // ),
-                        // SizedBox(
-                        //   width: 2,
-                        // ),
-                        // Text(
-                        //   '(${dataRecommendRecipe.count})',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -397,8 +373,9 @@ class _RecommendPageState extends State<RecommendPage> {
                           dataRecommendRecipe.aliasName,
                           maxLines: 1,
                           style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       )
                     ],

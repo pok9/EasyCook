@@ -122,22 +122,22 @@ class _ProfileUserState extends State<ProfileUser> {
     final response = await http.get(Uri.parse(apiUrl));
     print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      if(mounted)
-      setState(() {
-        final String responseString = response.body;
+      if (mounted)
+        setState(() {
+          final String responseString = response.body;
 
-        data_PostUser = myPostFromJson(responseString);
-        data_RecipePost = data_PostUser.recipePost;
-        print("data_PostUser.userId = " + data_PostUser.userId.toString());
+          data_PostUser = myPostFromJson(responseString);
+          data_RecipePost = data_PostUser.recipePost;
+          print("data_PostUser.userId = " + data_PostUser.userId.toString());
 
-        if (token != "" && token != null) {
-          checkFollower();
-        }
+          if (token != "" && token != null) {
+            checkFollower();
+          }
 
-        // newfeed = newfeedsFollowFromJson(responseString);
-        //  post = newfeed.feeds[0];
-        // dataUser = datas.data[0];
-      });
+          // newfeed = newfeedsFollowFromJson(responseString);
+          //  post = newfeed.feeds[0];
+          // dataUser = datas.data[0];
+        });
     } else {
       return null;
     }
@@ -181,12 +181,12 @@ class _ProfileUserState extends State<ProfileUser> {
     if (response.statusCode == 200) {
       final String responseString = response.body;
       ManageFollow aa = manageFollowFromJson(responseString);
-      
-      if(mounted)
-      setState(() {
-        getPostUser();
-        // this.initState();
-      });
+
+      if (mounted)
+        setState(() {
+          getPostUser();
+          // this.initState();
+        });
     } else {
       return null;
     }
@@ -352,78 +352,81 @@ class _ProfileUserState extends State<ProfileUser> {
               : (token == "" && token == null)
                   ? Container()
                   : (data_DataAc.userStatus == 0)
-                      ? PopupMenuButton(
-                          child: Center(
-                              child: Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Icon(Icons.more_horiz_outlined),
-                          )),
-                          onSelected: (value) async {
-                            if (value == 0) {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("กรุณารอสักครู่...   "),
-                                      CircularProgressIndicator()
-                                    ],
-                                  ));
-                                },
-                              );
-                              ManageMembersModel manageMembersModel =
-                                  await ManageMembers(
-                                      this.data_PostUser.userId.toString(),
-                                      this.token);
-                              Navigator.pop(context);
-                              if (manageMembersModel.success == 1) {
-                                showDialog(
+                      ? (data_PostUser.userStatus == 0)
+                          ? Container()
+                          : PopupMenuButton(
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Icon(Icons.more_horiz_outlined),
+                              )),
+                              onSelected: (value) async {
+                                if (value == 0) {
+                                  showDialog(
                                     context: context,
-                                    builder: (context) => CustomDialog(
-                                          title: "แบนสำเร็จ",
-                                          description:
-                                              "คุณได้ทำการแบนสมาชิกเรียบร้อย",
-                                          image:
-                                              'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
-                                          colors: Colors.lightGreen,
-                                          index: 1,
-                                        ));
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => CustomDialog(
-                                          title: "แบนไม่สำเร็จ",
-                                          description: "มีบางอย่างผิดพลาด",
-                                          image:
-                                              'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
-                                          colors: Colors.redAccent,
-                                          index: 0,
-                                        ));
-                              }
-                            }
-                          },
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.flag,
-                                      color: Colors.black,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text("กรุณารอสักครู่...   "),
+                                          CircularProgressIndicator()
+                                        ],
+                                      ));
+                                    },
+                                  );
+                                  ManageMembersModel manageMembersModel =
+                                      await ManageMembers(
+                                          this.data_PostUser.userId.toString(),
+                                          this.token);
+                                  Navigator.pop(context);
+                                  if (manageMembersModel.success == 1) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => CustomDialog(
+                                              title: "แบนสำเร็จ",
+                                              description:
+                                                  "คุณได้ทำการแบนสมาชิกเรียบร้อย",
+                                              image:
+                                                  'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                                              colors: Colors.lightGreen,
+                                              index: 1,
+                                            ));
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => CustomDialog(
+                                              title: "แบนไม่สำเร็จ",
+                                              description: "มีบางอย่างผิดพลาด",
+                                              image:
+                                                  'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                                              colors: Colors.redAccent,
+                                              index: 0,
+                                            ));
+                                  }
+                                }
+                              },
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.flag,
+                                          color: Colors.black,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text('แบนผู้ใช้'),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text('แบนผู้ใช้'),
-                                  ],
-                                ),
-                                value: 0,
-                              ),
-                            ];
-                          })
+                                    value: 0,
+                                  ),
+                                ];
+                              })
                       : PopupMenuButton(
                           child: Center(
                               child: Padding(

@@ -1,4 +1,8 @@
 import 'package:easy_cook/models/report/getReport_model.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
+import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,58 +87,78 @@ class _ReportPageState extends State<ReportPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: NetworkImage(
-                                        dataTarget.profileUserTarget),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          InkWell(
+                            onTap: () {
+                              if (token == "" || token == null) {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    reqUid: dataTarget.userTargetId,
+                                  );
+                                }));
+                              } else {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    reqUid: dataTarget.userTargetId,
+                                  );
+                                }));
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Column(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                            (dataGetReport.title ==
-                                                    "รายงานสูตรอาหาร")
-                                                ? "เจ้าของสูตรนี้"
-                                                : "ผู้ที่โดนแจ้งรายงาน",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15)
-                                            // TextStyle(
-                                            //     fontWeight: FontWeight.bold,
-                                            //     fontSize: 15),
-                                            )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            dataTarget.aliasUserTarget +
-                                                " " +
-                                                dataTarget.nameUserTarget,
-                                            style: TextStyle(
-                                                // fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                    CircleAvatar(
+                                      radius: 25,
+                                      backgroundImage: NetworkImage(
+                                          dataTarget.profileUserTarget),
+                                    )
                                   ],
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                              (dataGetReport.title ==
+                                                      "รายงานสูตรอาหาร")
+                                                  ? "เจ้าของสูตรนี้"
+                                                  : "ผู้ที่โดนแจ้งรายงาน",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15)
+                                              // TextStyle(
+                                              //     fontWeight: FontWeight.bold,
+                                              //     fontSize: 15),
+                                              )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              dataTarget.aliasUserTarget +
+                                                  " " +
+                                                  dataTarget.nameUserTarget,
+                                              style: TextStyle(
+                                                  // fontWeight: FontWeight.bold,
+                                                  fontSize: 15),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           (dataRecipe == null)
                               ? Container()
@@ -180,8 +204,7 @@ class _ReportPageState extends State<ReportPage> {
                                                             fontSize: 17,
                                                             fontWeight:
                                                                 FontWeight
-                                                                    .bold
-                                                                    ),
+                                                                    .bold),
                                                       ),
                                                       TextSpan(
                                                         text: dataRecipe
@@ -198,11 +221,23 @@ class _ReportPageState extends State<ReportPage> {
                                             ? Container()
                                             : (dataRecipe.recipeImage == null)
                                                 ? Container()
-                                                : FadeInImage.assetNetwork(
-                                                    placeholder:
-                                                        'assets/logos/loadding.gif',
-                                                    image:
-                                                        dataRecipe.recipeImage,
+                                                : InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ShowFood(dataRecipe
+                                                                    .recipeId)),
+                                                      );
+                                                    },
+                                                    child: FadeInImage
+                                                        .assetNetwork(
+                                                      placeholder:
+                                                          'assets/logos/loadding.gif',
+                                                      image: dataRecipe
+                                                          .recipeImage,
+                                                    ),
                                                   ),
                                       ],
                                     ),
@@ -219,52 +254,71 @@ class _ReportPageState extends State<ReportPage> {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: NetworkImage(
-                                        dataUserReport.profileUserReport),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          InkWell(
+                            onTap: (){
+                              if (token == "" || token == null) {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    reqUid: dataUserReport.userReport,
+                                  );
+                                }));
+                              } else {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    reqUid: dataUserReport.userReport,
+                                  );
+                                }));
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Column(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "บัญชีผู้ใช้ที่แจ้งรายงาน",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            dataUserReport.aliasUserReport +
-                                                " " +
-                                                dataUserReport.nameUserReport,
-                                            style: TextStyle(
-                                                // fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                    CircleAvatar(
+                                      radius: 25,
+                                      backgroundImage: NetworkImage(
+                                          dataUserReport.profileUserReport),
+                                    )
                                   ],
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "บัญชีผู้ใช้ที่แจ้งรายงาน",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              dataUserReport.aliasUserReport +
+                                                  " " +
+                                                  dataUserReport.nameUserReport,
+                                              style: TextStyle(
+                                                  // fontWeight: FontWeight.bold,
+                                                  fontSize: 15),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: 15,

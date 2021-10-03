@@ -32,6 +32,7 @@ class DataUser {
         this.aliasName,
         this.profileImage,
         this.accessStatus,
+        this.userStatus,
     });
 
     int userId;
@@ -40,6 +41,7 @@ class DataUser {
     String aliasName;
     String profileImage;
     int accessStatus;
+    int userStatus;
 
     factory DataUser.fromJson(Map<String, dynamic> json) => DataUser(
         userId: json["user_ID"],
@@ -48,6 +50,7 @@ class DataUser {
         aliasName: json["alias_name"],
         profileImage: json["profile_image"],
         accessStatus: json["access_status"],
+        userStatus: json["user_status"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -57,5 +60,6 @@ class DataUser {
         "alias_name": aliasName,
         "profile_image": profileImage,
         "access_status": accessStatus,
+        "user_status": userStatus,
     };
 }

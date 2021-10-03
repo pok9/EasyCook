@@ -1353,6 +1353,9 @@ class _ShowFoodState extends State<ShowFood> {
                             ratings = rating;
                             ScoreFoodInputModel scoreFoodInputModel =
                                 await scoreFoodInput(rating, token);
+                              setState(() {
+                                
+                              });
                           }
                         },
                       ),

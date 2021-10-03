@@ -140,7 +140,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   cropImage() async {
     File croppedFile = await ImageCropper.cropImage(
-        aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
+      cropStyle: CropStyle.circle,
+        // aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
         sourcePath: imageFile.path,
         // aspectRatioPresets: [
         //   CropAspectRatioPreset.square,
@@ -149,14 +150,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         //   CropAspectRatioPreset.ratio4x3,
         //   CropAspectRatioPreset.ratio16x9
         // ],
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Crop',
-          toolbarColor: Color(0xffc69f50),
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: true,
-          // hideBottomControls: true,
-        ));
+        // androidUiSettings: AndroidUiSettings(
+        //   toolbarTitle: 'Crop',
+        //   toolbarColor: Color(0xffc69f50),
+        //   toolbarWidgetColor: Colors.white,
+        //   initAspectRatio: CropAspectRatioPreset.original,
+        //   lockAspectRatio: true,
+        //   // hideBottomControls: true,
+        // )
+        );
     if (croppedFile != null) {
       setState(() {
         imageFile = croppedFile;
