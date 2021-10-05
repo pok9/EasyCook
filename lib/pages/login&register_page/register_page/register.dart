@@ -69,9 +69,9 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 80.0,
 
           child: TextFormField(
-            onChanged: (value) {
-              checkEmail = 1;
-            },
+            // onChanged: (value) {
+            //   checkEmail = 1;
+            // },
             validator: (value) {
               return (checkEmail == 0)
                   ? null
@@ -140,9 +140,9 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 80.0,
 
           child: TextFormField(
-            onChanged: (value) {
-              chechPassword = 1;
-            },
+            // onChanged: (value) {
+            //   chechPassword = 1;
+            // },
             validator: (value) {
               if (chechPassword == 1) {
                 if (value == null || value.isEmpty) {
@@ -212,9 +212,9 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 80.0,
 
           child: TextFormField(
-            onChanged: (value) {
-              checkPasswordConfirm = 1;
-            },
+            // onChanged: (value) {
+            //   checkPasswordConfirm = 1;
+            // },
             validator: (value) {
               if (checkPasswordConfirm == 1) {
                 if (value == null || value.isEmpty) {

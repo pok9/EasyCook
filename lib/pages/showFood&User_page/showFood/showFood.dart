@@ -1,6 +1,7 @@
 import 'dart:convert';
 // import 'dart:ffi';
 
+import 'package:better_player/better_player.dart';
 import 'package:easy_cook/models/category/category_model.dart';
 import 'package:easy_cook/models/deleteFood&editFood/deleteFood.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
@@ -23,6 +24,8 @@ import 'package:easy_cook/pages/showFood&User_page/review_page/review.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/onTapHowtoShowFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerScreen.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/slidepage.dart';
@@ -91,11 +94,9 @@ class _ShowFoodState extends State<ShowFood> {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
-      // setState(() {
       final String responseString = response.body;
 
       return getCommentPostModelFromJson(responseString).reversed.toList();
-      // });
     } else {
       return null;
     }
@@ -107,16 +108,6 @@ class _ShowFoodState extends State<ShowFood> {
     //1
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    // setState(() {
-    //   if (token != "" && token != null) {
-    //     getMyAccounts();
-    //     getcoreFood();
-    //   }
-
-    // token = preferences.getString("tokens");
-    // });
-
-    // print(preferences.getString("tokens"));
     return (preferences.getString("tokens") == null)
         ? ""
         : preferences.getString("tokens");
@@ -356,24 +347,24 @@ class _ShowFoodState extends State<ShowFood> {
       int displayNumber = i;
       i++;
 
-      return InkWell(
-        onTap: () {
-          print("showFood => ${displayNumber}");
-          print(dataHowto[displayNumber].description);
-          print(dataHowto[displayNumber].pathFile);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => OnTapHowtoShowFood(
-                      index: displayNumber,
-                      dataHowto: dataHowto,
-                    )),
-          );
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: () {
+              print("showFood => ${displayNumber}");
+              print(dataHowto[displayNumber].description);
+              print(dataHowto[displayNumber].pathFile);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => OnTapHowtoShowFood(
+                          index: displayNumber,
+                          dataHowto: dataHowto,
+                        )),
+              );
+            },
+            child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -401,50 +392,54 @@ class _ShowFoodState extends State<ShowFood> {
                 ],
               ),
             ),
-            (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
-                ? Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Container(
-                      constraints: new BoxConstraints.expand(
-                        height: 350.0,
-                      ),
-                      alignment: Alignment.bottomRight,
-                      padding: new EdgeInsets.only(right: 10, bottom: 8.0),
-                      decoration: new BoxDecoration(
-                        image: new DecorationImage(
-                          image:
-                              NetworkImage(dataHowto[displayNumber].pathFile),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+          ),
+          (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
+              ? Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Container(
+                    constraints: new BoxConstraints.expand(
+                      height: 350.0,
                     ),
-                  )
-                : Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: AspectRatio(
-                        // aspectRatio: 3 / 2,
-                        // aspectRatio: 16 / 9,
-                        aspectRatio: 1,
-                        child: VideoItems(
-                          videoPlayerController: VideoPlayerController.network(
-                              dataHowto[displayNumber].pathFile),
-                          looping: false,
-                          autoplay: false,
-                          addfood_showfood: 0,
-                        ),
+                    alignment: Alignment.bottomRight,
+                    padding: new EdgeInsets.only(right: 10, bottom: 8.0),
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        image: NetworkImage(dataHowto[displayNumber].pathFile),
+                        fit: BoxFit.contain,
                       ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 5,
-                    margin: EdgeInsets.all(10),
-                  )
-          ],
-        ),
+                  ),
+                )
+              // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
+              : VideoOnPress(path: dataHowto[displayNumber].pathFile,)
+              // : VideoPlayerScreen(
+              //     path: dataHowto[displayNumber].pathFile,
+              //   )
+          // Card(
+          //     semanticContainer: true,
+          //     clipBehavior: Clip.antiAliasWithSaveLayer,
+          //     child: Align(
+          //       alignment: Alignment.bottomCenter,
+          //       child: AspectRatio(
+          //         // aspectRatio: 3 / 2,
+          //         // aspectRatio: 16 / 9,
+          //         aspectRatio: 1,
+          //         child: VideoItems(
+          //           videoPlayerController: VideoPlayerController.network(
+          //               dataHowto[displayNumber].pathFile),
+          //           looping: false,
+          //           autoplay: false,
+          //           addfood_showfood: 0,
+          //         ),
+          //       ),
+          //     ),
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(10.0),
+          //     ),
+          //     elevation: 5,
+          //     margin: EdgeInsets.all(10),
+          //   )
+        ],
       );
     }).toList(); // แปลงเป็นlist
   }
@@ -649,102 +644,112 @@ class _ShowFoodState extends State<ShowFood> {
   @override
   Widget build(BuildContext context) {
     Size sizeScreen = MediaQuery.of(context).size;
-
-    return FutureBuilder(
-      future: findUser(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          token = snapshot.data;
-
-          return FutureBuilder(
-            future: getPost(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                dataFood = snapshot.data;
-                dataIngredient = dataFood.ingredient;
-                dataHowto = dataFood.howto;
-                getCategoryFood();
-                if (token != "" && token != null) {
-                  getMybuy();
-                }
-                final List<Widget> ingredient =
-                    dataIngredient == null ? [] : _ingredientList();
-                final List<Widget> howto1 =
-                    dataHowto == null ? [] : _howtoList1();
-                final List<Widget> howto2 =
-                    dataHowto == null ? [] : _howtoList2();
-                final List<StoryItem> howto3 =
-                    dataHowto == null ? [] : _howtoList3();
-
-                return FutureBuilder(
-                  future: getScoreFood(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        snapshot.connectionState == ConnectionState.done) {
-                      return FutureBuilder(
-                        future: getCommentPosts(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasData) {
-                            dataGetCommentPost = snapshot.data;
-                            return FutureBuilder(
-                              future: getMyAccounts(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                if (snapshot.hasData == true) {
-                                  print(
-                                      "snapshot.hasData => ${snapshot.hasData}");
-                                  datas = snapshot.data;
-                                  dataMyAccont = datas.data[0];
-
-                                  return buildBody(ingredient, howto1, howto2,
-                                      howto3, sizeScreen);
-                                }
-
-                                if (snapshot.hasData == false) {
-                                  return buildBody(ingredient, howto1, howto2,
-                                      howto3, sizeScreen);
-                                }
-
-                                return Scaffold(
-                                  body: Center(
-                                    child: CupertinoActivityIndicator(),
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                          return Scaffold(
-                            body: Center(
-                              child: CupertinoActivityIndicator(),
-                            ),
-                          );
-                        },
-                      );
-                    }
-                    return Scaffold(
-                      body: Center(
-                        child: CupertinoActivityIndicator(),
-                      ),
-                    );
-                  },
-                );
-              }
-
-              return Scaffold(
-                body: Center(
-                  child: CupertinoActivityIndicator(),
-                ),
-              );
-            },
-          );
-        }
-        return Scaffold(
-          body: Center(
-            child: CupertinoActivityIndicator(),
-          ),
-        );
+    print("pok->00000 ");
+    return RefreshIndicator(
+      onRefresh: ()async{
+        
+        await getPost();
+        setState(() {
+          
+        });
+        return;
       },
+      child: FutureBuilder(
+        future: findUser(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            token = snapshot.data;
+    
+            return FutureBuilder(
+              future: getPost(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  dataFood = snapshot.data;
+                  dataIngredient = dataFood.ingredient;
+                  dataHowto = dataFood.howto;
+                  getCategoryFood();
+                  if (token != "" && token != null) {
+                    getMybuy();
+                  }
+                  final List<Widget> ingredient =
+                      dataIngredient == null ? [] : _ingredientList();
+                  final List<Widget> howto1 =
+                      dataHowto == null ? [] : _howtoList1();
+                  final List<Widget> howto2 =
+                      dataHowto == null ? [] : _howtoList2();
+                  final List<StoryItem> howto3 =
+                      dataHowto == null ? [] : _howtoList3();
+    
+                  return FutureBuilder(
+                    future: getScoreFood(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting ||
+                          snapshot.connectionState == ConnectionState.done) {
+                        return FutureBuilder(
+                          future: getCommentPosts(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              dataGetCommentPost = snapshot.data;
+                              return FutureBuilder(
+                                future: getMyAccounts(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasData == true) {
+                                    print(
+                                        "snapshot.hasData => ${snapshot.hasData}");
+                                    datas = snapshot.data;
+                                    dataMyAccont = datas.data[0];
+    
+                                    return buildBody(ingredient, howto1, howto2,
+                                        howto3, sizeScreen);
+                                  }
+    
+                                  if (snapshot.hasData == false) {
+                                    return buildBody(ingredient, howto1, howto2,
+                                        howto3, sizeScreen);
+                                  }
+    
+                                  return Scaffold(
+                                    body: Center(
+                                      child: CupertinoActivityIndicator(),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                            return Scaffold(
+                              body: Center(
+                                child: CupertinoActivityIndicator(),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return Scaffold(
+                        body: Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                      );
+                    },
+                  );
+                }
+    
+                return Scaffold(
+                  body: Center(
+                    child: CupertinoActivityIndicator(),
+                  ),
+                );
+              },
+            );
+          }
+          return Scaffold(
+            body: Center(
+              child: CupertinoActivityIndicator(),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -1353,9 +1358,7 @@ class _ShowFoodState extends State<ShowFood> {
                             ratings = rating;
                             ScoreFoodInputModel scoreFoodInputModel =
                                 await scoreFoodInput(rating, token);
-                              setState(() {
-                                
-                              });
+                            setState(() {});
                           }
                         },
                       ),
@@ -1400,12 +1403,10 @@ class _ShowFoodState extends State<ShowFood> {
                                                                 dataFood:
                                                                     dataFood,
                                                               ))).then((value) {
-                                                                print("okokok$value");
-                                                                this.getCommentPosts();
-                                                                setState(() {
-                                                                  
-                                                                });
-                                                              });
+                                                    print("okokok$value");
+                                                    this.getCommentPosts();
+                                                    setState(() {});
+                                                  });
                                                 }
                                               },
                                               child: Text("ดูความเห็นทั้งหมด")),

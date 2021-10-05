@@ -7,6 +7,7 @@ import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
 import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
+import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/slidepage.dart';
@@ -27,8 +28,8 @@ import 'package:http_parser/http_parser.dart';
 
 class AddFoodPage extends StatefulWidget {
   const AddFoodPage({
-    this.ingredient_row_start = 1,
-    this.howto_row_start = 1, //ทดสอบ
+    this.ingredient_row_start = 3,
+    this.howto_row_start = 3, //ทดสอบ
   });
   final int ingredient_row_start; //จำนวนแถวส่วนผสมตั้งต้น
   final int howto_row_start; //ทดสอบ
@@ -315,18 +316,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   ),
                 ),
               ),
-              // IconButton(
-              //   icon: Icon(Icons.clear),
-              //   onPressed: () {
-              //     setState(() {
-              //       ingredient_row--;
-              //       ctl_ingredient_row.remove(controller);
-              //       if (ctl_ingredient_row.length == 0) {
-              //         this.ingredient_row = 1;
-              //       }
-              //     });
-              //   },
-              // )
+          
             ],
           ),
         ),
@@ -369,7 +359,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),
-        // elevation: 5,
+ 
         margin: EdgeInsets.all(0),
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),
@@ -511,20 +501,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               ),
                             ))
                         : Container(),
-                    // IconButton(
-                    //   icon: Icon(Icons.clear),
-                    //   onPressed: () {
-                    //     howto_row--;
-                    //     ctl_howto_row.remove(controller2);
-                    //     imageHowto.remove(imageHowto[displayNumber - 1]);
-
-                    //     if (ctl_howto_row.length == 0) {
-                    //       howto_row = 1;
-                    //     }
-
-                    //     setState(() {});
-                    //   },
-                    // ),
+                   
                   ],
                 ),
                 (imageHowto[displayNumber - 1].toString() ==
@@ -754,303 +731,42 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                   },
                                                 )),
                                           )
-                                        : Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 8, 0, 15),
-                                            child: Stack(
-                                              children: [
-                                                // Container(
-                                                //   alignment:
-                                                //       Alignment.topCenter,
-                                                //   child: Stack(
-                                                //     children: [
-                                                //       AspectRatio(
-                                                //         aspectRatio:
-                                                //             VideoPlayerController.file(
-                                                //                     imageHowto[
-                                                //                         displayNumber -
-                                                //                             1])
-                                                //                 .value
-                                                //                 .aspectRatio,
-                                                //         child: VideoPlayer(VideoPlayerController
-                                                //             .file(imageHowto[
-                                                //                 displayNumber -
-                                                //                     1])
-                                                //           ..setLooping(false)
-                                                //           ..initialize().then((_) =>
-                                                //               VideoPlayerController.file(
-                                                //                       imageHowto[
-                                                //                           displayNumber -
-                                                //                               1])
-                                                //                   .play())),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // ),
-
-                                                // Align(
-                                                //   alignment: Alignment.center,
-                                                //   child: Chewie(
-                                                //       controller:
-                                                //           ChewieController(
-                                                //               videoPlayerController:
-                                                //                   VideoPlayerController.file(
-                                                //                       imageHowto[
-                                                //                           displayNumber -
-                                                //                               1]),
-                                                //               aspectRatio: VideoPlayerController.file(
-                                                //                       imageHowto[
-                                                //                           displayNumber -
-                                                //                               1])
-                                                //                   .value
-                                                //                   .aspectRatio,
-                                                //               autoInitialize:
-                                                //                   true,
-                                                //               autoPlay: false,
-                                                //               looping: false,
-                                                //               errorBuilder:
-                                                //                   (context,
-                                                //                       errorMessage) {
-                                                //                 return Center(
-                                                //                   child: Text(
-                                                //                     errorMessage,
-                                                //                     style: TextStyle(
-                                                //                         color: Colors
-                                                //                             .red),
-                                                //                   ),
-                                                //                 );
-                                                //               }),
-                                                //     ),
-                                                // ),
-
-                                                // (VideoPlayerController.file(
-                                                //             imageHowto[
-                                                //                 displayNumber -
-                                                //                     1])
-                                                //         .value
-                                                //         .isInitialized)
-                                                //     ? Center(
-                                                //         child:
-                                                //             CupertinoActivityIndicator(),
-                                                //       )
-                                                //     :
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: AspectRatio(
-                                                    aspectRatio:
-                                                        VideoPlayerController
-                                                                .file(imageHowto[
-                                                                    displayNumber -
-                                                                        1])
-                                                            .value
-                                                            .aspectRatio,
-                                                    child: Container(
-                                                      child: VideoItems(
-                                                        videoPlayerController:
-                                                            VideoPlayerController
-                                                                .file(imageHowto[
-                                                                    displayNumber -
-                                                                        1]),
-                                                        looping: false,
-                                                        autoplay: false,
-                                                        addfood_showfood: 2,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // Positioned(
-                                                //   child: Padding(
-                                                //     padding:
-                                                //         const EdgeInsets.all(
-                                                //             8.0),
-                                                //     child: ToggleButtons(
-                                                //       color: Colors.black
-                                                //           .withOpacity(0.60),
-                                                //       selectedColor:
-                                                //           Colors.black,
-                                                //       selectedBorderColor:
-                                                //           Colors.grey,
-                                                //       splashColor:
-                                                //           Colors.blue,
-                                                //       hoverColor: Color(
-                                                //               0xFF6200EE)
-                                                //           .withOpacity(0.04),
-                                                //       borderRadius:
-                                                //           BorderRadius
-                                                //               .circular(20.0),
-                                                //       constraints:
-                                                //           BoxConstraints(
-                                                //               minHeight:
-                                                //                   30.0),
-                                                //       children: <Widget>[
-                                                //         Row(
-                                                //           children: [
-                                                //             Icon(
-                                                //               Icons
-                                                //                   .camera_alt,
-                                                //               color: Colors
-                                                //                   .white,
-                                                //             ),
-                                                //             SizedBox(
-                                                //               width: 1,
-                                                //             ),
-                                                //             Text(
-                                                //               "แก้ไข",
-                                                //               style: TextStyle(
-                                                //                   color: Colors
-                                                //                       .white),
-                                                //             )
-                                                //           ],
-                                                //         ),
-                                                //         Row(
-                                                //           children: [
-                                                //             Icon(
-                                                //               Icons.delete,
-                                                //               color: Colors
-                                                //                   .white,
-                                                //             ),
-                                                //             Text("ลบ",
-                                                //                 style: TextStyle(
-                                                //                     color: Colors
-                                                //                         .white))
-                                                //           ],
-                                                //         ),
-                                                //       ],
-                                                //       isSelected: [
-                                                //         true,
-                                                //         true
-                                                //       ],
-                                                //       onPressed: (int index) {
-                                                //         setState(() {
-                                                //           if (index == 0) {
-                                                //             showModalBottomSheet(
-                                                //                 context:
-                                                //                     context,
-                                                //                 builder:
-                                                //                     (context) {
-                                                //                   return Column(
-                                                //                     mainAxisSize:
-                                                //                         MainAxisSize
-                                                //                             .min,
-                                                //                     children: <
-                                                //                         Widget>[
-                                                //                       ListTile(
-                                                //                         leading:
-                                                //                             new Icon(
-                                                //                           Icons.photo_camera_back,
-                                                //                           color:
-                                                //                               Colors.blue,
-                                                //                         ),
-                                                //                         title:
-                                                //                             new Text('รูปภาพในมือถือ'),
-                                                //                         onTap:
-                                                //                             () async {
-                                                //                           Navigator.pop(context);
-                                                //                           pickCropImage(
-                                                //                               imageHowto,
-                                                //                               "addPictueHowto",
-                                                //                               displayNumber - 1);
-                                                //                         },
-                                                //                       ),
-                                                //                       ListTile(
-                                                //                         leading: new Icon(
-                                                //                             Icons.camera_alt_outlined,
-                                                //                             color: Colors.blue),
-                                                //                         title:
-                                                //                             new Text('ถ่ายรูปภาพ'),
-                                                //                         onTap:
-                                                //                             () async {
-                                                //                           Navigator.pop(context);
-                                                //                           captureImage(
-                                                //                               imageHowto,
-                                                //                               "addPictueHowto",
-                                                //                               displayNumber - 1);
-                                                //                         },
-                                                //                       ),
-                                                //                       ListTile(
-                                                //                         leading: new Icon(
-                                                //                             Icons.video_collection_outlined,
-                                                //                             color: Colors.blue),
-                                                //                         title:
-                                                //                             new Text('เพิ่ม วิดีโอ จากคลัง'),
-                                                //                         onTap:
-                                                //                             () async {
-                                                //                           Navigator.pop(context);
-                                                //                           pickCropVideo(imageHowto,
-                                                //                               displayNumber - 1);
-                                                //                         },
-                                                //                       ),
-                                                //                       ListTile(
-                                                //                         leading: new Icon(
-                                                //                             Icons.video_camera_back_outlined,
-                                                //                             color: Colors.blue),
-                                                //                         title:
-                                                //                             new Text('ถ่ายวิดีโอ'),
-                                                //                         onTap:
-                                                //                             () async {
-                                                //                           Navigator.pop(context);
-
-                                                //                           captureVideo(imageHowto,
-                                                //                               displayNumber - 1);
-                                                //                         },
-                                                //                       ),
-                                                //                     ],
-                                                //                   );
-                                                //                 });
-                                                //           } else if (index ==
-                                                //               1) {
-                                                //             showDialog(
-                                                //                 context:
-                                                //                     context,
-                                                //                 builder:
-                                                //                     (BuildContext
-                                                //                         context) {
-                                                //                   return AlertDialog(
-                                                //                     title: const Text(
-                                                //                         'ยืนยัน'),
-                                                //                     content:
-                                                //                         const Text(
-                                                //                             'คุณต้องการลบวิดีโอนี้นี้ ?'),
-                                                //                     actions: <
-                                                //                         Widget>[
-                                                //                       TextButton(
-                                                //                         onPressed: () => Navigator.pop(
-                                                //                             context,
-                                                //                             'Cancel'),
-                                                //                         child:
-                                                //                             const Text(
-                                                //                           'ยกเลิก',
-                                                //                           style:
-                                                //                               TextStyle(color: Colors.red),
-                                                //                         ),
-                                                //                       ),
-                                                //                       TextButton(
-                                                //                         onPressed:
-                                                //                             () {
-                                                //                           setState(() {
-
-                                                //                             imageHowto[displayNumber - 1] = File('');
-
-                                                //                             Navigator.pop(context);
-                                                //                           });
-                                                //                         },
-                                                //                         child:
-                                                //                             const Text(
-                                                //                           'ตกลง',
-                                                //                         ),
-                                                //                       ),
-                                                //                     ],
-                                                //                   );
-                                                //                 });
-                                                //           }
-                                                //         });
-                                                //       },
-                                                //     ),
-                                                //   ),
-                                                // )
-                                              ],
-                                            ),
-                                          )),
+                                        : VideoOnPress(path: imageHowto[displayNumber-1])
+                                        // Padding(
+                                        //     padding: const EdgeInsets.fromLTRB(
+                                        //         0, 8, 0, 15),
+                                        //     child: Stack(
+                                        //       children: [
+                                               
+                                        //         Align(
+                                        //           alignment: Alignment.center,
+                                        //           child: AspectRatio(
+                                        //             aspectRatio:
+                                        //                 VideoPlayerController
+                                        //                         .file(imageHowto[
+                                        //                             displayNumber -
+                                        //                                 1])
+                                        //                     .value
+                                        //                     .aspectRatio,
+                                        //             child: Container(
+                                        //               child: VideoItems(
+                                        //                 videoPlayerController:
+                                        //                     VideoPlayerController
+                                        //                         .file(imageHowto[
+                                        //                             displayNumber -
+                                        //                                 1]),
+                                        //                 looping: false,
+                                        //                 autoplay: false,
+                                        //                 addfood_showfood: 2,
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                                
+                                        //       ],
+                                        //     ),
+                                        //   )
+                                          ),
                           ],
                         ),
                       ),
@@ -1166,13 +882,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     File croppedFile = await ImageCropper.cropImage(
         aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
         sourcePath: imageFile.path,
-        // aspectRatioPresets: [
-        //   CropAspectRatioPreset.square,
-        //   CropAspectRatioPreset.ratio3x2,
-        //   CropAspectRatioPreset.original,
-        //   CropAspectRatioPreset.ratio4x3,
-        //   CropAspectRatioPreset.ratio16x9
-        // ],
+      
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Crop',
           toolbarColor: Color(0xffc69f50),
@@ -1185,15 +895,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
       setState(() {
         imageFile = croppedFile;
         AddImage addImageModels = new AddImage(File(imageFile.path));
-        // Navigator.pop(context, addImage);
+      
 
         setState(() {
-          // // addImage.removeAt(0);
-          // if(addImage.isEmpty){
-          //   addImage.add(addImageModel);
-          // }else{
-          //   addImage[0] = addImageModel;
-          // }
+        
 
           print(mode);
           if (mode == "addPictue") {
@@ -1288,7 +993,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   text += "กรุณาเพิ่มรูปภาพปกอาหาร";
                 }
 
-                if (_ctrlNameFood.text == "") {
+                if (_ctrlNameFood.text == "" || _ctrlNameFood.text.trim() == "") {
                   text += "\nกรุณาเพิ่มชื่อเมนูอาหาร";
                 }
 
@@ -1468,17 +1173,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                           ],
                                         );
                                       });
-                                  // Navigator.push(
-                                  //   context,
-                                  //   new MaterialPageRoute(
-                                  //       builder: (context) => new AddImagePage()),
-                                  // ).then((value) {
-                                  //   if (value != null) {
-                                  //     setState(() {
-                                  //       addImage.add(value);
-                                  //     });
-                                  //   }
-                                  // });
+                                
                                 },
                                 style: ButtonStyle(
                                   foregroundColor:
@@ -1543,19 +1238,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             onPressed: (int index) {
                               setState(() {
                                 if (index == 0) {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   new MaterialPageRoute(
-                                  //       builder: (context) => new AddImagePage()),
-                                  // ).then((value) {
-                                  //   if (value != null) {
-                                  //     addImage.removeAt(0);
-                                  //     setState(() {
-                                  //       addImage.add(value);
-                                  //     });
-                                  //   }
-                                  // });
-
+                                 
                                   showModalBottomSheet(
                                       context: context,
                                       builder: (context) {
@@ -1582,7 +1265,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                 Navigator.pop(context);
                                                 captureImage(
                                                     addImage, "editPictue", 0);
-                                                // captureImage();
+                                     
                                               },
                                             ),
                                           ],
@@ -2161,6 +1844,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
           selected: _selectPrices.contains(price.name),
           onSelected: (bool selected) {
             setState(() {
+              
               _selectPrices = price.name;
 
               if (_selectPrices != "ฟรี") {
@@ -2244,7 +1928,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30))),
-                    labelText: '0.00',
+                    labelText: 'จำนวนเงิน',
+                      hintText: '0.00',
                   ),
                   autofocus: false,
                 ),
@@ -2437,82 +2122,84 @@ class CustomDialogNotificationPost extends StatelessWidget {
   }
 
   dialogContent(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: 100, bottom: 26, left: 16, right: 16),
-          margin: EdgeInsets.only(top: 40),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(17),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10.0,
-                  offset: Offset(0.0, 10.0),
-                )
-              ]),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Text(
-              //         title,
-              //         textAlign: TextAlign.center,
-              //         style: TextStyle(
-              //             fontSize: 22.0, fontWeight: FontWeight.w700),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-
-              Text(
-                text,
-                style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "อยู่หน้านี้ต่อ",
-                      style: TextStyle(color: Colors.black),
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 100, bottom: 26, left: 16, right: 16),
+            margin: EdgeInsets.only(top: 40),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(17),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10.0,
+                    offset: Offset(0.0, 10.0),
+                  )
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Text(
+                //         title,
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //             fontSize: 22.0, fontWeight: FontWeight.w700),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+    
+                Text(
+                  text,
+                  style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "อยู่หน้านี้ต่อ",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: Text("ออกไปหน้าอื่น"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 0,
-          left: 16,
-          right: 16,
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 50,
-            backgroundImage: NetworkImage(
-              'https://png.pngtree.com/png-vector/20190228/ourlarge/pngtree-wrong-false-icon-design-template-vector-isolated-png-image_711430.jpg',
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text("ออกไปหน้าอื่น"),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        )
-      ],
+          Positioned(
+            top: 0,
+            left: 16,
+            right: 16,
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 50,
+              backgroundImage: NetworkImage(
+                'https://png.pngtree.com/png-vector/20190228/ourlarge/pngtree-wrong-false-icon-design-template-vector-isolated-png-image_711430.jpg',
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

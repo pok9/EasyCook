@@ -141,6 +141,8 @@ dependencies:
   # provider: ^5.0.0
   google_sign_in: ^5.0.3
   firebase_auth: ^1.1.4
+  
+  better_player: ^0.0.76
 
 dev_dependencies:
   flutter_test:
@@ -176,6 +178,8 @@ flutter:
     - assets/topupQRcode/
     - assets/wallpapers/
     - assets/iconFood/
+    - assets/logoLogin/
+    
     # - assets/logos/facebook.jpg
     # - assets/logos/drink.png
     # - assets/logos/vegetables.png

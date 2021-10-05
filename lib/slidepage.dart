@@ -287,8 +287,8 @@ class _SlidePageState extends State<SlidePage> {
                   children: [
                     Icon(
                         currentTab == 2
-                            ? Icons.filter
-                            : Icons.filter_outlined,
+                           ? Icons.fastfood
+                            : Icons.fastfood_outlined,
                         color: currentTab == 2
                             ? Colors.white
                             : Colors.grey.shade300,
@@ -518,8 +518,8 @@ class _SlidePageState extends State<SlidePage> {
                       children: [
                         Icon(
                             currentTab == 2
-                                ? Icons.filter
-                                : Icons.filter_outlined,
+                                ? Icons.fastfood
+                            : Icons.fastfood_outlined,
                             color: currentTab == 2
                                 ? Colors.white
                                 : Colors.grey.shade300,

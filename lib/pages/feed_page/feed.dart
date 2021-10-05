@@ -2199,13 +2199,13 @@ class _FeedPageState extends State<FeedPage> {
                                         manageFollow(
                                             "fol", dataRecommendUser.userId);
 
-                                        insertNotificationData(
-                                            dataRecommendUser.userId.toString(),
-                                            data_DataAc.aliasName,
-                                            "ได้ติดตามคุณ",
-                                            null,
-                                            data_DataAc.userId.toString(),
-                                            "follow");
+                                        // insertNotificationData(
+                                        //     dataRecommendUser.userId.toString(),
+                                        //     data_DataAc.aliasName,
+                                        //     "ได้ติดตามคุณ",
+                                        //     null,
+                                        //     data_DataAc.userId.toString(),
+                                        //     "follow");
                                       }
                                     },
                                     child: Padding(

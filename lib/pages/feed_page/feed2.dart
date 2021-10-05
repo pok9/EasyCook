@@ -50,60 +50,60 @@ class _Feed2PageState extends State<Feed2Page> {
   _getMoreList() {
     print("Get More List");
 
-    if (selected == 0) {
-      _currentMax = dummyListDataNewfeedsglobal.length;
+    // if (selected == 0) {
+    //   _currentMax = dummyListDataNewfeedsglobal.length;
 
-      if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal.length) >=
-          4) {
-        for (int i = dummyListDataNewfeedsglobal.length;
-            i < _currentMax + 4;
-            i++) {
-          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-        }
-      } else {
-        for (int i = dummyListDataNewfeedsglobal.length;
-            i < dataNewfeedsglobal.length;
-            i++) {
-          dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-        }
-      }
-    } else if (selected == 1) {
-      _currentMax = dummyListDataNewfeedsglobal_free.length;
+    //   if ((dataNewfeedsglobal.length - dummyListDataNewfeedsglobal.length) >=
+    //       4) {
+    //     for (int i = dummyListDataNewfeedsglobal.length;
+    //         i < _currentMax + 4;
+    //         i++) {
+    //       dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+    //     }
+    //   } else {
+    //     for (int i = dummyListDataNewfeedsglobal.length;
+    //         i < dataNewfeedsglobal.length;
+    //         i++) {
+    //       dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+    //     }
+    //   }
+    // } else if (selected == 1) {
+    //   _currentMax = dummyListDataNewfeedsglobal_free.length;
 
-      if ((dataNewfeedsglobal.length -
-              dummyListDataNewfeedsglobal_free.length) >=
-          4) {
-        for (int i = dummyListDataNewfeedsglobal_free.length;
-            i < _currentMax + 4;
-            i++) {
-          dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
-        }
-      } else {
-        for (int i = dummyListDataNewfeedsglobal_free.length;
-            i < dataNewfeedsglobal.length;
-            i++) {
-          dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
-        }
-      }
-    } else if (selected == 2) {
-      _currentMax = dummyListDataNewfeedsglobal_notFree.length;
+    //   if ((dataNewfeedsglobal.length -
+    //           dummyListDataNewfeedsglobal_free.length) >=
+    //       4) {
+    //     for (int i = dummyListDataNewfeedsglobal_free.length;
+    //         i < _currentMax + 4;
+    //         i++) {
+    //       dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+    //     }
+    //   } else {
+    //     for (int i = dummyListDataNewfeedsglobal_free.length;
+    //         i < dataNewfeedsglobal.length;
+    //         i++) {
+    //       dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+    //     }
+    //   }
+    // } else if (selected == 2) {
+    //   _currentMax = dummyListDataNewfeedsglobal_notFree.length;
 
-      if ((dataNewfeedsglobal.length -
-              dummyListDataNewfeedsglobal_notFree.length) >=
-          4) {
-        for (int i = dummyListDataNewfeedsglobal_notFree.length;
-            i < _currentMax + 4;
-            i++) {
-          dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
-        }
-      } else {
-        for (int i = dummyListDataNewfeedsglobal_notFree.length;
-            i < dataNewfeedsglobal.length;
-            i++) {
-          dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
-        }
-      }
-    }
+    //   if ((dataNewfeedsglobal.length -
+    //           dummyListDataNewfeedsglobal_notFree.length) >=
+    //       4) {
+    //     for (int i = dummyListDataNewfeedsglobal_notFree.length;
+    //         i < _currentMax + 4;
+    //         i++) {
+    //       dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+    //     }
+    //   } else {
+    //     for (int i = dummyListDataNewfeedsglobal_notFree.length;
+    //         i < dataNewfeedsglobal.length;
+    //         i++) {
+    //       dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+    //     }
+    //   }
+    // }
 
     setState(() {});
   }
@@ -188,9 +188,28 @@ class _Feed2PageState extends State<Feed2Page> {
           final String responseString = response.body;
 
           dataNewfeedsglobal = newfeedsglobalFromJson(responseString);
+          print("dataNewfeedsglobal.length => ${dataNewfeedsglobal.length}");
 
-          if (dataNewfeedsglobal.length >= 10) {
-            for (int i = 0; i < 10; i++) {
+          // if (dataNewfeedsglobal.length >= 10) {
+          //   for (int i = 0; i < 10; i++) {
+          //     dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+          //     if (dataNewfeedsglobal[i].price > 0) {
+          //       dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+          //     } else {
+          //       dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+          //     }
+          //   }
+          // } else {
+          //   for (int i = 0; i < dataNewfeedsglobal.length; i++) {
+          //     dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+          //     if (dataNewfeedsglobal[i].price > 0) {
+          //       dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+          //     } else {
+          //       dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
+          //     }
+          //   }
+          // }
+          for (int i = 0; i < dataNewfeedsglobal.length; i++) {
               dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
               if (dataNewfeedsglobal[i].price > 0) {
                 dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
@@ -198,16 +217,6 @@ class _Feed2PageState extends State<Feed2Page> {
                 dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
               }
             }
-          } else {
-            for (int i = 0; i < dataNewfeedsglobal.length; i++) {
-              dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-              if (dataNewfeedsglobal[i].price > 0) {
-                dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
-              } else {
-                dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
-              }
-            }
-          }
         });
     } else {
       return null;
@@ -325,6 +334,7 @@ class _Feed2PageState extends State<Feed2Page> {
                 final bool connected = connectivity != ConnectivityResult.none;
                 return (connected)
                     ? body(deviceSize, context)
+                    // ?bodyFeed2(dummyListDataNewfeedsglobal, deviceSize, context)
                     : Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -390,6 +400,7 @@ class _Feed2PageState extends State<Feed2Page> {
       (dataNewfeedsglobal == null)
           ? Center(child: Center(child: CupertinoActivityIndicator()))
           : ListView(
+
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -606,7 +617,8 @@ class _Feed2PageState extends State<Feed2Page> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            newFeedsFollow.feed[index].recipeName,
+                                            newFeedsFollow
+                                                .feed[index].recipeName,
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
@@ -716,6 +728,8 @@ class _Feed2PageState extends State<Feed2Page> {
 
   GridView bodyFeed2(List<Newfeedsglobal> dummyListDataNewfeedsglobal,
       Size deviceSize, BuildContext context) {
+    print(
+        "dummyListDataNewfeedsglobal.length => ${dummyListDataNewfeedsglobal.length}");
     return GridView.builder(
         controller: _scrollController,
         shrinkWrap: true,

@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+// import 'package:chewie/chewie.dart';
+import 'package:better_player/better_player.dart';
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
 import 'package:easy_cook/models/showfood/editFood/editImageFoodModel.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
 import 'package:easy_cook/pages/addFood_page/xxx_addImageOrVideo.dart';
+import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerScreen.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -337,19 +341,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                       color: Colors.grey.shade700,
                                     ),
                                     onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   new MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           new AddImageOrViderPage()),
-                                      // ).then((value) {
-                                      //   if (value != null) {
-                                      //     imageHowto[displayNumber - 1] =
-                                      //         value.image;
-
-                                      //     setState(() {});
-                                      //   }
-                                      // });
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (context) {
@@ -417,20 +408,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                               ),
                             ))
                         : Container(),
-                    // IconButton(
-                    //   icon: Icon(Icons.clear),
-                    //   onPressed: () {
-                    //     howto_row--;
-                    //     ctl_howto_row.remove(controller2);
-                    //     imageHowto.remove(imageHowto[displayNumber - 1]);
-
-                    //     if (ctl_howto_row.length == 0) {
-                    //       howto_row = 1;
-                    //     }
-
-                    //     setState(() {});
-                    //   },
-                    // ),
                   ],
                 ),
                 (imageHowto[displayNumber - 1].toString() ==
@@ -499,13 +476,26 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                       SizedBox(
                                                         width: 1,
                                                       ),
-                                                      Text("แก้ไข",style: TextStyle(color: Colors.white),)
+                                                      Text(
+                                                        "แก้ไข",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )
                                                     ],
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Icon(Icons.delete,color: Colors.white,),
-                                                      Text("ลบ",style: TextStyle(color: Colors.white),)
+                                                      Icon(
+                                                        Icons.delete,
+                                                        color: Colors.white,
+                                                      ),
+                                                      Text(
+                                                        "ลบ",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )
                                                     ],
                                                   ),
                                                 ],
@@ -669,40 +659,75 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                   });
                                                 },
                                               )),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 10, 0, 0),
-                                          child: Align(
-                                            alignment: Alignment.topCenter,
-                                            child: AspectRatio(
-                                              aspectRatio: 1,
-                                              child: Container(
-                                                child: VideoItems(
-                                                  videoPlayerController: (imageHowto[
-                                                                  displayNumber -
-                                                                      1]
-                                                              .path
-                                                              .substring(
-                                                                  0, 4) ==
-                                                          "http")
-                                                      ? VideoPlayerController
-                                                          .network(imageHowto[
-                                                                  displayNumber -
-                                                                      1]
-                                                              .path)
-                                                      : VideoPlayerController
-                                                          .file(imageHowto[
-                                                              displayNumber -
-                                                                  1]),
-                                                  looping: false,
-                                                  autoplay: false,
-                                                  addfood_showfood: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )),
+                                        ) : VideoOnPress(path: imageHowto[displayNumber-1],)
+                                        // :VideoPlayerScreen(path: imageHowto[displayNumber-1].path,)
+                                        // :BetterPlayer.network( imageHowto[displayNumber-1].path)
+                                        // Container()
+                                      // : Chewie(
+                                      //     controller: ChewieController(
+                                      //         videoPlayerController:
+                                      //         (imageHowto[
+                                      //                     displayNumber -
+                                      //                         1]
+                                      //                 .path
+                                      //                 .substring(
+                                      //                     0, 4) ==
+                                      //             "http") ? VideoPlayerController.network(imageHowto[displayNumber-1].path) :
+                                      //             VideoPlayerController.asset(imageHowto[displayNumber-1].path),
+                                      //         // aspectRatio: 30 / 15,
+                                      //         // aspectRatio: 16 / 9,
+                                      //         // aspectRatio: 3 / 2,
+                                      //         // aspectRatio: 1,
+                                      //         aspectRatio: 1,
+                                      //         autoInitialize: true,
+                                      //         autoPlay: false,
+                                      //         looping: false,
+                                      //         errorBuilder:
+                                      //             (context, errorMessage) {
+                                      //           return Center(
+                                      //             child: Text(
+                                      //               errorMessage,
+                                      //               style: TextStyle(
+                                      //                   color: Colors.red),
+                                      //             ),
+                                      //           );
+                                      //         }),
+                                      //   )
+                              // : Padding(
+                              //     padding: const EdgeInsets.fromLTRB(
+                              //         0, 10, 0, 0),
+                              //     child: Align(
+                              //       alignment: Alignment.topCenter,
+                              //       child: AspectRatio(
+                              //         aspectRatio: 1,
+                              //         child: Container(
+                              //           child: VideoItems(
+                              //             videoPlayerController: 
+                              //                      (imageHowto[
+                              //                             displayNumber -
+                              //                                 1]
+                              //                         .path
+                              //                         .substring(
+                              //                             0, 4) ==
+                              //                     "http")
+                              //                 ? VideoPlayerController
+                              //                     .network(imageHowto[
+                              //                             displayNumber -
+                              //                                 1]
+                              //                         .path)
+                              //                 : VideoPlayerController
+                              //                     .file(imageHowto[
+                              //                         displayNumber -
+                              //                             1]),
+                              //             looping: false,
+                              //             autoplay: false,
+                              //             addfood_showfood: 2,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   )
+                              ),
                         ],
                       ),
               ],
@@ -973,7 +998,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: true,
-          
+
           // hideBottomControls: true,
         ));
     if (croppedFile != null) {
@@ -1120,7 +1145,8 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 }
 
                 //ชื่อเมนู
-                if (_ctrlNameFood.text != "" && _ctrlNameFood.text.trim() != "") {
+                if (_ctrlNameFood.text != "" &&
+                    _ctrlNameFood.text.trim() != "") {
                   print("ชื่อเมนู = " + _ctrlNameFood.text);
                   recipe_name = _ctrlNameFood.text;
                 } else {
@@ -1238,8 +1264,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   check = false;
                 }
 
-              
-                  if (check) {
+                if (check) {
                   showdialog(context);
                   await editRecipePost_Fuc(
                       recipe_name,
@@ -1258,10 +1283,11 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }
-                
-                
               },
-              child: Text('บันทึก',style: TextStyle(fontWeight: FontWeight.bold),),
+              child: Text(
+                'บันทึก',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               style: ElevatedButton.styleFrom(
                 primary: Colors.red,
               ),
@@ -1379,11 +1405,23 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                 SizedBox(
                                   width: 1,
                                 ),
-                                Text("แก้ไข",style: TextStyle(color: Colors.white),)
+                                Text(
+                                  "แก้ไข",
+                                  style: TextStyle(color: Colors.white),
+                                )
                               ],
                             ),
                             Row(
-                              children: [Icon(Icons.delete,color: Colors.white,), Text("ลบ",style: TextStyle(color: Colors.white),)],
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "ลบ",
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              ],
                             ),
                           ],
                           isSelected: [true, true],
@@ -1501,14 +1539,14 @@ class _EditFoodPageState extends State<EditFoodPage> {
                     maxLength: 30,
                     style: TextStyle(color: Colors.black, fontSize: 20),
                     controller: _ctrlNameFood,
-                     validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.trim() == "") {
-                          return '*โปรดใส่ชื่อเมนู';
-                        }
-                        return null;
-                      },
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value.trim() == "") {
+                        return '*โปรดใส่ชื่อเมนู';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       suffixIcon: (clearNameFood)
                           ? null
@@ -1523,7 +1561,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                             ),
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10),
-                      
                       filled: true,
                       fillColor: Color(0xfff3f3f4),
                       border: OutlineInputBorder(

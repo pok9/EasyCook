@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
@@ -22,18 +23,15 @@ class VideoItems extends StatefulWidget {
 }
 
 class _VideoItemsState extends State<VideoItems> {
-
   ChewieController _chewieController;
   int count = 0;
 
   @override
   void initState() {
-     super.initState();
+    print("pok->11111");
+    super.initState();
     // TODO: implement initState
-     if (mounted) {
-    
-      print(11111111);
-     
+    if (mounted) {
       _chewieController = ChewieController(
           videoPlayerController: widget.videoPlayerController,
           // aspectRatio: 30 / 15,
@@ -51,24 +49,25 @@ class _VideoItemsState extends State<VideoItems> {
                 style: TextStyle(color: Colors.red),
               ),
             );
-          }
-          );
-         
+          });
+          setState(() {
+            
+          });
     }
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    print(3333333);
+    print("pok->33333");
     count++;
     // widget.videoPlayerController?.pause();
 
     if (widget.addfood_showfood == 0) {
       // widget.videoPlayerController?.pause();
       // widget.videoPlayerController?.dispose();//---
-      widget.videoPlayerController.pause();
-      widget.videoPlayerController.dispose(); //---
+      widget.videoPlayerController?.pause();
+      widget.videoPlayerController?.dispose(); //---
     } else if ((widget.addfood_showfood == 1)) {
       widget.videoPlayerController?.dispose();
     } else if (widget.addfood_showfood == 2) {
@@ -90,11 +89,18 @@ class _VideoItemsState extends State<VideoItems> {
 
   @override
   Widget build(BuildContext context) {
-    print(2222222);
+    // print("pok->22222 ${widget.videoPlayerController.value?.isInitialized}");
+    print("pok->22222 ${_chewieController.videoPlayerController.value.isInitialized}");
     count++;
-    return 
-    Chewie(
-      controller: _chewieController,
-    );
+    return Chewie(
+            controller: _chewieController,
+          );
+    // ( widget.videoPlayerController.value.isInitialized)
+    //     ? Chewie(
+    //         controller: _chewieController,
+    //       )
+    //     : Container(
+    //         child: CupertinoActivityIndicator(),
+    //       );
   }
 }

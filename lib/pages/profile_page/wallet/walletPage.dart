@@ -249,7 +249,7 @@ class _WalletPageState extends State<WalletPage> {
     List timeSp = dateTimeSp[1].split(".");
     List time = timeSp[0].split(":");
 
-    String text = "${dateSp[2]} ${map[dateSp[1]]} - ${time[0]}:${time[1]}";
+    String text = "${int.parse(dateSp[2])} ${map[dateSp[1]]} - ${time[0]}:${time[1]}";
     return text;
   }
 

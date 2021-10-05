@@ -341,14 +341,14 @@ class _ShowFollowerAndFollowingState extends State<ShowFollowerAndFollowing> {
                                         manageFollow("fol",
                                             checkFollowing.user[index].userId);
 
-                                        insertNotificationData(
-                                            checkFollowing.user[index].userId
-                                                .toString(),
-                                            data_DataAc.aliasName,
-                                            "ได้ติดตามคุณ",
-                                            null,
-                                            data_DataAc.userId.toString(),
-                                            "follow");
+                                        // insertNotificationData(
+                                        //     checkFollowing.user[index].userId
+                                        //         .toString(),
+                                        //     data_DataAc.aliasName,
+                                        //     "ได้ติดตามคุณ",
+                                        //     null,
+                                        //     data_DataAc.userId.toString(),
+                                        //     "follow");
                                       },
                                       child: Text('     ติดตาม     '),
                                       style: OutlinedButton.styleFrom(

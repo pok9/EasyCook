@@ -1,4 +1,5 @@
 import 'package:easy_cook/models/showfood/showfood_model.dart';
+import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -162,26 +163,31 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                                               .dataHowto[index]
                                               .pathFile))),
                                 )
-                              : Card(
+                              : 
+                              Card(
                                   semanticContainer: true,
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: AspectRatio(
-                                      // aspectRatio: 3 / 2,
-                                      // aspectRatio: 16 / 9,
-                                      aspectRatio: 1,
-                                      child: VideoItems(
-                                        videoPlayerController:
-                                            VideoPlayerController.network(this
+                                    child: VideoOnPress(path: this
                                                 .widget
                                                 .dataHowto[index]
                                                 .pathFile),
-                                        looping: false,
-                                        autoplay: false,
-                                        addfood_showfood: 0,
-                                      ),
-                                    ),
+                                    // AspectRatio(
+                                    //   // aspectRatio: 3 / 2,
+                                    //   // aspectRatio: 16 / 9,
+                                    //   aspectRatio: 1,
+                                    //   child: VideoItems(
+                                    //     videoPlayerController:
+                                    //         VideoPlayerController.network(this
+                                    //             .widget
+                                    //             .dataHowto[index]
+                                    //             .pathFile),
+                                    //     looping: false,
+                                    //     autoplay: false,
+                                    //     addfood_showfood: 0,
+                                    //   ),
+                                    // ),
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),

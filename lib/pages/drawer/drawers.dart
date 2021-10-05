@@ -444,6 +444,11 @@ class _DrawersState extends State<Drawers> {
                             preferences.getStringList("listPassword");
                         listPassword.removeAt(index);
                         preferences.setStringList("listPassword", listPassword);
+
+                    
+                        _logOut();
+                        AuthClass authClass = AuthClass();
+                        authClass.logout();
                       } else {
                         print("LogOutFacebook");
                         _logOut();
