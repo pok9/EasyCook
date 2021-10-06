@@ -1,4 +1,4 @@
-import 'package:chewie/chewie.dart';
+// import 'package:chewie/chewie.dart';
 import 'package:easy_cook/pages/customVideoProgressIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -14,7 +14,7 @@ class VideoPlayerScreen extends StatefulWidget {
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   VideoPlayerController _controller;
-  ChewieController _chewieController;
+  // ChewieController _chewieController;
   Future<void> _initializeVideoPlayerFuture;
 
   @override
@@ -36,9 +36,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           this.widget.path,
         );
       }
-    }else{
+    } else {
       try {
-         _controller = (this.widget.path.path.substring(0, 4) == "http")
+        _controller = (this.widget.path.path.substring(0, 4) == "http")
             ? VideoPlayerController.network(
                 this.widget.path.path,
               )
@@ -215,8 +215,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             ),
           );
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+                height: 300,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.transparent,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                )),
           );
         }
       },

@@ -661,7 +661,18 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                               )),
                                         ) 
                                         // : VideoOnPress(path: imageHowto[displayNumber-1],)// <-----------
-                                        :VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
+                                        // :VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
+                                        : (this.onPressHowTo != displayNumber)
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          this.onPressHowTo = displayNumber;
+                        });
+                      },
+                      child: Image.asset('assets/images/add.png'),
+                    )
+                  : VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
+                  // BetterPlayer.network( imageHowto[displayNumber-1].path)
                                         // :BetterPlayer.network( imageHowto[displayNumber-1].path)
                                         // Container()
                                       // : Chewie(
@@ -1060,6 +1071,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
     setState(() {});
   }
 
+  int onPressHowTo = -1;
   @override
   Widget build(BuildContext context) {
     var screen = MediaQuery.of(context).size; //ขนาดของหน้าจอ

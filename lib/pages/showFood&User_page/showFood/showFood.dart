@@ -65,6 +65,7 @@ class _ShowFoodState extends State<ShowFood> {
   // }
 
   double ratings = 0.0;
+
   @override
   void dispose() {
     storyController.dispose();
@@ -412,9 +413,24 @@ class _ShowFoodState extends State<ShowFood> {
                 )
               // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
               // : VideoOnPress(path: dataHowto[displayNumber].pathFile,)//<-----------
-              : VideoPlayerScreen(
-                  path: dataHowto[displayNumber].pathFile,index: 0,
-                )
+              : (this.onPressHowTo != displayNumber)
+                  ? Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            this.onPressHowTo = displayNumber;
+                          });
+                        },
+                        child: Image.asset('assets/images/add.png',),
+                      ),
+                  )
+                  // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
+                   : VideoPlayerScreen(
+                      path: dataHowto[displayNumber].pathFile,
+                      index: 0,
+                    )
+
           // Card(
           //     semanticContainer: true,
           //     clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -641,17 +657,16 @@ class _ShowFoodState extends State<ShowFood> {
   }
 
   final StoryController storyController = StoryController();
+
+  int onPressHowTo = -1;
   @override
   Widget build(BuildContext context) {
     Size sizeScreen = MediaQuery.of(context).size;
     print("pok->00000 ");
     return RefreshIndicator(
-      onRefresh: ()async{
-        
+      onRefresh: () async {
         await getPost();
-        setState(() {
-          
-        });
+        setState(() {});
         return;
       },
       child: FutureBuilder(
@@ -659,7 +674,7 @@ class _ShowFoodState extends State<ShowFood> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             token = snapshot.data;
-    
+
             return FutureBuilder(
               future: getPost(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -679,7 +694,7 @@ class _ShowFoodState extends State<ShowFood> {
                       dataHowto == null ? [] : _howtoList2();
                   final List<StoryItem> howto3 =
                       dataHowto == null ? [] : _howtoList3();
-    
+
                   return FutureBuilder(
                     future: getScoreFood(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -700,16 +715,16 @@ class _ShowFoodState extends State<ShowFood> {
                                         "snapshot.hasData => ${snapshot.hasData}");
                                     datas = snapshot.data;
                                     dataMyAccont = datas.data[0];
-    
+
                                     return buildBody(ingredient, howto1, howto2,
                                         howto3, sizeScreen);
                                   }
-    
+
                                   if (snapshot.hasData == false) {
                                     return buildBody(ingredient, howto1, howto2,
                                         howto3, sizeScreen);
                                   }
-    
+
                                   return Scaffold(
                                     body: Center(
                                       child: CupertinoActivityIndicator(),
@@ -734,7 +749,7 @@ class _ShowFoodState extends State<ShowFood> {
                     },
                   );
                 }
-    
+
                 return Scaffold(
                   body: Center(
                     child: CupertinoActivityIndicator(),
