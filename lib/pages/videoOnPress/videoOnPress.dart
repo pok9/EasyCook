@@ -63,6 +63,7 @@ class _VideoOnPressState extends State<VideoOnPress> {
 
   @override
   Widget build(BuildContext context) {
+   
     return FutureBuilder(
       future: _initializeVideoPlayerFuture,
       builder: (context, snapshot) {

@@ -8,6 +8,7 @@ import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
 import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerScreen.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/slidepage.dart';
@@ -300,7 +301,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
               ),
               Expanded(
                 child: TextFormField(
-                
                   controller: ctl_ingredient_row[displayNumber - 1][1],
                   decoration: InputDecoration(
                     contentPadding: new EdgeInsets.symmetric(
@@ -316,7 +316,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   ),
                 ),
               ),
-          
             ],
           ),
         ),
@@ -359,7 +358,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),
- 
         margin: EdgeInsets.all(0),
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),
@@ -398,7 +396,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 0, bottom: 0),
                         child: TextFormField(
-                          
                           controller: controller2,
                           minLines: 2,
                           keyboardType: TextInputType.multiline,
@@ -501,7 +498,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                               ),
                             ))
                         : Container(),
-                   
                   ],
                 ),
                 (imageHowto[displayNumber - 1].toString() ==
@@ -731,42 +727,45 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                   },
                                                 )),
                                           )
-                                        : VideoOnPress(path: imageHowto[displayNumber-1])
-                                        // Padding(
-                                        //     padding: const EdgeInsets.fromLTRB(
-                                        //         0, 8, 0, 15),
-                                        //     child: Stack(
-                                        //       children: [
-                                               
-                                        //         Align(
-                                        //           alignment: Alignment.center,
-                                        //           child: AspectRatio(
-                                        //             aspectRatio:
-                                        //                 VideoPlayerController
-                                        //                         .file(imageHowto[
-                                        //                             displayNumber -
-                                        //                                 1])
-                                        //                     .value
-                                        //                     .aspectRatio,
-                                        //             child: Container(
-                                        //               child: VideoItems(
-                                        //                 videoPlayerController:
-                                        //                     VideoPlayerController
-                                        //                         .file(imageHowto[
-                                        //                             displayNumber -
-                                        //                                 1]),
-                                        //                 looping: false,
-                                        //                 autoplay: false,
-                                        //                 addfood_showfood: 2,
-                                        //               ),
-                                        //             ),
-                                        //           ),
-                                        //         ),
-                                                
-                                        //       ],
-                                        //     ),
-                                        //   )
-                                          ),
+                                        // : VideoOnPress(path: imageHowto[displayNumber-1])
+                                        : VideoPlayerScreen(
+                                            path: imageHowto[displayNumber - 1],index: 0,
+                                          )
+                                // Padding(
+                                //     padding: const EdgeInsets.fromLTRB(
+                                //         0, 8, 0, 15),
+                                //     child: Stack(
+                                //       children: [
+
+                                //         Align(
+                                //           alignment: Alignment.center,
+                                //           child: AspectRatio(
+                                //             aspectRatio:
+                                //                 VideoPlayerController
+                                //                         .file(imageHowto[
+                                //                             displayNumber -
+                                //                                 1])
+                                //                     .value
+                                //                     .aspectRatio,
+                                //             child: Container(
+                                //               child: VideoItems(
+                                //                 videoPlayerController:
+                                //                     VideoPlayerController
+                                //                         .file(imageHowto[
+                                //                             displayNumber -
+                                //                                 1]),
+                                //                 looping: false,
+                                //                 autoplay: false,
+                                //                 addfood_showfood: 2,
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+
+                                //       ],
+                                //     ),
+                                //   )
+                                ),
                           ],
                         ),
                       ),
@@ -882,7 +881,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
     File croppedFile = await ImageCropper.cropImage(
         aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
         sourcePath: imageFile.path,
-      
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Crop',
           toolbarColor: Color(0xffc69f50),
@@ -895,11 +893,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
       setState(() {
         imageFile = croppedFile;
         AddImage addImageModels = new AddImage(File(imageFile.path));
-      
 
         setState(() {
-        
-
           print(mode);
           if (mode == "addPictue") {
             addImageModel.add(addImageModels);
@@ -993,13 +988,15 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   text += "กรุณาเพิ่มรูปภาพปกอาหาร";
                 }
 
-                if (_ctrlNameFood.text == "" || _ctrlNameFood.text.trim() == "") {
+                if (_ctrlNameFood.text == "" ||
+                    _ctrlNameFood.text.trim() == "") {
                   text += "\nกรุณาเพิ่มชื่อเมนูอาหาร";
                 }
 
                 //เช็คส่วนผสม
                 for (int i = 0; i < ctl_ingredient_row.length; i++) {
-                  if (ctl_ingredient_row[i][0].text == "" || ctl_ingredient_row[i][0].text.trim() == "") {
+                  if (ctl_ingredient_row[i][0].text == "" ||
+                      ctl_ingredient_row[i][0].text.trim() == "") {
                     text += "\nกรุณกรอกส่วนผสมให้ครบ";
                     break;
                   }
@@ -1007,9 +1004,14 @@ class _AddFoodPageState extends State<AddFoodPage> {
 
                 int checkCtl_howto_row = 0, checkimageHowto = 0;
                 for (int i = 0; i < howto.length; i++) {
-                  if (ctl_howto_row[i].text == "" && checkCtl_howto_row == 0 || ctl_howto_row[i].text.trim() == "") {
-                    text += "\nกรุณกรอกวิธีทำ";
-                    checkCtl_howto_row = 1;
+                  if (ctl_howto_row[i].text == "" && checkCtl_howto_row == 0 ||
+                      ctl_howto_row[i].text.trim() == "") {
+                        if(text.indexOf("กรุณกรอกวิธีทำ") != 1){
+                           text += "\nกรุณกรอกวิธีทำ";
+                            checkCtl_howto_row = 1;
+                            
+                        }
+                   
                   }
                   if (imageHowto[i].toString() == File('').toString() &&
                       checkimageHowto == 0) {
@@ -1101,7 +1103,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => SlidePage()),
+                            builder: (BuildContext context) => SlidePage(index: 2,)),
                         ModalRoute.withName('/'));
                   }
                 }
@@ -1173,7 +1175,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                           ],
                                         );
                                       });
-                                
                                 },
                                 style: ButtonStyle(
                                   foregroundColor:
@@ -1238,7 +1239,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             onPressed: (int index) {
                               setState(() {
                                 if (index == 0) {
-                                 
                                   showModalBottomSheet(
                                       context: context,
                                       builder: (context) {
@@ -1265,7 +1265,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                 Navigator.pop(context);
                                                 captureImage(
                                                     addImage, "editPictue", 0);
-                                     
                                               },
                                             ),
                                           ],
@@ -1844,7 +1843,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
           selected: _selectPrices.contains(price.name),
           onSelected: (bool selected) {
             setState(() {
-              
               _selectPrices = price.name;
 
               if (_selectPrices != "ฟรี") {
@@ -1929,7 +1927,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                     labelText: 'จำนวนเงิน',
-                      hintText: '0.00',
+                    hintText: '0.00',
                   ),
                   autofocus: false,
                 ),
@@ -2154,7 +2152,7 @@ class CustomDialogNotificationPost extends StatelessWidget {
                 //     ),
                 //   ],
                 // ),
-    
+
                 Text(
                   text,
                   style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0),

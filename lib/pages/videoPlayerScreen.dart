@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
-  String path;
-  VideoPlayerScreen({Key key, this.path}) : super(key: key);
+  var path;
+  int index;
+  VideoPlayerScreen({Key key, this.path, this.index}) : super(key: key);
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
@@ -18,18 +19,42 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   void initState() {
-    _controller = (this.widget.path.substring(0, 4) == "http")
-        ? VideoPlayerController.network(
-            this.widget.path,
-          )
-        : VideoPlayerController.asset(
-            this.widget.path,
-          );
+    if (widget.index == 0) {
+      if (this.widget.path.runtimeType == String) {
+        print(11111);
+
+        _controller = (this.widget.path.substring(0, 4) == "http")
+            ? VideoPlayerController.network(
+                this.widget.path,
+              )
+            : VideoPlayerController.file(
+                this.widget.path,
+              );
+      } else {
+        print(22222);
+        _controller = VideoPlayerController.file(
+          this.widget.path,
+        );
+      }
+    }else{
+      try {
+         _controller = (this.widget.path.path.substring(0, 4) == "http")
+            ? VideoPlayerController.network(
+                this.widget.path.path,
+              )
+            : VideoPlayerController.file(
+                this.widget.path,
+              );
+      } catch (e) {
+        _controller = VideoPlayerController.file(
+          this.widget.path,
+        );
+      }
+    }
 
     _controller.addListener(() {
       setState(() {
         print("12312312312312");
-        
       });
     });
     _initializeVideoPlayerFuture = _controller.initialize();
@@ -69,12 +94,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     if (_controller.value.position.inMilliseconds ==
-            _controller.value.duration.inMilliseconds) {
-              
-          setState(() {
-            tap = false;
-          });
-        }
+        _controller.value.duration.inMilliseconds) {
+      setState(() {
+        tap = false;
+      });
+    }
     return FutureBuilder(
       future: _initializeVideoPlayerFuture,
       builder: (context, snapshot) {
@@ -84,7 +108,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             child: Column(
               children: [
                 AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
+                  aspectRatio: 1,
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [

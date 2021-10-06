@@ -28,7 +28,9 @@ class SlidePage extends StatefulWidget {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   AndroidNotificationChannel channel;
 
-  SlidePage({this.flutterLocalNotificationsPlugin, this.channel});
+  int index;
+
+  SlidePage({this.flutterLocalNotificationsPlugin, this.channel, this.index});
   @override
   _SlidePageState createState() => _SlidePageState();
 }
@@ -39,6 +41,13 @@ class _SlidePageState extends State<SlidePage> {
     super.initState();
     findUser();
     print("slidePage ======");
+
+    if (this.widget.index != null) {
+      if (this.widget.index == 2) {
+        currenetScreen = Feed2Page();
+        currentTab = 2;
+      }
+    }
     // getTokenFireBase();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification;
@@ -176,31 +185,28 @@ class _SlidePageState extends State<SlidePage> {
   DateTime timeBackPressed = DateTime.now();
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async {
-        
-        final difference = DateTime.now().difference(timeBackPressed);
-        final isExitWarning = difference >= Duration(seconds: 2);
+        onWillPop: () async {
+          final difference = DateTime.now().difference(timeBackPressed);
+          final isExitWarning = difference >= Duration(seconds: 2);
 
-        timeBackPressed = DateTime.now();
+          timeBackPressed = DateTime.now();
 
-        if(isExitWarning){
-          final message = "กดกลับอีกครั้งเพื่อออก";
-          Fluttertoast.showToast(msg: message,fontSize: 18);
+          if (isExitWarning) {
+            final message = "กดกลับอีกครั้งเพื่อออก";
+            Fluttertoast.showToast(msg: message, fontSize: 18);
 
-          return false;
-        }else{
-          Fluttertoast.cancel();
-          return true;
-        }
-      },
-      child: (dataUser == null || token == "")
-          ? bottomNvigationUser(context)
-          : (dataUser.userStatus == 1)
-              ? bottomNvigationUser(context)
-              : bottomNvigationAdmin(),
+            return false;
+          } else {
+            Fluttertoast.cancel();
+            return true;
+          }
+        },
+        child: (dataUser == null || token == "")
+            ? bottomNvigationUser(context)
+            : (dataUser.userStatus == 1)
+                ? bottomNvigationUser(context)
+                : bottomNvigationAdmin(),
       );
-
-
 
   Scaffold bottomNvigationAdmin() {
     if (token != "" && token != null) {
@@ -259,9 +265,8 @@ class _SlidePageState extends State<SlidePage> {
                   children: [
                     Icon(
                       currentTab == 1 ? Icons.search_sharp : Icons.search,
-                      color: currentTab == 1
-                          ? Colors.white
-                          : Colors.grey.shade300,
+                      color:
+                          currentTab == 1 ? Colors.white : Colors.grey.shade300,
                       size: currentTab == 1 ? 27 : 23,
                     ),
                     Text(' ค้นหา ',
@@ -287,7 +292,7 @@ class _SlidePageState extends State<SlidePage> {
                   children: [
                     Icon(
                         currentTab == 2
-                           ? Icons.fastfood
+                            ? Icons.fastfood
                             : Icons.fastfood_outlined,
                         color: currentTab == 2
                             ? Colors.white
@@ -314,10 +319,7 @@ class _SlidePageState extends State<SlidePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                        currentTab == 3
-                            ? Icons.cancel
-                            : Icons.cancel_outlined,
+                    Icon(currentTab == 3 ? Icons.cancel : Icons.cancel_outlined,
                         color: currentTab == 3
                             ? Colors.white
                             : Colors.grey.shade300,
@@ -409,7 +411,6 @@ class _SlidePageState extends State<SlidePage> {
               child: FloatingActionButton(
                 child: Icon(Icons.add),
                 onPressed: () async {
-                  
                   if (token != "" && token != null) {
                     Navigator.pushNamed(context, '/AddFoodPage');
                   } else {
@@ -519,7 +520,7 @@ class _SlidePageState extends State<SlidePage> {
                         Icon(
                             currentTab == 2
                                 ? Icons.fastfood
-                            : Icons.fastfood_outlined,
+                                : Icons.fastfood_outlined,
                             color: currentTab == 2
                                 ? Colors.white
                                 : Colors.grey.shade300,

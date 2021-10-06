@@ -411,10 +411,10 @@ class _ShowFoodState extends State<ShowFood> {
                   ),
                 )
               // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
-              : VideoOnPress(path: dataHowto[displayNumber].pathFile,)
-              // : VideoPlayerScreen(
-              //     path: dataHowto[displayNumber].pathFile,
-              //   )
+              // : VideoOnPress(path: dataHowto[displayNumber].pathFile,)//<-----------
+              : VideoPlayerScreen(
+                  path: dataHowto[displayNumber].pathFile,index: 0,
+                )
           // Card(
           //     semanticContainer: true,
           //     clipBehavior: Clip.antiAliasWithSaveLayer,

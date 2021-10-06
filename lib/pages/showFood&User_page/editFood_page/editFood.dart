@@ -659,8 +659,9 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                   });
                                                 },
                                               )),
-                                        ) : VideoOnPress(path: imageHowto[displayNumber-1],)
-                                        // :VideoPlayerScreen(path: imageHowto[displayNumber-1].path,)
+                                        ) 
+                                        // : VideoOnPress(path: imageHowto[displayNumber-1],)// <-----------
+                                        :VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
                                         // :BetterPlayer.network( imageHowto[displayNumber-1].path)
                                         // Container()
                                       // : Chewie(
