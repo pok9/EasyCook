@@ -21,15 +21,18 @@ class _VideoPlayerOnPressState extends State<VideoPlayerOnPress> {
             ? BetterPlayer.network(widget.path,
                 betterPlayerConfiguration: BetterPlayerConfiguration(
                   autoPlay: true,
+                  aspectRatio: 1
                 ))
             : BetterPlayer.file(widget.path,
                 betterPlayerConfiguration: BetterPlayerConfiguration(
                   autoPlay: true,
+                  aspectRatio: 1
                 ));
       } catch (e) {
         _betterPlayerController = BetterPlayer.file(widget.path,
                 betterPlayerConfiguration: BetterPlayerConfiguration(
                   autoPlay: true,
+                  aspectRatio: 1
                 ));
         
       }
@@ -40,13 +43,14 @@ print(111111111111111);
           _betterPlayerController = BetterPlayer.network(widget.path.path,
             betterPlayerConfiguration: BetterPlayerConfiguration(
               autoPlay: true,
+              aspectRatio: 1
             ));
         }else{
           print(222222222222222222);
           _betterPlayerController = BetterPlayer.file(widget.path.path,
             betterPlayerConfiguration: BetterPlayerConfiguration(
               autoPlay: true,
-              
+              aspectRatio: 1
             ));
         }
     }
@@ -65,6 +69,9 @@ print(111111111111111);
 
   @override
   Widget build(BuildContext context) {
-     return _betterPlayerController;
+     return Padding(
+       padding: const EdgeInsets.all(8.0),
+       child: _betterPlayerController,
+     );
   }
 }

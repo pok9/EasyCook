@@ -31,15 +31,15 @@ class _SearchPage1State extends State<SearchPage1> {
     "อาหารว่าง"
   ];
   var iconFood = [
-    "https://cdn-icons-png.flaticon.com/512/4913/4913194.png",
-    "https://cdn-icons-png.flaticon.com/512/3063/3063364.png",
-    "https://cdn-icons-png.flaticon.com/512/1147/1147934.png",
-    "https://cdn-icons-png.flaticon.com/512/3063/3063360.png",
-    "https://cdn-icons-png.flaticon.com/512/1302/1302319.png",
-    "https://cdn-icons-png.flaticon.com/512/1143/1143203.png",
-    "https://cdn-icons-png.flaticon.com/512/4212/4212850.png",
-    "https://cdn-icons-png.flaticon.com/512/4363/4363676.png",
-    "https://cdn-icons-png.flaticon.com/512/1276/1276200.png"
+    "assets/logoSearch/water.png",
+    "assets/logoSearch/boiled.png",
+    "assets/logoSearch/healthy.png",
+    "assets/logoSearch/steam.png",
+    "assets/logoSearch/stewed.png",
+    "assets/logoSearch/fried.png",
+    "assets/logoSearch/grill.png",
+    "assets/logoSearch/baked.png",
+    "assets/logoSearch/snack.png"
   ];
 
   var categoryFoodImage = [
@@ -249,34 +249,7 @@ class _SearchPage1State extends State<SearchPage1> {
     );
   }
 
-  // TabBarView body() {
-  //   return new TabBarView(
-  //     children: <Widget>[
-  //       ListView(
-  //         children: [
-  //           dividerTextCustom("หมวดหมู่"),
-  //           Padding(
-  //             padding: const EdgeInsets.all(0.0),
-  //             child: GridView.count(
-  //                 shrinkWrap: true,
-  //                 physics: NeverScrollableScrollPhysics(),
-  //                 crossAxisCount: 5,
-  //                 children: List.generate(menuFood.length, (index) {
-  //                   return MenuFeature(
-  //                     iconAsset: iconFood[index],
-  //                     name: menuFood[index],
-  //                   );
-  //                 })),
-  //           ),
-  //         ],
-  //       ),
-  //       new Column(
-  //         children: <Widget>[new Text("Cart Page")],
-  //       )
-
-  //     ],
-  //   );
-  // }
+ 
 
   Padding dividerTextCustom(String text) {
     return Padding(
@@ -338,7 +311,7 @@ class MenuFeature extends StatelessWidget {
             SizedBox(
               width: 30,
               height: 30,
-              child: Image.network(iconAsset),
+              child: Image.asset(iconAsset),
             ),
             Text(
               name,

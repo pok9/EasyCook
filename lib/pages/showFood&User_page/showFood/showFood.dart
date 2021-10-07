@@ -25,6 +25,7 @@ import 'package:easy_cook/pages/showFood&User_page/showFood/onTapHowtoShowFood.d
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerOnPress/thumbnail.dart';
 import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerOnPress.dart';
 import 'package:easy_cook/pages/videoPlayerScreen.dart';
 
@@ -332,20 +333,16 @@ class _ShowFoodState extends State<ShowFood> {
     }).toList(); // แปลงเป็นlist
   }
 
-  
-
-
-
   List<Widget> _howtoList1() {
     List<List<TextEditingController>> controllers2 =
         <List<TextEditingController>>[];
-  
+
     int i;
     if (0 < dataHowto.length) {
       for (i = 0; i < dataHowto.length; i++) {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
-     
+
         controllers2.add(ctl);
       }
     }
@@ -355,7 +352,7 @@ class _ShowFoodState extends State<ShowFood> {
     return controllers2.map<Widget>((List<TextEditingController> controller) {
       int displayNumber = i;
       i++;
-      
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -403,7 +400,6 @@ class _ShowFoodState extends State<ShowFood> {
             ),
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
-          
               ? Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
@@ -423,22 +419,56 @@ class _ShowFoodState extends State<ShowFood> {
               // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
               // : VideoOnPress(path: dataHowto[displayNumber].pathFile,)//<-----------
               : (this.onPressHowTo != displayNumber)
-                  ? Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            this.onPressHowTo = displayNumber;
-                          });
-                        },
-                        child: Center(
-                            child: Image.asset(
-                          'assets/images/play.png',
-                          height: 312,
-                        )),
-                      ),
+                  ? Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DemoHome(
+                            path: dataHowto[displayNumber].pathFile,
+                          ),
+                        ),
+                        Positioned(
+                          top: 110,
+                          left: MediaQuery.of(context).size.width / 2 - 25,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                this.onPressHowTo = displayNumber;
+                              });
+                            },
+                            child: Image.network(
+                              "https://icons-for-free.com/iconfiles/png/512/play-131979013293010971.png",
+                              width: 50,
+                              height: 50,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      ],
                     )
-                  // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
+                  // : (this.onPressHowTo != displayNumber)
+                  //     ? Padding(
+                  //         padding: const EdgeInsets.all(16.0),
+                  //         child: GestureDetector(
+                  //           onTap: () {
+                  //             // print("testVideo => ${dataHowto[displayNumber].pathFile}");
+                  //             // Navigator.push(
+                  //             //     context,
+                  //             //     MaterialPageRoute(builder: (context) => DemoHome(path: dataHowto[displayNumber].pathFile,)),
+                  //             //   );
+                  //             setState(() {
+                  //               this.onPressHowTo = displayNumber;
+                  //             });
+                  //           },
+                  //           child:  DemoHome(path: dataHowto[displayNumber].pathFile,)
+                  //           // Center(
+                  //           //     child: Image.asset(
+                  //           //   'assets/images/play.png',
+                  //           //   height: 312,
+                  //           // )),
+                  //         ),
+                  //       )
+                  //     // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
                   : VideoPlayerOnPress(
                       path: dataHowto[displayNumber].pathFile,
                     )

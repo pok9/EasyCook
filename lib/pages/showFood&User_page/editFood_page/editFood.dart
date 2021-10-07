@@ -10,8 +10,8 @@ import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
 import 'package:easy_cook/pages/addFood_page/xxx_addImageOrVideo.dart';
 import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerOnPress/thumbnail.dart';
 import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerOnPress.dart';
-import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerShowScreen.dart';
 import 'package:easy_cook/pages/videoPlayerScreen.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:file_picker/file_picker.dart';
@@ -239,7 +239,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
       );
     }).toList(); // แปลงเป็นlist
   }
-
 
   List<String> exampleHowto_row = [
     "เริ่มจากเตรียมหมักหมู เตรียมเครื่องหมัก โดยผสม กะปิ น้ำตาลปึก น้ำมันหอย และ น้ำปลา ผสมให้ละลายเข้ากัน จากนั้นนำเครื่องหมักไปคลุกกับหมูสามชั้นที่เตรียมเอาไว้ หมักในตู้เย็น 1 คืน",
@@ -676,24 +675,35 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                       //       ],
                                       //     )
                                       (this.onPressHowTo != displayNumber - 1)
-                                         
-                                          ?GestureDetector(
-                                              onTap: () {
-                                                setState(() {
+                                          ? Stack(
+                                              children: [
+                                                DemoHome(
+                                                  path: imageHowto[
+                                                          displayNumber - 1]
+                                                      .path,
+                                                ),
+                                                Positioned(
+                                                  top: 110,
+                                                  left: MediaQuery.of(context).size.width/2 - 25,
+                                                  child: InkWell(
+                                                     onTap: (){
+                                                    setState(() {
                                                   this.onPressHowTo =
                                                       displayNumber-1;
                                                 });
-                                              },
-                                              child:
-                                               Center(
-                                                  child: Image.asset(
-                                                'assets/images/play.png',
-                                                height: 312,
-                                              ))
-                                              ,
+                                                  },
+                                                    child: Image.network(
+                                                      "https://icons-for-free.com/iconfiles/png/512/play-131979013293010971.png",
+                                                      width: 50,
+                                                      height: 50,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
                                             )
-                                              // : VideoPlayerOnPress(path: imageHowto[displayNumber-1],)
-                                              // : VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
+                                          // : VideoPlayerOnPress(path: imageHowto[displayNumber-1],)
+                                          // : VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
                                           : VideoPlayerOnPress(
                                               path:
                                                   imageHowto[displayNumber - 1],

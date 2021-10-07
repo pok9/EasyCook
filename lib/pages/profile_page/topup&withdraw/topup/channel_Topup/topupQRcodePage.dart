@@ -12,6 +12,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -67,6 +68,7 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
       String imgUrl = dataTopupQrModel.qrCode;
       // print("imgUrl => ${imgUrl}");
       downloadFile(filename, imgUrl);
+      
       // responseImgUrl = await http.get(Uri.parse("https://unsplash.com/photos/iEJVyyevw-U/download?force=true"));
 
       // print(responseImgUrl.body);
@@ -105,7 +107,7 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
     downloading = false;
     progressString = "Completed";
     imageFile = File("${dir.path}/${filename}");
-
+   
     imageFile.readAsString().then((String contents) {
       // print(contents);
 
@@ -140,6 +142,7 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
     // print(imageFile);
 
     print("Download completed");
+    
   }
 
   @override
@@ -193,7 +196,7 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
                         //   _save();
                         // })
                         Container(
-                            margin: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.only(left: 5, right: 5),
                             child: ElevatedButton.icon(
                               onPressed: () {
                                 _save();
@@ -204,9 +207,45 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
                                 primary: Colors.blue,
                               ),
                             )),
+                        Container(
+                            margin: const EdgeInsets.only(left: 5, right: 5),
+                            child: ElevatedButton.icon(
+                              onPressed:  () => _onShare(context),
+                              // {
+                              //   // Share.share("test");
+                              //   // print(QRimage3);
+                              //   // Share.shareFiles(
+                              //   //   ['assets/logoSearch/baked.png'],
+                              //   //   text: "QR Code",
+                                  
+                              //   // );
+                              //   Share.shareFiles(['${directory.path}/image.jpg'], text: 'QR Code');
+                              // },
+                              label: Text('แชร์'),
+                              icon: Icon(Icons.share),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                              ),
+                            )),
                       ],
                     ),
         ));
+  }
+  
+  _onShare(BuildContext context) async {
+    // A builder is used to retrieve the context immediately
+    // surrounding the ElevatedButton.
+    //
+    // The context's `findRenderObject` returns the first
+    // RenderObject in its descendent tree when it's not
+    // a RenderObjectWidget. The ElevatedButton's RenderObject
+    // has its position and size after it's built.
+    final RenderBox box = context.findRenderObject() as RenderBox;
+    final directory = await getApplicationDocumentsDirectory();
+     await Share.shareFiles(['${directory.path}/testImage3.jpg'],
+          text: "QR Code",
+
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
   _save() async {
@@ -218,7 +257,7 @@ class _TopupQRcodePageState extends State<TopupQRcodePage> {
     final result = await ImageGallerySaver.saveImage(Uint8List.fromList(bytes),
         quality: 60, name: "QrCode_${DateTime.now().millisecondsSinceEpoch}");
     print(result);
-   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("ดาวน์โหลด QR Code เสร็จแล้ว"),
     ));
   }
@@ -266,9 +305,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         ? Center(child: CircularProgressIndicator())
         : (this.widget.index == 2)
             ? Container(
-                width: sizeScreen.width,
-                height: 100,
-                child: Image.file(fileImg))
+                width: sizeScreen.width, height: 75, child: Image.file(fileImg))
             : Padding(
                 padding: (this.widget.index == 1)
                     ? const EdgeInsets.fromLTRB(8, 8, 8, 0)

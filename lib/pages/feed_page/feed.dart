@@ -661,9 +661,11 @@ class _FeedPageState extends State<FeedPage> {
                   ),
                 ),
 
+                  //dataRecommendRecipe == null
                 (dataRecommendRecipe == null)
                     ? Container(
-                        height: 329,
+                        height: 300,
+                        child: Image.asset("assets/loadGif/loadding2.gif"),
                       )
                     : Container(
                         height: 300,
@@ -686,7 +688,7 @@ class _FeedPageState extends State<FeedPage> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
+                      // Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
                       // Text(
                       //   "ดูทั้งหมด",
                       //   style: TextStyle(
@@ -712,8 +714,8 @@ class _FeedPageState extends State<FeedPage> {
                 ),
                 (dataRecommendRecipe == null)
                     ? Container(
-                        // height: 0,
-                        height: 0,
+                        height: 300,
+                        child: Image.asset("assets/loadGif/loadding2.gif"),
                       )
                     : Padding(
                         padding: const EdgeInsets.all(0),
@@ -1103,6 +1105,7 @@ class _FeedPageState extends State<FeedPage> {
                 (dataRecommendUser == null || checkFollowing == null)
                     ? Container(
                         height: 135,
+                        child: Image.asset("assets/loadGif/loadding2.gif"),
                       )
                     : Padding(
                         padding: const EdgeInsets.only(bottom: 20),
@@ -1135,6 +1138,7 @@ class _FeedPageState extends State<FeedPage> {
                 (dataPopularRecipe_free_and_not_free == null)
                     ? Container(
                         height: 329,
+                        child: Image.asset("assets/loadGif/loadding2.gif"),
                       )
                     : Container(
                         height: 329,
@@ -1165,6 +1169,7 @@ class _FeedPageState extends State<FeedPage> {
                 (dataPopularRecipe_free == null)
                     ? Container(
                         height: 329,
+                        child: Image.asset("assets/loadGif/loadding2.gif"),
                       )
                     : Container(
                         height: 329,
@@ -1194,6 +1199,7 @@ class _FeedPageState extends State<FeedPage> {
                 (dataPopularRecipe_not_free == null)
                     ? Container(
                         height: 329,
+                        child: Image.asset("assets/loadGif/loadding2.gif"),
                       )
                     : Container(
                         height: 329,
