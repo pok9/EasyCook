@@ -10,6 +10,8 @@ import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
 import 'package:easy_cook/pages/addFood_page/xxx_addImageOrVideo.dart';
 import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerShowScreen.dart';
 import 'package:easy_cook/pages/videoPlayerScreen.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:file_picker/file_picker.dart';
@@ -19,9 +21,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
+import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../video_items.dart';
 import 'package:http_parser/http_parser.dart';
 
@@ -235,6 +239,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
       );
     }).toList(); // แปลงเป็นlist
   }
+
 
   List<String> exampleHowto_row = [
     "เริ่มจากเตรียมหมักหมู เตรียมเครื่องหมัก โดยผสม กะปิ น้ำตาลปึก น้ำมันหอย และ น้ำปลา ผสมให้ละลายเข้ากัน จากนั้นนำเครื่องหมักไปคลุกกับหมูสามชั้นที่เตรียมเอาไว้ หมักในตู้เย็น 1 คืน",
@@ -659,52 +664,73 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                   });
                                                 },
                                               )),
-                                        ) 
-                                        // : VideoOnPress(path: imageHowto[displayNumber-1],)// <-----------
-                                        // :VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
-                                        : (this.onPressHowTo != displayNumber)
-                  ? GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          this.onPressHowTo = displayNumber;
-                        });
-                      },
-                      child: Image.asset('assets/images/add.png'),
-                    )
-                  : VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
-                  // BetterPlayer.network( imageHowto[displayNumber-1].path)
-                                        // :BetterPlayer.network( imageHowto[displayNumber-1].path)
-                                        // Container()
-                                      // : Chewie(
-                                      //     controller: ChewieController(
-                                      //         videoPlayerController:
-                                      //         (imageHowto[
-                                      //                     displayNumber -
-                                      //                         1]
-                                      //                 .path
-                                      //                 .substring(
-                                      //                     0, 4) ==
-                                      //             "http") ? VideoPlayerController.network(imageHowto[displayNumber-1].path) :
-                                      //             VideoPlayerController.asset(imageHowto[displayNumber-1].path),
-                                      //         // aspectRatio: 30 / 15,
-                                      //         // aspectRatio: 16 / 9,
-                                      //         // aspectRatio: 3 / 2,
-                                      //         // aspectRatio: 1,
-                                      //         aspectRatio: 1,
-                                      //         autoInitialize: true,
-                                      //         autoPlay: false,
-                                      //         looping: false,
-                                      //         errorBuilder:
-                                      //             (context, errorMessage) {
-                                      //           return Center(
-                                      //             child: Text(
-                                      //               errorMessage,
-                                      //               style: TextStyle(
-                                      //                   color: Colors.red),
-                                      //             ),
-                                      //           );
-                                      //         }),
-                                      //   )
+                                        )
+                                      // : VideoOnPress(path: imageHowto[displayNumber-1],)// <-----------
+                                      // :VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
+                                      :
+                                      // (this.onPressHowTo != displayNumber - 1)
+                                      //     ? Stack(
+                                      //       children: [
+                                      //         VideoPlayerShowScreen(path: imageHowto[displayNumber - 1],index: 1,),
+                                      //         Center(child: IconButton(onPressed: (){}, icon: Icon(Icons.play_arrow,size: 100,color: Colors.white,),))
+                                      //       ],
+                                      //     )
+                                      (this.onPressHowTo != displayNumber - 1)
+                                         
+                                          ?GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  this.onPressHowTo =
+                                                      displayNumber-1;
+                                                });
+                                              },
+                                              child:
+                                               Center(
+                                                  child: Image.asset(
+                                                'assets/images/play.png',
+                                                height: 312,
+                                              ))
+                                              ,
+                                            )
+                                              // : VideoPlayerOnPress(path: imageHowto[displayNumber-1],)
+                                              // : VideoPlayerScreen(path: imageHowto[displayNumber-1],index: 1,)
+                                          : VideoPlayerOnPress(
+                                              path:
+                                                  imageHowto[displayNumber - 1],
+                                            )
+                              //  BetterPlayer.network( imageHowto[displayNumber-1].path)
+                              // :BetterPlayer.network( imageHowto[displayNumber-1].path)
+                              // Container()
+                              // : Chewie(
+                              //     controller: ChewieController(
+                              //         videoPlayerController:
+                              //         (imageHowto[
+                              //                     displayNumber -
+                              //                         1]
+                              //                 .path
+                              //                 .substring(
+                              //                     0, 4) ==
+                              //             "http") ? VideoPlayerController.network(imageHowto[displayNumber-1].path) :
+                              //             VideoPlayerController.asset(imageHowto[displayNumber-1].path),
+                              //         // aspectRatio: 30 / 15,
+                              //         // aspectRatio: 16 / 9,
+                              //         // aspectRatio: 3 / 2,
+                              //         // aspectRatio: 1,
+                              //         aspectRatio: 1,
+                              //         autoInitialize: true,
+                              //         autoPlay: false,
+                              //         looping: false,
+                              //         errorBuilder:
+                              //             (context, errorMessage) {
+                              //           return Center(
+                              //             child: Text(
+                              //               errorMessage,
+                              //               style: TextStyle(
+                              //                   color: Colors.red),
+                              //             ),
+                              //           );
+                              //         }),
+                              //   )
                               // : Padding(
                               //     padding: const EdgeInsets.fromLTRB(
                               //         0, 10, 0, 0),
@@ -714,7 +740,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                               //         aspectRatio: 1,
                               //         child: Container(
                               //           child: VideoItems(
-                              //             videoPlayerController: 
+                              //             videoPlayerController:
                               //                      (imageHowto[
                               //                             displayNumber -
                               //                                 1]
@@ -1118,6 +1144,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () async {
+                showdialog(context);
                 String text = "";
                 bool check = true;
 
@@ -1273,12 +1300,12 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 }
 
                 if (text != "") {
+                  Navigator.pop(context);
                   showdialogPost(context, text);
                   check = false;
                 }
 
                 if (check) {
-                  showdialog(context);
                   await editRecipePost_Fuc(
                       recipe_name,
                       image,

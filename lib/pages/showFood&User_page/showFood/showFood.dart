@@ -25,6 +25,7 @@ import 'package:easy_cook/pages/showFood&User_page/showFood/onTapHowtoShowFood.d
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerOnPress.dart';
 import 'package:easy_cook/pages/videoPlayerScreen.dart';
 
 import 'package:easy_cook/pages/video_items.dart';
@@ -35,6 +36,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mime/mime.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_fab/sliver_fab.dart';
@@ -42,6 +44,7 @@ import 'package:http/http.dart' as http;
 import 'package:story_view/controller/story_controller.dart';
 import 'package:story_view/widgets/story_view.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ShowFood extends StatefulWidget {
   // const test({Key key}) : super(key: key);
@@ -329,15 +332,20 @@ class _ShowFoodState extends State<ShowFood> {
     }).toList(); // แปลงเป็นlist
   }
 
+  
+
+
+
   List<Widget> _howtoList1() {
     List<List<TextEditingController>> controllers2 =
         <List<TextEditingController>>[];
+  
     int i;
     if (0 < dataHowto.length) {
       for (i = 0; i < dataHowto.length; i++) {
         var ctl = <TextEditingController>[];
         ctl.add(TextEditingController());
-
+     
         controllers2.add(ctl);
       }
     }
@@ -347,7 +355,7 @@ class _ShowFoodState extends State<ShowFood> {
     return controllers2.map<Widget>((List<TextEditingController> controller) {
       int displayNumber = i;
       i++;
-
+      
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -395,6 +403,7 @@ class _ShowFoodState extends State<ShowFood> {
             ),
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
+          
               ? Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
@@ -415,21 +424,28 @@ class _ShowFoodState extends State<ShowFood> {
               // : VideoOnPress(path: dataHowto[displayNumber].pathFile,)//<-----------
               : (this.onPressHowTo != displayNumber)
                   ? Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: GestureDetector(
+                      padding: const EdgeInsets.all(16.0),
+                      child: GestureDetector(
                         onTap: () {
                           setState(() {
                             this.onPressHowTo = displayNumber;
                           });
                         },
-                        child: Image.asset('assets/images/add.png',),
+                        child: Center(
+                            child: Image.asset(
+                          'assets/images/play.png',
+                          height: 312,
+                        )),
                       ),
-                  )
-                  // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
-                   : VideoPlayerScreen(
-                      path: dataHowto[displayNumber].pathFile,
-                      index: 0,
                     )
+                  // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
+                  : VideoPlayerOnPress(
+                      path: dataHowto[displayNumber].pathFile,
+                    )
+          //  :VideoPlayerScreen(
+          //     path: dataHowto[displayNumber].pathFile,
+          //     index: 0,
+          //   )
 
           // Card(
           //     semanticContainer: true,

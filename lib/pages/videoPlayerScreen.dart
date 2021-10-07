@@ -52,6 +52,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       }
     }
 
+    _controller.play();
+
     _controller.addListener(() {
       setState(() {
         print("12312312312312");
@@ -64,6 +66,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   void dispose() {
+    print("Dispose");
     _controller.dispose();
 
     super.dispose();
