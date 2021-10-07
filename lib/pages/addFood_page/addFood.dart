@@ -336,7 +336,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
     "เพียงเท่านี้ก็เสร็จสิ้นหมูทอดกะปิ แสนอร่อย กินกับข้าวเหนียว"
   ];
   int howto_row = 0; //จำนวนแถววิธีทำ
-  List<TextEditingController> ctl_howto_row = <TextEditingController>[]; //ทดสอบ
+  List<TextEditingController> ctl_howto_row = <TextEditingController>[]; 
   List<File> imageHowto = <File>[];
   
   int onPressHowTo = -1;
@@ -728,7 +728,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                       }
                                                     });
                                                   },
-                                                )),
+                                                )
+                                                ),
                                           )
                                         // : VideoOnPress(path: imageHowto[displayNumber-1])
                                         :(this.onPressHowTo != displayNumber - 1)
@@ -756,7 +757,201 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                       color: Colors.white,
                                                     ),
                                                   ),
-                                                )
+                                                ),
+                                                // Positioned(
+                                                //   left: 1,
+                                                //   bottom: 1,
+                                                //   child: ToggleButtons(
+                                                //     color: Colors.black
+                                                //         .withOpacity(0.60),
+                                                //     selectedColor: Colors.black,
+                                                //     selectedBorderColor:
+                                                //         Colors.grey,
+                                                //     splashColor: Colors.blue,
+                                                //     hoverColor: Color(0xFF6200EE)
+                                                //         .withOpacity(0.04),
+                                                //     borderRadius:
+                                                //         BorderRadius.circular(
+                                                //             20.0),
+                                                //     constraints: BoxConstraints(
+                                                //         minHeight: 30.0),
+                                                //     children: <Widget>[
+                                                //       Row(
+                                                //         children: [
+                                                //           Icon(
+                                                //             Icons.camera_alt,
+                                                //             color: Colors.white,
+                                                //           ),
+                                                //           SizedBox(
+                                                //             width: 1,
+                                                //           ),
+                                                //           Text(
+                                                //             "แก้ไข",
+                                                //             style: TextStyle(
+                                                //                 color:
+                                                //                     Colors.white),
+                                                //           )
+                                                //         ],
+                                                //       ),
+                                                //       Row(
+                                                //         children: [
+                                                //           Icon(
+                                                //             Icons.delete,
+                                                //             color: Colors.white,
+                                                //           ),
+                                                //           Text("ลบ",
+                                                //               style: TextStyle(
+                                                //                   color: Colors
+                                                //                       .white))
+                                                //         ],
+                                                //       ),
+                                                //     ],
+                                                //     isSelected: [true, true],
+                                                //     onPressed: (int index) {
+                                                //       setState(() {
+                                                //         if (index == 0) {
+                                                //           showModalBottomSheet(
+                                                //               context: context,
+                                                //               builder: (context) {
+                                                //                 return Column(
+                                                //                   mainAxisSize:
+                                                //                       MainAxisSize
+                                                //                           .min,
+                                                //                   children: <
+                                                //                       Widget>[
+                                                //                     ListTile(
+                                                //                       leading:
+                                                //                           new Icon(
+                                                //                         Icons
+                                                //                             .photo_camera_back,
+                                                //                         color: Colors
+                                                //                             .blue,
+                                                //                       ),
+                                                //                       title: new Text(
+                                                //                           'รูปภาพในมือถือ'),
+                                                //                       onTap:
+                                                //                           () async {
+                                                //                         Navigator.pop(
+                                                //                             context);
+                                                //                         pickCropImage(
+                                                //                             imageHowto,
+                                                //                             "addPictueHowto",
+                                                //                             displayNumber -
+                                                //                                 1);
+                                                //                       },
+                                                //                     ),
+                                                //                     ListTile(
+                                                //                       leading: new Icon(
+                                                //                           Icons
+                                                //                               .camera_alt_outlined,
+                                                //                           color: Colors
+                                                //                               .blue),
+                                                //                       title: new Text(
+                                                //                           'ถ่ายรูปภาพ'),
+                                                //                       onTap:
+                                                //                           () async {
+                                                //                         Navigator.pop(
+                                                //                             context);
+                                                //                         captureImage(
+                                                //                             imageHowto,
+                                                //                             "addPictueHowto",
+                                                //                             displayNumber -
+                                                //                                 1);
+                                                //                       },
+                                                //                     ),
+                                                //                     ListTile(
+                                                //                       leading: new Icon(
+                                                //                           Icons
+                                                //                               .video_collection_outlined,
+                                                //                           color: Colors
+                                                //                               .blue),
+                                                //                       title: new Text(
+                                                //                           'เพิ่ม วิดีโอ จากคลัง'),
+                                                //                       onTap:
+                                                //                           () async {
+                                                //                         Navigator.pop(
+                                                //                             context);
+                                                //                         pickCropVideo(
+                                                //                             imageHowto,
+                                                //                             displayNumber -
+                                                //                                 1);
+                                                //                       },
+                                                //                     ),
+                                                //                     ListTile(
+                                                //                       leading: new Icon(
+                                                //                           Icons
+                                                //                               .video_camera_back_outlined,
+                                                //                           color: Colors
+                                                //                               .blue),
+                                                //                       title: new Text(
+                                                //                           'ถ่ายวิดีโอ'),
+                                                //                       onTap:
+                                                //                           () async {
+                                                //                         Navigator.pop(
+                                                //                             context);
+                                                
+                                                //                         captureVideo(
+                                                //                             imageHowto,
+                                                //                             displayNumber -
+                                                //                                 1);
+                                                //                       },
+                                                //                     ),
+                                                //                   ],
+                                                //                 );
+                                                //               });
+                                                //         } else if (index == 1) {
+                                                //           showDialog(
+                                                //               context: context,
+                                                //               builder:
+                                                //                   (BuildContext
+                                                //                       context) {
+                                                //                 return AlertDialog(
+                                                //                   title: const Text(
+                                                //                       'ยืนยัน'),
+                                                //                   content: const Text(
+                                                //                       'คุณต้องการลบรูปนี้ ?'),
+                                                //                   actions: <
+                                                //                       Widget>[
+                                                //                     TextButton(
+                                                //                       onPressed: () =>
+                                                //                           Navigator.pop(
+                                                //                               context,
+                                                //                               'Cancel'),
+                                                //                       child:
+                                                //                           const Text(
+                                                //                         'ยกเลิก',
+                                                //                         style: TextStyle(
+                                                //                             color:
+                                                //                                 Colors.red),
+                                                //                       ),
+                                                //                     ),
+                                                //                     TextButton(
+                                                //                       onPressed:
+                                                //                           () {
+                                                //                         setState(
+                                                //                             () {
+                                                //                           imageHowto[
+                                                //                               displayNumber -
+                                                //                                   1] = File(
+                                                //                               '');
+                                                
+                                                //                           Navigator.pop(
+                                                //                               context);
+                                                //                         });
+                                                //                       },
+                                                //                       child:
+                                                //                           const Text(
+                                                //                         'ตกลง',
+                                                //                       ),
+                                                //                     ),
+                                                //                   ],
+                                                //                 );
+                                                //               });
+                                                //         }
+                                                //       });
+                                                //     },
+                                                //   ),
+                                                // )
                                               ],
                                             ):VideoPlayerOnPress(
                                               path:

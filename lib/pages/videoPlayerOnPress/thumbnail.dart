@@ -182,6 +182,13 @@ class _DemoHomeState extends State<DemoHome> {
     getTemporaryDirectory().then((d) => _tempDir = d.path);
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    // _futreImage = null;
+  }
+
   final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
