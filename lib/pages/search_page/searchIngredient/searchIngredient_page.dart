@@ -300,22 +300,21 @@ class _SearchIngredientState extends State<SearchIngredient> {
                                           top: 8, bottom: 8),
                                       child: Row(
                                         children: [
-                                          Expanded(
-                                            flex: 4,
-                                            child: Text(
-                                              listDataFood
-                                                  .elementAt(index)
-                                                  .recipeName,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15),
-                                            ),
+                                          Text(
+                                            listDataFood
+                                                .elementAt(index)
+                                                .recipeName,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
                                           ),
                                           Expanded(
                                             // flex: 1,
-                                            child: (listDataFood
+                                            child: Container()
+                                          ),
+                                          (listDataFood
                                                         .elementAt(index)
                                                         .score ==
                                                     0)
@@ -337,7 +336,6 @@ class _SearchIngredientState extends State<SearchIngredient> {
                                                           .count})")
                                                     ],
                                                   ),
-                                          ),
                                         ],
                                       ),
                                     ),

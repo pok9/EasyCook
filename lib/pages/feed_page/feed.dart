@@ -1917,32 +1917,35 @@ class _FeedPageState extends State<FeedPage> {
                       }));
                     }
                   },
-                  child: Row(
-                    children: [
-                      new Container(
-                        height: 30.0,
-                        width: 30.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    dataRecommendRecipe.profileImage))),
-                      ),
-                      new SizedBox(
-                        width: 10.0,
-                      ),
-                      Expanded(
-                        child: Text(
-                          dataRecommendRecipe.aliasName,
-                          maxLines: 1,
-                          style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.bold),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Row(
+                      children: [
+                        new Container(
+                          height: 30.0,
+                          width: 30.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      dataRecommendRecipe.profileImage))),
                         ),
-                      ),
-                      IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
-                    ],
+                        new SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: Text(
+                            dataRecommendRecipe.aliasName,
+                            maxLines: 1,
+                            style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        // IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
+                      ],
+                    ),
                   ),
                 ),
               ),

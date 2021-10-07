@@ -699,6 +699,94 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                       color: Colors.white,
                                                     ),
                                                   ),
+                                                ),
+                                                Positioned(
+                                                  right: 1,
+                                                  bottom: 1,
+                                                  child: ToggleButtons(
+                                                    color: Colors.black
+                                                        .withOpacity(0.60),
+                                                    selectedColor: Colors.black,
+                                                    selectedBorderColor:
+                                                        Colors.grey,
+                                                    splashColor: Colors.blue,
+                                                    hoverColor: Color(0xFF6200EE)
+                                                        .withOpacity(0.04),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                    constraints: BoxConstraints(
+                                                        minHeight: 30.0),
+                                                    children: <Widget>[
+                                                      
+                                                      Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.delete,
+                                                            color: Colors.white,
+                                                          ),
+                                                          Text("ลบ",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white))
+                                                        ],
+                                                      ),
+                                                    ],
+                                                    isSelected: [true],
+                                                    onPressed: (int index) {
+                                                      setState(() {
+                                                       if (index == 0) {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title: const Text(
+                                                                      'ยืนยัน'),
+                                                                  content: const Text(
+                                                                      'คุณต้องการลบวิดีโอนี้ ?'),
+                                                                  actions: <
+                                                                      Widget>[
+                                                                    TextButton(
+                                                                      onPressed: () =>
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              'Cancel'),
+                                                                      child:
+                                                                          const Text(
+                                                                        'ยกเลิก',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.red),
+                                                                      ),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
+                                                                          imageHowto[
+                                                                              displayNumber -
+                                                                                  1] = File(
+                                                                              '');
+                                                
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          const Text(
+                                                                        'ตกลง',
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
+                                                        }
+                                                      });
+                                                    },
+                                                  ),
                                                 )
                                               ],
                                             )

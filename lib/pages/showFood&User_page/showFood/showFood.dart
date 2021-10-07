@@ -1527,8 +1527,8 @@ class _ShowFoodState extends State<ShowFood> {
                                         text: TextSpan(
                                             text: dataGetCommentPost[index]
                                                 .aliasName,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
+                                            style: GoogleFonts.mali(
+                                              fontWeight: FontWeight.bold,
                                                 color: (dataGetCommentPost[
                                                                 index]
                                                             .userStatus ==
@@ -1542,12 +1542,13 @@ class _ShowFoodState extends State<ShowFood> {
                                                                 dataMyAccont
                                                                     .userId)
                                                             ? Colors.blue
-                                                            : Colors.black),
+                                                            : Colors.black
+                                            ),
                                             children: <TextSpan>[
                                               TextSpan(
                                                 text:
                                                     '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
-                                                style: TextStyle(
+                                                style: GoogleFonts.mali(
                                                     decoration:
                                                         TextDecoration.none,
                                                     fontSize: 12.0,

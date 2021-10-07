@@ -15,6 +15,7 @@ import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -342,7 +343,7 @@ class _CommentFoodState extends State<CommentFood> {
                                 child: RichText(
                                   text: TextSpan(
                                       text: dataGetCommentPost[index].aliasName,
-                                      style: TextStyle(
+                                      style: GoogleFonts.mali(
                                           fontWeight: FontWeight.bold,
                                           color: (dataGetCommentPost[index]
                                                       .userStatus ==
@@ -357,7 +358,7 @@ class _CommentFoodState extends State<CommentFood> {
                                         TextSpan(
                                           text:
                                               '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
-                                          style: TextStyle(
+                                          style: GoogleFonts.mali(
                                               decoration: TextDecoration.none,
                                               // fontFamily: 'OpenSans',
                                               fontSize: 12.0,
