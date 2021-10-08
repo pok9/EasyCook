@@ -24,7 +24,7 @@ class _ChooseSettingPageState extends State<ChooseSettingPage> {
               ),
               title: Text(
                 'เลือกวอลล์เปเปอร์',
-                style: GoogleFonts.kanit(
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w300,
                 ),

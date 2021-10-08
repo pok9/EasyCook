@@ -1,5 +1,6 @@
 
 import 'package:easy_cook/pages/drawer/helpCenter/helpMyAccount/helpMyAccount.dart';
+import 'package:easy_cook/pages/drawer/helpCenter/qrCodeShareApp/qrCodeShareApp.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -31,7 +32,7 @@ class HelpCenter extends StatelessWidget {
               ),
               title: Text(
                 'บัญชีของฉัน',
-                style: GoogleFonts.kanit(
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w300,
                 ),
@@ -46,6 +47,32 @@ class HelpCenter extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => HelpMyAccount()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.qr_code_2_sharp ,
+                color: Colors.blue,
+                size: 25,
+              ),
+              title: Text(
+                'แบ่งปันแอปพลิเคชัน',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w300,
+                ),
+
+                //     color: Colors.black)
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.blue,
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QrCodeShareApp()),
                 );
               },
             ),

@@ -145,6 +145,8 @@ dependencies:
   better_player: ^0.0.76
 
   video_thumbnail: ^0.4.3
+
+  qr_flutter: ^4.0.0
   
 
 dev_dependencies:

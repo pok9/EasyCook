@@ -623,6 +623,47 @@ class _ProfileUserState extends State<ProfileUser> {
       ],
     );
   }
+
+   Widget buildFlexibleTooBarWidget(){
+      return  PreferredSize(
+      
+      preferredSize: Size(MediaQuery.of(context).size.width, 44),
+      child: Container(
+        
+        alignment: Alignment.center,
+        child: Container(
+          color:  Color(0xFFf3f5f9),
+          width: MediaQuery.of(context).size.width,
+          child: TabBar(
+                      tabs: [
+                        Tab(
+                          // child: Text(
+                          //   "อาหาร",
+                          //   style: TextStyle(color: Colors.black),
+                          // ),
+                          child: Icon(
+                            Icons.food_bank_outlined,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        Tab(
+                          // child: Text(
+                          //   "SnapFood",
+                          //   style: TextStyle(color: Colors.black),
+                          // ),
+                          child: Icon(
+                            Icons.photo_camera_back_outlined,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+        ),
+      ),
+    );
+  
+    }
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -843,7 +884,7 @@ class _ProfileUserState extends State<ProfileUser> {
       floating: false,
       snap: false,
       elevation: 0.0,
-      expandedHeight: 354,
+      expandedHeight: (deviceSize.height < 776) ? 410 : 400,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
         background: buildFlexibleSpaceWidget(),
@@ -1017,8 +1058,10 @@ class _ProfileUserState extends State<ProfileUser> {
                             ];
                           })
         ],
-      // bottom: buildFlexibleTooBarWidget(),
-    )
+      bottom: buildFlexibleTooBarWidget(),
+    ),
+
+   
                     // SliverList(
                     //   delegate: SliverChildListDelegate([
                     //     Container(
@@ -1373,32 +1416,10 @@ class _ProfileUserState extends State<ProfileUser> {
                 },
 
                 // You tab view goes here
-                body: Column(
+                body: 
+                Column(
                   children: <Widget>[
-                    TabBar(
-                      tabs: [
-                        Tab(
-                          // child: Text(
-                          //   "อาหาร",
-                          //   style: TextStyle(color: Colors.black),
-                          // ),
-                          child: Icon(
-                            Icons.food_bank_outlined,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        Tab(
-                          // child: Text(
-                          //   "SnapFood",
-                          //   style: TextStyle(color: Colors.black),
-                          // ),
-                          child: Icon(
-                            Icons.photo_camera_back_outlined,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
-                    ),
+                    
                     Expanded(
                       child: TabBarView(
                         children: [
