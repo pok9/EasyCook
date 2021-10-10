@@ -43,7 +43,7 @@ class _ReportFoodState extends State<ReportFood> {
   // }
 
   List<Exercise> exercises = [
-    Exercise(name: 'ละเมิดสิทธิ์ของฉัน'),
+    Exercise(name: 'ละเมิดลิขสิทธิ์ของฉัน'),
     Exercise(name: 'หมวดหมู่ไม่ถูกต้อง'),
     Exercise(name: 'อื่นๆ'),
   ];

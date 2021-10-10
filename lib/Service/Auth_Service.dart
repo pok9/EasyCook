@@ -18,8 +18,10 @@ class AuthClass {
 
   Future<UserCredential> googleSigIn(BuildContext context) async {
     try {
+      print("pok111111");
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
       if (googleSignInAccount != null) {
+        print("pok222222");
         GoogleSignInAuthentication googleSignInAuthentication =
             await googleSignInAccount.authentication;
 
@@ -29,6 +31,7 @@ class AuthClass {
         );
 
         try {
+          print("pok33333");
           UserCredential userCredential =
               await auth.signInWithCredential(credential);
               print(userCredential.user.uid);
@@ -36,14 +39,17 @@ class AuthClass {
 
             return userCredential;
         } catch (e) {
+          print("pok44444");
           print("Login Google Fail");
           return null;
         }
       } else {
+        print("pok555555");
         print("Login Google Fail");
         return null;
       }
     } catch (e) {
+      print("pok66666");
       print("Login Google Fail");
       return null;
     }

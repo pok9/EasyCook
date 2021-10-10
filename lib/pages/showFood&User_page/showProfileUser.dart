@@ -339,7 +339,9 @@ class _ProfileUserState extends State<ProfileUser> {
                   height: 390,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: (data_PostUser.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${data_PostUser.wallpaper}'),
+                        image: (data_PostUser.wallpaper == null)
+                            ? AssetImage('assets/wallpapers/default.jpg')
+                            : AssetImage('${data_PostUser.wallpaper}'),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -385,7 +387,7 @@ class _ProfileUserState extends State<ProfileUser> {
                         //   splashColor: Colors.white,
                         //   color: Colors.blue,
                         //   onPressed: () {
-                            
+
                         //   },
                         //   child: Text(
                         //     'แก้ไขโปรไฟล์',
@@ -394,95 +396,76 @@ class _ProfileUserState extends State<ProfileUser> {
                         //   shape: StadiumBorder(),
                         // ),
                         (checkFollowers == null)
-                                            ? MaterialButton(
-                                                splashColor: Colors.grey,
-                                                color: Colors.blue[400],
-                                                onPressed: () {
-                                                  print("login");
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (_) {
-                                                        return LoginPage();
-                                                      }).then((value) {
-                                                    findUser();
-                                                    // Navigator.pop(context);
-                                                  });
-                                                },
-                                                child: Text(
-                                                  'ติดตาม',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                shape: StadiumBorder(),
-                                              )
-                                            : (checkFollowers.checkFollower ==
-                                                    0)
-                                                ? MaterialButton(
-                                                    splashColor: Colors.grey,
-                                                    color: Colors.blue[400],
-                                                    onPressed: () {
-                                                      checkPressCountFollowAndUnFollow++;
-                                                      checkOnPressFollow++;
-                                                      manageFollow(
-                                                          "fol",
-                                                          this
-                                                              .data_PostUser
-                                                              .userId);
+                            ? MaterialButton(
+                                splashColor: Colors.grey,
+                                color: Colors.blue[400],
+                                onPressed: () {
+                                  print("login");
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return LoginPage();
+                                      }).then((value) {
+                                    findUser();
+                                    // Navigator.pop(context);
+                                  });
+                                },
+                                child: Text(
+                                  'ติดตาม',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                shape: StadiumBorder(),
+                              )
+                            : (checkFollowers.checkFollower == 0)
+                                ? MaterialButton(
+                                    splashColor: Colors.grey,
+                                    color: Colors.blue[400],
+                                    onPressed: () {
+                                      checkPressCountFollowAndUnFollow++;
+                                      checkOnPressFollow++;
+                                      manageFollow(
+                                          "fol", this.data_PostUser.userId);
 
-                                                      Fluttertoast.showToast(
-                                                          msg: "ติดตามแล้ว",
-                                                          toastLength: Toast
-                                                              .LENGTH_SHORT,
-                                                          gravity: ToastGravity
-                                                              .CENTER,
-                                                          timeInSecForIosWeb: 1,
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          textColor:
-                                                              Colors.white,
-                                                          fontSize: 16.0);
-                                                    },
-                                                    child: Text(
-                                                      'ติดตาม',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    shape: StadiumBorder(),
-                                                  )
-                                                : MaterialButton(
-                                                    splashColor: Colors.grey,
-                                                    color: Colors.grey,
-                                                    onPressed: () {
-                                                      print("ยกเลิกติดตาม");
-                                                      checkPressCountFollowAndUnFollow++;
-                                                      checkOnPressFollow++;
-                                                      manageFollow(
-                                                          "unfol",
-                                                          this
-                                                              .data_PostUser
-                                                              .userId);
+                                      Fluttertoast.showToast(
+                                          msg: "ติดตามแล้ว",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    },
+                                    child: Text(
+                                      'ติดตาม',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    shape: StadiumBorder(),
+                                  )
+                                : MaterialButton(
+                                    splashColor: Colors.grey,
+                                    color: Colors.grey,
+                                    onPressed: () {
+                                      print("ยกเลิกติดตาม");
+                                      checkPressCountFollowAndUnFollow++;
+                                      checkOnPressFollow++;
+                                      manageFollow(
+                                          "unfol", this.data_PostUser.userId);
 
-                                                      Fluttertoast.showToast(
-                                                          msg:
-                                                              "ยกเลิกติดตามแล้ว",
-                                                          toastLength: Toast
-                                                              .LENGTH_SHORT,
-                                                          gravity: ToastGravity
-                                                              .CENTER,
-                                                          timeInSecForIosWeb: 1,
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          textColor:
-                                                              Colors.white,
-                                                          fontSize: 16.0);
-                                                    },
-                                                    child: Text(
-                                                      'กำลังติดตาม',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    shape: StadiumBorder(),
-                                                  ),
+                                      Fluttertoast.showToast(
+                                          msg: "ยกเลิกติดตามแล้ว",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    },
+                                    child: Text(
+                                      'กำลังติดตาม',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    shape: StadiumBorder(),
+                                  ),
                         SizedBox(
                           height: 4,
                         ),
@@ -530,17 +513,29 @@ class _ProfileUserState extends State<ProfileUser> {
                                 width: 110,
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ShowFollowerAndFollowing(
-                                                index: 0,
-                                                id: this.data_PostUser.userId,
-                                                name:
-                                                    this.data_PostUser.aliasName,
-                                              )),
-                                    ).then((value) => findUser());
+                                    if (token == null || token == "") {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) {
+                                            return LoginPage();
+                                          }).then((value) {
+                                        findUser();
+                                        // Navigator.pop(context);
+                                      });
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShowFollowerAndFollowing(
+                                                  index: 0,
+                                                  id: this.data_PostUser.userId,
+                                                  name: this
+                                                      .data_PostUser
+                                                      .aliasName,
+                                                )),
+                                      ).then((value) => findUser());
+                                    }
                                   },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -570,18 +565,30 @@ class _ProfileUserState extends State<ProfileUser> {
                                 width: 110,
                                 child: InkWell(
                                   onTap: () {
-                                    print("กำลังตืดตาม");
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ShowFollowerAndFollowing(
-                                                index: 1,
-                                                id: this.data_PostUser.userId,
-                                                name:
-                                                    this.data_PostUser.aliasName,
-                                              )),
-                                    ).then((value) => findUser());
+                                    if (token == null || token == "") {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) {
+                                            return LoginPage();
+                                          }).then((value) {
+                                        findUser();
+                                        // Navigator.pop(context);
+                                      });
+                                    } else {
+                                      print("กำลังตืดตาม");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShowFollowerAndFollowing(
+                                                  index: 1,
+                                                  id: this.data_PostUser.userId,
+                                                  name: this
+                                                      .data_PostUser
+                                                      .aliasName,
+                                                )),
+                                      ).then((value) => findUser());
+                                    }
                                   },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -596,8 +603,8 @@ class _ProfileUserState extends State<ProfileUser> {
                                         height: 4,
                                       ),
                                       Text(
-                                        data_PostUser.countFollowing.toString()
-                                           , //"data_MyPost.countFollowing.toString()"
+                                        data_PostUser.countFollowing
+                                            .toString(), //"data_MyPost.countFollowing.toString()"
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 20,
@@ -617,52 +624,48 @@ class _ProfileUserState extends State<ProfileUser> {
                 ),
               ],
             ),
-            
           ],
         )),
       ],
     );
   }
 
-   Widget buildFlexibleTooBarWidget(){
-      return  PreferredSize(
-      
+  Widget buildFlexibleTooBarWidget() {
+    return PreferredSize(
       preferredSize: Size(MediaQuery.of(context).size.width, 44),
       child: Container(
-        
         alignment: Alignment.center,
         child: Container(
-          color:  Color(0xFFf3f5f9),
+          color: Color(0xFFf3f5f9),
           width: MediaQuery.of(context).size.width,
           child: TabBar(
-                      tabs: [
-                        Tab(
-                          // child: Text(
-                          //   "อาหาร",
-                          //   style: TextStyle(color: Colors.black),
-                          // ),
-                          child: Icon(
-                            Icons.food_bank_outlined,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        Tab(
-                          // child: Text(
-                          //   "SnapFood",
-                          //   style: TextStyle(color: Colors.black),
-                          // ),
-                          child: Icon(
-                            Icons.photo_camera_back_outlined,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
-                    ),
+            tabs: [
+              Tab(
+                // child: Text(
+                //   "อาหาร",
+                //   style: TextStyle(color: Colors.black),
+                // ),
+                child: Icon(
+                  Icons.food_bank_outlined,
+                  color: Colors.blue,
+                ),
+              ),
+              Tab(
+                // child: Text(
+                //   "SnapFood",
+                //   style: TextStyle(color: Colors.black),
+                // ),
+                child: Icon(
+                  Icons.photo_camera_back_outlined,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
-  
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -877,191 +880,185 @@ class _ProfileUserState extends State<ProfileUser> {
                 headerSliverBuilder: (context, _) {
                   return [
                     SliverAppBar(
-      // title: buildHeader(),
-      title: Text(data_PostUser == null ? "" : data_PostUser.aliasName),
-      // centerTitle: true,
-      pinned: true,
-      floating: false,
-      snap: false,
-      elevation: 0.0,
-      expandedHeight: (deviceSize.height < 776) ? 410 : 400,
-      backgroundColor: Colors.blue,
-      flexibleSpace: FlexibleSpaceBar(
-        background: buildFlexibleSpaceWidget(),
-      ),
-      actions: [
-          (data_PostUser == null || data_DataAc == null)
-              ? Container()
-              : (token == "" && token == null)
-                  ? Container()
-                  : (data_DataAc.userStatus == 0)
-                      ? (data_PostUser.userStatus == 0)
-                          ? Container()
-                          : PopupMenuButton(
-                              child: Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Icon(Icons.more_horiz_outlined),
-                              )),
-                              onSelected: (value) async {
-                                if (value == 0) {
-                                  showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                          content: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text("กรุณารอสักครู่...   "),
-                                          CircularProgressIndicator()
-                                        ],
-                                      ));
-                                    },
-                                  );
-                                  ManageMembersModel manageMembersModel =
-                                      await ManageMembers(
-                                          this.data_PostUser.userId.toString(),
-                                          this.token);
-                                  Navigator.pop(context);
-                                  if (manageMembersModel.success == 1) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => CustomDialog(
-                                              title: "แบนสำเร็จ",
-                                              description:
-                                                  "คุณได้ทำการแบนสมาชิกเรียบร้อย",
-                                              image:
-                                                  'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
-                                              colors: Colors.lightGreen,
-                                              index: 1,
-                                            ));
-                                  } else {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => CustomDialog(
-                                              title: "แบนไม่สำเร็จ",
-                                              description: "มีบางอย่างผิดพลาด",
-                                              image:
-                                                  'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
-                                              colors: Colors.redAccent,
-                                              index: 0,
-                                            ));
-                                  }
-                                }
-                              },
-                              itemBuilder: (context) {
-                                return [
-                                  PopupMenuItem(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.flag,
-                                          color: Colors.black,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text('แบนผู้ใช้'),
-                                      ],
-                                    ),
-                                    value: 0,
-                                  ),
-                                ];
-                              })
-                      : PopupMenuButton(
-                          child: Center(
-                              child: Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Icon(Icons.more_horiz_outlined),
-                          )),
-                          onSelected: (value) {
-                            print(value);
-                            if (value == 0) {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ReportUser();
-                                  }).then((value) async {
-                                if (value != null) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (contex) {
-                                        return AlertDialog(
-                                            content: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text("กรุณารอสักครู่...   "),
-                                            CircularProgressIndicator()
-                                          ],
-                                        ));
-                                      });
+                      // title: buildHeader(),
+                      title: Text(
+                          data_PostUser == null ? "" : data_PostUser.aliasName),
+                      // centerTitle: true,
+                      pinned: true,
+                      floating: false,
+                      snap: false,
+                      elevation: 0.0,
+                      expandedHeight: (deviceSize.height < 776) ? 410 : 400,
+                      backgroundColor: Colors.blue,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: buildFlexibleSpaceWidget(),
+                      ),
+                      actions: [
+                        (data_PostUser == null || data_DataAc == null)
+                            ? Container()
+                            : (token == "" && token == null)
+                                ? Container()
+                                : (data_DataAc.userStatus == 0)
+                                    ? (data_PostUser.userStatus == 0)
+                                        ? Container()
+                                        : PopupMenuButton(
+                                            child: Center(
+                                                child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 20),
+                                              child: Icon(
+                                                  Icons.more_horiz_outlined),
+                                            )),
+                                            onSelected: (value) async {
+                                              if (value == 0) {
+                                                showDialog(
+                                                  barrierColor: Colors.black26,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return CustomAlertDialog(
+                                                      title: "จัดการสมาชิก",
+                                                      description:
+                                                          "คุณแน่ใจใช่ไหมที่จะจัดการสมาชิกนี้",
+                                                      uid: data_PostUser.userId,
+                                                      token: this.token,
+                                                      image: data_PostUser
+                                                          .profileImage,
+                                                      aliasName: data_PostUser
+                                                          .aliasName,
+                                                      nameSurname: data_PostUser
+                                                          .nameSurname,
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            },
+                                            itemBuilder: (context) {
+                                              return [
+                                                PopupMenuItem(
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.flag,
+                                                        color: Colors.black,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text('แบนผู้ใช้'),
+                                                    ],
+                                                  ),
+                                                  value: 0,
+                                                ),
+                                              ];
+                                            })
+                                    : PopupMenuButton(
+                                        child: Center(
+                                            child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 20),
+                                          child:
+                                              Icon(Icons.more_horiz_outlined),
+                                        )),
+                                        onSelected: (value) {
+                                          print(value);
+                                          if (value == 0) {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return ReportUser();
+                                                }).then((value) async {
+                                              if (value != null) {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (contex) {
+                                                      return AlertDialog(
+                                                          content: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                              "กรุณารอสักครู่...   "),
+                                                          CircularProgressIndicator()
+                                                        ],
+                                                      ));
+                                                    });
 
-                                  AddReport dataAddReport = await addReport(
-                                      data_PostUser.userId.toString(),
-                                      "user",
-                                      null,
-                                      "รายงานผู้ใช้",
-                                      value[0],
-                                      value[1]);
+                                                AddReport dataAddReport =
+                                                    await addReport(
+                                                        data_PostUser.userId
+                                                            .toString(),
+                                                        "user",
+                                                        null,
+                                                        "รายงานผู้ใช้",
+                                                        value[0],
+                                                        value[1]);
 
-                                  Navigator.pop(context);
-                                  String reportText1;
-                                  String reportText2;
-                                  Color color;
-                                  if (dataAddReport.success == 1) {
-                                    reportText1 = "รายงานสำเร็จ";
-                                    reportText2 = "ขอบคุณสำหรับการรายงาน";
-                                    color = Colors.green;
-                                  } else {
-                                    reportText1 = "รายงานไม่สำเร็จ";
-                                    reportText2 = "โปรดรายงานใหม่ในภายหลัง";
-                                    color = Colors.red;
-                                  }
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        Future.delayed(
-                                            Duration(milliseconds: 1500), () {
-                                          Navigator.of(context).pop(true);
+                                                Navigator.pop(context);
+                                                String reportText1;
+                                                String reportText2;
+                                                Color color;
+                                                if (dataAddReport.success ==
+                                                    1) {
+                                                  reportText1 = "รายงานสำเร็จ";
+                                                  reportText2 =
+                                                      "ขอบคุณสำหรับการรายงาน";
+                                                  color = Colors.green;
+                                                } else {
+                                                  reportText1 =
+                                                      "รายงานไม่สำเร็จ";
+                                                  reportText2 =
+                                                      "โปรดรายงานใหม่ในภายหลัง";
+                                                  color = Colors.red;
+                                                }
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      Future.delayed(
+                                                          Duration(
+                                                              milliseconds:
+                                                                  1500), () {
+                                                        Navigator.of(context)
+                                                            .pop(true);
 
-                                          // Navigator.pop(context);
-                                        });
-                                        return alertDialog_successful_or_unsuccessful(
-                                            reportText1, color, reportText2);
-                                      });
-                                  print(
-                                      "dataAddReport.success ===>>> ${dataAddReport.success}");
-                                }
-                              });
-                            }
-                          },
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.flag,
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text('รายงานผู้ใช้'),
-                                  ],
-                                ),
-                                value: 0,
-                              ),
-                            ];
-                          })
-        ],
-      bottom: buildFlexibleTooBarWidget(),
-    ),
+                                                        // Navigator.pop(context);
+                                                      });
+                                                      return alertDialog_successful_or_unsuccessful(
+                                                          reportText1,
+                                                          color,
+                                                          reportText2);
+                                                    });
+                                                print(
+                                                    "dataAddReport.success ===>>> ${dataAddReport.success}");
+                                              }
+                                            });
+                                          }
+                                        },
+                                        itemBuilder: (context) {
+                                          return [
+                                            PopupMenuItem(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.flag,
+                                                    color: Colors.black,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text('รายงานผู้ใช้'),
+                                                ],
+                                              ),
+                                              value: 0,
+                                            ),
+                                          ];
+                                        })
+                      ],
+                      bottom: buildFlexibleTooBarWidget(),
+                    ),
 
-   
                     // SliverList(
                     //   delegate: SliverChildListDelegate([
                     //     Container(
@@ -1416,10 +1413,8 @@ class _ProfileUserState extends State<ProfileUser> {
                 },
 
                 // You tab view goes here
-                body: 
-                Column(
+                body: Column(
                   children: <Widget>[
-                    
                     Expanded(
                       child: TabBarView(
                         children: [
@@ -1921,6 +1916,219 @@ class CustomDialog extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class CustomAlertDialog extends StatefulWidget {
+  const CustomAlertDialog({
+    this.title,
+    this.description,
+    this.token,
+    this.uid,
+    this.image,
+    this.aliasName,
+    this.nameSurname,
+  });
+
+  final String title, description, token, image, aliasName, nameSurname;
+  final int uid;
+
+  @override
+  _CustomAlertDialogState createState() => _CustomAlertDialogState();
+}
+
+class _CustomAlertDialogState extends State<CustomAlertDialog> {
+  Future<ManageMembersModel> ManageMembers(String uid, String token) async {
+    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/banUser";
+
+    var data = {
+      "user_ID": uid,
+    };
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        });
+
+    print(response.body);
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return manageMembersModelFromJson(responseString);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      elevation: 0,
+      backgroundColor: Color(0xffffffff),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 15),
+          Text(
+            "${widget.title}",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          Container(
+            height: 60.0,
+            width: 60.0,
+            decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                image: new DecorationImage(
+                    fit: BoxFit.fill,
+                    image: new NetworkImage(this.widget.image))),
+          ),
+          SizedBox(height: 15),
+          Text(this.widget.aliasName),
+          Text(this.widget.nameSurname),
+          SizedBox(height: 15),
+          Text(
+            "${widget.description}",
+            style: TextStyle(color: Colors.red),
+          ),
+          SizedBox(height: 20),
+          Divider(
+            height: 1,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: InkWell(
+              highlightColor: Colors.grey[200],
+              onTap: () async {
+                Navigator.pop(context, "success");
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("กรุณารอสักครู่...   "),
+                        CircularProgressIndicator()
+                      ],
+                    ));
+                  },
+                );
+                ManageMembersModel manageMembersModel = await ManageMembers(
+                    this.widget.uid.toString(), this.widget.token);
+                Navigator.pop(context);
+
+                if (manageMembersModel.success == 1) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            title: "แบนสำเร็จ",
+                            description: "คุณได้ทำการแบนสมาชิกเรียบร้อย",
+                            image:
+                                'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                            colors: Colors.lightGreen,
+                            index: 1,
+                          ));
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            title: "แบนไม่สำเร็จ",
+                            description: "มีบางอย่างผิดพลาด",
+                            image:
+                                'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                            colors: Colors.redAccent,
+                            index: 0,
+                          ));
+                }
+
+                // showDiฟ
+
+                // ManageMembersModel manageMembersModel = await ManageMembers(
+                //     this.widget.uid.toString(), this.widget.token);
+
+                // Navigator.pop(context);
+
+                // print(this.widget.uid);
+
+                // if (manageMembersModel.success == 1) {
+                //   print("1111111112");
+
+                //   print("222222222223");
+                //   showDialog(
+                //       context: context,
+                //       builder: (context) => CustomDialog(
+                //             title: "แบนสำเร็จ",
+                //             description: "คุณได้ทำการแบนสมาชิกเรียบร้อย",
+                //             image:
+                //                 'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                //             colors: Colors.lightGreen,
+                //             index: 1,
+                //           ));
+                // } else {
+                //   showDialog(
+                //       context: context,
+                //       builder: (context) => CustomDialog(
+                //             title: "แบนไม่สำเร็จ",
+                //             description: "มีบางอย่างผิดพลาด",
+                //             image:
+                //                 'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                //             colors: Colors.redAccent,
+                //             index: 0,
+                //           ));
+                // }
+              },
+              child: Center(
+                child: Text(
+                  "ยืนยัน",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Divider(
+            height: 1,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: InkWell(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15.0),
+                bottomRight: Radius.circular(15.0),
+              ),
+              highlightColor: Colors.grey[200],
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Center(
+                child: Text(
+                  "ยกเลิก",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

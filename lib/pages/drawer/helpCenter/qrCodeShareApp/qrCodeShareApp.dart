@@ -20,7 +20,7 @@ class QrCodeShareApp extends StatelessWidget {
                 children: [
                   QrImage(
                     data:
-                        "https://drive.google.com/file/d/1U37aiWrAzsn9GuceIKd2viyC94Zt7_vo/view?usp=sharing",
+                        "https://drive.google.com/file/d/1kURxpyZg5ixjBOUskjNU_Nko_xv1pJew/view?usp=sharing",
                     version: QrVersions.auto,
                     size: 300.0,
                   ),

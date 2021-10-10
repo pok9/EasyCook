@@ -845,8 +845,8 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           ),
           SizedBox(height: 15),
           Container(
-            height: 40.0,
-            width: 40.0,
+            height: 60.0,
+            width: 60.0,
             decoration: new BoxDecoration(
                 shape: BoxShape.circle,
                 image: new DecorationImage(
