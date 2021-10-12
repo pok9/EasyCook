@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:easy_cook/models/topup&withdraw/withdraw.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -246,7 +247,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     padding: EdgeInsets.all(12),
                     textStyle: TextStyle(fontSize: 22),
                   ),
-                  child: Text('ถอนเงิน ${this.widget.amount_to_fill} บาท'),
+                  child: Text('ถอนเงิน ${NumberFormat("#,###.##").format(this.widget.amount_to_fill)} บาท'),//'ถอนเงิน ${this.widget.amount_to_fill} บาท'
                   onPressed: () async {
                     if (_selected == null) {
                       setState(() {
@@ -305,7 +306,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                                   description:
                                       withdrawData.message,
                                   image:
-                                      'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                                      'assets/logoNoti/correctGif.gif',
                                   colors: Colors.lightGreen,
                                   index: 1,
                                 );
@@ -319,7 +320,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                                     title: "ถอนเงินไม่สำเร็จ",
                                     description: "โปรดทำรายการใหม่",
                                     image:
-                                        'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                                        'assets/logoNoti/wrongGif.gif',
                                     colors: Colors.redAccent,
                                     index: 0,
                                   ));
@@ -413,7 +414,7 @@ class CustomDialog extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.blueAccent,
             radius: 50,
-            backgroundImage: NetworkImage(this.image),
+            backgroundImage: AssetImage(this.image),
           ),
         )
       ],

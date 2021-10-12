@@ -557,9 +557,9 @@ class _WalletPageState extends State<WalletPage> {
                                                                   CrossAxisAlignment
                                                                       .end,
                                                               children: [
-
+                                                                  //${NumberFormat("#,###.##").format(widget.amount_to_fill)}
                                                                 Text(
-                                                                  "-${dummyListDataListWithdrawTopup[index].amount}",
+                                                                  "-${NumberFormat("#,###.##").format(dummyListDataListWithdrawTopup[index].amount)}",
                                                                   style: TextStyle(
                                                                       color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
                                                                             .grey.shade600 : Colors
@@ -613,7 +613,8 @@ class _WalletPageState extends State<WalletPage> {
                                                                       .end,
                                                               children: [
                                                                 Text(
-                                                                  "+${dummyListDataListWithdrawTopup[index].amount}",
+                                                                  //NumberFormat("#,###.##").format(
+                                                                  "+${NumberFormat("#,###.##").format(dummyListDataListWithdrawTopup[index].amount)}",
                                                                   style: TextStyle(
                                                                       color: (dummyListDataListWithdrawTopup[index].status == "request" || dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
                                                                             .grey.shade600 : Colors
@@ -739,19 +740,19 @@ class _WalletPageState extends State<WalletPage> {
                     autofocus: false,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'โปรดระบุยอดเงิน';
+                        return '*โปรดระบุยอดเงิน';
                       }
 
                       if (select == 'topup') {
                         if (double.parse(_ctrlPrice.text) < 20) {
-                          return 'ขั้นต่ำ 20 บาท';
+                          return '*ขั้นต่ำ 20 บาท';
                         }
                       } else if (select == 'withdraw') {
                         if (double.parse(_ctrlPrice.text) < 100) {
-                          return 'ขั้นต่ำ 100 บาท';
+                          return '*ขั้นต่ำ 100 บาท';
                         } else if (double.parse(_ctrlPrice.text) >
                             data_DataAc.balance) {
-                          return 'เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
+                          return (data_DataAc.balance < 100) ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${data_DataAc.balance} บาท" :'*เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
                         }
                       }
 

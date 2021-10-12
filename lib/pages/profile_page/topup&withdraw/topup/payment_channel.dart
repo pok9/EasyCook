@@ -1,6 +1,7 @@
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/channel_Topup/topupCreditCardPage.dart';
 import 'package:easy_cook/pages/profile_page/topup&withdraw/topup/channel_Topup/topupQRcodePage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PaymentChannelPage extends StatefulWidget {
   // const PaymentChannelPage({ Key? key }) : super(key: key);
@@ -197,9 +198,9 @@ class _PaymentChannelPageState extends State<PaymentChannelPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'ยอดเติมเงิน  ฿${widget.amount_to_fill}',
+                        'ยอดเติมเงิน ฿${NumberFormat("#,###.##").format(widget.amount_to_fill)}',//'ยอดเติมเงิน  ฿${widget.amount_to_fill}'
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 17,
                         ),
                       ),
                       OutlinedButton(

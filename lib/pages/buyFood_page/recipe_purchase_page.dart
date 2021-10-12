@@ -714,7 +714,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                             description:
                                 "คุณได้ทำการซื้อสูตรอาหารนี้แล้ว เข้าไปดูสูตรอาหารได้ที่ \"สูตรที่ซื้อ\"",
                             image:
-                                'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                                'assets/logoNoti/correctGif.gif',
                             colors: Colors.lightGreen,
                             index: 1,
                             rid: this.widget.rid,
@@ -726,7 +726,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                             title: "ซื้อไม่สำเร็จ",
                             description: dataBuyFood.message,
                             image:
-                                'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                                'assets/logoNoti/wrongGif.gif',
                             colors: Colors.redAccent,
                             index: 0,
                           ));
@@ -874,7 +874,7 @@ class CustomDialog extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.blueAccent,
             radius: 50,
-            backgroundImage: NetworkImage(this.image),
+            backgroundImage: AssetImage(this.image),
           ),
         )
       ],

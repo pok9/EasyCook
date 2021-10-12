@@ -147,7 +147,7 @@ dependencies:
   video_thumbnail: ^0.4.3
 
   qr_flutter: ^4.0.0
-  
+  pattern_formatter: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -185,14 +185,8 @@ flutter:
     - assets/iconFood/
     - assets/logoLogin/
     - assets/logoSearch/
-    
-    # - assets/logos/facebook.jpg
-    # - assets/logos/drink.png
-    # - assets/logos/vegetables.png
-    # - assets/logos/steam.png
-    # - assets/logos/stew.png
-    # - assets/logos/fried.png
-    # - assets/logos/pot .png
+    - assets/logoNoti/
+ 
     
   #   - images/a_dot_ham.jpeg
 

@@ -20,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -607,6 +608,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [
+                      // ThousandsFormatter(allowFraction: true),
                       LengthLimitingTextInputFormatter(7),
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^(\d+)?\.?\d{0,2}')),
@@ -621,19 +623,19 @@ class _ScrollProfilePage2BottomNavbarState extends State
                     autofocus: false,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'โปรดระบุยอดเงิน';
+                        return '*โปรดระบุยอดเงิน';
                       }
 
                       if (select == 'topup') {
                         if (double.parse(_ctrlPrice.text) < 20) {
-                          return 'ขั้นต่ำ 20 บาท';
+                          return '*ขั้นต่ำ 20 บาท';
                         }
                       } else if (select == 'withdraw') {
                         if (double.parse(_ctrlPrice.text) < 100) {
-                          return 'ขั้นต่ำ 100 บาท';
+                          return '*ขั้นต่ำ 100 บาท';
                         } else if (double.parse(_ctrlPrice.text) >
                             data_DataAc.balance) {
-                          return 'เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
+                          return (data_DataAc.balance < 100) ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${data_DataAc.balance} บาท" :'*เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
                         }
                       }
 

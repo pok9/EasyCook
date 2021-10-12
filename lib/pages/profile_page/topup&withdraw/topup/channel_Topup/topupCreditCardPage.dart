@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:easy_cook/models/topup&withdraw/topup/topupCreditCardModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,8 +32,8 @@ class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
     findUser();
   }
 
-  Future<TopupCreditCardModel> Topup_fuc(String token, String name, String number, int month,
-      int year, double amount) async {
+  Future<TopupCreditCardModel> Topup_fuc(String token, String name,
+      String number, int month, int year, double amount) async {
     final String apiUrl = "http://apifood.comsciproject.com/pjUsers/topup";
 
     var data = {
@@ -140,7 +141,7 @@ class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
                       child: Container(
                         margin: const EdgeInsets.all(8),
                         child: Text(
-                          'เติมเงิน ${widget.amount_to_fill} บาท',
+                          'เติมเงิน ${NumberFormat("#,###.##").format(widget.amount_to_fill)} บาท', //'เติมเงิน ${widget.amount_to_fill} บาท'
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'halter',
@@ -159,6 +160,16 @@ class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
                                   content: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Container(
+                                    child: Image.asset(
+                                      'assets/loadGif/loadding3.gif',
+                                    ),
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
                                   Text("กรุณารอสักครู่...   "),
                                   CircularProgressIndicator()
                                 ],
@@ -192,12 +203,10 @@ class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
                           Navigator.pop(context);
 
                           if (topupData.success == 1) {
-                            print("wwww");
-
                             showDialog(
                                 context: context,
                                 builder: (BuildContext builderContext) {
-                                  Timer(Duration(seconds: 1), () {
+                                  Timer(Duration(seconds: 2), () {
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
@@ -206,24 +215,18 @@ class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
                                     title: "เติมเงินสำเร็จ",
                                     description:
                                         "เราได้ทำการเติมเงินให้คุณเรียบร้อยแล้ว",
-                                    image:
-                                        'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif',
+                                    image: 'assets/logoNoti/correctGif.gif',
                                     colors: Colors.lightGreen,
                                     index: 1,
                                   );
-                                }
-                                
-                                );
+                                });
                           } else {
-                            print("mmmm");
-
                             showDialog(
                                 context: context,
                                 builder: (context) => CustomDialog(
                                       title: "เติมเงินไม่สำเร็จ",
                                       description: "โปรดทำรายการใหม่",
-                                      image:
-                                          'https://media2.giphy.com/media/JT7Td5xRqkvHQvTdEu/200w.gif?cid=82a1493b44ucr1schfqvrvs0ha03z0moh5l2746rdxxq8ebl&rid=200w.gif&ct=g',
+                                      image: 'assets/logoNoti/wrongGif.gif',
                                       colors: Colors.redAccent,
                                       index: 0,
                                     ));
@@ -330,7 +333,7 @@ class CustomDialog extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.blueAccent,
             radius: 50,
-            backgroundImage: NetworkImage(this.image),
+            backgroundImage: AssetImage(this.image),
           ),
         )
       ],

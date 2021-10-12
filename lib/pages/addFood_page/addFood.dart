@@ -336,9 +336,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
     "เพียงเท่านี้ก็เสร็จสิ้นหมูทอดกะปิ แสนอร่อย กินกับข้าวเหนียว"
   ];
   int howto_row = 0; //จำนวนแถววิธีทำ
-  List<TextEditingController> ctl_howto_row = <TextEditingController>[]; 
+  List<TextEditingController> ctl_howto_row = <TextEditingController>[];
   List<File> imageHowto = <File>[];
-  
+
   int onPressHowTo = -1;
   List<Widget> _buildhowto() {
     //ทดเสอบ
@@ -728,130 +728,135 @@ class _AddFoodPageState extends State<AddFoodPage> {
                                                       }
                                                     });
                                                   },
-                                                )
-                                                ),
+                                                )),
                                           )
                                         // : VideoOnPress(path: imageHowto[displayNumber-1])
-                                        :(this.onPressHowTo != displayNumber - 1)
-                                          ? Stack(
-                                              children: [
-                                                DemoHome(
-                                                  path: imageHowto[
-                                                          displayNumber - 1]
-                                                      .path,
-                                                ),
-                                                Positioned(
-                                                  top: 110,
-                                                  left: MediaQuery.of(context).size.width/2 - 25,
-                                                  child: InkWell(
-                                                     onTap: (){
-                                                    setState(() {
-                                                  this.onPressHowTo =
-                                                      displayNumber-1;
-                                                });
-                                                  },
-                                                    child: Image.network(
-                                                      "https://icons-for-free.com/iconfiles/png/512/play-131979013293010971.png",
-                                                      width: 50,
-                                                      height: 50,
-                                                      color: Colors.white,
+                                        : (this.onPressHowTo !=
+                                                displayNumber - 1)
+                                            ? Stack(
+                                                children: [
+                                                  DemoHome(
+                                                    path: imageHowto[
+                                                            displayNumber - 1]
+                                                        .path,
+                                                  ),
+                                                  Positioned(
+                                                    top: 110,
+                                                    left: MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2 -
+                                                        25,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          this.onPressHowTo =
+                                                              displayNumber - 1;
+                                                        });
+                                                      },
+                                                      child: Image.network(
+                                                        "https://icons-for-free.com/iconfiles/png/512/play-131979013293010971.png",
+                                                        width: 50,
+                                                        height: 50,
+                                                        color: Colors.white,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                Positioned(
-                                                  right: 1,
-                                                  bottom: 1,
-                                                  child: ToggleButtons(
-                                                    color: Colors.black
-                                                        .withOpacity(0.60),
-                                                    selectedColor: Colors.black,
-                                                    selectedBorderColor:
-                                                        Colors.grey,
-                                                    splashColor: Colors.blue,
-                                                    hoverColor: Color(0xFF6200EE)
-                                                        .withOpacity(0.04),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    constraints: BoxConstraints(
-                                                        minHeight: 30.0),
-                                                    children: <Widget>[
-                                                      
-                                                      Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.delete,
-                                                            color: Colors.white,
-                                                          ),
-                                                          Text("ลบ",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white))
-                                                        ],
-                                                      ),
-                                                    ],
-                                                    isSelected: [true],
-                                                    onPressed: (int index) {
-                                                      setState(() {
-                                                       if (index == 0) {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: const Text(
-                                                                      'ยืนยัน'),
-                                                                  content: const Text(
-                                                                      'คุณต้องการลบวิดีโอนี้ ?'),
-                                                                  actions: <
-                                                                      Widget>[
-                                                                    TextButton(
-                                                                      onPressed: () =>
-                                                                          Navigator.pop(
-                                                                              context,
-                                                                              'Cancel'),
-                                                                      child:
-                                                                          const Text(
-                                                                        'ยกเลิก',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.red),
+                                                  Positioned(
+                                                    right: 1,
+                                                    bottom: 1,
+                                                    child: ToggleButtons(
+                                                      color: Colors.black
+                                                          .withOpacity(0.60),
+                                                      selectedColor:
+                                                          Colors.black,
+                                                      selectedBorderColor:
+                                                          Colors.grey,
+                                                      splashColor: Colors.blue,
+                                                      hoverColor: Color(
+                                                              0xFF6200EE)
+                                                          .withOpacity(0.04),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                      constraints:
+                                                          BoxConstraints(
+                                                              minHeight: 30.0),
+                                                      children: <Widget>[
+                                                        Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.delete,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            Text("ลบ",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white))
+                                                          ],
+                                                        ),
+                                                      ],
+                                                      isSelected: [true],
+                                                      onPressed: (int index) {
+                                                        setState(() {
+                                                          if (index == 0) {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title: const Text(
+                                                                        'ยืนยัน'),
+                                                                    content:
+                                                                        const Text(
+                                                                            'คุณต้องการลบวิดีโอนี้ ?'),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        onPressed: () => Navigator.pop(
+                                                                            context,
+                                                                            'Cancel'),
+                                                                        child:
+                                                                            const Text(
+                                                                          'ยกเลิก',
+                                                                          style:
+                                                                              TextStyle(color: Colors.red),
+                                                                        ),
                                                                       ),
-                                                                    ),
-                                                                    TextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        setState(
+                                                                      TextButton(
+                                                                        onPressed:
                                                                             () {
-                                                                          imageHowto[
-                                                                              displayNumber -
-                                                                                  1] = File(
-                                                                              '');
-                                                
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        });
-                                                                      },
-                                                                      child:
-                                                                          const Text(
-                                                                        'ตกลง',
+                                                                          setState(
+                                                                              () {
+                                                                            imageHowto[displayNumber - 1] =
+                                                                                File('');
+
+                                                                            Navigator.pop(context);
+                                                                          });
+                                                                        },
+                                                                        child:
+                                                                            const Text(
+                                                                          'ตกลง',
+                                                                        ),
                                                                       ),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              });
-                                                        }
-                                                      });
-                                                    },
-                                                  ),
-                                                )
-                                              ],
-                                            ):VideoPlayerOnPress(
-                                              path:
-                                                  imageHowto[displayNumber - 1],
-                                            ) 
-                                        
+                                                                    ],
+                                                                  );
+                                                                });
+                                                          }
+                                                        });
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            : VideoPlayerOnPress(
+                                                path: imageHowto[
+                                                    displayNumber - 1],
+                                              )
+
                                 // Padding(
                                 //     padding: const EdgeInsets.fromLTRB(
                                 //         0, 8, 0, 15),
@@ -1127,12 +1132,10 @@ class _AddFoodPageState extends State<AddFoodPage> {
                 for (int i = 0; i < howto.length; i++) {
                   if (ctl_howto_row[i].text == "" && checkCtl_howto_row == 0 ||
                       ctl_howto_row[i].text.trim() == "") {
-                        if(text.indexOf("กรอกวิธีทำ") == -1){
-                           text += "\nกรุณากรอกวิธีทำ";
-                            checkCtl_howto_row = 1;
-                            
-                        }
-                   
+                    if (text.indexOf("กรอกวิธีทำ") == -1) {
+                      text += "\nกรุณากรอกวิธีทำ";
+                      checkCtl_howto_row = 1;
+                    }
                   }
                   if (imageHowto[i].toString() == File('').toString() &&
                       checkimageHowto == 0) {
@@ -1224,7 +1227,9 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => SlidePage(index: 2,)),
+                            builder: (BuildContext context) => SlidePage(
+                                  index: 2,
+                                )),
                         ModalRoute.withName('/'));
                   }
                 }
@@ -2208,17 +2213,28 @@ class CustomDialog extends StatelessWidget {
             ],
           ),
         ),
+        // Positioned(
+        //   top: 0,
+        //   left: 16,
+        //   right: 16,
+        //   child: CircleAvatar(
+        //     backgroundColor: Colors.blueAccent,
+        //     radius: 50,
+        //     backgroundImage: AssetImage(
+        //         'assets/logoNoti/warning.png'),
+        //   ),
+        // )
         Positioned(
           top: 0,
           left: 16,
           right: 16,
-          child: CircleAvatar(
-            backgroundColor: Colors.blueAccent,
-            radius: 50,
-            backgroundImage: NetworkImage(
-                'https://media.giphy.com/media/Q81NcsY6YxK7jxnr4v/giphy.gif'),
+         
+          child: Image.asset(
+            'assets/logoNoti/warning.png',
+            width: 50,
+            height: 100,
           ),
-        )
+        ),
       ],
     );
   }
@@ -2312,8 +2328,8 @@ class CustomDialogNotificationPost extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: Colors.white,
               radius: 50,
-              backgroundImage: NetworkImage(
-                'https://png.pngtree.com/png-vector/20190228/ourlarge/pngtree-wrong-false-icon-design-template-vector-isolated-png-image_711430.jpg',
+              backgroundImage: AssetImage(
+                'assets/logoNoti/wrong.jpg',
               ),
             ),
           )

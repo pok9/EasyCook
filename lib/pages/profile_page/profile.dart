@@ -621,19 +621,19 @@ class _ScrollProfilePageState extends State
                     autofocus: false,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'โปรดระบุยอดเงิน';
+                        return '*โปรดระบุยอดเงิน';
                       }
 
                       if (select == 'topup') {
                         if (double.parse(_ctrlPrice.text) < 20) {
-                          return 'ขั้นต่ำ 20 บาท';
+                          return '*ขั้นต่ำ 20 บาท';
                         }
                       } else if (select == 'withdraw') {
                         if (double.parse(_ctrlPrice.text) < 100) {
-                          return 'ขั้นต่ำ 100 บาท';
+                          return '*ขั้นต่ำ 100 บาท';
                         } else if (double.parse(_ctrlPrice.text) >
                             data_DataAc.balance) {
-                          return 'เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
+                          return (data_DataAc.balance < 100) ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${data_DataAc.balance} บาท" :'*เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
                         }
                       }
 

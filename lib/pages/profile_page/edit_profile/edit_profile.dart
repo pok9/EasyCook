@@ -472,17 +472,28 @@ class CustomDialog extends StatelessWidget {
             ],
           ),
         ),
+        // Positioned(
+        //   top: 0,
+        //   left: 16,
+        //   right: 16,
+        //   child: CircleAvatar(
+        //     backgroundColor: Colors.blueAccent,
+        //     radius: 50,
+        //     backgroundImage: NetworkImage(
+        //         'https://media.giphy.com/media/Q81NcsY6YxK7jxnr4v/giphy.gif'),
+        //   ),
+        // )
         Positioned(
           top: 0,
           left: 16,
           right: 16,
-          child: CircleAvatar(
-            backgroundColor: Colors.blueAccent,
-            radius: 50,
-            backgroundImage: NetworkImage(
-                'https://media.giphy.com/media/Q81NcsY6YxK7jxnr4v/giphy.gif'),
+         
+          child: Image.asset(
+            'assets/logoNoti/warning.png',
+            width: 50,
+            height: 100,
           ),
-        )
+        ),
       ],
     );
   }
