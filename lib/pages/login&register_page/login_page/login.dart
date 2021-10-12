@@ -509,7 +509,7 @@ class _LoginPageState extends State<LoginPage> {
           textFail = login.token;
           stateOnlyText = ButtonState.fail;
         } else {
-          textFail = "อีเมล หรือ รหัสผ่านไม่ถูกต้อง";
+          textFail = login.message;
           stateOnlyText = ButtonState.fail;
         }
 
