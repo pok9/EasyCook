@@ -400,7 +400,6 @@ class _Feed2PageState extends State<Feed2Page> {
       (dataNewfeedsglobal == null)
           ? Center(child: Center(child: CupertinoActivityIndicator()))
           : ListView(
-
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -742,6 +741,7 @@ class _Feed2PageState extends State<Feed2Page> {
             : dummyListDataNewfeedsglobal.length + 1,
         itemBuilder: (BuildContext ctx, index) {
           if (index == dummyListDataNewfeedsglobal.length) {
+            
             return Center(
               child: Container(),
             );

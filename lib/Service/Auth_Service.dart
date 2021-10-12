@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthClass {
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
-      'email',
+      // 'email',
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
   );
@@ -20,10 +20,11 @@ class AuthClass {
     try {
       print("pok111111");
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+      GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
       if (googleSignInAccount != null) {
         print("pok222222");
-        GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
+        
 
         AuthCredential credential = GoogleAuthProvider.credential(
           idToken: googleSignInAuthentication.idToken,
