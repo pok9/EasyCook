@@ -43,15 +43,15 @@ class _SearchPage1State extends State<SearchPage1> {
   ];
 
   var categoryFoodImage = [
-    "https://c4.wallpaperflare.com/wallpaper/1015/171/825/smoothie-4k-hd-wallpaper-preview.jpg",
-    "https://img.taste.com.au/pqrFylbF/taste/2018/05/how-to-boil-an-egg-140215-2.jpg",
-    "https://img.freepik.com/free-photo/keto-diet-food-keto-breakfast-grilled-chicken-avocado-feta-cheese-quail-eggs-strawberries-nuts-lettuce-gray-background_114941-1607.jpg?size=626&ext=jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCnCRigJXR961hQpA6G-Hy03S3eD7xMQiTHbPJP2jgyyuns4YG14vSRJctRp210CRUZU&usqp=CAU",
-    "https://vistapointe.net/images/stew-8.jpg",
-    "https://wallpapercave.com/wp/wp2055348.jpg",
-    "https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmJxfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-    "https://www.allergicliving.com/wp-content/uploads/2020/12/GettyImages-182441598_2.jpg",
-    "https://img.wongnai.com/p/1920x0/2019/02/11/f267780e15b044ba818113c039defb7b.jpg"
+    "assets/imageSearch/water.webp",
+    "assets/imageSearch/boiled.webp",
+    "assets/imageSearch/healthy.jpg",
+    "assets/imageSearch/steam.jpg",
+    "assets/imageSearch/stewed.jpg",
+    "assets/imageSearch/fried.jpg",
+    "assets/imageSearch/grill.jfif",
+    "assets/imageSearch/baked.jpg",
+    "assets/imageSearch/snack.jpg"
   ];
 
   @override

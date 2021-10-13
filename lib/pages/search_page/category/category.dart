@@ -142,7 +142,7 @@ class _CategoryState extends State<Category> {
                   pinned: true,
                   expandedHeight: 180.0,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.network(
+                    background: Image.asset(
                       this.widget.categoryFoodImage, ///////////////////////////
                       fit: BoxFit.cover,
                     ),

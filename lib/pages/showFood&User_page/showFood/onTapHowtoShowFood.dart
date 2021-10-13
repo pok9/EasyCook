@@ -1,5 +1,7 @@
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
+import 'package:easy_cook/pages/videoPlayerOnPress/thumbnail.dart';
+import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerOnPress.dart';
 import 'package:easy_cook/pages/video_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -7,7 +9,7 @@ import 'package:mime/mime.dart';
 import 'package:video_player/video_player.dart';
 
 class OnTapHowtoShowFood extends StatefulWidget {
-  OnTapHowtoShowFood({this.index,this.dataHowto, Key key}) : super(key: key);
+  OnTapHowtoShowFood({this.index, this.dataHowto, Key key}) : super(key: key);
   int index;
   List<Howto> dataHowto;
   @override
@@ -15,17 +17,16 @@ class OnTapHowtoShowFood extends StatefulWidget {
 }
 
 class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
-  
   var controller;
   int currentpage = 0;
 
   @override
   void initState() {
     print("onTap ==> ${this.widget.index}");
-    controller = PageController(initialPage:this.widget.index );
+    controller = PageController(initialPage: this.widget.index);
     currentpage = this.widget.index;
     // TODO: implement initState
-    
+
     super.initState();
     controller.addListener(() {
       setState(() {
@@ -49,6 +50,7 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
 
   final FlutterTts flutterTts = FlutterTts();
 
+  int onPressHowTo = -1;
   @override
   Widget build(BuildContext context) {
     // speak() async {
@@ -74,31 +76,6 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                     icon: Icon(Icons.clear)),
               ],
             ),
-
-            // Expanded(
-            //     child: PageView.builder(
-            //         controller: controller,
-            //         itemCount: this.widget.dataHowto.length,
-            //         itemBuilder: (context, index) {
-            //           return Padding(
-            //             padding: const EdgeInsets.symmetric(
-            //                 horizontal: 20, vertical: 110),
-            //             child: Card(
-            //               elevation: 6.0,
-            //               shape: RoundedRectangleBorder(
-            //                   borderRadius: BorderRadius.circular(20)),
-            //               color: Colors.white,
-            //               child: Container(
-            //                 decoration: BoxDecoration(
-            //                     image: DecorationImage(
-            //                         image: NetworkImage(this
-            //                             .widget
-            //                             .dataHowto[index]
-            //                             .pathFile))),
-            //               ),
-            //             ),
-            //           );
-            //         })),
             Container(
               color: Colors.white,
               height: size.height * 0.85,
@@ -110,13 +87,6 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                   itemBuilder: (context, index) {
                     return ListView(
                       children: [
-                        //  Card(
-                        //   elevation: 6.0,
-                        //   shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(20)),
-                        //   color: Colors.white,
-                        //   child:
-                        // ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: Row(
@@ -163,31 +133,53 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                                               .dataHowto[index]
                                               .pathFile))),
                                 )
-                              : 
-                              Card(
+                              : Card(
                                   semanticContainer: true,
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: VideoOnPress(path: this
+                                    child: (this.onPressHowTo != index)
+                                        ? Stack(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: DemoHome(
+                                                  path: this
+                                                      .widget
+                                                      .dataHowto[index]
+                                                      .pathFile,
+                                                ),
+                                              ),
+                                              Positioned(
+                                                top: 110,
+                                                left: MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        2 -
+                                                    25,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      this.onPressHowTo = index;
+                                                    });
+                                                  },
+                                                  child: Image.network(
+                                                    "https://icons-for-free.com/iconfiles/png/512/play-131979013293010971.png",
+                                                    width: 50,
+                                                    height: 50,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        : VideoPlayerOnPress(
+                                            path: this
                                                 .widget
                                                 .dataHowto[index]
-                                                .pathFile),
-                                    // AspectRatio(
-                                    //   // aspectRatio: 3 / 2,
-                                    //   // aspectRatio: 16 / 9,
-                                    //   aspectRatio: 1,
-                                    //   child: VideoItems(
-                                    //     videoPlayerController:
-                                    //         VideoPlayerController.network(this
-                                    //             .widget
-                                    //             .dataHowto[index]
-                                    //             .pathFile),
-                                    //     looping: false,
-                                    //     autoplay: false,
-                                    //     addfood_showfood: 0,
-                                    //   ),
-                                    // ),
+                                                .pathFile,
+                                          ),
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
@@ -199,14 +191,30 @@ class _OnTapHowtoShowFoodState extends State<OnTapHowtoShowFood> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(
-                                onPressed: () => _speak(
+                            InkWell(
+                                
+                                onTap: () => _speak(
                                     this.widget.dataHowto[index].description),
-                                icon: Icon(
-                                  Icons.speaker,
-                                  color: Colors.blue,
-                                  size: 50,
-                                )),
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.grey,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        width: 50,
+                                        height: 50,
+                                        child: Image.asset(
+                                            "assets/images/megaphone.png")),
+                                  ),
+                                ))
+                            // IconButton(
+                            //     onPressed: () => _speak(
+                            //         this.widget.dataHowto[index].description),
+                            //     icon: Icon(
+                            //       Icons.speaker,
+                            //       color: Colors.blue,
+                            //       size: 50,
+                            //     )),
                           ],
                         )
                       ],

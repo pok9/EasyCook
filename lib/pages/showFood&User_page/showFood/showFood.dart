@@ -358,9 +358,6 @@ class _ShowFoodState extends State<ShowFood> {
         children: [
           InkWell(
             onTap: () {
-              print("showFood => ${displayNumber}");
-              print(dataHowto[displayNumber].description);
-              print(dataHowto[displayNumber].pathFile);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -400,18 +397,31 @@ class _ShowFoodState extends State<ShowFood> {
             ),
           ),
           (lookupMimeType(dataHowto[displayNumber].pathFile)[0] == "i")
-              ? Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Container(
-                    constraints: new BoxConstraints.expand(
-                      height: 350.0,
-                    ),
-                    alignment: Alignment.bottomRight,
-                    padding: new EdgeInsets.only(right: 10, bottom: 8.0),
-                    decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        image: NetworkImage(dataHowto[displayNumber].pathFile),
-                        fit: BoxFit.contain,
+              ? InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OnTapHowtoShowFood(
+                                index: displayNumber,
+                                dataHowto: dataHowto,
+                              )),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Container(
+                      constraints: new BoxConstraints.expand(
+                        height: 350.0,
+                      ),
+                      alignment: Alignment.bottomRight,
+                      padding: new EdgeInsets.only(right: 10, bottom: 8.0),
+                      decoration: new BoxDecoration(
+                        image: new DecorationImage(
+                          image:
+                              NetworkImage(dataHowto[displayNumber].pathFile),
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
@@ -446,61 +456,9 @@ class _ShowFoodState extends State<ShowFood> {
                         )
                       ],
                     )
-                  // : (this.onPressHowTo != displayNumber)
-                  //     ? Padding(
-                  //         padding: const EdgeInsets.all(16.0),
-                  //         child: GestureDetector(
-                  //           onTap: () {
-                  //             // print("testVideo => ${dataHowto[displayNumber].pathFile}");
-                  //             // Navigator.push(
-                  //             //     context,
-                  //             //     MaterialPageRoute(builder: (context) => DemoHome(path: dataHowto[displayNumber].pathFile,)),
-                  //             //   );
-                  //             setState(() {
-                  //               this.onPressHowTo = displayNumber;
-                  //             });
-                  //           },
-                  //           child:  DemoHome(path: dataHowto[displayNumber].pathFile,)
-                  //           // Center(
-                  //           //     child: Image.asset(
-                  //           //   'assets/images/play.png',
-                  //           //   height: 312,
-                  //           // )),
-                  //         ),
-                  //       )
-                  //     // : BetterPlayer.network( dataHowto[displayNumber].pathFile)
                   : VideoPlayerOnPress(
                       path: dataHowto[displayNumber].pathFile,
                     )
-          //  :VideoPlayerScreen(
-          //     path: dataHowto[displayNumber].pathFile,
-          //     index: 0,
-          //   )
-
-          // Card(
-          //     semanticContainer: true,
-          //     clipBehavior: Clip.antiAliasWithSaveLayer,
-          //     child: Align(
-          //       alignment: Alignment.bottomCenter,
-          //       child: AspectRatio(
-          //         // aspectRatio: 3 / 2,
-          //         // aspectRatio: 16 / 9,
-          //         aspectRatio: 1,
-          //         child: VideoItems(
-          //           videoPlayerController: VideoPlayerController.network(
-          //               dataHowto[displayNumber].pathFile),
-          //           looping: false,
-          //           autoplay: false,
-          //           addfood_showfood: 0,
-          //         ),
-          //       ),
-          //     ),
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(10.0),
-          //     ),
-          //     elevation: 5,
-          //     margin: EdgeInsets.all(10),
-          //   )
         ],
       );
     }).toList(); // แปลงเป็นlist
@@ -1284,22 +1242,24 @@ class _ShowFoodState extends State<ShowFood> {
                         height: 50,
                         // color: Colors.white,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                "วิธีทำ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 25,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "วิธีทำ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 25,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.none,
+                                  ),
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.fromLTRB(6, 6, 0, 6),
                               child: ToggleButtons(
                                 children: <Widget>[
                                   Icon(Icons.image),
@@ -1323,8 +1283,38 @@ class _ShowFoodState extends State<ShowFood> {
                                 fillColor: Colors.blue,
                                 selectedBorderColor: Colors.grey,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                    BorderRadius.all(Radius.circular(7)),
                               ),
+                            ),
+                            SizedBox(
+                              width: 3,
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              OnTapHowtoShowFood(
+                                                index: 0,
+                                                dataHowto: dataHowto,
+                                              )));
+                                },
+                                child: Text(
+                                  'ดูทั้งหมด',
+                                ),
+                                style: ButtonStyle(
+                                    side: MaterialStateProperty.all(BorderSide(
+                                        width: 1, color: Colors.grey)),
+                                    foregroundColor:
+                                        MaterialStateProperty.all(Colors.blue),
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 4)),
+                                    textStyle: MaterialStateProperty.all(
+                                        TextStyle(fontSize: 10)))),
+                            SizedBox(
+                              width: 5,
                             )
                           ],
                         ),
@@ -1528,7 +1518,7 @@ class _ShowFoodState extends State<ShowFood> {
                                             text: dataGetCommentPost[index]
                                                 .aliasName,
                                             style: GoogleFonts.mali(
-                                              fontWeight: FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 color: (dataGetCommentPost[
                                                                 index]
                                                             .userStatus ==
@@ -1542,8 +1532,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                                 dataMyAccont
                                                                     .userId)
                                                             ? Colors.blue
-                                                            : Colors.black
-                                            ),
+                                                            : Colors.black),
                                             children: <TextSpan>[
                                               TextSpan(
                                                 text:
