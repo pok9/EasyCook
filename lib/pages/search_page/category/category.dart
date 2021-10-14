@@ -2,9 +2,12 @@ import 'package:easy_cook/models/category/category_model.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
+import 'package:easy_cook/pages/profile_page/profile.dart';
 
 import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
+import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -325,31 +328,67 @@ class _CategoryState extends State<Category> {
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               0, 8, 0, 8),
-                                          child: Row(
-                                            children: [
-                                              new Container(
-                                                height: 30.0,
-                                                width: 30.0,
-                                                decoration: new BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: new DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image: new NetworkImage(
-                                                            categoryFood[index]
-                                                                .profileImage))),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  categoryFood[index]
-                                                          .nameSurname +
-                                                      "(${categoryFood[index].aliasName})",
-                                                  maxLines: 1,style: TextStyle(overflow: TextOverflow.ellipsis,),
+                                          child: InkWell(
+                                            onTap: () {
+                                              if (token == "" ||
+                                                  token == null) {
+                                                Navigator.push(context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) {
+                                                  return ProfileUser(
+                                                    reqUid: categoryFood[index]
+                                                      ..userId,
+                                                  );
+                                                }));
+                                              } else if (dataUser.userId ==
+                                                  categoryFood[index].userId) {
+                                                Navigator.push(context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) {
+                                                  return ProfilePage();
+                                                }));
+                                              } else {
+                                                Navigator.push(context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) {
+                                                  return ProfileUser(
+                                                    reqUid: categoryFood[index]
+                                                        .userId,
+                                                  );
+                                                }));
+                                              }
+                                            },
+                                            child: Row(
+                                              children: [
+                                                new Container(
+                                                  height: 30.0,
+                                                  width: 30.0,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(
+                                                              categoryFood[
+                                                                      index]
+                                                                  .profileImage))),
                                                 ),
-                                              )
-                                            ],
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    categoryFood[index]
+                                                            .nameSurname +
+                                                        "(${categoryFood[index].aliasName})",
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],

@@ -144,10 +144,8 @@ class _DrawersState extends State<Drawers> {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-    print("this.widget.token ===>>> ${this.widget.token}");
-    print("this.widget.data_DataAc ===>>> ${this.widget.data_DataAc}");
-    return Container(
 
+    return Container(
       width: deviceSize.width - 45,
       child: (this.widget.token != "" && this.widget.data_DataAc != null)
           ? Drawer(
@@ -213,7 +211,7 @@ class _DrawersState extends State<Drawers> {
                           ),
                           Text(
                             this.widget.data_MyAccount.data[0].nameSurname,
-                               maxLines: 1,
+                            maxLines: 1,
                             style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontSize: 15,
@@ -415,12 +413,31 @@ class _DrawersState extends State<Drawers> {
                         fontSize: 17,
                         fontWeight: FontWeight.w300,
                       ),
-                      // style: TextStyle(
-                      //     fontWeight: FontWeight.w300,
-                      //     fontSize: 23,
-                      //     color: Colors.black)
                     ),
                     onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (contex) {
+                            return AlertDialog(
+                                content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Image.asset(
+                                    'assets/loadGif/loadding3.gif',
+                                  ),
+                                  width: 50,
+                                  height: 50,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("กรุณารอสักครู่...   "),
+                                CircularProgressIndicator()
+                              ],
+                            ));
+                          });
+
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
 
@@ -435,7 +452,7 @@ class _DrawersState extends State<Drawers> {
                       int index = (listEmail == null)
                           ? -1
                           : listEmail.indexOf(this.widget.data_DataAc.email);
-                      print("index => $index");
+
                       if (index > -1) {
                         listEmail.removeAt(index);
                         preferences.setStringList("listEmail", listEmail);
@@ -445,7 +462,6 @@ class _DrawersState extends State<Drawers> {
                         listPassword.removeAt(index);
                         preferences.setStringList("listPassword", listPassword);
 
-                    
                         _logOut();
                         AuthClass authClass = AuthClass();
                         authClass.logout();
@@ -457,6 +473,8 @@ class _DrawersState extends State<Drawers> {
                       }
 
                       ///////////////////////// delete swith user //////////////////////////////
+                      
+                      Navigator.pop(context);
 
                       Navigator.pushAndRemoveUntil(
                           context,
@@ -582,7 +600,7 @@ class _DrawersState extends State<Drawers> {
 
   Container _buildBottomNavigationMenu(context) {
     return Container(
-       
+
         // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
@@ -640,7 +658,7 @@ class _DrawersState extends State<Drawers> {
                     //   }
                     //   return null;
                     // },
-                   
+
                     validator: (value) => EmailValidator.validate(value)
                         ? null
                         : "*กรุณาป้อนอีเมล์ของคุณ",
@@ -698,13 +716,16 @@ class _DrawersState extends State<Drawers> {
                                         content: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         Icon(
                                           Icons.warning_amber,
                                           color: Colors.yellow[800],
                                         ),
-                                        SizedBox(width: 5,),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         Text(resetPasswordModel.message),
                                       ],
                                     ));

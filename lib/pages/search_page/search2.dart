@@ -308,8 +308,8 @@ class _SearchPage2State extends State<SearchPage2> {
                 TabBarView(children: [
               (dataRecipe == null)
                   ? Column(
-                    children: [
-                      Center(
+                      children: [
+                        Center(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
@@ -318,7 +318,8 @@ class _SearchPage2State extends State<SearchPage2> {
                               child: ListView.separated(
                                   padding: EdgeInsets.symmetric(horizontal: 0),
                                   scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) => GestureDetector(
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
                                         onTap: () {
                                           setState(() {
                                             selected = index;
@@ -328,7 +329,8 @@ class _SearchPage2State extends State<SearchPage2> {
                                           padding: EdgeInsets.symmetric(
                                               vertical: 10, horizontal: 15),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                             color: selected == index
                                                 ? Colors.blue
                                                 : Colors.white,
@@ -350,8 +352,8 @@ class _SearchPage2State extends State<SearchPage2> {
                             ),
                           ),
                         ),
-                    ],
-                  )
+                      ],
+                    )
                   : ListView(
                       children: [
                         Padding(
@@ -585,28 +587,64 @@ class _SearchPage2State extends State<SearchPage2> {
                                               ],
                                             ),
                                           ),
-                                          Row(
-                                            children: [
-                                              new Container(
-                                                height: 30.0,
-                                                width: 30.0,
-                                                decoration: new BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: new DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image: new NetworkImage(
-                                                            dataRecipe[index]
-                                                                .profileImage))),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Text(dataRecipe[index]
-                                                        .nameSurname +
-                                                    "(${dataRecipe[index].aliasName})",maxLines: 1,overflow: TextOverflow.ellipsis,),
-                                              )
-                                            ],
+                                          InkWell(
+                                            onTap: () {
+                                              if (token == "" ||
+                                                  token == null) {
+                                                Navigator.push(context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) {
+                                                  return ProfileUser(
+                                                    reqUid:
+                                                        dataRecipe[index].userId,
+                                                  );
+                                                }));
+                                              } else if (dataAcUser.userId ==
+                                                  dataRecipe[index].userId) {
+                                                Navigator.push(context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) {
+                                                  return ProfilePage();
+                                                }));
+                                              } else {
+                                                Navigator.push(context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) {
+                                                  return ProfileUser(
+                                                    reqUid:
+                                                        dataRecipe[index].userId,
+                                                  );
+                                                }));
+                                              }
+                                            },
+                                            child: Row(
+                                              children: [
+                                                new Container(
+                                                  height: 30.0,
+                                                  width: 30.0,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(
+                                                              dataRecipe[index]
+                                                                  .profileImage))),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    dataRecipe[index]
+                                                            .nameSurname +
+                                                        "(${dataRecipe[index].aliasName})",
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -653,8 +691,18 @@ class _SearchPage2State extends State<SearchPage2> {
                           }
                         },
                         child: ListTile(
-                          title: Text(dataUser[index].aliasName,maxLines: 1,style: TextStyle(overflow: TextOverflow.ellipsis,),),
-                          subtitle: Text(dataUser[index].nameSurname,maxLines: 1,style: TextStyle(overflow: TextOverflow.ellipsis,)),
+                          title: Text(
+                            dataUser[index].aliasName,
+                            maxLines: 1,
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          subtitle: Text(dataUser[index].nameSurname,
+                              maxLines: 1,
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                              )),
                           leading: Container(
                             height: 40.0,
                             width: 40.0,
@@ -697,7 +745,13 @@ class _SearchPage2State extends State<SearchPage2> {
                                     backgroundImage: NetworkImage(
                                         imageTranslationResPath[index]),
                                   ),
-                    title: Text(dataIngredientName.elementAt(index),maxLines: 1,style: TextStyle(overflow: TextOverflow.ellipsis,),),
+                    title: Text(
+                      dataIngredientName.elementAt(index),
+                      maxLines: 1,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   );
                 },
               )

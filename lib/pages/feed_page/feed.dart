@@ -55,7 +55,6 @@ class _FeedPageState extends State<FeedPage> {
   PageController pageController = PageController();
   int pageCount = 2;
 
-
   @override
   void initState() {
     super.initState();
@@ -661,7 +660,7 @@ class _FeedPageState extends State<FeedPage> {
                   ),
                 ),
 
-                  //dataRecommendRecipe == null
+                //dataRecommendRecipe == null
                 (dataRecommendRecipe == null)
                     ? Container(
                         height: 300,
@@ -1557,14 +1556,7 @@ class _FeedPageState extends State<FeedPage> {
                   return ShowFoodStory(
                     rid: dataRecommendRecipe.rid,
                   );
-                }).then((value) {
-              // findUser();
-            });
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            // );
+                }).then((value) {});
           } else {
             Navigator.push(
               context,
@@ -1586,14 +1578,7 @@ class _FeedPageState extends State<FeedPage> {
                   return ShowFoodStory(
                     rid: dataRecommendRecipe.rid,
                   );
-                }).then((value) {
-              // findUser();
-            });
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            // );
+                }).then((value) {});
           } else {
             Navigator.push(
               context,

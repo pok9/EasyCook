@@ -337,12 +337,22 @@ class _LoginPageState extends State<LoginPage> {
                               case FacebookLoginStatus.loggedIn:
                                 showDialog(
                                     context: context,
-                                    builder: (BuildContext context) {
+                                    builder: (contex) {
                                       return AlertDialog(
                                           content: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
+                                          Container(
+                                            child: Image.asset(
+                                              'assets/loadGif/loadding3.gif',
+                                            ),
+                                            width: 50,
+                                            height: 50,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
                                           Text("กรุณารอสักครู่...   "),
                                           CircularProgressIndicator()
                                         ],
@@ -497,6 +507,7 @@ class _LoginPageState extends State<LoginPage> {
         getTokenFirebase(preferences.getString("tokens"));
         stateOnlyText = ButtonState.success;
         // Navigator.pop(context);
+
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

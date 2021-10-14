@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/report/addReport/addReport_model.dart';
 import 'package:easy_cook/models/showfood/commentFood_model/commentPost_model.dart';
@@ -281,9 +280,12 @@ class _CommentFoodState extends State<CommentFood> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: (){
-          Navigator.pop(context,checkActivity);
-        },icon: Icon(Icons.arrow_back),),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context, checkActivity);
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         title: Text("แสดงความคิดเห็น"),
       ),
       body: Form(
@@ -359,6 +361,7 @@ class _CommentFoodState extends State<CommentFood> {
                                           text:
                                               '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
                                           style: GoogleFonts.mali(
+                                              fontWeight: FontWeight.normal,
                                               decoration: TextDecoration.none,
                                               // fontFamily: 'OpenSans',
                                               fontSize: 12.0,
@@ -410,7 +413,6 @@ class _CommentFoodState extends State<CommentFood> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: <Widget>[
-                                                
                                                     ListTile(
                                                       leading:
                                                           Icon(Icons.delete),
@@ -423,14 +425,21 @@ class _CommentFoodState extends State<CommentFood> {
                                                             // return object of type Dialog
                                                             return AlertDialog(
                                                               title: new Text(
-                                                                  "ลบความคิดเห็น",style: TextStyle(color: Colors.red),),
+                                                                "ลบความคิดเห็น",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red),
+                                                              ),
                                                               content: new Text(
                                                                   "ลบความคิดเห็นโดยถาวรใช่ไหม"),
                                                               actions: <Widget>[
                                                                 // usually buttons at the bottom of the dialog
                                                                 new TextButton(
                                                                   child: new Text(
-                                                                      "ยกเลิก",style: TextStyle(color: Colors.red)),
+                                                                      "ยกเลิก",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.red)),
                                                                   onPressed:
                                                                       () {
                                                                     Navigator.of(
@@ -447,7 +456,8 @@ class _CommentFoodState extends State<CommentFood> {
                                                                           "ลบ"),
                                                                   onPressed:
                                                                       () async {
-                                                                        checkActivity = 1;
+                                                                    checkActivity =
+                                                                        1;
                                                                     await deleteComment(
                                                                         dataGetCommentPost[index]
                                                                             .cid);
@@ -632,7 +642,9 @@ class _CommentFoodState extends State<CommentFood> {
                       }
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty || value.trim() == "") {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value.trim() == "") {
                         return '*กรอกข้อความแสดงความคิดเห็น';
                       }
                       return null;
@@ -692,7 +704,7 @@ class _CommentFoodState extends State<CommentFood> {
                             });
                           } else {
                             print("โพส");
-                            
+
                             print(commentController.text);
                             CommentPostModel commentPostModel =
                                 await CommentPost(
@@ -703,7 +715,8 @@ class _CommentFoodState extends State<CommentFood> {
                             if (commentPostModel.success == 1) {
                               getCommentPosts();
                               if (data_DataAc.userId !=
-                                  this.widget.dataFood.userId && checkActivityComment) {
+                                      this.widget.dataFood.userId &&
+                                  checkActivityComment) {
                                 insertNotificationData(
                                     this.widget.dataFood.userId.toString(),
                                     data_DataAc.aliasName,
@@ -711,9 +724,9 @@ class _CommentFoodState extends State<CommentFood> {
                                     this.widget.dataFood.rid.toString(),
                                     data_DataAc.userId.toString(),
                                     "comment");
-                                    checkActivityComment = false;
+                                checkActivityComment = false;
                               }
-                              
+
                               commentController.text = "";
                             }
                           }

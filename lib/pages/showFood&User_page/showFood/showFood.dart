@@ -50,7 +50,8 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 class ShowFood extends StatefulWidget {
   // const test({Key key}) : super(key: key);
   var req_rid;
-  ShowFood(this.req_rid);
+  String imageFood;
+  ShowFood(this.req_rid, {this.imageFood});
 
   @override
   _ShowFoodState createState() => _ShowFoodState(req_rid);
@@ -967,12 +968,22 @@ class _ShowFoodState extends State<ShowFood> {
           ],
           pinned: true,
           expandedHeight: 256.0,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Image.network(
-              dataFood.image,
-              fit: BoxFit.cover,
-            ),
-          ),
+          flexibleSpace: (this.widget.imageFood != null)
+              ? FlexibleSpaceBar(
+                  background: Hero(
+                    tag: this.widget.imageFood,
+                    child: Image.network(
+                      this.widget.imageFood,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )
+              : FlexibleSpaceBar(
+                  background: Image.network(
+                    dataFood.image,
+                    fit: BoxFit.cover,
+                  ),
+                ),
         ),
         SliverList(
             delegate: SliverChildListDelegate([
@@ -1026,34 +1037,6 @@ class _ShowFoodState extends State<ShowFood> {
                                     color: Colors.black,
                                     decoration: TextDecoration.none,
                                   )),
-                              // MaterialButton(
-                              //   splashColor: Colors.grey,
-                              //   color: Colors.blue[400],
-                              //   onPressed: () {},
-                              //   child: Text(
-                              //     'ติดตาม',
-                              //     style: TextStyle(color: Colors.white),
-                              //   ),
-                              //   shape: StadiumBorder(),
-                              // )
-
-                              // TextButton(
-                              //   style: TextButton.styleFrom(
-                              //     shape: RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.circular(18.0),
-                              //       side: BorderSide(color: Colors.blue),
-                              //     ),
-                              //     padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-
-                              //   ),
-                              //   onPressed: () {},
-                              //   child: Text(
-                              //     "+ ติดตาม".toUpperCase(),
-                              //     style: TextStyle(
-                              //       fontSize: 14.0,
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -1538,6 +1521,7 @@ class _ShowFoodState extends State<ShowFood> {
                                                 text:
                                                     '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
                                                 style: GoogleFonts.mali(
+                                                  fontWeight: FontWeight.normal,
                                                     decoration:
                                                         TextDecoration.none,
                                                     fontSize: 12.0,
@@ -1686,8 +1670,6 @@ class _ShowFoodState extends State<ShowFood> {
                                 Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: Row(
-                                    // crossAxisAlignment: CrossAxisAlignment.center,
-                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         "หมวดหมู่ที่คล้ายกัน",
@@ -1695,9 +1677,6 @@ class _ShowFoodState extends State<ShowFood> {
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      // (categoryFood == null)
-                                      //     ? Text(categoryFood.toString())
-                                      //     : Text(categoryFood[0].recipeName)
                                     ],
                                   ),
                                 ),
@@ -1705,20 +1684,6 @@ class _ShowFoodState extends State<ShowFood> {
                                     ? Container(
                                         height: 329,
                                       )
-                                    // : Container(
-                                    //     height: 300,
-                                    //     child: ListView.builder(
-                                    //         scrollDirection: Axis.horizontal,
-                                    //         shrinkWrap: true,
-                                    //         physics: NeverScrollableScrollPhysics(),
-                                    //         itemCount: categoryFood.length,
-                                    //         itemBuilder: (context, index) {
-                                    //           return Padding(
-                                    //             padding: const EdgeInsets.all(8.0),
-                                    //             child: Container(width: 50,height: 50,color: Colors.black,),
-                                    //           );
-                                    //         }),
-                                    //   ),
                                     : Container(
                                         height: 300,
                                         child: ListView.builder(
@@ -1767,14 +1732,6 @@ class _ShowFoodState extends State<ShowFood> {
   }
 
   Widget buildTextComment(int index) {
-    // return TextSpan(
-    //   text: '${dataGetCommentPost[index].commentDetail}',
-    //   style: TextStyle(
-    //       decoration: TextDecoration.none,
-    //       fontFamily: 'OpenSans',
-    //       fontSize: 12,
-    //       color: Colors.black),
-    // );
     return ReadMoreText(
       '${dataGetCommentPost[index].commentDetail}',
       trimLines: 8,
@@ -1793,6 +1750,7 @@ class _ShowFoodState extends State<ShowFood> {
   Widget _recommendRecipeCard(context, CategoryModel dataRecommendRecipe) {
     return InkWell(
       onTap: () {
+        storyController.pause();
         if (dataMyAccont != null) {
           if (dataRecommendRecipe.price == 0 ||
               dataRecommendRecipe.userId == dataMyAccont.userId ||
@@ -1801,7 +1759,9 @@ class _ShowFoodState extends State<ShowFood> {
               context,
               MaterialPageRoute(
                   builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            );
+            ).then((value) {
+              storyController.play();
+            });
           } else {
             Navigator.push(
               context,
@@ -1812,6 +1772,7 @@ class _ShowFoodState extends State<ShowFood> {
             ).then((value) {
               if (token != "" && token != null) {
                 getMybuy();
+                storyController.play();
               }
             });
           }
@@ -1821,7 +1782,9 @@ class _ShowFoodState extends State<ShowFood> {
               context,
               MaterialPageRoute(
                   builder: (context) => ShowFood(dataRecommendRecipe.rid)),
-            );
+            ).then((value) {
+              storyController.play();
+            });
           } else {
             Navigator.push(
               context,
@@ -1832,6 +1795,7 @@ class _ShowFoodState extends State<ShowFood> {
             ).then((value) {
               if (token != "" && token != null) {
                 getMybuy();
+                storyController.play();
               }
             });
           }

@@ -1,18 +1,12 @@
 import 'dart:convert';
-// import 'dart:ffi';
 import 'dart:io';
-
 import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/models/addFood/addIngredientsArray_model.dart';
 import 'package:easy_cook/models/addFood/addhowto_model.dart';
 import 'package:easy_cook/models/addFood/createPost_model.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
-import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
 import 'package:easy_cook/pages/videoPlayerOnPress/thumbnail.dart';
 import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerOnPress.dart';
-import 'package:easy_cook/pages/videoPlayerScreen.dart';
-
-import 'package:easy_cook/pages/video_items.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
 import 'package:file_picker/file_picker.dart';
@@ -24,8 +18,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_player/video_player.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
@@ -287,10 +279,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     fillColor: Colors.grey[100],
                     hintText: "เช่น " +
                         exampleIngredient_row1[(displayNumber - 1) % 6],
-                    hintStyle: TextStyle(
-                        fontSize: 16,
-                        // fontWeight: FontWeight.bold,
-                        color: Colors.grey),
+                    hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -402,7 +391,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                           controller: controller2,
                           minLines: 2,
                           keyboardType: TextInputType.multiline,
-                          maxLines: null,
+                          maxLines: 2,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Color(0xfff3f3f4),
@@ -414,7 +403,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             hintStyle:
                                 TextStyle(fontSize: 16, color: Colors.grey),
                           ),
-                          onChanged: (value) {},
+                          
                         ),
                       ),
                     ),
@@ -1184,9 +1173,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     amount.add(ctl_ingredient_row[i][1].text);
                     ingredientName_step.add((i + 1).toString());
                   }
-                  // for (var i = 0; i < amount.length; i++) {
-                  //   ingredientName_step.add((i + 1).toString());
-                  // }
 
                   AddIngredientsArrayModel ingredientsData =
                       await addIngredients(postsData.recipeId.toString(),
@@ -2228,7 +2214,6 @@ class CustomDialog extends StatelessWidget {
           top: 0,
           left: 16,
           right: 16,
-         
           child: Image.asset(
             'assets/logoNoti/warning.png',
             width: 50,

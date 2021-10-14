@@ -141,24 +141,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   cropImage() async {
     File croppedFile = await ImageCropper.cropImage(
       cropStyle: CropStyle.circle,
-        // aspectRatio: CropAspectRatio(ratioX: 10, ratioY: 9),
-        sourcePath: imageFile.path,
-        // aspectRatioPresets: [
-        //   CropAspectRatioPreset.square,
-        //   CropAspectRatioPreset.ratio3x2,
-        //   CropAspectRatioPreset.original,
-        //   CropAspectRatioPreset.ratio4x3,
-        //   CropAspectRatioPreset.ratio16x9
-        // ],
-        // androidUiSettings: AndroidUiSettings(
-        //   toolbarTitle: 'Crop',
-        //   toolbarColor: Color(0xffc69f50),
-        //   toolbarWidgetColor: Colors.white,
-        //   initAspectRatio: CropAspectRatioPreset.original,
-        //   lockAspectRatio: true,
-        //   // hideBottomControls: true,
-        // )
-        );
+      sourcePath: imageFile.path,
+    );
     if (croppedFile != null) {
       setState(() {
         imageFile = croppedFile;
@@ -273,19 +257,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                             child: IconButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   new MaterialPageRoute(
-                                //       builder: (context) => new AddImagePage()),
-                                // ).then((value) {
-                                //   if (value != null) {
-                                //     print(value);
-                                //     this.addImageProfile = [];
-                                //     this.addImageProfile.add(value);
-                                //     this._imageProfile = "";
-                                //     setState(() {});
-                                //   }
-                                // });
+                               
                                 showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
@@ -321,10 +293,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 color: Colors.white,
                               ),
                             ),
-                            // child: Icon(
-                            //   Icons.edit,
-                            //   color: Colors.white,
-                            // ),
+                            
                           ))
                     ],
                   ),
@@ -332,10 +301,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 SizedBox(
                   height: 30,
                 ),
-                buildTextField(
-                    "ชื่อนามแฝง", false, ctrl_name1,30),
-                buildTextField("ชื่อ-นามสุกล", false,
-                    ctrl_name2,50),
+                buildTextField("ชื่อนามแฝง", false, ctrl_name1, 30),
+                buildTextField("ชื่อ-นามสุกล", false, ctrl_name2, 50),
               ],
             ),
           ),
@@ -344,17 +311,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget buildTextField(String labelText,
-      bool isPasswordTextFiele, TextEditingController textCTL,int maxLength) {
+  Widget buildTextField(String labelText, bool isPasswordTextFiele,
+      TextEditingController textCTL, int maxLength) {
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
       child: TextFormField(
         maxLength: maxLength,
         onChanged: (value) {
-                      if (!value.isEmpty && value.trim() != "") {
-                        if (_formKey.currentState.validate()) {}
-                      }
-                    },
+          if (!value.isEmpty && value.trim() != "") {
+            if (_formKey.currentState.validate()) {}
+          }
+        },
         validator: (value) {
           if (value == null || value.isEmpty || value.trim() == "") {
             return '*กรุณากรอก $labelText';
@@ -392,11 +359,10 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 250,
-                        // MediaQuery.of(context).size.height / 2 - 250 // adjust values according to your need
-                        // : MediaQuery.of(context).size.height / 2 - 130
-                        ),//
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).size.height / 2 - 250,
+       
+      ), 
       child: Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 0,
@@ -472,22 +438,11 @@ class CustomDialog extends StatelessWidget {
             ],
           ),
         ),
-        // Positioned(
-        //   top: 0,
-        //   left: 16,
-        //   right: 16,
-        //   child: CircleAvatar(
-        //     backgroundColor: Colors.blueAccent,
-        //     radius: 50,
-        //     backgroundImage: NetworkImage(
-        //         'https://media.giphy.com/media/Q81NcsY6YxK7jxnr4v/giphy.gif'),
-        //   ),
-        // )
+       
         Positioned(
           top: 0,
           left: 16,
           right: 16,
-         
           child: Image.asset(
             'assets/logoNoti/warning.png',
             width: 50,

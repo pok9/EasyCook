@@ -210,13 +210,13 @@ class _Feed2PageState extends State<Feed2Page> {
           //   }
           // }
           for (int i = 0; i < dataNewfeedsglobal.length; i++) {
-              dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
-              if (dataNewfeedsglobal[i].price > 0) {
-                dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
-              } else {
-                dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
-              }
+            dummyListDataNewfeedsglobal.add(dataNewfeedsglobal[i]);
+            if (dataNewfeedsglobal[i].price > 0) {
+              dummyListDataNewfeedsglobal_notFree.add(dataNewfeedsglobal[i]);
+            } else {
+              dummyListDataNewfeedsglobal_free.add(dataNewfeedsglobal[i]);
             }
+          }
         });
     } else {
       return null;
@@ -289,10 +289,6 @@ class _Feed2PageState extends State<Feed2Page> {
         body: DefaultTabController(
           length: 2,
           child: Scaffold(
-            // backgroundColor: Color(0xFFf3f5f9),
-
-            // backgroundColor: Colors.white,
-            // backgroundColor: Color(0xFFF5F5F5),
             backgroundColor: Color(0xFFf3f5f9),
             appBar: new PreferredSize(
               preferredSize: Size.fromHeight(40),
@@ -741,7 +737,6 @@ class _Feed2PageState extends State<Feed2Page> {
             : dummyListDataNewfeedsglobal.length + 1,
         itemBuilder: (BuildContext ctx, index) {
           if (index == dummyListDataNewfeedsglobal.length) {
-            
             return Center(
               child: Container(),
             );
@@ -761,7 +756,7 @@ class _Feed2PageState extends State<Feed2Page> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ShowFood(dummyListDataNewfeedsglobal[index].rid)),
+                          ShowFood(dummyListDataNewfeedsglobal[index].rid,imageFood: dummyListDataNewfeedsglobal[index].image,)),
                 ).then((value) => {getNewfeedsglobal()});
               } else {
                 if (data_DataAc == null) {
@@ -783,7 +778,7 @@ class _Feed2PageState extends State<Feed2Page> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ShowFood(dummyListDataNewfeedsglobal[index].rid)),
+                              ShowFood(dummyListDataNewfeedsglobal[index].rid,imageFood: dummyListDataNewfeedsglobal[index].image,)),
                     ).then((value) => {getNewfeedsglobal()});
                   } else {
                     Navigator.push(
@@ -806,31 +801,17 @@ class _Feed2PageState extends State<Feed2Page> {
                 children: [
                   Stack(
                     children: [
-                      Container(
-                        height: 170,
-                        // width: 250,
-
-                        // decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(5),
-                        //     image: DecorationImage(
-                        //         image: NetworkImage(
-                        //             dummyListDataNewfeedsglobal[index]
-                        //                 .image),
-                        //         fit: BoxFit.cover)),
-
-                        // child: FadeInImage.assetNetwork(
-
-                        //   placeholder: "assets/loadGif/loadding2.gif",
-                        //   image: dummyListDataNewfeedsglobal[index].image,
-                        //   fit: BoxFit.cover,
-                        // ),
-
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: FadeInImage.assetNetwork(
-                            placeholder: "assets/loadGif/loadding2.gif",
-                            image: dummyListDataNewfeedsglobal[index].image,
-                            fit: BoxFit.cover,
+                      Hero(
+                        tag: dummyListDataNewfeedsglobal[index].image,
+                        child: Container(
+                          height: 170,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: "assets/loadGif/loadding2.gif",
+                              image: dummyListDataNewfeedsglobal[index].image,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -895,30 +876,89 @@ class _Feed2PageState extends State<Feed2Page> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Column(
-                          children: [
-                            new Container(
-                              height: 20.0,
-                              width: 20.0,
-                              decoration: new BoxDecoration(
+                        InkWell(
+                          onTap: () {
+                            if (token == "" || token == null) {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfileUser(
+                                  reqUid:
+                                      dummyListDataNewfeedsglobal[index].userId,
+                                );
+                              }));
+                            } else if (data_DataAc.userId ==
+                                dummyListDataNewfeedsglobal[index].userId) {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfilePage();
+                              }));
+                            } else {
+                              Navigator.push(context,
+                                  CupertinoPageRoute(builder: (context) {
+                                return ProfileUser(
+                                  reqUid:
+                                      dummyListDataNewfeedsglobal[index].userId,
+                                );
+                              }));
+                            }
+                          },
+                          child: Column(
+                            children: [
+                              new Container(
+                                height: 20.0,
+                                width: 20.0,
+                                decoration: new BoxDecoration(
                                   shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: new NetworkImage(
-                                          dummyListDataNewfeedsglobal[index]
-                                              .profileImage))),
-                            ),
-                          ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: "assets/loadGif/loadding5.gif",
+                                    image: dummyListDataNewfeedsglobal[index]
+                                        .profileImage,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         new SizedBox(
                           width: 10.0,
                         ),
                         Expanded(
-                          child: new Text(
-                            dummyListDataNewfeedsglobal[index].aliasName,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          child: InkWell(
+                            onTap: () {
+                              if (token == "" || token == null) {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    reqUid: dummyListDataNewfeedsglobal[index]
+                                        .userId,
+                                  );
+                                }));
+                              } else if (data_DataAc.userId ==
+                                  dummyListDataNewfeedsglobal[index].userId) {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfilePage();
+                                }));
+                              } else {
+                                Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return ProfileUser(
+                                    reqUid: dummyListDataNewfeedsglobal[index]
+                                        .userId,
+                                  );
+                                }));
+                              }
+                            },
+                            child: new Text(
+                              dummyListDataNewfeedsglobal[index].aliasName,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
                         (dummyListDataNewfeedsglobal[index].score == 0)
@@ -974,10 +1014,6 @@ class _Feed2PageState extends State<Feed2Page> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.justify,
-                            // style: TextStyle(
-
-                            //     color: Colors.black,
-                            //     fontSize: 15),
                             style: TextStyle(fontSize: 15),
                           ),
                         ),

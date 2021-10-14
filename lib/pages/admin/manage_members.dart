@@ -514,7 +514,7 @@ class _ManageMembersState extends State<ManageMembers> {
                         // maxLength: 60,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกข้อความ';
+                            return '*กรุณากรอกข้อความ';
                           }
                           return null;
                         },

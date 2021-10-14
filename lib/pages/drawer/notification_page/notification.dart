@@ -125,7 +125,7 @@ class _NotificationPageState extends State<NotificationPage> {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: PopupMenuButton(
-              child: Center(child: Icon(Icons.more_vert_outlined)),
+              child: Center(child: Icon(Icons.delete_forever )),
               onSelected: (value) {
                 setState(() {
                   if (value == 1) {

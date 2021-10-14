@@ -12,46 +12,71 @@ class PurchasedRecipes extends StatefulWidget {
 }
 
 class _PurchasedRecipesState extends State<PurchasedRecipes> {
-  @override
-  void initState() {
-    findUser();
-  }
+  // @override
+  // void initState() {
+  //   findUser();
+  // }
 
   String token = ""; //โทเคน
-  Future<Null> findUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  // Future<Null> findUser() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    setState(() {
-      token = preferences.getString("tokens");
-      print("token = ${token}");
+  //   setState(() {
+  //     token = preferences.getString("tokens");
+  //     print("token = ${token}");
 
-      if (token != "") {
-        getMybuy();
-      }
-    });
-  }
+  //     if (token != "") {
+  //       getMybuy();
+  //     }
+  //   });
+  // }
 
   List<Mybuy> dataMybuy;
-  Future<Null> getMybuy() async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+  // Future<Null> getMybuy() async {
+  //   final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
 
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("responseFeed_follow = " + response.statusCode.toString());
-    if (response.statusCode == 200) {
-      setState(() {
-        final String responseString = response.body;
+  //   final response = await http
+  //       .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+  //   print("responseFeed_follow = " + response.statusCode.toString());
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       final String responseString = response.body;
 
-        dataMybuy = mybuyFromJson(responseString);
-      });
-    } else {
-      return null;
-    }
-  }
+  //       dataMybuy = mybuyFromJson(responseString);
+  //     });
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   int _value = 1;
 
   bool reverse = false;
+
+  Future<bool> loadList() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    token = preferences.getString("tokens");
+
+    // if (token != "" ) {
+    //   getMybuy();
+    // }
+    final String apiUrl = "http://apifood.comsciproject.com/pjPost/mybuy";
+
+    final response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      dataMybuy = mybuyFromJson(responseString);
+    } else {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,241 +84,202 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
       appBar: AppBar(
         title: Text('สูตรที่ซื้อ'),
       ),
-      body: ListView(
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(20.0),
-                child: DropdownButton(
-                  onChanged: (value) {
-                    setState(() {
-                      _value = value;
-                      if (_value == 1) {
-                        this.reverse = false;
-                      } else {
-                        this.reverse = true;
-                      }
-                    });
-                  },
-                  value: _value,
-                  items: [
-                    DropdownMenuItem(
-                      child: Text("สูตรที่ซื้อ (ล่าสุด)"),
-                      value: 1,
+      body: FutureBuilder(
+        future: loadList(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return (dataMybuy.length == 0)
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                            child:
+                                Image.asset("assets/splash/hamberger.png")),
+                        SizedBox(height: 30,),
+                        Text(
+                          "คุณยังไม่ได้ซื้อสูตรอาหาร",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )
+                      ],
                     ),
-                    DropdownMenuItem(
-                      child: Text("สูตรที่ซื้อ (เก่าสุด)"),
-                      value: 2,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          (dataMybuy == null)
-              ? Center(
-                  child: Column(
+                  )
+                : ListView(
                     children: [
-                      CircularProgressIndicator(),
-                    ],
-                  ),
-                )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  reverse: this.reverse,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: dataMybuy.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ShowFood(dataMybuy[index].recipeId)),
-                        );
-                      },
-                      child: Card(
-                        child: Container(
-                          color: Colors.white,
-                          height: 165,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                children: [
-                                  Card(
-                                    semanticContainer: true,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    child: Container(
-                                      height: 154,
-                                      child: Image.network(
-                                        dataMybuy[index].image,
-                                        fit: BoxFit.cover,
+                      (dataMybuy.length <= 1)
+                          ? Container()
+                          : Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: DropdownButton(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _value = value;
+                                        if (_value == 1) {
+                                          this.reverse = false;
+                                        } else {
+                                          this.reverse = true;
+                                        }
+                                      });
+                                    },
+                                    value: _value,
+                                    items: [
+                                      DropdownMenuItem(
+                                        child: Text("สูตรที่ซื้อ (ล่าสุด)"),
+                                        value: 1,
                                       ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    elevation: 5,
-                                  ),
-                                ],
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              dataMybuy[index].recipeName,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 20.0,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                      DropdownMenuItem(
+                                        child: Text("สูตรที่ซื้อ (เก่าสุด)"),
+                                        value: 2,
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Icon(
-                                              Icons.food_bank,
-                                              color: Colors.grey,
-                                              size: 15,
-                                            ),
-                                            SizedBox(
-                                              width: 1,
-                                            ),
-                                            Text(dataMybuy[index].foodCategory),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(child: Container()),
-                                      Divider(
-                                        color: Colors.black,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 25.0,
-                                            width: 25.0,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: NetworkImage(
-                                                        dataMybuy[index]
-                                                            .profileImage))),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              dataMybuy[index].aliasName,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          )
-                                        ],
-                                      )
                                     ],
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                    // return Padding(
-                    //   padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    //   child: Row(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: <Widget>[
-                    //       Padding(
-                    //           padding: const EdgeInsets.fromLTRB(
-                    //               5.0, 0.0, 0.0, 0.0),
-                    //           child: Card(
-                    //             semanticContainer: true,
-                    //             clipBehavior: Clip.antiAliasWithSaveLayer,
-                    //             child: Container(
-                    //               height: 154,
-                    //               child: Image.network(
-                    //                 dataMybuy[index].image,
-                    //                 fit: BoxFit.cover,
-                    //               ),
-                    //             ),
-                    //             shape: RoundedRectangleBorder(
-                    //               borderRadius: BorderRadius.circular(5.0),
-                    //             ),
-                    //             elevation: 5,
-                    //           )),
-                    //       Expanded(
-                    //           flex: 2,
-                    //           child: Padding(
-                    //             padding: const EdgeInsets.fromLTRB(
-                    //                 5.0, 10.0, 0.0, 0.0),
-                    //             child: Column(
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: <Widget>[
-                    //                 Text(
-                    //                   dataMybuy[index].recipeName,
-                    //                   maxLines: 2,
-                    //                   overflow: TextOverflow.ellipsis,
-                    //                   style: const TextStyle(
-                    //                     fontWeight: FontWeight.w500,
-                    //                     // fontSize: 20.0,
-                    //                   ),
-                    //                 ),
-
-                    //                 Row(
-                    //                   children: [
-                    //                     new Container(
-                    //                       height: 25.0,
-                    //                       width: 25.0,
-                    //                       decoration: new BoxDecoration(
-                    //                           shape: BoxShape.circle,
-                    //                           image: new DecorationImage(
-                    //                               fit: BoxFit.fill,
-                    //                               image: new NetworkImage(
-                    //                                   "https://placeimg.com/640/480/any"))),
-                    //                     ),
-                    //                     new Text(
-                    //                       "เซฟปก",
-                    //                       style: TextStyle(
-                    //                           fontWeight: FontWeight.w500),
-                    //                     )
-                    //                   ],
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           )),
-                    //       IconButton(onPressed: (){}, icon: Icon(
-                    //         Icons.more_vert,
-                    //         size: 16.0,
-                    //       ))
-                    //     ],
-                    //   ),
-                    // );
-                  },
-                )
-        ],
+                              ],
+                            ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        reverse: this.reverse,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: dataMybuy.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ShowFood(dataMybuy[index].recipeId)),
+                              );
+                            },
+                            child: Card(
+                              child: Container(
+                                color: Colors.white,
+                                height: 165,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Card(
+                                          semanticContainer: true,
+                                          clipBehavior:
+                                              Clip.antiAliasWithSaveLayer,
+                                          child: Container(
+                                            height: 154,
+                                            child: Image.network(
+                                              dataMybuy[index].image,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                          ),
+                                          elevation: 5,
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    dataMybuy[index].recipeName,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 20.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.only(top: 5),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Icon(
+                                                    Icons.food_bank,
+                                                    color: Colors.grey,
+                                                    size: 15,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 1,
+                                                  ),
+                                                  Text(dataMybuy[index]
+                                                      .foodCategory),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(child: Container()),
+                                            Divider(
+                                              color: Colors.black,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  height: 25.0,
+                                                  width: 25.0,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: NetworkImage(
+                                                              dataMybuy[index]
+                                                                  .profileImage))),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    dataMybuy[index].aliasName,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }

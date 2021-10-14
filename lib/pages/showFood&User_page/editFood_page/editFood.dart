@@ -30,12 +30,6 @@ import '../../video_items.dart';
 import 'package:http_parser/http_parser.dart';
 
 class EditFoodPage extends StatefulWidget {
-  // EditFoodPage({Key? key}) : super(key: key);
-  // const EditFoodPage({
-  //   this.ingredient_row_start = 1,
-  //   this.howto_row_start = 1, //ทดสอบ
-  // });
-
   int rid;
   int uid;
 
@@ -219,20 +213,6 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   ),
                 ),
               ),
-              // IconButton(
-              //   icon: Icon(Icons.clear),
-              //   onPressed: () {
-              //     setState(() {
-              //       ingredient_row--;
-              //       ctl_ingredient_row.remove(controller);
-
-              //       if (ctl_ingredient_row.length == 0) {
-              //         this.ingredient_row = 1;
-              //       }
-              //       print('controllers ${ctl_ingredient_row.length}');
-              //     });
-              //   },
-              // ),
             ],
           ),
         ),
@@ -684,14 +664,18 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                 ),
                                                 Positioned(
                                                   top: 110,
-                                                  left: MediaQuery.of(context).size.width/2 - 25,
+                                                  left: MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          2 -
+                                                      25,
                                                   child: InkWell(
-                                                     onTap: (){
-                                                    setState(() {
-                                                  this.onPressHowTo =
-                                                      displayNumber-1;
-                                                });
-                                                  },
+                                                    onTap: () {
+                                                      setState(() {
+                                                        this.onPressHowTo =
+                                                            displayNumber - 1;
+                                                      });
+                                                    },
                                                     child: Image.network(
                                                       "https://icons-for-free.com/iconfiles/png/512/play-131979013293010971.png",
                                                       width: 50,
@@ -710,15 +694,15 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                     selectedBorderColor:
                                                         Colors.grey,
                                                     splashColor: Colors.blue,
-                                                    hoverColor: Color(0xFF6200EE)
-                                                        .withOpacity(0.04),
+                                                    hoverColor:
+                                                        Color(0xFF6200EE)
+                                                            .withOpacity(0.04),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             20.0),
                                                     constraints: BoxConstraints(
                                                         minHeight: 30.0),
                                                     children: <Widget>[
-                                                      
                                                       Row(
                                                         children: [
                                                           Icon(
@@ -735,7 +719,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                     isSelected: [true],
                                                     onPressed: (int index) {
                                                       setState(() {
-                                                       if (index == 0) {
+                                                        if (index == 0) {
                                                           showDialog(
                                                               context: context,
                                                               builder:
@@ -744,15 +728,15 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                                 return AlertDialog(
                                                                   title: const Text(
                                                                       'ยืนยัน'),
-                                                                  content: const Text(
-                                                                      'คุณต้องการลบวิดีโอนี้ ?'),
+                                                                  content:
+                                                                      const Text(
+                                                                          'คุณต้องการลบวิดีโอนี้ ?'),
                                                                   actions: <
                                                                       Widget>[
                                                                     TextButton(
-                                                                      onPressed: () =>
-                                                                          Navigator.pop(
-                                                                              context,
-                                                                              'Cancel'),
+                                                                      onPressed: () => Navigator.pop(
+                                                                          context,
+                                                                          'Cancel'),
                                                                       child:
                                                                           const Text(
                                                                         'ยกเลิก',
@@ -766,11 +750,9 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                                                           () {
                                                                         setState(
                                                                             () {
-                                                                          imageHowto[
-                                                                              displayNumber -
-                                                                                  1] = File(
-                                                                              '');
-                                                
+                                                                          imageHowto[displayNumber - 1] =
+                                                                              File('');
+
                                                                           Navigator.pop(
                                                                               context);
                                                                         });
@@ -2473,7 +2455,6 @@ class CustomDialog extends StatelessWidget {
           top: 0,
           left: 16,
           right: 16,
-         
           child: Image.asset(
             'assets/logoNoti/warning.png',
             width: 50,

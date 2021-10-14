@@ -83,24 +83,6 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
           : StoryItem.pageVideo("${dataHowto[displayNumber].pathFile}",
               controller: storyController,
               caption: "${dataHowto[displayNumber].description}");
-      // return ListTile(
-      //   title: Row(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: [
-      //       Padding(
-      //         padding: const EdgeInsets.only(top: 1),
-      //         child: CircleAvatar(
-      //           radius: 10,
-      //           child: Text("$i"),
-      //         ),
-      //       ),
-      //       SizedBox(
-      //         width: 5,
-      //       ),
-      //       Expanded(child: Text(dataHowto[displayNumber].description)),
-      //     ],
-      //   ),
-      // );
     }).toList(); // แปลงเป็นlist
   }
 
@@ -138,8 +120,6 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
               Stack(
                 children: [
                   Container(
-                    
-                    
                     height: 400,
                     child: StoryView(
                       storyItems: howto3,
@@ -163,9 +143,9 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ShowFood(this.widget.rid)),
-                        )..then((value){
-                          storyController.play();
-                        });
+                        )..then((value) {
+                            storyController.play();
+                          });
                       },
                       child: Row(
                         children: [
@@ -214,7 +194,8 @@ class _ShowFoodStoryState extends State<ShowFoodStory> {
                                             text: getTimeDifferenceFromNow(
                                                 dataFood.date),
                                             style: TextStyle(
-                                                fontWeight: FontWeight.normal,color: Colors.grey)),
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.grey)),
                                       ],
                                     ),
                                   ),
