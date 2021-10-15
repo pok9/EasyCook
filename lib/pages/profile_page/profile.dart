@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -599,13 +600,15 @@ class _ScrollProfilePageState extends State
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [
-                      LengthLimitingTextInputFormatter(7),
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^(\d+)?\.?\d{0,2}')),
+                      ThousandsFormatter(allowFraction: true),
+                      FilteringTextInputFormatter.deny("-")
+                      // LengthLimitingTextInputFormatter(7),
+                      // FilteringTextInputFormatter.allow(
+                      //     RegExp(r'^(\d+)?\.?\d{0,2}')),
                       // FilteringTextInputFormatter.allow(RegExp('[1234567890.0]')),
                       // FilteringTextInputFormatter.deny('..')
 
@@ -620,25 +623,60 @@ class _ScrollProfilePageState extends State
                     ),
                     autofocus: false,
                     validator: (value) {
+
                       if (value.isEmpty) {
                         return '*โปรดระบุยอดเงิน';
                       }
 
-                      if (select == 'topup') {
-                        if (double.parse(_ctrlPrice.text) < 20) {
-                          return '*ขั้นต่ำ 20 บาท';
+                      // if (select == 'topup') {
+                      //   if (double.parse(_ctrlPrice.text) < 20) {
+                      //     return '*ขั้นต่ำ 20 บาท';
+                      //   }
+                      // } else if (select == 'withdraw') {
+                      //   if (double.parse(_ctrlPrice.text) < 100) {
+                      //     return '*ขั้นต่ำ 100 บาท';
+                      //   } else if (double.parse(_ctrlPrice.text) >
+                      //       data_DataAc.balance) {
+                      //     return (data_DataAc.balance < 100) ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${data_DataAc.balance} บาท" :'*เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
+                      //   }
+                      // }
+
+                      try {
+                        String textCtrlPrice =
+                            _ctrlPrice.text.replaceAll(",", "");
+                        double money = double.parse(textCtrlPrice);
+                        if (select == 'topup') {
+                          if (money < 20) {
+                            return '*ขั้นต่ำ 20 บาท';
+                          } else if (money > 100000) {
+                            return '*สูงสุด 100,000 บาท';
+                          }
+                        } else if (select == 'withdraw') {
+                          if (money < 100) {
+                            return '*ขั้นต่ำ 100 บาท';
+                          } else if (money > data_DataAc.balance) {
+                            return (data_DataAc.balance < 100)
+                                ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท"
+                                : '*เงินคุณที่สามาถอนเงินได้ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท';
+                          }
                         }
-                      } else if (select == 'withdraw') {
-                        if (double.parse(_ctrlPrice.text) < 100) {
-                          return '*ขั้นต่ำ 100 บาท';
-                        } else if (double.parse(_ctrlPrice.text) >
-                            data_DataAc.balance) {
-                          return (data_DataAc.balance < 100) ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${data_DataAc.balance} บาท" :'*เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
-                        }
+                      } catch (e) {
+                        return 'โปรดกรอกข้อมูลให้ถูกต้อง';
                       }
 
                       return null;
                     },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      select == 'topup'
+                          ? Text("*20 - 100,000 (บาท)")
+                          : Text("*100 - 100,000 (บาท)")
+                    ],
                   ),
                 ),
                 Padding(
@@ -656,14 +694,14 @@ class _ScrollProfilePageState extends State
                         onTap: () async {
                           if (_formKey.currentState.validate()) {
                             if (select == 'topup') {
-                              if (double.parse(_ctrlPrice.text) >= 20) {
+                              if (double.parse(_ctrlPrice.text.replaceAll(",", "")) >= 20) {
                                 Navigator.of(context).pop();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => PaymentChannelPage(
                                             amount_to_fill:
-                                                double.parse(_ctrlPrice.text),
+                                                double.parse(_ctrlPrice.text.replaceAll(",", "")),
                                           )),
                                 ).then((value) => {
                                       if (token != "" && token != null)
@@ -677,7 +715,7 @@ class _ScrollProfilePageState extends State
                                 MaterialPageRoute(
                                     builder: (context) => WithdrawPage(
                                           amount_to_fill:
-                                              double.parse(_ctrlPrice.text),
+                                              double.parse(_ctrlPrice.text.replaceAll(",", "")),
                                           name: data_DataAc.aliasName,
                                           email: data_DataAc.email,
                                         )),

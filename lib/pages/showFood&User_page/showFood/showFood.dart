@@ -657,7 +657,7 @@ class _ShowFoodState extends State<ShowFood> {
     List time = timeSp[0].split(":");
 
     String text =
-        "${dateSp[2]} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
+        "${int.parse(dateSp[2])} ${map[dateSp[1]]} ${dateSp[0]} - ${time[0]}:${time[1]} น.";
     return text;
   }
 
@@ -1414,6 +1414,27 @@ class _ShowFoodState extends State<ShowFood> {
                                         children: [
                                           TextButton(
                                               onPressed: () {
+                                                // showModalBottomSheet(
+                                                //     isScrollControlled: true,
+                                                //     context: context,
+                                                //     builder: (context) =>
+                                                //         SingleChildScrollView(
+                                                //           child: Container(
+                                                //             // height: MediaQuery.of(context).size.height * 0.95,
+                                                //             color: Color(
+                                                //                 0xFF737373),
+                                                //             padding: EdgeInsets.only(
+                                                //                 bottom: MediaQuery.of(
+                                                //                         context)
+                                                //                     .viewInsets
+                                                //                     .bottom),
+                                                //             child:
+                                                //                 _buildBottomNavigationMenu(
+                                                //                     context),
+                                                //           ),
+                                                //         ));
+
+                                            
                                                 if (dataMyAccont == null) {
                                                   showDialog(
                                                       context: context,
@@ -1443,7 +1464,16 @@ class _ShowFoodState extends State<ShowFood> {
                                                   });
                                                 }
                                               },
-                                              child: Text("ดูความเห็นทั้งหมด")),
+                                              child: (dataGetCommentPost ==
+                                                      null)
+                                                  ? Text("ดูความคิดเห็นทั้งหมด")
+                                                  : (dataGetCommentPost
+                                                              .length ==
+                                                          0)
+                                                      ? Text(
+                                                          "ดูความคิดเห็นทั้งหมด")
+                                                      : Text(
+                                                          "ดูความคิดเห็นทั้งหมด ${dataGetCommentPost.length} รายการ")),
                                         ],
                                       ),
                                     ),
@@ -1521,7 +1551,8 @@ class _ShowFoodState extends State<ShowFood> {
                                                 text:
                                                     '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
                                                 style: GoogleFonts.mali(
-                                                  fontWeight: FontWeight.normal,
+                                                    fontWeight:
+                                                        FontWeight.normal,
                                                     decoration:
                                                         TextDecoration.none,
                                                     fontSize: 12.0,
@@ -1707,6 +1738,137 @@ class _ShowFoodState extends State<ShowFood> {
         ]))
       ],
     );
+  }
+
+  Container _buildBottomNavigationMenu(context) {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.93,
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+              padding: EdgeInsets.only(top: 0),
+              // shrinkWrap: false,
+              physics: BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              itemCount:
+                  (dataGetCommentPost == null) ? 0 : dataGetCommentPost.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    if (dataMyAccont == null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileUser(
+                                  reqUid: dataGetCommentPost[index].userId,
+                                )),
+                      );
+                    } else if ((dataMyAccont.userId ==
+                        dataGetCommentPost[index].userId)) {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return ProfilePage();
+                      }));
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileUser(
+                                  reqUid: dataGetCommentPost[index].userId,
+                                )),
+                      );
+                    }
+                  },
+                  isThreeLine: true,
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(dataGetCommentPost[index].profileImage),
+                  ),
+                  title: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: RichText(
+                        text: TextSpan(
+                            text: dataGetCommentPost[index].aliasName,
+                            style: GoogleFonts.mali(
+                                fontWeight: FontWeight.bold,
+                                color: (dataGetCommentPost[index].userStatus ==
+                                        0)
+                                    ? Colors.red
+                                    : (dataMyAccont == null)
+                                        ? Colors.black
+                                        : (dataGetCommentPost[index].userId ==
+                                                dataMyAccont.userId)
+                                            ? Colors.blue
+                                            : Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    '\n${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n',
+                                style: GoogleFonts.mali(
+                                    fontWeight: FontWeight.normal,
+                                    decoration: TextDecoration.none,
+                                    fontSize: 12.0,
+                                    color: Colors.grey.shade600),
+                              )
+                            ]),
+                      )),
+                  // Padding(
+                  //   padding:
+                  //       const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  //   child: Text(
+                  //     dataGetCommentPost[index].aliasName,
+                  //     style: TextStyle(
+                  //         fontWeight: FontWeight.bold,
+                  //         color: (dataGetCommentPost[index]
+                  //                     .userStatus ==
+                  //                 0)
+                  //             ? Colors.red
+                  //             : (dataMyAccont == null)
+                  //                 ? Colors.black
+                  //                 : (dataGetCommentPost[index]
+                  //                             .userId ==
+                  //                         dataMyAccont.userId)
+                  //                     ? Colors.blue
+                  //                     : Colors.black),
+                  //   ),
+                  // ),
+
+                  subtitle: buildTextComment(index),
+                  //  RichText(
+                  //   text: TextSpan(
+                  //     text:
+                  //         '${getTimeDifferenceFromNow(DateTime.parse("${dataGetCommentPost[index].datetime}"))}\n\n',
+                  //     style: TextStyle(
+                  //         decoration: TextDecoration.none,
+                  //         fontFamily: 'OpenSans',
+                  //         fontSize: 12.0,
+                  //         color: Colors.grey.shade600),
+                  //     children: <TextSpan>[
+                  //       TextSpan(
+                  //         text:
+                  //             '${dataGetCommentPost[index].commentDetail}',
+                  //         style: TextStyle(
+                  //             decoration: TextDecoration.none,
+                  //             fontFamily: 'OpenSans',
+                  //             fontSize: 12,
+                  //             color: Colors.black),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // subtitle: Text(
+
+                  dense: true,
+                  // trailing: Text('Horse'),
+                );
+              }),
+        ));
   }
 
   Widget buildTextDescription(String text) {

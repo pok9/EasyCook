@@ -120,7 +120,6 @@ class _ScrollProfilePage2BottomNavbarState extends State
       expandedHeight: (data_DataAc.userStatus == 0) ? 403 : 550,
       backgroundColor: Colors.blue,
       flexibleSpace: FlexibleSpaceBar(
-        
         background: buildFlexibleSpaceWidget(context),
       ),
       actions: [
@@ -136,27 +135,27 @@ class _ScrollProfilePage2BottomNavbarState extends State
                   Navigator.push(
                       context,
                       PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation) {
-                            return WalletPage();
-                          },
-                          transitionsBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: Offset(0.0, 1.0),
-                                end: Offset(0.0, 0.0),
-                              ).animate(animation),
-                              child: child,
-                            );
-                          },
-                          // transitionDuration: Duration(seconds: 3)
-                          )).then((value) => {
-                            if (token != "" && token != null) {getMyAccounts()}
-                          });
+                        pageBuilder: (BuildContext context,
+                            Animation<double> animation,
+                            Animation<double> secondaryAnimation) {
+                          return WalletPage();
+                        },
+                        transitionsBuilder: (BuildContext context,
+                            Animation<double> animation,
+                            Animation<double> secondaryAnimation,
+                            Widget child) {
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: Offset(0.0, 1.0),
+                              end: Offset(0.0, 0.0),
+                            ).animate(animation),
+                            child: child,
+                          );
+                        },
+                        // transitionDuration: Duration(seconds: 3)
+                      )).then((value) => {
+                        if (token != "" && token != null) {getMyAccounts()}
+                      });
                 },
                 icon: Icon(Icons.account_balance_wallet_outlined),
               )
@@ -168,13 +167,11 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   Widget buildFlexibleTooBarWidget() {
     return PreferredSize(
-      
       preferredSize: Size(MediaQuery.of(context).size.width, 44),
       child: Container(
-        
         alignment: Alignment.center,
         child: Container(
-          color:  Color(0xFFf3f5f9),
+          color: Color(0xFFf3f5f9),
           width: MediaQuery.of(context).size.width,
           child: TabBar(
             controller: tabController,
@@ -208,10 +205,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   buildFlexibleSpaceWidget(context) {
     return Column(
-      
       children: [
         Container(
-          
+
             // color: Colors.primaries[index],
             // height:500,
             child: Column(
@@ -228,7 +224,9 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         //     "https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?size=626&ext=jpg"),
                         // image: new NetworkImage(
                         //     "https://c.tenor.com/0DbmgOWBjjkAAAAC/rain-heavy.gif"),
-                        image: (data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${data_DataAc.wallpaper}'),
+                        image: (data_DataAc.wallpaper == null)
+                            ? AssetImage('assets/wallpapers/default.jpg')
+                            : AssetImage('${data_DataAc.wallpaper}'),
                         fit: BoxFit.cover),
                   ),
                   child: Padding(
@@ -427,27 +425,27 @@ class _ScrollProfilePage2BottomNavbarState extends State
                       //           if (token != "" && token != null)
                       //             {getMyAccounts()}
                       //         });
-                       Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation) {
-                            return WalletPage();
-                          },
-                          transitionsBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: Offset(0.0, 1.0),
-                                end: Offset(0.0, 0.0),
-                              ).animate(animation),
-                              child: child,
-                            );
-                          },
-                          // transitionDuration: Duration(seconds: 3)
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (BuildContext context,
+                                Animation<double> animation,
+                                Animation<double> secondaryAnimation) {
+                              return WalletPage();
+                            },
+                            transitionsBuilder: (BuildContext context,
+                                Animation<double> animation,
+                                Animation<double> secondaryAnimation,
+                                Widget child) {
+                              return SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: Offset(0.0, 1.0),
+                                  end: Offset(0.0, 0.0),
+                                ).animate(animation),
+                                child: child,
+                              );
+                            },
+                            // transitionDuration: Duration(seconds: 3)
                           )).then((value) => {
                             if (token != "" && token != null) {getMyAccounts()}
                           });
@@ -464,7 +462,10 @@ class _ScrollProfilePage2BottomNavbarState extends State
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                                image: (data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${data_DataAc.wallpaper}'),
+                                image: (data_DataAc.wallpaper == null)
+                                    ? AssetImage(
+                                        'assets/wallpapers/default.jpg')
+                                    : AssetImage('${data_DataAc.wallpaper}'),
                                 fit: BoxFit.cover),
                           ),
 
@@ -604,14 +605,15 @@ class _ScrollProfilePage2BottomNavbarState extends State
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [
-                      // ThousandsFormatter(allowFraction: true),
-                      LengthLimitingTextInputFormatter(7),
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^(\d+)?\.?\d{0,2}')),
+                      ThousandsFormatter(allowFraction: true),
+                      FilteringTextInputFormatter.deny("-")
+                      // LengthLimitingTextInputFormatter(7),
+                      // FilteringTextInputFormatter.allow(
+                      //     RegExp(r'^(\d+)?\.?\d{0,2}')),
                     ],
                     controller: _ctrlPrice,
                     decoration: InputDecoration(
@@ -626,21 +628,42 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         return '*โปรดระบุยอดเงิน';
                       }
 
-                      if (select == 'topup') {
-                        if (double.parse(_ctrlPrice.text) < 20) {
-                          return '*ขั้นต่ำ 20 บาท';
+                      try {
+                        String textCtrlPrice =
+                            _ctrlPrice.text.replaceAll(",", "");
+                        double money = double.parse(textCtrlPrice);
+                        if (select == 'topup') {
+                          if (money < 20) {
+                            return '*ขั้นต่ำ 20 บาท';
+                          } else if (money > 100000) {
+                            return '*สูงสุด 100,000 บาท';
+                          }
+                        } else if (select == 'withdraw') {
+                          if (money < 100) {
+                            return '*ขั้นต่ำ 100 บาท';
+                          } else if (money > data_DataAc.balance) {
+                            return (data_DataAc.balance < 100)
+                                ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท"
+                                : '*เงินคุณที่สามาถอนเงินได้ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท';
+                          }
                         }
-                      } else if (select == 'withdraw') {
-                        if (double.parse(_ctrlPrice.text) < 100) {
-                          return '*ขั้นต่ำ 100 บาท';
-                        } else if (double.parse(_ctrlPrice.text) >
-                            data_DataAc.balance) {
-                          return (data_DataAc.balance < 100) ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${data_DataAc.balance} บาท" :'*เงินคุณที่สามาถอนเงินได้ ${data_DataAc.balance} บาท';
-                        }
+                      } catch (e) {
+                        return 'โปรดกรอกข้อมูลให้ถูกต้อง';
                       }
 
                       return null;
                     },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      select == 'topup'
+                          ? Text("*20 - 100,000 (บาท)")
+                          : Text("*100 - 100,000 (บาท)")
+                    ],
                   ),
                 ),
                 Padding(
@@ -656,14 +679,14 @@ class _ScrollProfilePage2BottomNavbarState extends State
                         onTap: () async {
                           if (_formKey.currentState.validate()) {
                             if (select == 'topup') {
-                              if (double.parse(_ctrlPrice.text) >= 20) {
+                              if (double.parse(_ctrlPrice.text.replaceAll(",", "")) >= 20) {
                                 Navigator.of(context).pop();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => PaymentChannelPage(
                                             amount_to_fill:
-                                                double.parse(_ctrlPrice.text),
+                                                double.parse(_ctrlPrice.text.replaceAll(",", "")),
                                           )),
                                 ).then((value) => {
                                       if (token != "" && token != null)
@@ -677,7 +700,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
                                 MaterialPageRoute(
                                     builder: (context) => WithdrawPage(
                                           amount_to_fill:
-                                              double.parse(_ctrlPrice.text),
+                                              double.parse(_ctrlPrice.text.replaceAll(",", "")),
                                           name: data_DataAc.aliasName,
                                           email: data_DataAc.email,
                                         )),
@@ -838,7 +861,7 @@ class _ScrollProfilePage2BottomNavbarState extends State
 
   Widget buildNestedScrollView() {
     return Scaffold(
-       backgroundColor: Color(0xFFf3f5f9),
+      backgroundColor: Color(0xFFf3f5f9),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [buildSliverAppBar(context)];

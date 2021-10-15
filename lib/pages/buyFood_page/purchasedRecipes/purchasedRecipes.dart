@@ -97,7 +97,7 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                           width: 60,
                           height: 60,
                             child:
-                                Image.asset("assets/splash/hamberger.png")),
+                                Image.asset("assets/images/menu.png")),
                         SizedBox(height: 30,),
                         Text(
                           "คุณยังไม่ได้ซื้อสูตรอาหาร",
