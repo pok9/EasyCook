@@ -113,21 +113,32 @@ class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
                       cardNumberDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'หมายเลขบัตร',
-                        hintText: 'XXXX XXXX XXXX XXXX',
+                        hintText: '•••• •••• •••• ••••',
                       ),
-                      expiryDateDecoration: const InputDecoration(
+                      expiryDateDecoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'วันหมดอายุ',
-                        hintText: 'XX/XX',
+                        hintText: 'ดด/ปป',
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              _tripEditModalBottomSheet(context,"assets/images/credit-card.png","วันหมดอายุ","โปรดดูวันหมดอายุที่หน้าบัตรของคุณ ใต้หมายเลขบัตร");
+                            },
+                            icon: Icon(Icons.info_outline_rounded)),
                       ),
-                      cvvCodeDecoration: const InputDecoration(
+                      cvvCodeDecoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'CVV',
-                        hintText: 'XXX',
+                        hintText: '•••',
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              _tripEditModalBottomSheet(context,"assets/images/cvv.png","CVV","CVV คือ หมายเลข 3 หลักที่อยู่ด้านหลังบัตรเครดิต / เดบิตของคุณ");
+                            },
+                            icon: Icon(Icons.info_outline_rounded)),
                       ),
                       cardHolderDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'ชื่อบนบัตร',
+                        hintText: 'ชื่อผู้ถือบัตร',
                       ),
                       onCreditCardModelChange: onCreditCardModelChange,
                     ),
@@ -244,6 +255,92 @@ class _TopupCreditCardPageState extends State<TopupCreditCardPage> {
         ),
       ),
     );
+  }
+
+  void _tripEditModalBottomSheet(context,String image,String title,String description) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                color: Color(0xFF737373),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: _buildBottomNavigationMenu(context,image,title,description),
+              ),
+            ));
+  }
+
+  Container _buildBottomNavigationMenu(context,String image,String title,String description) {
+    return Container(
+
+        // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
+        decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30))),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8,bottom: 8),
+                child: Container(
+                    height: 150,
+                     width: 150,
+                    child: Image.asset(image)),
+              ),
+              Padding(
+                padding: const EdgeInsets.only( bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      description,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15),
+                    ))
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        width: MediaQuery.of(context).size.width - 50,
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "ตกลง",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        )),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ));
   }
 
   void onCreditCardModelChange(CreditCardModel creditCardModel) {

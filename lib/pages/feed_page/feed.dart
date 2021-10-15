@@ -37,6 +37,7 @@ import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:share/share.dart';
@@ -1993,7 +1994,7 @@ class _FeedPageState extends State<FeedPage> {
                         ? Text(
                             (dataRecommendRecipe.price == 0)
                                 ? "ฟรี "
-                                : "\฿${dataRecommendRecipe.price}",
+                                : "\฿${NumberFormat("#,###.##").format(dataRecommendRecipe.price)}",
                             style: TextStyle(
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold))
@@ -2006,7 +2007,7 @@ class _FeedPageState extends State<FeedPage> {
                                     ? "ซื้อแล้ว"
                                     : (dataRecommendRecipe.price == 0)
                                         ? "ฟรี "
-                                        : "\฿${dataRecommendRecipe.price}",
+                                        : "\฿${NumberFormat("#,###.##").format(dataRecommendRecipe.price)}",
                             style: TextStyle(
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold),

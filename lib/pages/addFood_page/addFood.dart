@@ -404,7 +404,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
                             hintStyle:
                                 TextStyle(fontSize: 16, color: Colors.grey),
                           ),
-                          
                         ),
                       ),
                     ),
@@ -1231,7 +1230,6 @@ class _AddFoodPageState extends State<AddFoodPage> {
           )
         ],
       ),
-      
       body: Form(
         key: _formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -2007,8 +2005,8 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
                         "ระบุราคา(บาท)",
-                        style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Spacer(),
@@ -2036,16 +2034,22 @@ class _AddFoodPageState extends State<AddFoodPage> {
                     keyboardType: TextInputType.number,
                     inputFormatters: [
                       ThousandsFormatter(allowFraction: true),
-                        FilteringTextInputFormatter.deny("-")
+                      FilteringTextInputFormatter.deny("-")
                       // LengthLimitingTextInputFormatter(7),
                       // FilteringTextInputFormatter.allow(
                       //     RegExp(r'^(\d+)?\.?\d{0,2}')),
                     ],
                     controller: _ctrlPrice,
-                    validator: (value){
-                      if(double.parse(value.trim().replaceAll(",", "")) > 100000){
-                        return 'ระบุราคาได้สูงสุดคือ 100,000 บาท';
+                    validator: (value) {
+                      try {
+                        if (double.parse(value.trim().replaceAll(",", "")) >
+                            100000) {
+                          return 'ระบุราคาได้สูงสุดคือ 100,000 บาท';
+                        }
+                      } catch (e) {
+                        return 'โปรดระบุข้อมูลให้ถูกต้อง😑';
                       }
+
                       return null;
                     },
                     decoration: InputDecoration(
@@ -2058,20 +2062,17 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(right: 32.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                         Text("*1 - 100,000 (บาท)")
-                           
-                      ],
-                    ),
+                  padding: const EdgeInsets.only(right: 32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [Text("*1 - 100,000 (บาท)")],
                   ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
                     // padding: EdgeInsets.all(20),
-    
+
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         color: Colors.blue,
@@ -2080,26 +2081,26 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: () async {
-                          if(_formKeyPrice.currentState.validate()){
+                          if (_formKeyPrice.currentState.validate()) {
                             setState(() {
-                            Navigator.pop(context);
-                            _ctrlPriceCopy.text = _ctrlPrice.text;
-                            if (_ctrlPriceCopy.text == "0.00" ||
-                                _ctrlPriceCopy.text == "" || _ctrlPriceCopy.text.trim() == "" ||
-                                double.parse(_ctrlPrice.text.replaceAll(",", "")) == 0) {
-                                 
-                              _ctrlPrice.text = "0.00";
-                              _ctrlPriceCopy.text == "0.00";
-                              _selectPrices = "ฟรี";
-                              _prices[1] = Price('ระบุราคา');
-                               
-                            } else {
-                              _prices[1] = Price('${_ctrlPrice.text}');
-                              _selectPrices = _ctrlPrice.text;
-                            }
-                          });
+                              Navigator.pop(context);
+                              _ctrlPriceCopy.text = _ctrlPrice.text;
+                              if (_ctrlPriceCopy.text == "0.00" ||
+                                  _ctrlPriceCopy.text == "" ||
+                                  _ctrlPriceCopy.text.trim() == "" ||
+                                  double.parse(_ctrlPrice.text
+                                          .replaceAll(",", "")) ==
+                                      0) {
+                                _ctrlPrice.text = "0.00";
+                                _ctrlPriceCopy.text == "0.00";
+                                _selectPrices = "ฟรี";
+                                _prices[1] = Price('ระบุราคา');
+                              } else {
+                                _prices[1] = Price('${_ctrlPrice.text}');
+                                _selectPrices = _ctrlPrice.text;
+                              }
+                            });
                           }
-                          
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),

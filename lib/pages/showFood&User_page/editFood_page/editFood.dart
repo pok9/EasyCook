@@ -2235,119 +2235,147 @@ class _EditFoodPageState extends State<EditFoodPage> {
             ));
   }
 
-  Container _buildBottomNavigationMenu(context) {
-    return Container(
-        decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
-            borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(30),
-                topRight: const Radius.circular(30))),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "ระบุราคา(บาท)",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+  final _formKeyPrice = GlobalKey<FormState>();
+  Form _buildBottomNavigationMenu(context) {
+    return Form(
+      key: _formKeyPrice,
+      child: Container(
+          decoration: BoxDecoration(
+              color: Theme.of(context).canvasColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(30),
+                  topRight: const Radius.circular(30))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "ระบุราคา(บาท)",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          print(_ctrlPrice.text);
-                          print(_ctrlPriceCopy.text);
-                          Navigator.pop(context);
-                          if (_ctrlPriceCopy.text == "0.00") {
-                            _ctrlPrice.text = "0.00";
-                            _selectPrices = "ฟรี";
-                            _prices[1] = Price('ระบุราคา');
-                          }
-                        });
-                      },
-                      icon: Icon(
-                        Icons.cancel,
-                        color: Colors.blue,
-                        size: 25,
-                      ))
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    ThousandsFormatter(allowFraction: true),
-                    FilteringTextInputFormatter.deny("-")
-                    // LengthLimitingTextInputFormatter(7),
-                    // FilteringTextInputFormatter.allow(
-                    //     RegExp(r'^(\d+)?\.?\d{0,2}')),
+                    Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            print(_ctrlPrice.text);
+                            print(_ctrlPriceCopy.text);
+                            Navigator.pop(context);
+                            if (_ctrlPriceCopy.text == "0.00") {
+                              _ctrlPrice.text = "0.00";
+                              _selectPrices = "ฟรี";
+                              _prices[1] = Price('ระบุราคา');
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          Icons.cancel,
+                          color: Colors.blue,
+                          size: 25,
+                        ))
                   ],
-                  controller: _ctrlPrice,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                    labelText: 'ราคา',
-                  ),
-                  autofocus: false,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  // padding: EdgeInsets.all(20),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      ThousandsFormatter(allowFraction: true),
+                      FilteringTextInputFormatter.deny("-")
+                      // LengthLimitingTextInputFormatter(7),
+                      // FilteringTextInputFormatter.allow(
+                      //     RegExp(r'^(\d+)?\.?\d{0,2}')),
+                    ],
+                    controller: _ctrlPrice,
+                    validator: (value) {
+                      try {
+                        if (double.parse(value.trim().replaceAll(",", "")) >
+                          100000) {
+                        return 'ระบุราคาได้สูงสุดคือ 100,000 บาท';
+                      }
+                      } catch (e) {
+                        return 'โปรดระบุข้อมูลให้ถูกต้อง😑';
+                      }
+                      
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      labelText: 'ราคา',
+                    ),
+                    autofocus: false,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [Text("*1 - 100,000 (บาท)")],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    // padding: EdgeInsets.all(20),
 
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () async {
-                        setState(() {
-                          Navigator.pop(context);
-                          _ctrlPriceCopy.text = _ctrlPrice.text;
-                          if (_ctrlPriceCopy.text == "0.00" ||
-                              _ctrlPriceCopy.text == "" ||
-                              double.parse(_ctrlPrice.text.trim().replaceAll(",", "")) == 0) {
-                            _ctrlPrice.text = "0.00";
-                            _ctrlPriceCopy.text == "0.00";
-                            _selectPrices = "ฟรี";
-                            _prices[1] = Price('ระบุราคา');
-                          } else {
-                            _prices[1] = Price('${_ctrlPrice.text}');
-                            _selectPrices = _ctrlPrice.text;
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          if (_formKeyPrice.currentState.validate()) {
+                            setState(() {
+                              Navigator.pop(context);
+                              _ctrlPriceCopy.text = _ctrlPrice.text;
+                              if (_ctrlPriceCopy.text == "0.00" ||
+                                  _ctrlPriceCopy.text == "" ||
+                                  double.parse(_ctrlPrice.text
+                                          .trim()
+                                          .replaceAll(",", "")) ==
+                                      0) {
+                                _ctrlPrice.text = "0.00";
+                                _ctrlPriceCopy.text == "0.00";
+                                _selectPrices = "ฟรี";
+                                _prices[1] = Price('ระบุราคา');
+                              } else {
+                                _prices[1] = Price('${_ctrlPrice.text}');
+                                _selectPrices = _ctrlPrice.text;
+                              }
+                            });
                           }
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'ตกลง',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            )
-                          ],
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'ตกลง',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ));
+              ],
+            ),
+          )),
+    );
   }
 }
 

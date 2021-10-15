@@ -498,7 +498,7 @@ class _ScrollProfilePageState extends State
                                       onPressed: () {
                                         _ctrlPrice.text = "";
 
-                                        _displayBottomSheet(context, "topup");
+                                        _displayBottomSheet(context, "topup","เติม");
                                       },
                                     ),
                                   ),
@@ -520,7 +520,7 @@ class _ScrollProfilePageState extends State
                                       onPressed: () {
                                         _ctrlPrice.text = "";
                                         _displayBottomSheet(
-                                            context, "withdraw");
+                                            context, "withdraw","ถอน");
                                       },
                                     ),
                                   ),
@@ -538,7 +538,7 @@ class _ScrollProfilePageState extends State
     );
   }
 
-  void _displayBottomSheet(context, String select) {
+  void _displayBottomSheet(context, String select,String text) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -547,14 +547,14 @@ class _ScrollProfilePageState extends State
                 color: Color(0xFFf3f5f9),
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: _buildBottomNavigationMenu(context, select),
+                child: _buildBottomNavigationMenu(context, select,text),
               ),
             ));
   }
 
   TextEditingController _ctrlPrice = TextEditingController(); //ราคา
   final _formKey = GlobalKey<FormState>();
-  Container _buildBottomNavigationMenu(context, String select) {
+  Container _buildBottomNavigationMenu(context, String select,String text) {
     return Container(
 
         // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
@@ -574,7 +574,7 @@ class _ScrollProfilePageState extends State
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        "ระบุจำนวนเงิน(บาท)",
+                        "ระบุจำนวน$textเงิน(บาท)",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -649,7 +649,7 @@ class _ScrollProfilePageState extends State
                           if (money < 20) {
                             return '*ขั้นต่ำ 20 บาท';
                           } else if (money > 100000) {
-                            return '*สูงสุด 100,000 บาท';
+                            return '*เติมสูงสุด 100,000 บาท ในแต่ละครั้งเท่านั้น';
                           }
                         } else if (select == 'withdraw') {
                           if (money < 100) {
@@ -658,6 +658,8 @@ class _ScrollProfilePageState extends State
                             return (data_DataAc.balance < 100)
                                 ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท"
                                 : '*เงินคุณที่สามาถอนเงินได้ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท';
+                          }else if (money > 100000) {
+                            return '*ถอนสูงสุด 100,000 บาท ในแต่ละครั้งเท่านั้น';
                           }
                         }
                       } catch (e) {
