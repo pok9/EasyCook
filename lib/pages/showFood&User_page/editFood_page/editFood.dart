@@ -20,8 +20,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
@@ -1203,7 +1205,8 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   _selectPeoples == this.widget.suitableFor &&
                   _selectTimes == this.widget.takeTime &&
                   _selectCategorys == this.widget.foodCategory &&
-                  _selectPrices == this.widget.price &&
+                  _selectPrices ==
+                      '${NumberFormat("#,###.##").format(double.parse(this.widget.price))}' &&
                   this.widget.dataIngredient.length == this.ingredient_row &&
                   this.widget.dataHowto.length == this.howto_row) {
                 print("กลับได้เลย");
@@ -1292,7 +1295,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
 
                 //ราคา
                 print("ราคา => ${_selectPrices}");
-                price = _selectPrices;
+                price = _selectPrices.trim().replaceAll(",", "");
 
                 //uid
                 print("uid => ${this.widget.uid}");
@@ -2061,8 +2064,13 @@ class _EditFoodPageState extends State<EditFoodPage> {
       Price('ระบุราคา'),
     ];
     if (this.widget.price != "0.0") {
-      _selectPrices = this.widget.price;
-      _prices[1] = Price('${this.widget.price}');
+      //'${NumberFormat("#,###.##").format(data_DataAc.balance)}'
+      _ctrlPrice.text =
+          '${NumberFormat("#,###.##").format(double.parse(this.widget.price))}';
+      _ctrlPriceCopy.text = _ctrlPrice.text;
+      _selectPrices =
+          '${NumberFormat("#,###.##").format(double.parse(this.widget.price))}';
+      _prices[1] = Price(_selectPrices);
     } else {
       _selectPrices = "ฟรี";
     }
@@ -2252,6 +2260,8 @@ class _EditFoodPageState extends State<EditFoodPage> {
                   IconButton(
                       onPressed: () {
                         setState(() {
+                          print(_ctrlPrice.text);
+                          print(_ctrlPriceCopy.text);
                           Navigator.pop(context);
                           if (_ctrlPriceCopy.text == "0.00") {
                             _ctrlPrice.text = "0.00";
@@ -2272,9 +2282,11 @@ class _EditFoodPageState extends State<EditFoodPage> {
                 child: TextField(
                   keyboardType: TextInputType.number,
                   inputFormatters: [
-                    LengthLimitingTextInputFormatter(7),
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^(\d+)?\.?\d{0,2}')),
+                    ThousandsFormatter(allowFraction: true),
+                    FilteringTextInputFormatter.deny("-")
+                    // LengthLimitingTextInputFormatter(7),
+                    // FilteringTextInputFormatter.allow(
+                    //     RegExp(r'^(\d+)?\.?\d{0,2}')),
                   ],
                   controller: _ctrlPrice,
                   decoration: InputDecoration(
@@ -2303,7 +2315,7 @@ class _EditFoodPageState extends State<EditFoodPage> {
                           _ctrlPriceCopy.text = _ctrlPrice.text;
                           if (_ctrlPriceCopy.text == "0.00" ||
                               _ctrlPriceCopy.text == "" ||
-                              double.parse(_ctrlPrice.text) == 0) {
+                              double.parse(_ctrlPrice.text.trim().replaceAll(",", "")) == 0) {
                             _ctrlPrice.text = "0.00";
                             _ctrlPriceCopy.text == "0.00";
                             _selectPrices = "ฟรี";

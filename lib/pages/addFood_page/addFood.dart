@@ -17,6 +17,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -1080,7 +1081,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                   builder: (context) => CustomDialog(
                         title: "ยังไม่ได้บันทึกการเปลี่ยนแปลง",
                         description:
-                            "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก แน่ใจไหมว่าต้องการยกเลิก",
+                            "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้โพสต์ แน่ใจไหมว่าต้องการยกเลิก",
                       ));
             } else {
               Navigator.pop(context);
@@ -1154,7 +1155,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
                       token,
                       addImage[0].image,
                       _ctrlNameFood.text,
-                      _ctrlPrice.text,
+                      _ctrlPrice.text.trim().replaceAll(",", ""),
                       _selectPeoples,
                       _selectTimes,
                       _selectCategorys,
@@ -1230,6 +1231,7 @@ class _AddFoodPageState extends State<AddFoodPage> {
           )
         ],
       ),
+      
       body: Form(
         key: _formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -1985,116 +1987,143 @@ class _AddFoodPageState extends State<AddFoodPage> {
             ));
   }
 
-  Container _buildBottomNavigationMenu(context) {
-    return Container(
-        decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
-            borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(30),
-                topRight: const Radius.circular(30))),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "ระบุราคา(บาท)",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+  final _formKeyPrice = GlobalKey<FormState>();
+  Form _buildBottomNavigationMenu(context) {
+    return Form(
+      key: _formKeyPrice,
+      child: Container(
+          decoration: BoxDecoration(
+              color: Theme.of(context).canvasColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(30),
+                  topRight: const Radius.circular(30))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "ระบุราคา(บาท)",
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            Navigator.pop(context);
+                            if (_ctrlPriceCopy.text == "0.00") {
+                              _ctrlPrice.text = "0.00";
+                              _selectPrices = "ฟรี";
+                              _prices[1] = Price('ระบุราคา');
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          Icons.cancel,
+                          color: Colors.blue,
+                          size: 25,
+                        ))
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      ThousandsFormatter(allowFraction: true),
+                        FilteringTextInputFormatter.deny("-")
+                      // LengthLimitingTextInputFormatter(7),
+                      // FilteringTextInputFormatter.allow(
+                      //     RegExp(r'^(\d+)?\.?\d{0,2}')),
+                    ],
+                    controller: _ctrlPrice,
+                    validator: (value){
+                      if(double.parse(value.trim().replaceAll(",", "")) > 100000){
+                        return 'ระบุราคาได้สูงสุดคือ 100,000 บาท';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      labelText: 'จำนวนเงิน',
+                      hintText: '0.00',
+                    ),
+                    autofocus: false,
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(right: 32.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                         Text("*1 - 100,000 (บาท)")
+                           
+                      ],
                     ),
                   ),
-                  Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          Navigator.pop(context);
-                          if (_ctrlPriceCopy.text == "0.00") {
-                            _ctrlPrice.text = "0.00";
-                            _selectPrices = "ฟรี";
-                            _prices[1] = Price('ระบุราคา');
-                          }
-                        });
-                      },
-                      icon: Icon(
-                        Icons.cancel,
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    // padding: EdgeInsets.all(20),
+    
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
                         color: Colors.blue,
-                        size: 25,
-                      ))
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(7),
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^(\d+)?\.?\d{0,2}')),
-                  ],
-                  controller: _ctrlPrice,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                    labelText: 'จำนวนเงิน',
-                    hintText: '0.00',
-                  ),
-                  autofocus: false,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  // padding: EdgeInsets.all(20),
-
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () async {
-                        setState(() {
-                          Navigator.pop(context);
-                          _ctrlPriceCopy.text = _ctrlPrice.text;
-                          if (_ctrlPriceCopy.text == "0.00" ||
-                              _ctrlPriceCopy.text == "" ||
-                              double.parse(_ctrlPrice.text) == 0) {
-                            _ctrlPrice.text = "0.00";
-                            _ctrlPriceCopy.text == "0.00";
-                            _selectPrices = "ฟรี";
-                            _prices[1] = Price('ระบุราคา');
-                          } else {
-                            _prices[1] = Price('${_ctrlPrice.text}');
-                            _selectPrices = _ctrlPrice.text;
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          if(_formKeyPrice.currentState.validate()){
+                            setState(() {
+                            Navigator.pop(context);
+                            _ctrlPriceCopy.text = _ctrlPrice.text;
+                            if (_ctrlPriceCopy.text == "0.00" ||
+                                _ctrlPriceCopy.text == "" || _ctrlPriceCopy.text.trim() == "" ||
+                                double.parse(_ctrlPrice.text.replaceAll(",", "")) == 0) {
+                                 
+                              _ctrlPrice.text = "0.00";
+                              _ctrlPriceCopy.text == "0.00";
+                              _selectPrices = "ฟรี";
+                              _prices[1] = Price('ระบุราคา');
+                               
+                            } else {
+                              _prices[1] = Price('${_ctrlPrice.text}');
+                              _selectPrices = _ctrlPrice.text;
+                            }
+                          });
                           }
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'ตกลง',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            )
-                          ],
+                          
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'ตกลง',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ));
+              ],
+            ),
+          )),
+    );
   }
 }
 
@@ -2214,6 +2243,7 @@ class CustomDialog extends StatelessWidget {
           top: 0,
           left: 16,
           right: 16,
+          // bottom: 10,
           child: Image.asset(
             'assets/logoNoti/warning.png',
             width: 50,
@@ -2290,17 +2320,17 @@ class CustomDialogNotificationPost extends StatelessWidget {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        "อยู่หน้านี้ต่อ",
-                        style: TextStyle(color: Colors.black),
+                        "ตกลง",
+                        style: TextStyle(color: Colors.blue),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      },
-                      child: Text("ออกไปหน้าอื่น"),
-                    ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     Navigator.pop(context);
+                    //     Navigator.pop(context);
+                    //   },
+                    //   child: Text("ออกไปหน้าอื่น"),
+                    // ),
                   ],
                 ),
               ],
