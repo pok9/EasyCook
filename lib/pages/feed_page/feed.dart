@@ -19,6 +19,7 @@ import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/pages/feed_page/feed/recommendPage.dart';
+import 'package:easy_cook/pages/feed_page/showIngredient/showIngredientPage.dart';
 
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 
@@ -1498,47 +1499,53 @@ class _FeedPageState extends State<FeedPage> {
   Padding ingredients() {
     return Padding(
       padding: const EdgeInsets.only(left: 13, right: 13, top: 18, bottom: 18),
-      child: Container(
-        height: 150,
-        padding: EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-              image: NetworkImage(
-                  "https://ed.edtfiles-media.com/ud/news/1/155/463477/1_5-850x567.jpg"),
-              fit: BoxFit.cover),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'เนื้อ',
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ],
-                ),
-                Text(
-                  'ดูเพิ่มเติม >',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w100),
-                ),
-              ],
-            ),
-          ],
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context,
+              (MaterialPageRoute(builder: (context) => ShowIngredientPage(nameIngredient: "เนื้อ",image: "assets/imageIngredientPage/meat.jpg",))));
+        },
+        child: Container(
+          height: 150,
+          padding: EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+                image: AssetImage(
+                    "assets/imageIngredientPage/meat.jpg"),
+                fit: BoxFit.cover),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'เนื้อ',
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'ดูเพิ่มเติม >',
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w100),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

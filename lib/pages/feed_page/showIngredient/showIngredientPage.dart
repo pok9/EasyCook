@@ -3,24 +3,22 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchIngred_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class 
-SearchIngredient extends StatefulWidget {
-  // const SearchIngredient({ Key? key }) : super(key: key);
+class ShowIngredientPage extends StatefulWidget {
+  final String nameIngredient;
+  final String image;
 
-  String nameIngredient;
-  SearchIngredient({this.nameIngredient});
+  const ShowIngredientPage({Key key,this.nameIngredient,this.image}) : super(key: key);
 
   @override
-  _SearchIngredientState createState() => _SearchIngredientState();
+  _ShowIngredientPageState createState() => _ShowIngredientPageState();
 }
 
-class _SearchIngredientState extends State<SearchIngredient> {
+class _ShowIngredientPageState extends State<ShowIngredientPage> {
   @override
   void initState() {
     super.initState();
@@ -137,37 +135,28 @@ class _SearchIngredientState extends State<SearchIngredient> {
     }
   }
 
+  
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(this.widget.nameIngredient),
-        ),
-        body: (listDataFood == null)
-            ? Center(child: CircularProgressIndicator())
-            // : ListView.builder(
-            //     itemCount: listDataFood.length,
-            //     itemBuilder: (context, index) {
-            //       return ListTile(
-            //         onTap: (){
-            //           print(listDataFood.elementAt(index).rid);
-            //         },
-            //         leading: Image.network(listDataFood.elementAt(index).image),
-            //         title: Text(listDataFood.elementAt(index).recipeName),
-            //       );
-            //     },
-            //   ),
-            : (listDataFood == null)
-                ? Center(
-                    child: CircularProgressIndicator(
-                      valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.blue),
+            body: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  title: Text(this.widget.nameIngredient),
+                  pinned: true,
+                  expandedHeight: 180.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Image.asset(
+                      this.widget.image, 
+                      fit: BoxFit.cover,
                     ),
-                  )
-                : ListView.builder(
-                    itemCount: listDataFood.length,
-                    itemBuilder: (context, index) => Column(
+                  ),
+                ),
+                SliverList(
+                    delegate: SliverChildListDelegate(List.generate(
+                        listDataFood.length,
+                        (index) => Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -376,6 +365,9 @@ class _SearchIngredientState extends State<SearchIngredient> {
                               height: 16,
                             )
                           ],
-                        )));
+                        ))))
+              ],
+            ),
+          );
   }
 }

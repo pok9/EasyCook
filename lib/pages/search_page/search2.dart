@@ -460,7 +460,9 @@ class _SearchPage2State extends State<SearchPage2> {
                                                             dataRecipe[index]
                                                                 .rid,
                                                       )),
-                                            );
+                                            ).then((value) {
+                                              getMybuy();
+                                            });
                                           }
                                         }
                                       }
@@ -595,8 +597,8 @@ class _SearchPage2State extends State<SearchPage2> {
                                                     CupertinoPageRoute(
                                                         builder: (context) {
                                                   return ProfileUser(
-                                                    reqUid:
-                                                        dataRecipe[index].userId,
+                                                    reqUid: dataRecipe[index]
+                                                        .userId,
                                                   );
                                                 }));
                                               } else if (dataAcUser.userId ==
@@ -611,8 +613,8 @@ class _SearchPage2State extends State<SearchPage2> {
                                                     CupertinoPageRoute(
                                                         builder: (context) {
                                                   return ProfileUser(
-                                                    reqUid:
-                                                        dataRecipe[index].userId,
+                                                    reqUid: dataRecipe[index]
+                                                        .userId,
                                                   );
                                                 }));
                                               }

@@ -589,6 +589,7 @@ class CustomAlertDialog extends StatefulWidget {
 }
 
 class _CustomAlertDialogState extends State<CustomAlertDialog> {
+
   Future<BuyFood> buyFood(String token, int recipe_ID) async {
     print('press');
     print(token);
@@ -607,10 +608,10 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
         });
 
     print("addIngredients======" + (response.statusCode.toString()));
-    // print("addIngredients======"+(response));
+    print("responseBodyIngredients => ${response.body}");
     if (response.statusCode == 200) {
       final String responseString = response.body;
-
+      print(responseString);
       return buyFoodFromJson(responseString);
     } else {
       return null;
@@ -677,7 +678,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
             child: InkWell(
               highlightColor: Colors.grey[200],
               onTap: () async {
-                Navigator.pop(context);
+                // Navigator.pop(context);
 
                 showDialog(
                   context: context,
@@ -718,7 +719,10 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                             colors: Colors.lightGreen,
                             index: 1,
                             rid: this.widget.rid,
-                          ));
+                          )).then((value){
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          });
                 } else {
                   showDialog(
                       context: context,
@@ -729,7 +733,9 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                                 'assets/logoNoti/wrongGif.gif',
                             colors: Colors.redAccent,
                             index: 0,
-                          ));
+                          )).then((value){
+                            Navigator.pop(context);
+                          });
                 }
               },
               child: Center(
@@ -850,12 +856,16 @@ class CustomDialog extends StatelessWidget {
                       primary: colors,
                     ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       if (index == 1) {
                         Navigator.pop(context);
-                      } else {
+                        // Navigator.pop(context);
+                      } else{
                         Navigator.pop(context);
                       }
+                      //else {
+                      //   Navigator.pop(context);
+                      // }
                     },
                     child: Text(
                       "เข้าใจแล้ว",

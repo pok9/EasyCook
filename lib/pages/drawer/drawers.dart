@@ -7,6 +7,7 @@ import 'package:easy_cook/models/reset_password/reset_passwordModel.dart';
 
 import 'package:easy_cook/pages/buyFood_page/purchasedRecipes/purchasedRecipes.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
+import 'package:easy_cook/pages/drawer/helpCenter/qrCodeShareApp/qrCodeShareApp.dart';
 import 'package:easy_cook/pages/drawer/notification_page/notification.dart';
 import 'package:easy_cook/pages/drawer/setting/chooseSettingPage.dart';
 import 'package:easy_cook/pages/drawer/switch%20accounts/switch_accountsPage.dart';
@@ -147,7 +148,9 @@ class _DrawersState extends State<Drawers> {
 
     return Container(
       width: deviceSize.width - 45,
-      child: (this.widget.token != "" && this.widget.data_DataAc != null)
+      child: (this.widget.token != "" &&
+              this.widget.token != null &&
+              this.widget.data_DataAc != null)
           ? Drawer(
               child: ListView(
                 children: [
@@ -473,7 +476,7 @@ class _DrawersState extends State<Drawers> {
                       }
 
                       ///////////////////////// delete swith user //////////////////////////////
-                      
+
                       Navigator.pop(context);
 
                       Navigator.pushAndRemoveUntil(
@@ -563,11 +566,38 @@ class _DrawersState extends State<Drawers> {
                                       )),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.qr_code_2_sharp,
+                      color: Colors.blue,
+                      size: 25,
+                    ),
+                    title: Text(
+                      'แบ่งปันแอปพลิเคชัน',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300,
+                      ),
+
+                      //     color: Colors.black)
+                    ),
+                    // trailing: Icon(
+                    //   Icons.arrow_forward_ios_rounded,
+                    //   color: Colors.blue,
+                    // ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => QrCodeShareApp()),
+                      );
+                    },
                   ),
                 ],
               ),

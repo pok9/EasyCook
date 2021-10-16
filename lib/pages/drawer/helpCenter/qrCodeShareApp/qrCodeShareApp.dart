@@ -23,6 +23,7 @@ class QrCodeShareApp extends StatelessWidget {
                         "https://drive.google.com/file/d/1xp5kHyoM_gOjAZfOFkRYoUQyVWLg1Cpi/view?usp=sharing",
                     version: QrVersions.auto,
                     size: 300.0,
+                    
                   ),
                   Positioned(
                     top: 125,

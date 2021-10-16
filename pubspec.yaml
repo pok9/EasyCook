@@ -188,6 +188,7 @@ flutter:
     - assets/logoNoti/
     - assets/imageSearch/
     - assets/splash/
+    - assets/imageIngredientPage/
  
     
   #   - images/a_dot_ham.jpeg

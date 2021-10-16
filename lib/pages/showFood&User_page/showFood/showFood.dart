@@ -1076,6 +1076,7 @@ class _ShowFoodState extends State<ShowFood> {
                           color: Colors.black,
                           decoration: TextDecoration.none,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
