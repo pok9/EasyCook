@@ -35,6 +35,7 @@ import 'package:easy_cook/style/utiltties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
@@ -667,7 +668,6 @@ class _ShowFoodState extends State<ShowFood> {
   @override
   Widget build(BuildContext context) {
     Size sizeScreen = MediaQuery.of(context).size;
-    print("pok->00000 ");
     return RefreshIndicator(
       onRefresh: () async {
         await getPost();
@@ -1393,6 +1393,14 @@ class _ShowFoodState extends State<ShowFood> {
                             ratings = rating;
                             ScoreFoodInputModel scoreFoodInputModel =
                                 await scoreFoodInput(rating, token);
+                            Fluttertoast.showToast(
+                                msg: "ให้คะแนนสูตรอาหารเรียบร้อยแล้ว",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                             setState(() {});
                           }
                         },
@@ -1435,7 +1443,6 @@ class _ShowFoodState extends State<ShowFood> {
                                                 //           ),
                                                 //         ));
 
-                                            
                                                 if (dataMyAccont == null) {
                                                   showDialog(
                                                       context: context,
