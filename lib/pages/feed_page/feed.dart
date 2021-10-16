@@ -56,7 +56,7 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   PageController pageController = PageController();
   int pageCount = 2;
-
+  int randomIngredient;
   @override
   void initState() {
     super.initState();
@@ -85,6 +85,8 @@ class _FeedPageState extends State<FeedPage> {
             curve: Curves.fastLinearToSlowEaseIn);
       }
     });
+
+     randomIngredient = Random().nextInt(listIngredient.length);
   }
 
   String token = ""; //โทเคน
@@ -1495,14 +1497,16 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
-
+  List<String> listIngredient = ["เนื้อ","ไข่ไก่","น้ำตาลทราย"];
+  List<String> pathImageListIngredient = ["assets/imageIngredientPage/meat.jpg","assets/imageIngredientPage/egg.jpg","assets/imageIngredientPage/sugar.jpg"];
   Padding ingredients() {
+    
     return Padding(
       padding: const EdgeInsets.only(left: 13, right: 13, top: 18, bottom: 18),
       child: InkWell(
         onTap: () {
           Navigator.push(context,
-              (MaterialPageRoute(builder: (context) => ShowIngredientPage(nameIngredient: "เนื้อ",image: "assets/imageIngredientPage/meat.jpg",))));
+              (MaterialPageRoute(builder: (context) => ShowIngredientPage(nameIngredient: listIngredient[randomIngredient],image: pathImageListIngredient[randomIngredient],))));
         },
         child: Container(
           height: 150,
@@ -1511,7 +1515,7 @@ class _FeedPageState extends State<FeedPage> {
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
                 image: AssetImage(
-                    "assets/imageIngredientPage/meat.jpg"),
+                    pathImageListIngredient[randomIngredient]),
                 fit: BoxFit.cover),
           ),
           child: Row(
@@ -1527,7 +1531,7 @@ class _FeedPageState extends State<FeedPage> {
                   Row(
                     children: [
                       Text(
-                        'เนื้อ',
+                        listIngredient[randomIngredient],
                         style: TextStyle(
                             fontSize: 24,
                             color: Colors.white,
