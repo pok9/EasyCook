@@ -67,7 +67,7 @@ class _SearchPage1State extends State<SearchPage1> {
 
     setState(() {
       token = preferences.getString("tokens");
-      print("Token >>> $token");
+     
       if (token != "" && token != null) {
         getMyAccounts();
       }

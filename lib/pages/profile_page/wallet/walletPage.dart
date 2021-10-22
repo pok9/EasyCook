@@ -28,10 +28,10 @@ class _WalletPageState extends State<WalletPage> {
 
     // dummyList = List.generate(10, (index) => "Item : ${index + 1}");
     _scrollController.addListener(() {
-      print(
-          "_scrollController.position.pixels = ${_scrollController.position.pixels}");
-      print(
-          '_scrollController.position.maxScrollExtent = ${_scrollController.position.maxScrollExtent}');
+      // print(
+      //     "_scrollController.position.pixels = ${_scrollController.position.pixels}");
+      // print(
+      //     '_scrollController.position.maxScrollExtent = ${_scrollController.position.maxScrollExtent}');
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         _getMoreList();
@@ -57,7 +57,7 @@ class _WalletPageState extends State<WalletPage> {
   // }
 
   _getMoreList() {
-    print("Get More List");
+    // print("Get More List");
     _currentMax = dummyListDataListWithdrawTopup.length;
 
     if ((dataListWithdrawTopup.length -
@@ -80,143 +80,127 @@ class _WalletPageState extends State<WalletPage> {
   }
 
   String token = ""; //โทเคน
-  Future<String> findUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  // Future<String> findUser() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    return preferences.getString("tokens");
-  }
+  //   return preferences.getString("tokens");
+  // }
 
   //ข้อมูลตัวเอง
   MyAccount data_MyAccount;
   DataMyAccount data_DataAc;
 
-  Future<MyAccount> getMyAccounts() async {
-    final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+  // Future<MyAccount> getMyAccounts() async {
+  //   final String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
 
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+  //   final response = await http
+  //       .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
-    if (response.statusCode == 200) {
-      // if (mounted)
-      // setState(() {
-      final String responseString = response.body;
+  //   if (response.statusCode == 200) {
+  //     // if (mounted)
+  //     // setState(() {
+  //     final String responseString = response.body;
 
-      // data_MyAccount = myAccountFromJson(responseString);
-      // data_DataAc = data_MyAccount.data[0];
+  //     // data_MyAccount = myAccountFromJson(responseString);
+  //     // data_DataAc = data_MyAccount.data[0];
 
-      // getMyPost();
-      // });
-      return myAccountFromJson(responseString);
-    } else {
-      return null;
-    }
-  }
+  //     // getMyPost();
+  //     // });
+  //     return myAccountFromJson(responseString);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   List<MyHisWithdrawModel> data_my_his_withdraw;
-  Future<List<MyHisWithdrawModel>> getMy_his_withdraw() async {
-    final String apiUrl =
-        "https://apifood.comsciproject.com/pjUsers/my_his_withdraw";
+  // Future<List<MyHisWithdrawModel>> getMy_his_withdraw() async {
+  //   final String apiUrl =
+  //       "https://apifood.comsciproject.com/pjUsers/my_his_withdraw";
 
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+  //   final response = await http
+  //       .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
-    if (response.statusCode == 200) {
-      // if (mounted)
-      // setState(() {
-      final String responseString = response.body;
+  //   if (response.statusCode == 200) {
+  //     // if (mounted)
+  //     // setState(() {
+  //     final String responseString = response.body;
 
-      // data_MyAccount = myAccountFromJson(responseString);
-      // data_DataAc = data_MyAccount.data[0];
+  //     // data_MyAccount = myAccountFromJson(responseString);
+  //     // data_DataAc = data_MyAccount.data[0];
 
-      // getMyPost();
-      // });
+  //     // getMyPost();
+  //     // });
 
-      // print(responseString);
+  //     // print(responseString);
 
-      return myHisWithdrawModelFromJson(responseString);
-    } else {
-      return null;
-    }
-  }
+  //     return myHisWithdrawModelFromJson(responseString);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   List<MyHisTopupModel> data_my_his_topup;
-  Future<List<MyHisTopupModel>> getMy_his_topup() async {
-    final String apiUrl =
-        "https://apifood.comsciproject.com/pjUsers/my_his_topup";
+  // Future<List<MyHisTopupModel>> getMy_his_topup() async {
+  //   final String apiUrl =
+  //       "https://apifood.comsciproject.com/pjUsers/my_his_topup";
 
-    final response = await http
-        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+  //   final response = await http
+  //       .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
-    if (response.statusCode == 200) {
-      // if (mounted)
-      // setState(() {
-      final String responseString = response.body;
+  //   if (response.statusCode == 200) {
+  //     // if (mounted)
+  //     // setState(() {
+  //     final String responseString = response.body;
 
-      // data_MyAccount = myAccountFromJson(responseString);
-      // data_DataAc = data_MyAccount.data[0];
+  //     // data_MyAccount = myAccountFromJson(responseString);
+  //     // data_DataAc = data_MyAccount.data[0];
 
-      // getMyPost();
-      // });
+  //     // getMyPost();
+  //     // });
 
-      // print(responseString);
+  //     // print(responseString);
 
-      return myHisTopupModelFromJson(responseString);
-    } else {
-      return null;
-    }
-  }
+  //     return myHisTopupModelFromJson(responseString);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   List dataListWithdrawTopup = [];
   List dummyListDataListWithdrawTopup = [];
-  Future<List> getListWithdrawTopup() async {
-   
-    dataListWithdrawTopup = [];
-    for (int i = 0; i < data_my_his_withdraw.length; i++) {
-      dataListWithdrawTopup.add(data_my_his_withdraw[i]);
-    }
+  // Future<List> getListWithdrawTopup() async {
+  //   dataListWithdrawTopup = [];
+  //   for (int i = 0; i < data_my_his_withdraw.length; i++) {
+  //     dataListWithdrawTopup.add(data_my_his_withdraw[i]);
+  //   }
 
-    for (int i = 0; i < data_my_his_topup.length; i++) {
-      dataListWithdrawTopup.add(data_my_his_topup[i]);
-    }
- 
+  //   for (int i = 0; i < data_my_his_topup.length; i++) {
+  //     dataListWithdrawTopup.add(data_my_his_topup[i]);
+  //   }
 
+  //   selectionSort(dataListWithdrawTopup);
 
-   
-
-    selectionSort(dataListWithdrawTopup);
-   
-   
-
-     
-
-  
-    return dataListWithdrawTopup;
-  }
+  //   return dataListWithdrawTopup;
+  // }
 
   void selectionSort(List array) {
-
-    for (int i = 0; i < array.length-1; i++) {
+    for (int i = 0; i < array.length - 1; i++) {
       Duration difference =
           DateTime.now().difference(DateTime.parse("${array[i].datetime}"));
-       
+
       int min = difference.inSeconds;
 
-
       int minId = i;
-      for (int j = i+1; j<array.length; j++) {
-       
+      for (int j = i + 1; j < array.length; j++) {
         Duration difference =
             DateTime.now().difference(DateTime.parse("${array[j].datetime}"));
-          
-         
+
         if (difference.inSeconds < min) {
           min = difference.inSeconds;
           minId = j;
         }
-           
       }
 
-       
       // // swapping
 
       var temp = array[minId];
@@ -250,7 +234,8 @@ class _WalletPageState extends State<WalletPage> {
     List timeSp = dateTimeSp[1].split(".");
     List time = timeSp[0].split(":");
 
-    String text = "${int.parse(dateSp[2])} ${map[dateSp[1]]} - ${time[0]}:${time[1]}";
+    String text =
+        "${int.parse(dateSp[2])} ${map[dateSp[1]]} - ${time[0]}:${time[1]}";
     return text;
   }
 
@@ -264,7 +249,100 @@ class _WalletPageState extends State<WalletPage> {
     };
     return map[data];
   }
-  
+
+  String checkBank(String data) {
+    Map<String, String> map = {
+     "Siam Commercial Bank" :'https://d-reisetour.com/wp-content/uploads/2020/07/%E0%B8%98%E0%B8%99%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%A3%E0%B9%84%E0%B8%97%E0%B8%A2%E0%B8%9E%E0%B8%B2%E0%B8%93%E0%B8%B4%E0%B8%8A%E0%B8%A2%E0%B9%8C.png',
+      "Tisco Bank" : "https://www.tisco.co.th/content/dam/tiscobank/gen-qr-code/TISCO200-200.png",
+      "Bangkok Bank" : "http://i0.wp.com/www.businesslineandlife.co.th/wp-content/uploads/2016/06/logo-bbl-1.png",
+      "Citibank" : "https://www.mitihoon.com/wp-content/uploads/2020/06/Citibank-logo.jpg",
+      "Government Savings Bank" : "https://www.kroobannok.com/news_pic/p90858861817.jpg",
+      "Kasikornbank" : "https://www.khaosod.co.th/wpapp/uploads/2016/09/%E0%B8%98%E0%B8%99%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%A3%E0%B8%81%E0%B8%AA%E0%B8%B4%E0%B8%81%E0%B8%A3%E0%B9%84%E0%B8%97%E0%B8%A2-2.jpg",
+      "Krungthai Bank" : "https://img1.thaipng.com/20180501/iew/kisspng-krung-thai-bank-money-credit-kasikornbank-5ae84f6c22a401.5262489115251741241419.jpg",
+      "Thanachart Bank" : "https://upload.wikimedia.org/wikipedia/commons/2/29/Ttb_bank_Thailand.jpg",
+      "TMB Bank" :"https://image.bangkokbiznews.com/image/kt/media/image/news/2019/10/04/849670/750x422_849670_1570156200.jpg"
+    };
+    return map[data];
+  }
+  //  dummyListDataListWithdrawTopup = [];
+  Future<bool> loadList() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    token = preferences.getString("tokens");
+
+    //getMyAccounts()
+    String apiUrl = "http://apifood.comsciproject.com/pjUsers/myAccount";
+    dynamic response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      data_MyAccount = myAccountFromJson(responseString);
+      data_DataAc = data_MyAccount.data[0];
+    }
+
+    //getMy_his_withdraw()
+    apiUrl = "https://apifood.comsciproject.com/pjUsers/my_his_withdraw";
+
+    response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      data_my_his_withdraw = myHisWithdrawModelFromJson(responseString);
+    }
+
+    //getMy_his_topup()
+    apiUrl = "https://apifood.comsciproject.com/pjUsers/my_his_topup";
+    response = await http
+        .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      data_my_his_topup = myHisTopupModelFromJson(responseString);
+    }
+
+    //getListWithdrawTopup()
+    dataListWithdrawTopup = [];
+ 
+    for (int i = 0; i < data_my_his_withdraw.length; i++) {
+      dataListWithdrawTopup.add(data_my_his_withdraw[i]);
+    }
+
+    for (int i = 0; i < data_my_his_topup.length; i++) {
+      dataListWithdrawTopup.add(data_my_his_topup[i]);
+    }
+
+    selectionSort(dataListWithdrawTopup);
+
+    // dataListWithdrawTopup = dataListWithdrawTopup;
+
+    if (dummyListDataListWithdrawTopup.length < 10) {
+              _currentMax = dummyListDataListWithdrawTopup.length;
+
+              if ((dataListWithdrawTopup.length -
+                      dummyListDataListWithdrawTopup.length) >=
+                  10) {
+                for (int i = dummyListDataListWithdrawTopup.length;
+                    i < _currentMax + 10;
+                    i++) {
+                  dummyListDataListWithdrawTopup.add(dataListWithdrawTopup[i]);
+                }
+              } else {
+                for (int i = dummyListDataListWithdrawTopup.length;
+                    i < dataListWithdrawTopup.length;
+                    i++) {
+                  dummyListDataListWithdrawTopup.add(dataListWithdrawTopup[i]);
+                }
+              }
+            }
+
+    return true;
+  }
+
+  Future<void> _pullRefresh() async {
+    setState(() {
+      loadList();
+    });
+    return Future.delayed(new Duration(seconds: 3));
+    // why use freshWords var? https://stackoverflow.com/a/52992836/2301224
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -273,403 +351,313 @@ class _WalletPageState extends State<WalletPage> {
         title: Text("กระเป๋าตัง"),
       ),
       body: FutureBuilder(
-        future: findUser(),
+        future: loadList(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            token = snapshot.data;
-            return FutureBuilder(
-              future: getMyAccounts(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  data_MyAccount = snapshot.data;
-                  data_DataAc = data_MyAccount.data[0];
-                  return FutureBuilder(
-                    future: getMy_his_withdraw(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData) {
-                        data_my_his_withdraw = snapshot.data;
-                        return FutureBuilder(
-                          future: getMy_his_topup(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasData) {
-                              data_my_his_topup = snapshot.data;
-                              return FutureBuilder(
-                                future: getListWithdrawTopup(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) {
-                                  if (snapshot.hasData) {
-                                    dataListWithdrawTopup = snapshot.data;
-                                    if (dummyListDataListWithdrawTopup.length <
-                                        10) {
-                                      _currentMax =
-                                          dummyListDataListWithdrawTopup.length;
+            
+            return RefreshIndicator(
+              onRefresh: _pullRefresh,
+              child: ListView(
+                controller: _scrollController,
+                children: [
+                  (data_DataAc.userStatus == 0)
+                      ? Container()
+                      : Column(
+                          children: [
+                            Container(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 18, right: 18, top: 18, bottom: 18),
+                                child: Container(
+                                  // height: 150,
+                                  padding: EdgeInsets.only(
+                                      left: 18, right: 18, top: 22, bottom: 22),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                        image: (data_DataAc.wallpaper == null)
+                                            ? AssetImage(
+                                                'assets/wallpapers/default.jpg')
+                                            : AssetImage(
+                                                '${data_DataAc.wallpaper}'),
+                                        fit: BoxFit.cover),
+                                  ),
 
-                                      if ((dataListWithdrawTopup.length -
-                                              dummyListDataListWithdrawTopup
-                                                  .length) >=
-                                          10) {
-                                        for (int i =
-                                                dummyListDataListWithdrawTopup
-                                                    .length;
-                                            i < _currentMax + 10;
-                                            i++) {
-                                          dummyListDataListWithdrawTopup
-                                              .add(dataListWithdrawTopup[i]);
-                                        }
-                                      } else {
-                                        for (int i =
-                                                dummyListDataListWithdrawTopup
-                                                    .length;
-                                            i < dataListWithdrawTopup.length;
-                                            i++) {
-                                          dummyListDataListWithdrawTopup
-                                              .add(dataListWithdrawTopup[i]);
-                                        }
-                                      }
-                                    }
-                                    return ListView(
-                                      controller: _scrollController,
-                                      children: [
-                                        (data_DataAc.userStatus == 0)
-                                            ? Container()
-                                            : Column(
-                                                children: [
-                                                  Container(
-                                                    color: Colors.white,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 18,
-                                                              right: 18,
-                                                              top: 18,
-                                                              bottom: 18),
-                                                      child: Container(
-                                                        // height: 150,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 18,
-                                                                right: 18,
-                                                                top: 22,
-                                                                bottom: 22),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          image: DecorationImage(
-                                                              image: (data_DataAc.wallpaper == null) ? AssetImage('assets/wallpapers/default.jpg')  :AssetImage('${data_DataAc.wallpaper}'),
-                                                              fit:
-                                                                  BoxFit.cover),
-                                                        ),
-
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "กระเป๋าหลัก(\u0E3F)",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          11,
-                                                                      color: Colors
-                                                                          .white
-                                                                          .withOpacity(
-                                                                              .7),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 12,
-                                                                ),
-                                                                Text(
-                                                                  '${NumberFormat("#,###.##").format(data_DataAc.balance)}',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          24,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w800),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Column(
-                                                              children: [
-                                                                ConstrainedBox(
-                                                                  constraints: BoxConstraints
-                                                                      .tightFor(
-                                                                          width:
-                                                                              100,
-                                                                          height:
-                                                                              35),
-                                                                  child:
-                                                                      ElevatedButton(
-                                                                    style: ElevatedButton.styleFrom(
-                                                                        primary:
-                                                                            Colors.white),
-                                                                    child: Text(
-                                                                      'เติมเงิน',
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .blueAccent,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      _ctrlPrice
-                                                                          .text = "";
-
-                                                                      _displayBottomSheet(
-                                                                          context,
-                                                                          "topup","เติม");
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                ConstrainedBox(
-                                                                  constraints: BoxConstraints
-                                                                      .tightFor(
-                                                                          width:
-                                                                              100,
-                                                                          height:
-                                                                              35),
-                                                                  child:
-                                                                      ElevatedButton(
-                                                                    style: ElevatedButton.styleFrom(
-                                                                        primary:
-                                                                            Colors.white),
-                                                                    child: Text(
-                                                                      'ถอนเงิน',
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .blueAccent,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      _ctrlPrice
-                                                                          .text = "";
-                                                                      _displayBottomSheet(
-                                                                          context,
-                                                                          "withdraw","ถอน");
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 18,
-                                                    ),
-                                                    child: Row(
-                                                      children: [
-                                                        Text("รายการเดินบัญชี"),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  ListView.builder(
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      itemCount:
-                                                          dummyListDataListWithdrawTopup
-                                                                  .length +
-                                                              1,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        if (index ==
-                                                            dataListWithdrawTopup
-                                                                .length) {
-                                                          return Container();
-                                                        }
-                                                        if (index ==
-                                                            dummyListDataListWithdrawTopup
-                                                                .length) {
-                                                          return Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              CupertinoActivityIndicator(),
-                                                            ],
-                                                          );
-                                                        }
-
-                                                        try {
-                                                        dummyListDataListWithdrawTopup[index].wid;
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: ListTile(
-                                                            // title: Text(
-                                                            //   "ถอนเงิน - ${checkStatus(snapshot
-                                                            // .data[index].status)}",
-                                                            //   style: TextStyle(
-                                                            //       fontSize: 18),
-                                                            // ),
-                                                            title: RichText(
-                                                              text: TextSpan(
-                                                                text:
-                                                                    'ถอนเงิน - ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        18.0,
-                                                                    color: Colors
-                                                                        .black),
-                                                                children: <
-                                                                    TextSpan>[
-                                                                  TextSpan(
-                                                                    text:
-                                                                        '${checkStatus(dummyListDataListWithdrawTopup[index].status)}',
-                                                                    style: TextStyle(
-
-                                                                        fontSize:
-                                                                            15,
-                                                                        color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
-                                                                            .grey.shade600 : Colors
-                                                                            .green),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            trailing: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                  //${NumberFormat("#,###.##").format(widget.amount_to_fill)}
-                                                                Text(
-                                                                  "-${NumberFormat("#,###.##").format(dummyListDataListWithdrawTopup[index].amount)}",
-                                                                  style: TextStyle(
-                                                                      color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
-                                                                            .grey.shade600 : Colors
-                                                                            .red,
-                                                                      fontSize:
-                                                                          20),
-                                                                ),
-                                                                Text(dateEdit(
-                                                                    "${dummyListDataListWithdrawTopup[index].datetime}")),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      } catch (e) {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: ListTile(
-                                                            title: RichText(
-                                                              text: TextSpan(
-                                                                text:
-                                                                    'ฝากเงิน(${checkStatus('${dummyListDataListWithdrawTopup[index].brand}')}) - ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15.0,
-                                                                    color: Colors
-                                                                        .black),
-                                                                children: <
-                                                                    TextSpan>[
-                                                                  TextSpan(
-                                                                    text:
-                                                                        '${checkStatus(dummyListDataListWithdrawTopup[index].status)}',
-                                                                    style: TextStyle(
-
-                                                                        fontSize:
-                                                                            18,
-                                                                        color: (dummyListDataListWithdrawTopup[index].status == "request" ||dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
-                                                                            .grey.shade600 : Colors
-                                                                            .green),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            trailing: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                                      crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  //NumberFormat("#,###.##").format(
-                                                                  "+${NumberFormat("#,###.##").format(dummyListDataListWithdrawTopup[index].amount)}",
-                                                                  style: TextStyle(
-                                                                      color: (dummyListDataListWithdrawTopup[index].status == "request" || dummyListDataListWithdrawTopup[index].status == "pending") ? Colors
-                                                                            .grey.shade600 : Colors
-                                                                            .green,
-                                                                      fontSize:
-                                                                          20),
-                                                                ),
-                                                                Text(dateEdit(
-                                                                    "${dummyListDataListWithdrawTopup[index].datetime}")),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      })
-                                                 
-                                                ],
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "กระเป๋าหลัก(\u0E3F)",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white
+                                                    .withOpacity(.7),
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                          Text(
+                                            '${NumberFormat("#,###.##").format(data_DataAc.balance)}',
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          ConstrainedBox(
+                                            constraints:
+                                                BoxConstraints.tightFor(
+                                                    width: 100, height: 35),
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.white),
+                                              child: Text(
+                                                'เติมเงิน',
+                                                style: TextStyle(
+                                                    color: Colors.blueAccent,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
+                                              onPressed: () {
+                                                _ctrlPrice.text = "";
+
+                                                _displayBottomSheet(
+                                                    context, "topup", "เติม");
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          ConstrainedBox(
+                                            constraints:
+                                                BoxConstraints.tightFor(
+                                                    width: 100, height: 35),
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.white),
+                                              child: Text(
+                                                'ถอนเงิน',
+                                                style: TextStyle(
+                                                    color: Colors.blueAccent,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              onPressed: () {
+                                                _ctrlPrice.text = "";
+                                                _displayBottomSheet(
+                                                    context, "withdraw", "ถอน");
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 18,
+                              ),
+                              child: Row(
+                                children: [
+                                  Text("รายการเดินบัญชี"),
+                                ],
+                              ),
+                            ),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    dummyListDataListWithdrawTopup.length + 1,
+                                itemBuilder: (context, index) {
+                                  if (index == dataListWithdrawTopup.length) {
+                                    return Container();
+                                  }
+                                  if (index ==
+                                      dummyListDataListWithdrawTopup.length) {
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        CupertinoActivityIndicator(),
                                       ],
                                     );
                                   }
-                                  return Center(
-                                    child: CupertinoActivityIndicator(),
-                                  );
-                                },
-                              );
-                            }
-                            return Center(
-                              child: CupertinoActivityIndicator(),
-                            );
-                          },
-                        );
-                      }
-                      return Center(
-                        child: CupertinoActivityIndicator(),
-                      );
-                    },
-                  );
-                }
-                return Center(
-                  child: CupertinoActivityIndicator(),
-                );
-              },
+
+                                  try {
+                                    dummyListDataListWithdrawTopup[index].wid;
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListTile(
+                                        // title: Text(
+                                        //   "ถอนเงิน - ${checkStatus(snapshot
+                                        // .data[index].status)}",
+                                        //   style: TextStyle(
+                                        //       fontSize: 18),
+                                        // ),
+                                        title: Row(
+                                          children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                text: 'ถอนเงิน - ',
+                                                style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    color: Colors.black),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                    text:
+                                                        '${checkStatus(dummyListDataListWithdrawTopup[index].status)}',
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: (dummyListDataListWithdrawTopup[
+                                                                            index]
+                                                                        .status ==
+                                                                    "request" ||
+                                                                dummyListDataListWithdrawTopup[
+                                                                            index]
+                                                                        .status ==
+                                                                    "pending")
+                                                            ? Colors
+                                                                .grey.shade600
+                                                            : Colors.green),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 5,),
+                                            CircleAvatar(
+                                              radius: 15,
+                                              backgroundColor: Colors.white,
+                                              foregroundImage:  NetworkImage(
+                                                  '${checkBank(dummyListDataListWithdrawTopup[index].brand)}'),
+                                              // backgroundImage: NetworkImage(
+                                              //     "https://cdn-icons-png.flaticon.com/512/983/983224.png"),
+                                            )
+                                            // Container(
+                                            //     height: 40,
+                                            //     width: 40,
+                                            //     child: Image.network(
+                                            //         "https://cdn-icons-png.flaticon.com/512/983/983224.png"))
+                                          ],
+                                        ),
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            //${NumberFormat("#,###.##").format(widget.amount_to_fill)}
+                                            Text(
+                                              "-${NumberFormat("#,###.##").format(dummyListDataListWithdrawTopup[index].amount)}",
+                                              style: TextStyle(
+                                                  color: (dummyListDataListWithdrawTopup[
+                                                                      index]
+                                                                  .status ==
+                                                              "request" ||
+                                                          dummyListDataListWithdrawTopup[
+                                                                      index]
+                                                                  .status ==
+                                                              "pending")
+                                                      ? Colors.grey.shade600
+                                                      : Colors.red,
+                                                  fontSize: 20),
+                                            ),
+                                            Text(dateEdit(
+                                                "${dummyListDataListWithdrawTopup[index].datetime}")),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListTile(
+                                        title: RichText(
+                                          text: TextSpan(
+                                            text:
+                                                'ฝากเงิน(${checkStatus('${dummyListDataListWithdrawTopup[index].brand}')}) - ',
+                                            style: TextStyle(
+                                                fontSize: 15.0,
+                                                color: Colors.black),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    '${checkStatus(dummyListDataListWithdrawTopup[index].status)}',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: (dummyListDataListWithdrawTopup[
+                                                                        index]
+                                                                    .status ==
+                                                                "request" ||
+                                                            dummyListDataListWithdrawTopup[
+                                                                        index]
+                                                                    .status ==
+                                                                "pending")
+                                                        ? Colors.grey.shade600
+                                                        : Colors.green),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              //NumberFormat("#,###.##").format(
+                                              "+${NumberFormat("#,###.##").format(dummyListDataListWithdrawTopup[index].amount)}",
+                                              style: TextStyle(
+                                                  color: (dummyListDataListWithdrawTopup[
+                                                                      index]
+                                                                  .status ==
+                                                              "request" ||
+                                                          dummyListDataListWithdrawTopup[
+                                                                      index]
+                                                                  .status ==
+                                                              "pending")
+                                                      ? Colors.grey.shade600
+                                                      : Colors.green,
+                                                  fontSize: 20),
+                                            ),
+                                            Text(dateEdit(
+                                                "${dummyListDataListWithdrawTopup[index].datetime}")),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                })
+                          ],
+                        ),
+                ],
+              ),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
             );
           }
-          return Center(
-            child: CupertinoActivityIndicator(),
-          );
         },
       ),
     );
   }
 
-  void _displayBottomSheet(context, String select,String text) {
+  void _displayBottomSheet(context, String select, String text) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -678,14 +666,14 @@ class _WalletPageState extends State<WalletPage> {
                 color: Color(0xFF737373),
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: _buildBottomNavigationMenu(context, select,text),
+                child: _buildBottomNavigationMenu(context, select, text),
               ),
             ));
   }
 
   TextEditingController _ctrlPrice = TextEditingController(); //ราคา
   final _formKey = GlobalKey<FormState>();
-  Container _buildBottomNavigationMenu(context, String select,String text) {
+  Container _buildBottomNavigationMenu(context, String select, String text) {
     return Container(
 
         // height: (MediaQuery.of(context).viewInsets.bottom != 0) ? MediaQuery.of(context).size.height * .60 : MediaQuery.of(context).size.height * .30,
@@ -775,7 +763,7 @@ class _WalletPageState extends State<WalletPage> {
                             return (data_DataAc.balance < 100)
                                 ? "*ไม่สามารถถอนได้ ยอดเงินที่คุณมีคือ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท"
                                 : '*เงินคุณที่สามาถอนเงินได้ ${NumberFormat("#,###.##").format(data_DataAc.balance)} บาท';
-                          }else if (money > 100000) {
+                          } else if (money > 100000) {
                             return '*ถอนสูงสุด 100,000 บาท ในแต่ละครั้งเท่านั้น';
                           }
                         }
@@ -811,14 +799,17 @@ class _WalletPageState extends State<WalletPage> {
                         onTap: () async {
                           if (_formKey.currentState.validate()) {
                             if (select == 'topup') {
-                              if (double.parse(_ctrlPrice.text.replaceAll(",", "")) >= 20) {
+                              if (double.parse(
+                                      _ctrlPrice.text.replaceAll(",", "")) >=
+                                  20) {
                                 Navigator.of(context).pop();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => PaymentChannelPage(
-                                            amount_to_fill:
-                                                double.parse(_ctrlPrice.text.replaceAll(",", "")),
+                                            amount_to_fill: double.parse(
+                                                _ctrlPrice.text
+                                                    .replaceAll(",", "")),
                                           )),
                                 ).then((value) => {
                                       if (token != "" && token != null)
@@ -831,8 +822,9 @@ class _WalletPageState extends State<WalletPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => WithdrawPage(
-                                          amount_to_fill:
-                                              double.parse(_ctrlPrice.text.replaceAll(",", "")),
+                                          amount_to_fill: double.parse(
+                                              _ctrlPrice.text
+                                                  .replaceAll(",", "")),
                                           name: data_DataAc.aliasName,
                                           email: data_DataAc.email,
                                         )),

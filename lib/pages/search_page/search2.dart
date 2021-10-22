@@ -7,7 +7,6 @@ import 'package:easy_cook/models/search/tranlate_languageModel/tranlate_language
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/search_page/searchIngredient/searchIngredient_page.dart';
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -532,14 +531,13 @@ class _SearchPage2State extends State<SearchPage2> {
                                                                   width: 30,
                                                                   child: (dataAcUser ==
                                                                           null)
-                                                                      ? Image.network(
-                                                                          "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                      ? Image.asset("assets/logoBuyFood/lock.png")
                                                                       : (dataAcUser.userId ==
                                                                               dataRecipe[index].userId)
                                                                           ? Container()
                                                                           : (checkBuy.indexOf(dataRecipe[index].rid.toString()) >= 0)
-                                                                              ? Image.network("https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                              : Image.network("https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                              ? Image.asset("assets/logoBuyFood/unlock.png")
+                                                                              : Image.asset("assets/logoBuyFood/lock.png"),
                                                                 ),
                                                               ),
                                                             ],

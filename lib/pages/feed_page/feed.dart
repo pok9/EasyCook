@@ -20,18 +20,13 @@ import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/drawer/helpCenter/helpCenter.dart';
 import 'package:easy_cook/pages/feed_page/feed/recommendPage.dart';
 import 'package:easy_cook/pages/feed_page/showIngredient/showIngredientPage.dart';
-
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
-
 import 'package:easy_cook/pages/profile_page/profile.dart';
-
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFoodStory.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/slidepage.dart';
 import 'package:easy_cook/style/utiltties.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
@@ -95,7 +90,6 @@ class _FeedPageState extends State<FeedPage> {
 
     setState(() {
       token = preferences.getString("tokens");
-      print("Token >>> $token");
       if (token != "" && token != null) {
         getMyAccounts();
       }
@@ -134,7 +128,6 @@ class _FeedPageState extends State<FeedPage> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("responseFeed_follow = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -142,7 +135,6 @@ class _FeedPageState extends State<FeedPage> {
 
           dataMybuy = mybuyFromJson(responseString);
           for (var item in dataMybuy) {
-            print(item.recipeId);
             checkBuy.add(item.recipeId.toString());
           }
         });
@@ -172,7 +164,6 @@ class _FeedPageState extends State<FeedPage> {
           for (var item in dataCheckFollowing.user) {
             checkFollowing.add(item.userId.toString());
           }
-          print(checkFollowing);
         });
     } else {
       return null;
@@ -210,7 +201,6 @@ class _FeedPageState extends State<FeedPage> {
         "http://apifood.comsciproject.com/pjPost/popular_recipe";
 
     final response = await http.get(Uri.parse(apiUrl));
-    // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -235,7 +225,6 @@ class _FeedPageState extends State<FeedPage> {
         "http://apifood.comsciproject.com/pjPost/popular_recipe_free";
 
     final response = await http.get(Uri.parse(apiUrl));
-    // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -259,7 +248,6 @@ class _FeedPageState extends State<FeedPage> {
         "http://apifood.comsciproject.com/pjPost/popular_recipe_price";
 
     final response = await http.get(Uri.parse(apiUrl));
-    // print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -333,7 +321,6 @@ class _FeedPageState extends State<FeedPage> {
     if (response.statusCode == 200) {
       final String responseString = response.body;
       ManageFollow aa = manageFollowFromJson(responseString);
-      print(aa.success);
 
       checkFollowings();
     } else {
@@ -361,13 +348,9 @@ class _FeedPageState extends State<FeedPage> {
       "from_userid": from_userid,
       "status": status
     };
-    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data), headers: {"Content-Type": "application/json"});
 
-    print(
-        "response.statusCodeInsertNotificationData => ${response.statusCode}");
-    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   @override
@@ -413,7 +396,6 @@ class _FeedPageState extends State<FeedPage> {
                   ],
                   isRepeatingAnimation: true,
                   onTap: () {
-                    print("Tap Event");
                   },
                 ),
               ],
@@ -969,7 +951,7 @@ class _FeedPageState extends State<FeedPage> {
                                                           child: (data_DataAc ==
                                                                   null)
                                                               ? Image.network(
-                                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                  "https://cdn-icons-png.flaticon.com/512/1490/1490885.png")
                                                               : (data_DataAc
                                                                           .userId ==
                                                                       dataRecommendRecipe[
@@ -983,7 +965,7 @@ class _FeedPageState extends State<FeedPage> {
                                                                       ? Image.network(
                                                                           "https://image.flaticon.com/icons/png/512/1053/1053171.png")
                                                                       : Image.network(
-                                                                          "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                          "https://cdn-icons-png.flaticon.com/512/1490/1490885.png"),
                                                         ),
                                                       ),
                                                     ],
@@ -1274,7 +1256,6 @@ class _FeedPageState extends State<FeedPage> {
                   IconButton(
                       icon: Icon(Icons.more_vert),
                       onPressed: () {
-                        // print("more_vert" + index.toString());
                       })
                 ],
               ),
@@ -1400,7 +1381,7 @@ class _FeedPageState extends State<FeedPage> {
                   IconButton(
                       icon: Icon(Icons.more_vert),
                       onPressed: () {
-                        // print("more_vert" + index.toString());
+
                       })
                 ],
               ),
@@ -1731,8 +1712,7 @@ class _FeedPageState extends State<FeedPage> {
                                 height: 30,
                                 width: 30,
                                 child: (data_DataAc == null)
-                                    ? Image.network(
-                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                    ? Image.asset("assets/logoBuyFood/lock.png")
                                     : (data_DataAc.userId ==
                                             dataRecommendRecipe.userId)
                                         ? Container()
@@ -1740,10 +1720,10 @@ class _FeedPageState extends State<FeedPage> {
                                                     .rid
                                                     .toString()) >=
                                                 0)
-                                            ? Image.network(
-                                                "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                            : Image.network(
-                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                            ? Image.asset(
+                                                "assets/logoBuyFood/unlock.png")
+                                            : Image.asset(
+                                                "assets/logoBuyFood/lock.png"),
                               ),
                             ),
                           ],
@@ -2151,7 +2131,7 @@ class _FeedPageState extends State<FeedPage> {
                                     splashColor: Colors.grey,
                                     color: Colors.white,
                                     onPressed: () {
-                                      print("เลิกติดตาม");
+                                  
                                       if (token == "") {
                                         showDialog(
                                             context: context,
@@ -2191,7 +2171,7 @@ class _FeedPageState extends State<FeedPage> {
                                     splashColor: Colors.grey,
                                     color: Colors.white,
                                     onPressed: () {
-                                      print("ติดตาม123");
+                              
                                       if (token == "") {
                                         showDialog(
                                             context: context,
@@ -2250,7 +2230,7 @@ class SlideIndicator extends AnimatedWidget {
   }
 
   Widget buildIndicator(int index) {
-    // print("build $index ");
+
 
     double select = max(
         0.0,
@@ -2259,7 +2239,7 @@ class SlideIndicator extends AnimatedWidget {
                 .abs());
     double decrease = 10 * select;
 
-    // print("decrease = ${decrease}");
+
     return Container(
       width: 30,
       child: Center(

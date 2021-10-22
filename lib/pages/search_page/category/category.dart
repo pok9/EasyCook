@@ -3,8 +3,6 @@ import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
-
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -266,16 +264,15 @@ class _CategoryState extends State<Category> {
                                                                 width: 30,
                                                                 child: (dataUser ==
                                                                         null)
-                                                                    ? Image.network(
-                                                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                    ? Image.asset("assets/logoBuyFood/lock.png")
                                                                     : (dataUser.userId ==
                                                                             categoryFood[index]
                                                                                 .userId)
                                                                         ? Container()
                                                                         : (checkBuy.indexOf(categoryFood[index].rid.toString()) >=
                                                                                 0)
-                                                                            ? Image.network("https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                            : Image.network("https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                            ? Image.asset("assets/logoBuyFood/unlock.png")
+                                                                            : Image.asset("assets/logoBuyFood/lock.png"),
                                                               ),
                                                             ),
                                                           ],

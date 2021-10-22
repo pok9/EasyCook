@@ -3,7 +3,6 @@ import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/models/search/searchIngred_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -275,8 +274,7 @@ class _SearchIngredientState extends State<SearchIngredient> {
                                                             width: 30,
                                                             child: (dataAcUser ==
                                                                     null)
-                                                                ? Image.network(
-                                                                    "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                                ? Image.asset("assets/logoBuyFood/lock.png")
                                                                 : (dataAcUser
                                                                             .userId ==
                                                                         listDataFood
@@ -286,10 +284,8 @@ class _SearchIngredientState extends State<SearchIngredient> {
                                                                     ? Container()
                                                                     : (checkBuy.indexOf(listDataFood.elementAt(index).rid.toString()) >=
                                                                             0)
-                                                                        ? Image.network(
-                                                                            "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                        : Image.network(
-                                                                            "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                        ? Image.asset("assets/logoBuyFood/unlock.png")
+                                                                        : Image.asset("assets/logoBuyFood/lock.png"),
                                                           ),
                                                         ),
                                                       ],

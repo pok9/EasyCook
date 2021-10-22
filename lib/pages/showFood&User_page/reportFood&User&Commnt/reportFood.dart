@@ -5,7 +5,6 @@ import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/models/report/addReport/addReport_model.dart';
 import 'package:easy_cook/models/report/addReport/addreportImage_model.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
-import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';

@@ -1,25 +1,19 @@
 import 'dart:convert';
-
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/admin/manage_members.dart';
 import 'package:easy_cook/pages/feed_page/feed.dart';
 import 'package:easy_cook/pages/feed_page/feed2.dart';
-
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
 import 'package:easy_cook/pages/profile_page/profile2BottomNavbar.dart';
-
 import 'package:easy_cook/pages/search_page/search1.dart';
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:easy_cook/test.dart';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,7 +34,6 @@ class _SlidePageState extends State<SlidePage> {
   void initState() {
     super.initState();
     findUser();
-    print("slidePage ======");
 
     if (this.widget.index != null) {
       if (this.widget.index == 2) {
@@ -74,22 +67,6 @@ class _SlidePageState extends State<SlidePage> {
     });
   }
 
-  // Future<Null> getTokenFireBase() async {
-  //   try {
-  //     FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  //     // String tokenFirebase = await messaging.getToken(vapidKey: "BGpdLRs......",);
-  //     String tokenFirebase = await messaging.getToken(
-  //         vapidKey:
-  //             "BC5Y9rRxIQizOB9jx5GuFuK9HK-XkB0NreHveINUNby-tvNdZklyAI0tY_P4u50aYhEcvQW65lzaEdPJF3rygzw");
-  //     print('tokenFireBaes = $tokenFirebase');
-  //   } catch (e) {
-  //     print("TokenFireBaseError");
-  //     print(e);
-  //     print("TokenFireBaseError");
-  //   }
-  // }
-
   String token = ""; //โทเคน
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -105,21 +82,18 @@ class _SlidePageState extends State<SlidePage> {
 
   getTokenFirebase() async {
     String tokenFirebase = await FirebaseMessaging.instance.getToken();
-    print("tokenFirebase ===>>> $tokenFirebase");
+
     if (token != "" && token != null) {
       updateTokenLogin(tokenFirebase, token);
     }
   }
 
   Future<Null> updateTokenLogin(String tokenFirebase, String token) async {
-    print("SlidPage --- tokenFirebase = ${tokenFirebase} ; token = ${token}");
     final String apiUrl = "http://apifood.comsciproject.com/pjNoti/updateToken";
 
     var data = {
       "token_noti": tokenFirebase,
     };
-
-    print(data);
 
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
@@ -127,10 +101,6 @@ class _SlidePageState extends State<SlidePage> {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
         });
-
-    print("token555 ===>> $token");
-    print("responseUpdateTokenFirebase = ${response.statusCode}");
-    print("response.body5555 = ${response.body}");
   }
 
   //user
@@ -141,14 +111,14 @@ class _SlidePageState extends State<SlidePage> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("responsegetMyAccounts() = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       // setState(() {
       final String responseString = response.body;
 
       datas = myAccountFromJson(responseString);
       dataUser = datas.data[0];
-      print(dataUser.userId);
+
       setState(() {});
       // });
     } else {
@@ -161,14 +131,12 @@ class _SlidePageState extends State<SlidePage> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("responsegetMyAccounts() = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
       datas = myAccountFromJson(responseString);
       dataUser = datas.data[0];
-      print(dataUser.userId);
-      print(token);
     } else {
       return null;
     }
@@ -222,8 +190,6 @@ class _SlidePageState extends State<SlidePage> {
         child: Container(
           height: 50,
           child: Row(
-            // mainAxisAlignment:  MainAxisAlignment.spaceBetween,
-            // mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -282,7 +248,6 @@ class _SlidePageState extends State<SlidePage> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    // currenetScreen = FeedFollowPage();
                     currenetScreen = Feed2Page();
                     currentTab = 2;
                   });

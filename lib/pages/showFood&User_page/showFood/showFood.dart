@@ -62,13 +62,6 @@ class _ShowFoodState extends State<ShowFood> {
   var req_rid;
   _ShowFoodState(this.req_rid);
 
-  // @override
-  // void initState() {
-  //   //   super.initState();
-  //   findUser();
-  //   //   getCommentPosts();
-  //   //   getPost();
-  // }
 
   double ratings = 0.0;
 
@@ -156,18 +149,12 @@ class _ShowFoodState extends State<ShowFood> {
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
 
-    print(response.statusCode);
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
-      print(responseString);
-
       try {
-        print(true);
         dataGetScoreFood = getScoreFoodModelFromJson(responseString);
       } catch (e) {
-        print(false);
-
         dataGetScoreFood.score = 0.0;
       }
 
@@ -226,7 +213,7 @@ class _ShowFoodState extends State<ShowFood> {
             dataFood.foodCategory;
 
     final response = await http.get(Uri.parse(apiUrl));
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -249,13 +236,12 @@ class _ShowFoodState extends State<ShowFood> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("responseFeed_follow = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
       dataMybuy = mybuyFromJson(responseString);
       for (var item in dataMybuy) {
-        print(item.recipeId);
         checkBuy.add(item.recipeId.toString());
       }
 
@@ -716,8 +702,6 @@ class _ShowFoodState extends State<ShowFood> {
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasData == true) {
-                                    print(
-                                        "snapshot.hasData => ${snapshot.hasData}");
                                     datas = snapshot.data;
                                     dataMyAccont = datas.data[0];
 
@@ -1101,10 +1085,14 @@ class _ShowFoodState extends State<ShowFood> {
                         children: [
                           Column(
                             children: [
-                              Icon(
-                                Icons.person,
-                                color: Colors.grey,
-                                size: 30.0,
+                              // Icon(
+                              //   Icons.person,
+                              //   color: Colors.grey,
+                              //   size: 30.0,
+                              // ),
+                              Container(
+                                height: 35,
+                                child: Image.asset("assets/images/people.png"),
                               ),
                               SizedBox(
                                 height: 5,
@@ -1122,10 +1110,15 @@ class _ShowFoodState extends State<ShowFood> {
                           ),
                           Column(
                             children: [
-                              Icon(
-                                Icons.watch_later_outlined,
-                                color: Colors.grey,
-                                size: 30.0,
+                              // Icon(
+                              //   Icons.watch_later_outlined,
+                              //   color: Colors.green,
+                              //   size: 30.0,
+                              // ),
+                              Container(
+                                height: 35,
+                                child: Image.asset(
+                                    "assets/images/chronometer.png"),
                               ),
                               SizedBox(
                                 height: 5,
@@ -1143,10 +1136,14 @@ class _ShowFoodState extends State<ShowFood> {
                           ),
                           Column(
                             children: [
-                              Icon(
-                                Icons.food_bank,
-                                color: Colors.grey,
-                                size: 30.0,
+                              // Icon(
+                              //   Icons.food_bank,
+                              //   color: Colors.pink,
+                              //   size: 30.0,
+                              // ),
+                              Container(
+                                height: 35,
+                                child: Image.asset("assets/images/menu.png"),
                               ),
                               SizedBox(
                                 height: 5,
@@ -1258,6 +1255,8 @@ class _ShowFoodState extends State<ShowFood> {
                                     _isSelected[index] = !_isSelected[index];
 
                                     indexHowTo = index;
+
+                                  
                                   });
                                 },
                                 isSelected: _isSelected,
@@ -1317,12 +1316,8 @@ class _ShowFoodState extends State<ShowFood> {
                               height: 300,
                               child: StoryView(
                                 storyItems: howto3,
-                                onStoryShow: (s) {
-                                  print("Showing a story");
-                                },
-                                onComplete: () {
-                                  print("Completed a cycle");
-                                },
+                                onStoryShow: (s) {},
+                                onComplete: () {},
                                 progressPosition: ProgressPosition.bottom,
                                 repeat: false,
 
@@ -1423,26 +1418,6 @@ class _ShowFoodState extends State<ShowFood> {
                                         children: [
                                           TextButton(
                                               onPressed: () {
-                                                // showModalBottomSheet(
-                                                //     isScrollControlled: true,
-                                                //     context: context,
-                                                //     builder: (context) =>
-                                                //         SingleChildScrollView(
-                                                //           child: Container(
-                                                //             // height: MediaQuery.of(context).size.height * 0.95,
-                                                //             color: Color(
-                                                //                 0xFF737373),
-                                                //             padding: EdgeInsets.only(
-                                                //                 bottom: MediaQuery.of(
-                                                //                         context)
-                                                //                     .viewInsets
-                                                //                     .bottom),
-                                                //             child:
-                                                //                 _buildBottomNavigationMenu(
-                                                //                     context),
-                                                //           ),
-                                                //         ));
-
                                                 if (dataMyAccont == null) {
                                                   showDialog(
                                                       context: context,
@@ -1466,7 +1441,6 @@ class _ShowFoodState extends State<ShowFood> {
                                                                 dataFood:
                                                                     dataFood,
                                                               ))).then((value) {
-                                                    print("okokok$value");
                                                     this.getCommentPosts();
                                                     setState(() {});
                                                   });
@@ -2036,28 +2010,6 @@ class _ShowFoodState extends State<ShowFood> {
                                 ),
                               )),
                         ),
-                        // Icon(
-                        //   Icons.star,
-                        //   color: Colors.blue,
-                        //   size: 20,
-                        // ),
-                        // SizedBox(
-                        //   width: 1,
-                        // ),
-                        // Text(
-                        //   dataRecommendRecipe.score.toString(),
-                        //   style: TextStyle(
-                        //       color: Colors.white, fontWeight: FontWeight.bold),
-                        // ),
-                        // SizedBox(
-                        //   width: 2,
-                        // ),
-                        // Text(
-                        //   '(${dataRecommendRecipe.count})',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -2090,7 +2042,7 @@ class _ShowFoodState extends State<ShowFood> {
                                 width: 30,
                                 child: (dataMyAccont == null)
                                     ? Image.network(
-                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                        "https://cdn-icons-png.flaticon.com/512/1490/1490885.png")
                                     : (dataMyAccont.userId ==
                                             dataRecommendRecipe.userId)
                                         ? Container()
@@ -2101,7 +2053,7 @@ class _ShowFoodState extends State<ShowFood> {
                                             ? Image.network(
                                                 "https://image.flaticon.com/icons/png/512/1053/1053171.png")
                                             : Image.network(
-                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                "https://cdn-icons-png.flaticon.com/512/1490/1490885.png"),
                               ),
                             ),
                           ],

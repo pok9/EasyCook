@@ -2,7 +2,6 @@ import 'package:easy_cook/models/feed/recommendRecipe/recommendRecipe.dart';
 import 'package:easy_cook/models/myBuy/mybuy.dart';
 import 'package:easy_cook/models/profile/myAccount_model.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -291,8 +290,7 @@ class _RecommendPageState extends State<RecommendPage> {
                                 height: 30,
                                 width: 30,
                                 child: (data_DataAc == null)
-                                    ? Image.network(
-                                        "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                    ? Image.asset("assets/logoBuyFood/lock.png")
                                     : (data_DataAc.userId ==
                                             dataRecommendRecipe.userId)
                                         ? Container()
@@ -300,10 +298,10 @@ class _RecommendPageState extends State<RecommendPage> {
                                                     .rid
                                                     .toString()) >=
                                                 0)
-                                            ? Image.network(
-                                                "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                            : Image.network(
-                                                "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                            ? Image.asset(
+                                                "assets/logoBuyFood/unlock.png")
+                                            : Image.asset(
+                                                "assets/logoBuyFood/lock.png"),
                               ),
                             ),
                           ],

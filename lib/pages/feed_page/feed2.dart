@@ -6,7 +6,6 @@ import 'package:easy_cook/pages/addFood_page/addFood.dart';
 import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/drawer/drawers.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,10 +35,6 @@ class _Feed2PageState extends State<Feed2Page> {
     getNewfeedsglobal();
     findUser();
     _scrollController.addListener(() {
-      print(
-          "_scrollController.position.pixels = ${_scrollController.position.pixels}");
-      print(
-          '_scrollController.position.maxScrollExtent = ${_scrollController.position.maxScrollExtent}');
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         _getMoreList();
@@ -48,8 +43,6 @@ class _Feed2PageState extends State<Feed2Page> {
   }
 
   _getMoreList() {
-    print("Get More List");
-
     // if (selected == 0) {
     //   _currentMax = dummyListDataNewfeedsglobal.length;
 
@@ -114,7 +107,6 @@ class _Feed2PageState extends State<Feed2Page> {
 
     setState(() {
       token = preferences.getString("tokens");
-      print("token = ${token}");
 
       if (token != "" && token != null) {
         getNewFeedsFollow();
@@ -181,14 +173,13 @@ class _Feed2PageState extends State<Feed2Page> {
         "http://apifood.comsciproject.com/pjPost/newfeedsglobal";
 
     final response = await http.get(Uri.parse(apiUrl));
-    // print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
           final String responseString = response.body;
 
           dataNewfeedsglobal = newfeedsglobalFromJson(responseString);
-          print("dataNewfeedsglobal.length => ${dataNewfeedsglobal.length}");
 
           // if (dataNewfeedsglobal.length >= 10) {
           //   for (int i = 0; i < 10; i++) {
@@ -230,7 +221,7 @@ class _Feed2PageState extends State<Feed2Page> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    // print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       if (mounted)
         setState(() {
@@ -677,8 +668,8 @@ class _Feed2PageState extends State<Feed2Page> {
                                                           width: 30,
                                                           child: (data_DataAc ==
                                                                   null)
-                                                              ? Image.network(
-                                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                              ? Image.asset("assets/logoBuyFood/lock.png")
+
                                                               : (data_DataAc
                                                                           .userId ==
                                                                       newFeedsFollow
@@ -692,10 +683,9 @@ class _Feed2PageState extends State<Feed2Page> {
                                                                               .rid
                                                                               .toString()) >=
                                                                           0)
-                                                                      ? Image.network(
-                                                                          "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                      : Image.network(
-                                                                          "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                                      ? Image.asset("assets/logoBuyFood/unlock.png")
+                                                                      : Image.asset("assets/logoBuyFood/lock.png")
+,
                                                         ),
                                                       ),
                                                     ],
@@ -723,8 +713,6 @@ class _Feed2PageState extends State<Feed2Page> {
 
   GridView bodyFeed2(List<Newfeedsglobal> dummyListDataNewfeedsglobal,
       Size deviceSize, BuildContext context) {
-    print(
-        "dummyListDataNewfeedsglobal.length => ${dummyListDataNewfeedsglobal.length}");
     return GridView.builder(
         controller: _scrollController,
         shrinkWrap: true,
@@ -755,8 +743,10 @@ class _Feed2PageState extends State<Feed2Page> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ShowFood(dummyListDataNewfeedsglobal[index].rid,imageFood: dummyListDataNewfeedsglobal[index].image,)),
+                      builder: (context) => ShowFood(
+                            dummyListDataNewfeedsglobal[index].rid,
+                            imageFood: dummyListDataNewfeedsglobal[index].image,
+                          )),
                 ).then((value) => {getNewfeedsglobal()});
               } else {
                 if (data_DataAc == null) {
@@ -777,8 +767,11 @@ class _Feed2PageState extends State<Feed2Page> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              ShowFood(dummyListDataNewfeedsglobal[index].rid,imageFood: dummyListDataNewfeedsglobal[index].image,)),
+                          builder: (context) => ShowFood(
+                                dummyListDataNewfeedsglobal[index].rid,
+                                imageFood:
+                                    dummyListDataNewfeedsglobal[index].image,
+                              )),
                     ).then((value) => {getNewfeedsglobal()});
                   } else {
                     Navigator.push(
@@ -845,8 +838,8 @@ class _Feed2PageState extends State<Feed2Page> {
                                           height: 30,
                                           width: 30,
                                           child: (data_DataAc == null)
-                                              ? Image.network(
-                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                              ? Image.asset("assets/logoBuyFood/lock.png")
+
                                               : (data_DataAc.userId ==
                                                       dummyListDataNewfeedsglobal[
                                                               index]
@@ -858,10 +851,9 @@ class _Feed2PageState extends State<Feed2Page> {
                                                                   .rid
                                                                   .toString()) >=
                                                           0)
-                                                      ? Image.network(
-                                                          "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                      : Image.network(
-                                                          "https://image.flaticon.com/icons/png/512/1177/1177428.png"),
+                                                      ? Image.asset("assets/logoBuyFood/unlock.png")
+                                                      : Image.asset("assets/logoBuyFood/lock.png")
+,
                                         ),
                                       ),
                                     ],

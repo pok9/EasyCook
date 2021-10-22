@@ -15,7 +15,6 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import '../../addFood_page/xxx_addImage.dart';
 
 class EditProfilePage extends StatefulWidget {
   // EditProfilePage({Key key}) : super(key: key);
@@ -444,7 +443,7 @@ class CustomDialog extends StatelessWidget {
           left: 16,
           right: 16,
           child: Image.asset(
-            'assets/logoNoti/warning.png',
+            'assets/logoNoti/warning2.png',
             width: 50,
             height: 100,
           ),

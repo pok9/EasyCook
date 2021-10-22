@@ -12,7 +12,6 @@ import 'package:easy_cook/pages/buyFood_page/recipe_purchase_page.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/showFollower&Following.dart';
 import 'package:easy_cook/pages/showFood&User_page/reportFood&User&Commnt/reportUser.dart';
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showFood/showFood.dart';
 import 'package:easy_cook/style/utiltties.dart';
 
@@ -1405,15 +1404,15 @@ class _ProfileUserState extends State<ProfileUser> {
                                                                       .price ==
                                                                   0)
                                                               ? Container()
-                                                              : Image.network(
-                                                                  "https://image.flaticon.com/icons/png/512/1177/1177428.png")
+                                                              : Image.asset(
+                                                                      "assets/logoBuyFood/lock.png")
                                                           : (checkBuy.indexOf(data_RecipePost[
                                                                           index]
                                                                       .rid
                                                                       .toString()) >=
                                                                   0)
-                                                              ? Image.network(
-                                                                  "https://image.flaticon.com/icons/png/512/1053/1053171.png")
+                                                              ? Image.asset(
+                                                                      "assets/logoBuyFood/unlock.png")
                                                               : (this.widget.reqUid ==
                                                                           data_DataAc
                                                                               .userId ||
@@ -1421,12 +1420,11 @@ class _ProfileUserState extends State<ProfileUser> {
                                                                               .price ==
                                                                           0))
                                                                   ? Container()
-                                                                  : Image.network(
-                                                                      "https://image.flaticon.com/icons/png/512/1177/1177428.png")),
+                                                                  : Image.asset(
+                                                                      "assets/logoBuyFood/lock.png")),
                                                 ],
                                               ),
                                             ),
-                                            // ),
                                             Positioned(
                                               left: 8.0,
                                               bottom: 0.0,

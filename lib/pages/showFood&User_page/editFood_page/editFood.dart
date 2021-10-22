@@ -7,8 +7,7 @@ import 'package:easy_cook/class/addFood_addImage_class.dart';
 import 'package:easy_cook/models/addFood/uploadhowtofile_model.dart';
 import 'package:easy_cook/models/showfood/editFood/editImageFoodModel.dart';
 import 'package:easy_cook/models/showfood/showfood_model.dart';
-import 'package:easy_cook/pages/addFood_page/xxx_addImage.dart';
-import 'package:easy_cook/pages/addFood_page/xxx_addImageOrVideo.dart';
+
 import 'package:easy_cook/pages/videoOnPress/videoOnPress.dart';
 import 'package:easy_cook/pages/videoPlayerOnPress/thumbnail.dart';
 import 'package:easy_cook/pages/videoPlayerOnPress/videoPlayerOnPress.dart';
@@ -317,16 +316,9 @@ class _EditFoodPageState extends State<EditFoodPage> {
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(8),
-                              child: Container(
-                                height: 75,
-                                color: Color(0xfff3f3f4),
-                                child: IconButton(
-                                    iconSize: 30,
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Colors.grey.shade700,
-                                    ),
-                                    onPressed: () {
+                              child: InkWell(
+                                onTap: () {
+                              
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (context) {
@@ -390,7 +382,9 @@ class _EditFoodPageState extends State<EditFoodPage> {
                                               ],
                                             );
                                           });
-                                    }),
+                                    
+                                },
+                                child: Image.asset("assets/images/photo.png"),
                               ),
                             ))
                         : Container(),
@@ -2496,7 +2490,7 @@ class CustomDialog extends StatelessWidget {
           left: 16,
           right: 16,
           child: Image.asset(
-            'assets/logoNoti/warning.png',
+            'assets/logoNoti/warning2.png',
             width: 50,
             height: 100,
           ),

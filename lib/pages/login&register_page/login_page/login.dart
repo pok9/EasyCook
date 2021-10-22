@@ -425,36 +425,36 @@ class _LoginPageState extends State<LoginPage> {
                                         "assets/logoLogin/facebook.jpg"),
                                   ))),
                         ),
-                        // GestureDetector(
-                        //   onTap: () async {
-                        //     UserCredential userCredential =
-                        //         await authClass.googleSigIn(context);
+                        GestureDetector(
+                          onTap: () async {
+                            UserCredential userCredential =
+                                await authClass.googleSigIn(context);
 
-                        //     LoginFacebookMD(
-                        //         userCredential.user.uid,
-                        //         userCredential.user.email,
-                        //         userCredential.user.email,
-                        //         userCredential.user.displayName,
-                        //         userCredential.user.photoURL);
-                        //   },
-                        //   child: Container(
-                        //       height: 60,
-                        //       width: 60,
-                        //       decoration: BoxDecoration(
-                        //           shape: BoxShape.circle,
-                        //           color: Colors.white,
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //                 color: Colors.black26,
-                        //                 offset: Offset(0, 2),
-                        //                 blurRadius: 6.0)
-                        //           ],
-                        //           image: DecorationImage(
-                        //             // image: AssetImage("assets/logoLogin/facebook.png"),
-                        //             image: AssetImage(
-                        //                 "assets/logoLogin/google.jpg"),
-                        //           ))),
-                        // ),
+                            LoginFacebookMD(
+                                userCredential.user.uid,
+                                userCredential.user.email,
+                                userCredential.user.email,
+                                userCredential.user.displayName,
+                                userCredential.user.photoURL);
+                          },
+                          child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0)
+                                  ],
+                                  image: DecorationImage(
+                                    // image: AssetImage("assets/logoLogin/facebook.png"),
+                                    image: AssetImage(
+                                        "assets/logoLogin/google.jpg"),
+                                  ))),
+                        ),
                       ],
                     ),
                   ),

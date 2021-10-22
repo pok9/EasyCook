@@ -39,14 +39,14 @@ class _VideoPlayerOnPressState extends State<VideoPlayerOnPress> {
     }else{
       print(0000000000);
       if(widget.path.path.substring(0, 4) == "http"){
-print(111111111111111);
+// print(111111111111111);
           _betterPlayerController = BetterPlayer.network(widget.path.path,
             betterPlayerConfiguration: BetterPlayerConfiguration(
               autoPlay: true,
               aspectRatio: 1
             ));
         }else{
-          print(222222222222222222);
+          // print(222222222222222222);
           _betterPlayerController = BetterPlayer.file(widget.path.path,
             betterPlayerConfiguration: BetterPlayerConfiguration(
               autoPlay: true,

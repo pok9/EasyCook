@@ -7,11 +7,8 @@ import 'package:easy_cook/models/showfood/commentFood_model/getCommentPost_model
 import 'package:easy_cook/models/showfood/showfood_model.dart';
 import 'package:easy_cook/pages/login&register_page/login_page/login.dart';
 import 'package:easy_cook/pages/profile_page/profile.dart';
-
-import 'package:easy_cook/pages/showFood&User_page/XXX_showFood.dart';
 import 'package:easy_cook/pages/showFood&User_page/showProfileUser.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';

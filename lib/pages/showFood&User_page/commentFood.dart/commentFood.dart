@@ -65,13 +65,11 @@ class _CommentFoodState extends State<CommentFood> {
 
     final response = await http
         .get(Uri.parse(apiUrl), headers: {"Authorization": "Bearer $token"});
-    print("response = " + response.statusCode.toString());
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
       data_MyAccount = myAccountFromJson(responseString);
       data_DataAc = data_MyAccount.data[0];
-      print(data_DataAc.userId);
 
       setState(() {});
     } else {
@@ -86,7 +84,7 @@ class _CommentFoodState extends State<CommentFood> {
             this.widget.dataFood.rid.toString();
 
     final response = await http.get(Uri.parse(apiUrl));
-    print("response = " + response.statusCode.toString());
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
@@ -107,7 +105,6 @@ class _CommentFoodState extends State<CommentFood> {
       "commentDetail": commentDetail,
     };
 
-    print(jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
@@ -132,18 +129,17 @@ class _CommentFoodState extends State<CommentFood> {
       "cid": cid,
     };
 
-    print(jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
         });
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       setState(() {
         final String responseString = response.body;
-        print(responseString);
+
         return deleteCommentModelFromJson(responseString);
       });
     } else {
@@ -171,13 +167,9 @@ class _CommentFoodState extends State<CommentFood> {
       "from_userid": from_userid,
       "status": status
     };
-    print("jsonEncode(data)InsertNotificationData = " + jsonEncode(data));
+
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data), headers: {"Content-Type": "application/json"});
-
-    print(
-        "response.statusCodeInsertNotificationData => ${response.statusCode}");
-    print("response.bodyInsertNotificationData => ${response.body}");
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -195,7 +187,6 @@ class _CommentFoodState extends State<CommentFood> {
       "image": image
     };
 
-    print(jsonEncode(data));
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data),
         headers: {
@@ -203,8 +194,6 @@ class _CommentFoodState extends State<CommentFood> {
           "Content-Type": "application/json"
         });
 
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       final String responseString = response.body;
 
@@ -601,8 +590,6 @@ class _CommentFoodState extends State<CommentFood> {
                                                                           color,
                                                                           reportText2);
                                                                     });
-                                                                print(
-                                                                    "dataAddReport.success ===>>> ${dataAddReport.success}");
                                                               }
                                                             });
                                                           },
@@ -703,9 +690,6 @@ class _CommentFoodState extends State<CommentFood> {
                               // Navigator.pop(context);
                             });
                           } else {
-                            print("โพส");
-
-                            print(commentController.text);
                             CommentPostModel commentPostModel =
                                 await CommentPost(
                                     this.widget.dataFood.rid.toString(),
@@ -769,19 +753,4 @@ class _CommentFoodState extends State<CommentFood> {
       ),
     );
   }
-
-  // Widget showEmojiPicker() {
-  //   return EmojiPicker(
-  //     rows: 3,
-  //     columns: 7,
-  //     recommendKeywords: ["racing", "horse"],
-  //     numRecommended: 10,
-  //     onEmojiSelected: (emoji, category) {
-  //       print(emoji);
-  //       setState(() {
-  //         commentController.text += emoji.emoji;
-  //       });
-  //     },
-  //   );
-  // }
 }
