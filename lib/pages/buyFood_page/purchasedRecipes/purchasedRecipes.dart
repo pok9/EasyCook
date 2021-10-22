@@ -129,11 +129,11 @@ class _PurchasedRecipesState extends State<PurchasedRecipes> {
                                     value: _value,
                                     items: [
                                       DropdownMenuItem(
-                                        child: Text("สูตรที่ซื้อ (ล่าสุด)"),
+                                        child: Text("สูตรที่ซื้อ (เก่าสุด)"),
                                         value: 1,
                                       ),
                                       DropdownMenuItem(
-                                        child: Text("สูตรที่ซื้อ (เก่าสุด)"),
+                                        child: Text("สูตรที่ซื้อ (ล่าสุด)"),
                                         value: 2,
                                       ),
                                     ],
