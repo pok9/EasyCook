@@ -190,6 +190,7 @@ flutter:
     - assets/splash/
     - assets/imageIngredientPage/
     - assets/logoBuyFood/
+    - assets/imageAds/
  
     
   #   - images/a_dot_ham.jpeg

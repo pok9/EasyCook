@@ -81,7 +81,7 @@ class _FeedPageState extends State<FeedPage> {
       }
     });
 
-     randomIngredient = Random().nextInt(listIngredient.length);
+    randomIngredient = Random().nextInt(listIngredient.length);
   }
 
   String token = ""; //โทเคน
@@ -350,7 +350,6 @@ class _FeedPageState extends State<FeedPage> {
     };
     final response = await http.post(Uri.parse(apiUrl),
         body: jsonEncode(data), headers: {"Content-Type": "application/json"});
-
   }
 
   @override
@@ -395,8 +394,7 @@ class _FeedPageState extends State<FeedPage> {
                     // WavyAnimatedText('ชุมชนของคนรักการทําอาหาร'),
                   ],
                   isRepeatingAnimation: true,
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
@@ -490,15 +488,15 @@ class _FeedPageState extends State<FeedPage> {
                     children: [
                       AdsSlideCard(
                         slideImage:
-                            "https://pbs.twimg.com/media/ESUlHHKUcAIYNfb.jpg",
+                            "assets/imageAds/kfc.jpg",
                       ),
                       AdsSlideCard(
                         slideImage:
-                            "http://i2.wp.com/www.thaismescenter.com/wp-content/uploads/2019/10/74.jpg?resize=660%2C655",
+                            "assets/imageAds/mac.jpg",
                       ),
                       AdsSlideCard(
                         slideImage:
-                            "https://scm-assets.constant.co/scm/unilever/e9dc924f238fa6cc29465942875fe8f0/f9f93df5-dfe0-4c78-98ff-a05380282039.jpg",
+                            "assets/imageAds/checkenlemon.jpg",
                       ),
                     ],
                   ),
@@ -569,57 +567,6 @@ class _FeedPageState extends State<FeedPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // DividerCutom(),
-                // Padding(
-                //   padding: const EdgeInsets.only(left: 8, right: 8),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Text(
-                //         "สูตรอาหารยอดนิยม1",
-                //         style: TextStyle(
-                //             fontSize: 20, fontWeight: FontWeight.bold),
-                //       ),
-                //       Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                //     ],
-                //   ),
-                // ),
-                // Container(
-                //     height: 300,
-                //     child: ListView.builder(
-                //         scrollDirection: Axis.horizontal,
-                //         itemCount: 5,
-                //         itemBuilder: (context, index) {
-                //           return _foodCard_1(context);
-                //         })),
-                // DividerCutom(),
-                // Padding(
-                //   padding: const EdgeInsets.only(left: 8, right: 8),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Text(
-                //         "สูตรอาหารยอดนิยม2",
-                //         style: TextStyle(
-                //             fontSize: 20, fontWeight: FontWeight.bold),
-                //       ),
-                //       Icon(Icons.arrow_forward_rounded, color: Colors.indigo)
-                //       // Text(
-                //       //   "ดูทั้งหมด",
-                //       //   style: TextStyle(
-                //       //       fontSize: 20, fontWeight: FontWeight.normal),
-                //       // ),
-                //     ],
-                //   ),
-                // ),
-                // Container(
-                //     height: 300,
-                //     child: ListView.builder(
-                //         scrollDirection: Axis.horizontal,
-                //         itemCount: 5,
-                //         itemBuilder: (context, index) {
-                //           return _foodCard_2(context);
-                //         })),
                 DividerCutom(),
                 Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
@@ -806,7 +753,6 @@ class _FeedPageState extends State<FeedPage> {
                                                         .image),
                                                 fit: BoxFit.cover)),
                                       ),
-
                                       (dataRecommendRecipe[index].score == 0)
                                           ? Container()
                                           : Padding(
@@ -875,44 +821,6 @@ class _FeedPageState extends State<FeedPage> {
                                                 ],
                                               ),
                                             ),
-                                      // Padding(
-                                      //     padding:
-                                      //         const EdgeInsets.fromLTRB(
-                                      //             16, 16, 0, 0),
-                                      //     child:
-                                      //     Row(
-                                      //       // crossAxisAlignment: CrossAxisAlignment.end,
-                                      //       children: [
-
-                                      //         Icon(
-                                      //           Icons.star,
-                                      //           color: Colors.blue,
-                                      //           size: 20,
-                                      //         ),
-                                      //         SizedBox(
-                                      //           width: 1,
-                                      //         ),
-                                      //         Text(
-                                      //           dataRecommendRecipe[index]
-                                      //               .score
-                                      //               .toString(),
-                                      //           style: TextStyle(
-                                      //               color: Colors.white,
-                                      //               fontWeight:
-                                      //                   FontWeight.bold),
-                                      //         ),
-                                      //         SizedBox(
-                                      //           width: 2,
-                                      //         ),
-                                      //         Text(
-                                      //           '(${dataRecommendRecipe[index].count})',
-                                      //           style: TextStyle(
-                                      //             color: Colors.white,
-                                      //           ),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //   ),
                                       (dataRecommendRecipe[index].price == 0)
                                           ? Container()
                                           : Padding(
@@ -950,8 +858,8 @@ class _FeedPageState extends State<FeedPage> {
                                                           width: 30,
                                                           child: (data_DataAc ==
                                                                   null)
-                                                              ? Image.network(
-                                                                  "https://cdn-icons-png.flaticon.com/512/1490/1490885.png")
+                                                              ? Image.asset(
+                                                                  "assets/logoBuyFood/lock.png")
                                                               : (data_DataAc
                                                                           .userId ==
                                                                       dataRecommendRecipe[
@@ -962,10 +870,10 @@ class _FeedPageState extends State<FeedPage> {
                                                                               .rid
                                                                               .toString()) >=
                                                                           0)
-                                                                      ? Image.network(
-                                                                          "https://image.flaticon.com/icons/png/512/1053/1053171.png")
-                                                                      : Image.network(
-                                                                          "https://cdn-icons-png.flaticon.com/512/1490/1490885.png"),
+                                                                      ? Image.asset(
+                                                                          "assets/logoBuyFood/unlock.png")
+                                                                      : Image.asset(
+                                                                          "assets/logoBuyFood/lock.png"),
                                                         ),
                                                       ),
                                                     ],
@@ -1253,10 +1161,7 @@ class _FeedPageState extends State<FeedPage> {
                       )
                     ],
                   ),
-                  IconButton(
-                      icon: Icon(Icons.more_vert),
-                      onPressed: () {
-                      })
+                  IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
                 ],
               ),
             ),
@@ -1378,11 +1283,7 @@ class _FeedPageState extends State<FeedPage> {
                       )
                     ],
                   ),
-                  IconButton(
-                      icon: Icon(Icons.more_vert),
-                      onPressed: () {
-
-                      })
+                  IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
                 ],
               ),
             ),
@@ -1478,16 +1379,25 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
-  List<String> listIngredient = ["เนื้อ","ไข่ไก่","น้ำตาลทราย"];
-  List<String> pathImageListIngredient = ["assets/imageIngredientPage/meat.jpg","assets/imageIngredientPage/egg.jpg","assets/imageIngredientPage/sugar.jpg"];
+
+  List<String> listIngredient = ["เนื้อ", "ไข่ไก่", "น้ำตาลทราย"];
+  List<String> pathImageListIngredient = [
+    "assets/imageIngredientPage/meat.jpg",
+    "assets/imageIngredientPage/egg.jpg",
+    "assets/imageIngredientPage/sugar.jpg"
+  ];
   Padding ingredients() {
-    
     return Padding(
       padding: const EdgeInsets.only(left: 13, right: 13, top: 18, bottom: 18),
       child: InkWell(
         onTap: () {
-          Navigator.push(context,
-              (MaterialPageRoute(builder: (context) => ShowIngredientPage(nameIngredient: listIngredient[randomIngredient],image: pathImageListIngredient[randomIngredient],))));
+          Navigator.push(
+              context,
+              (MaterialPageRoute(
+                  builder: (context) => ShowIngredientPage(
+                        nameIngredient: listIngredient[randomIngredient],
+                        image: pathImageListIngredient[randomIngredient],
+                      ))));
         },
         child: Container(
           height: 150,
@@ -1495,8 +1405,7 @@ class _FeedPageState extends State<FeedPage> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
-                image: AssetImage(
-                    pathImageListIngredient[randomIngredient]),
+                image: AssetImage(pathImageListIngredient[randomIngredient]),
                 fit: BoxFit.cover),
           ),
           child: Row(
@@ -2131,7 +2040,6 @@ class _FeedPageState extends State<FeedPage> {
                                     splashColor: Colors.grey,
                                     color: Colors.white,
                                     onPressed: () {
-                                  
                                       if (token == "") {
                                         showDialog(
                                             context: context,
@@ -2171,7 +2079,6 @@ class _FeedPageState extends State<FeedPage> {
                                     splashColor: Colors.grey,
                                     color: Colors.white,
                                     onPressed: () {
-                              
                                       if (token == "") {
                                         showDialog(
                                             context: context,
@@ -2230,15 +2137,12 @@ class SlideIndicator extends AnimatedWidget {
   }
 
   Widget buildIndicator(int index) {
-
-
     double select = max(
         0.0,
         1.0 -
             ((pageController.page ?? pageController.initialPage) - index)
                 .abs());
     double decrease = 10 * select;
-
 
     return Container(
       width: 30,
@@ -2268,7 +2172,7 @@ class AdsSlideCard extends StatelessWidget {
           height: 200,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
+            child: Image.asset(
               slideImage,
               fit: BoxFit.cover,
             ),
